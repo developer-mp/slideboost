@@ -31,3 +31,4 @@ dist-ssr
 
 # deepspeech models
 models
+src/upload
