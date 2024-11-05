@@ -7,18 +7,20 @@ if (ffmpegPath) {
   console.error("FFmpeg path is not set");
 }
 
-export const convertMp3ToWav = (
-  mp3FilePath: string,
+export const extractWavFromVideo = (
+  videoFilePath: string,
   wavFilePath: string
 ): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    ffmpeg(mp3FilePath)
-      .toFormat("wav")
-      .on("end", () => resolve())
+  return new Promise<void>((resolve, reject) => {
+    ffmpeg(videoFilePath)
+      .output(wavFilePath)
+      .on("end", () => {
+        resolve();
+      })
       .on("error", (err) => {
-        console.error("Error converting audio:", err);
+        console.error("Error extracting audio:", err);
         reject(err);
       })
-      .save(wavFilePath);
+      .run();
   });
 };

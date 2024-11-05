@@ -45,10 +45,11 @@ const Dashboard: React.FC = () => {
 
   const handleCreateClick = async () => {
     // const filePath = "../../upload/testimage.jpg";
-    const filePath = "../../upload/testaudio.mp3";
+    // const filePath = "../../upload/testaudio.mp3";
+    const filePath = "../../upload/testvideo.mp4";
 
     try {
-      const transcript = await transcriptService.fetchTranscriptFromAudio(
+      const transcript = await transcriptService.fetchTranscriptFromVideo(
         filePath
       );
       // const transcript = await transcriptService.fetchTranscriptFromImage(

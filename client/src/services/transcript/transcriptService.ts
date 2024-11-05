@@ -26,6 +26,18 @@ const transcriptService = {
       throw error;
     }
   },
+  fetchTranscriptFromVideo: async (filePath: string) => {
+    try {
+      const endpoint = `${config.TRANSCRIPT_ROUTER}${config.VIDEOTOTXT_ENDPOINT}`;
+      const response = await apiService.noSecurePostCall(endpoint, {
+        filePath,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error retrieving transcript from video:", error);
+      throw error;
+    }
+  },
 };
 
 export default transcriptService;
