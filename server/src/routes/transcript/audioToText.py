@@ -3,6 +3,7 @@ import deepspeech
 import wave
 import numpy as np
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 model_file_path = os.path.join(script_dir, '../../../models/deepspeech-0.9.3-models.pbmm')

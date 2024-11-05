@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Tesseract from "tesseract.js";
 import fs from "fs";
-import { exec } from "child_process";
+import { spawn } from "child_process";
 import path from "path";
 import { convertMp3ToWav } from "../../utils/convertMp3ToWav";
 
@@ -50,24 +50,25 @@ const TranscriptController = {
 
       const scriptPath = path.join(__dirname, "audioToText.py");
 
-      exec(
-        `python "${scriptPath}" "${wavFilePath}"`,
-        (error, stdout, stderr) => {
-          if (error) {
-            console.error("Error executing Python script:", error);
-            res.status(500).json({ error: "Failed to process audio" });
-            return;
-          }
+      const pythonProcess = spawn("python", [scriptPath, wavFilePath]);
 
-          if (stderr) {
-            console.error("Python script stderr:", stderr);
-            res.status(500).json({ error: "Python processing error" });
-            return;
-          }
+      let scriptOutput = "";
 
-          res.json({ text: stdout.trim() });
+      pythonProcess.stdout.on("data", (data) => {
+        scriptOutput += data.toString();
+      });
+
+      pythonProcess.stderr.on("data", (data) => {
+        console.error("Python script stderr:", data.toString());
+      });
+
+      pythonProcess.on("close", (code) => {
+        if (code !== 0) {
+          res.status(500).json({ error: "Python processing error" });
+        } else {
+          res.json({ text: scriptOutput.trim() });
         }
-      );
+      });
     } catch (error) {
       console.error("Error processing audio:", error);
       res.status(500).json({ error: "Failed to process audio" });
