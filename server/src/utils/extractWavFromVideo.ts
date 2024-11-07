@@ -1,11 +1,11 @@
 import ffmpeg from "fluent-ffmpeg";
-import ffmpegPath from "ffmpeg-static";
+// import ffmpegPath from "ffmpeg-static";
 
-if (ffmpegPath) {
-  ffmpeg.setFfmpegPath(ffmpegPath);
-} else {
-  console.error("FFmpeg path is not set");
-}
+// if (ffmpegPath) {
+//   ffmpeg.setFfmpegPath(ffmpegPath);
+// } else {
+//   console.error("FFmpeg path is not set");
+// }
 
 export const extractWavFromVideo = (
   videoFilePath: string,

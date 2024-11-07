@@ -78,6 +78,7 @@ export interface FileDetail {
   thumbnail?: string;
   title?: string;
   category?: string;
+  path: string;
 }
 
 export interface Template {

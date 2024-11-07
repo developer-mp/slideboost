@@ -25,7 +25,8 @@
     "pg": "^8.13.0",
     "pug": "^3.0.3",
     "server": "file:",
-    "tesseract.js": "^5.1.1"
+    "tesseract.js": "^5.1.1",
+    "ytdl-core": "^4.11.5"
   },
   "author": "Mikita Piastou",
   "devDependencies": {

@@ -61,6 +61,8 @@ const FileUploader = forwardRef(
                 : undefined,
               title: isTemplate ? "Test Title" : undefined,
               category: isTemplate ? "Test Category" : undefined,
+              // path: "../../upload/testimage.png",
+              path: "https://www.youtube.com/watch?v=p80VyQ5wLvg",
             });
           };
           if (file.type.startsWith("image/")) {

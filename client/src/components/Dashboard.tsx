@@ -22,9 +22,7 @@ const Dashboard: React.FC = () => {
   const [tempSelectedTemplate, setTempSelectedTemplate] =
     useState<Template | null>(null);
 
-  const [extractedTextResults, setExtractedTextResults] = useState<string[]>(
-    []
-  );
+  const [extractedTextResults, setExtractedTextResults] = useState<string>("");
 
   const mediaFiles: FileDetail[] = JSON.parse(
     localStorage.getItem("mediaDetails") || "[]"
@@ -43,23 +41,45 @@ const Dashboard: React.FC = () => {
     setShowTemplateModal(false);
   };
 
-  const handleCreateClick = async () => {
-    // const filePath = "../../upload/testimage.jpg";
-    // const filePath = "../../upload/testaudio.mp3";
-    const filePath = "../../upload/testvideo.mp4";
+  const processMediaFile = async (file: FileDetail) => {
+    const filePath = file.path;
 
     try {
-      const transcript = await transcriptService.fetchTranscriptFromVideo(
-        filePath
-      );
-      // const transcript = await transcriptService.fetchTranscriptFromImage(
-      //   filePath
-      // );
+      let transcript = [];
+      const isYouTubeLink =
+        filePath.includes("youtube.com") || filePath.includes("youtu.be");
 
-      setExtractedTextResults(transcript.text);
+      if (isYouTubeLink) {
+        transcript = await transcriptService.fetchTranscriptFromYoutube(
+          filePath
+        );
+      } else if (file.type.startsWith("image/")) {
+        transcript = await transcriptService.fetchTranscriptFromImage(filePath);
+      } else if (file.type.startsWith("audio/")) {
+        transcript = await transcriptService.fetchTranscriptFromAudio(filePath);
+      } else if (file.type.startsWith("video/")) {
+        transcript = await transcriptService.fetchTranscriptFromVideo(filePath);
+      }
+
+      return transcript;
     } catch (error) {
-      console.error("Error retrieving transcript from file:", error);
+      console.error(
+        `Error retrieving transcript from file ${file.name}:`,
+        error
+      );
+      return "";
     }
+  };
+
+  const handleCreateClick = async () => {
+    let allExtractedText = "";
+
+    for (const file of selectedMediaFiles) {
+      const transcript = await processMediaFile(file);
+      allExtractedText += `\n\n--- Transcript from ${file.name} ---\n\n${transcript.text}`;
+    }
+
+    setExtractedTextResults(allExtractedText);
   };
 
   return (
@@ -67,7 +87,6 @@ const Dashboard: React.FC = () => {
       <div className="tw-mx-6 tw-my-6">
         <h2 className="tw-text-lg tw-font-bold tw-mb-4">Create Presentation</h2>
         <div className="tw-bg-white tw-rounded-lg tw-p-5">
-          {/* Title input */}
           <div className="tw-mb-7">
             <label className="tw-block tw-mb-2 tw-font-bold tw-text-gray-500">
               Title
@@ -79,7 +98,6 @@ const Dashboard: React.FC = () => {
               className="tw-w-4/12 tw-p-2 tw-rounded-lg tw-border tw-border-gray-500"
             />
           </div>
-          {/* Media selection */}
           <div className="tw-mb-7">
             <div className="tw-mb-2 tw-font-bold tw-text-gray-500">Media</div>
             <Button
@@ -117,7 +135,6 @@ const Dashboard: React.FC = () => {
               removeButtonPosition="margin-left"
             />
           </div>
-          {/* Template selection */}
           <div className="tw-mb-2 tw-font-bold tw-text-gray-500">Template</div>
           <Button
             className="button-select"
@@ -149,16 +166,12 @@ const Dashboard: React.FC = () => {
               />
             </div>
           )}
-          <Button className="new-button tw-my-4" onClick={handleCreateClick}>
-            Create
-          </Button>
-          {/* Display extracted text results */}
-          {extractedTextResults.length > 0 && (
-            <div className="tw-mt-5">
-              <h4 className="tw-font-bold tw-text-lg">Extracted Text</h4>
-              {extractedTextResults}
-            </div>
-          )}
+          <div className="tw-mt-5">
+            <Button className="new-button tw-my-4" onClick={handleCreateClick}>
+              Create
+            </Button>
+            {extractedTextResults}
+          </div>
         </div>
       </div>
     </Container>

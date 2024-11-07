@@ -6,5 +6,9 @@ const transcriptRouter = Express.Router();
 transcriptRouter.post("/imgtotxt", TranscriptController.convertImageToText);
 transcriptRouter.post("/audiototxt", TranscriptController.convertAudioToText);
 transcriptRouter.post("/videototxt", TranscriptController.convertVideoToText);
+transcriptRouter.post(
+  "/youtubetotxt",
+  TranscriptController.convertYoutubeToText
+);
 
 export default transcriptRouter;
