@@ -5,7 +5,7 @@ import { spawn } from "child_process";
 import path from "path";
 import { convertMp3ToWav } from "../../utils/convertMp3ToWav";
 import { extractWavFromVideo } from "../../utils/extractWavFromVideo";
-import { extractWavFromYoutube } from "../../utils/extractWavFromYoutube";
+import { downloadVideoFromYoutube } from "../../utils/downloadVideoFromYoutube";
 
 const TranscriptController = {
   convertImageToText: async (req: Request, res: Response): Promise<void> => {
@@ -126,24 +126,20 @@ const TranscriptController = {
   convertYoutubeToText: async (req: Request, res: Response): Promise<void> => {
     try {
       const { filePath } = req.body;
-      const absoluteFilePath = path.join(__dirname, filePath);
 
-      if (!absoluteFilePath) {
-        res.status(400).json({ error: "File path is required" });
+      if (!filePath) {
+        res.status(400).json({ error: "YouTube URL is required" });
         return;
       }
 
-      if (!fs.existsSync(absoluteFilePath)) {
-        res.status(404).json({ error: "File not found" });
-        return;
-      }
+      const videoFilePath = await downloadVideoFromYoutube(filePath);
 
-      const wavFilePath = absoluteFilePath.replace(
-        path.extname(absoluteFilePath),
+      const wavFilePath = videoFilePath.replace(
+        path.extname(videoFilePath),
         ".wav"
       );
 
-      await extractWavFromYoutube(filePath, absoluteFilePath, wavFilePath);
+      await extractWavFromVideo(videoFilePath, wavFilePath);
 
       const scriptPath = path.join(__dirname, "audioToText.py");
 
@@ -160,6 +156,7 @@ const TranscriptController = {
       });
 
       pythonProcess.on("close", (code) => {
+        fs.unlinkSync(wavFilePath);
         if (code !== 0) {
           res.status(500).json({ error: "Python processing error" });
         } else {

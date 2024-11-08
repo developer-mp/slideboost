@@ -1,11 +1,4 @@
 import ffmpeg from "fluent-ffmpeg";
-// import ffmpegPath from "ffmpeg-static";
-
-// if (ffmpegPath) {
-//   ffmpeg.setFfmpegPath(ffmpegPath);
-// } else {
-//   console.error("FFmpeg path is not set");
-// }
 
 export const extractWavFromVideo = (
   videoFilePath: string,
@@ -14,6 +7,7 @@ export const extractWavFromVideo = (
   return new Promise<void>((resolve, reject) => {
     ffmpeg(videoFilePath)
       .output(wavFilePath)
+      // .audioCodec("pcm_s16le")
       .on("end", () => {
         resolve();
       })

@@ -26,7 +26,7 @@
     "pug": "^3.0.3",
     "server": "file:",
     "tesseract.js": "^5.1.1",
-    "ytdl-core": "^4.11.5"
+    "youtube-dl-exec": "^3.0.10"
   },
   "author": "Mikita Piastou",
   "devDependencies": {
