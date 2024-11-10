@@ -4,10 +4,12 @@ export const extractWavFromVideo = (
   videoFilePath: string,
   wavFilePath: string
 ): Promise<void> => {
-  return new Promise<void>((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     ffmpeg(videoFilePath)
       .output(wavFilePath)
-      // .audioCodec("pcm_s16le")
+      .audioCodec("pcm_s16le")
+      .audioChannels(1)
+      .audioFrequency(16000)
       .on("end", () => {
         resolve();
       })
