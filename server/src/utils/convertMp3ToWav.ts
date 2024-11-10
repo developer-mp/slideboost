@@ -7,6 +7,8 @@ export const convertMp3ToWav = (
   return new Promise((resolve, reject) => {
     ffmpeg(mp3FilePath)
       .toFormat("wav")
+      .audioChannels(1)
+      .audioFrequency(16000)
       .on("end", () => resolve())
       .on("error", (err) => {
         console.error("Error converting audio:", err);
