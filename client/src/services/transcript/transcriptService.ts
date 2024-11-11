@@ -2,6 +2,18 @@ import apiService from "../app/apiService";
 import { config } from "../../../env.config";
 
 const transcriptService = {
+  fetchTranscriptFromText: async (filePath: string) => {
+    try {
+      const endpoint = `${config.TRANSCRIPT_ROUTER}${config.TEXTTOTXT_ENDPOINT}`;
+      const response = await apiService.noSecurePostCall(endpoint, {
+        filePath,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error retrieving transcript from text:", error);
+      throw error;
+    }
+  },
   fetchTranscriptFromImage: async (filePath: string) => {
     try {
       const endpoint = `${config.TRANSCRIPT_ROUTER}${config.IMGTOTXT_ENDPOINT}`;

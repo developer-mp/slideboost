@@ -61,7 +61,7 @@ const FileUploader = forwardRef(
                 : undefined,
               title: isTemplate ? "Test Title" : undefined,
               category: isTemplate ? "Test Category" : undefined,
-              path: "../../upload/testaudio.mp3",
+              path: "../../upload/testtext.txt",
               //path: "https://www.youtube.com/watch?v=UIDwl_kP2MU",
             });
           };

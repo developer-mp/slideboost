@@ -1,12 +1,8 @@
-// import Express from "express";
-// import AIController from "./aiController";
+import Express from "express";
+import AiController from "./aiController";
 
-// const aiRouter = Express.Router();
+const aiRouter = Express.Router();
 
-// aiRouter.post(
-//   "/imgtotxt",
-//   upload.single("image"),
-//   AIController.convertImageToText
-// );
+aiRouter.post("/transcript", AiController.formatTranscript);
 
-// export default aiRouter;
+export default aiRouter;

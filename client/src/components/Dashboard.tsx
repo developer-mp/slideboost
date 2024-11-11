@@ -5,6 +5,7 @@ import TemplatesDisplay from "./TemplatesDisplay";
 import MediaFilesDisplay from "./MediaFilesDisplay";
 import { FileDetail, Template } from "../interfaces/interfaces";
 import transcriptService from "../services/transcript/transcriptService";
+import aiService from "../services/ai/aiService";
 
 const Dashboard: React.FC = () => {
   const [showMediaModal, setShowMediaModal] = useState(false);
@@ -22,7 +23,7 @@ const Dashboard: React.FC = () => {
   const [tempSelectedTemplate, setTempSelectedTemplate] =
     useState<Template | null>(null);
 
-  const [extractedTextResults, setExtractedTextResults] = useState<string>("");
+  const [formattedTranscript, setformattedTranscript] = useState<string>("");
 
   const mediaFiles: FileDetail[] = JSON.parse(
     localStorage.getItem("mediaDetails") || "[]"
@@ -53,6 +54,15 @@ const Dashboard: React.FC = () => {
         transcript = await transcriptService.fetchTranscriptFromYoutube(
           filePath
         );
+      } else if (file.type.startsWith("text/")) {
+        transcript = await transcriptService.fetchTranscriptFromText(filePath);
+        // } else if (
+        //   file.type ===
+        //   "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        // ) {
+        //   transcript = await readWordFile(file);
+        // } else if (file.type === "application/pdf") {
+        //   transcript = await readPdfFile(file);
       } else if (file.type.startsWith("image/")) {
         transcript = await transcriptService.fetchTranscriptFromImage(filePath);
       } else if (file.type.startsWith("audio/")) {
@@ -76,10 +86,11 @@ const Dashboard: React.FC = () => {
 
     for (const file of selectedMediaFiles) {
       const transcript = await processMediaFile(file);
-      allExtractedText += `\n\n--- Transcript from ${file.name} ---\n\n${transcript.text}`;
+      allExtractedText += `${transcript.text}`;
     }
 
-    setExtractedTextResults(allExtractedText);
+    const response = await aiService.processTranscript(allExtractedText);
+    setformattedTranscript(response.text);
   };
 
   return (
@@ -170,7 +181,7 @@ const Dashboard: React.FC = () => {
             <Button className="new-button tw-my-4" onClick={handleCreateClick}>
               Create
             </Button>
-            {extractedTextResults}
+            {formattedTranscript}
           </div>
         </div>
       </div>

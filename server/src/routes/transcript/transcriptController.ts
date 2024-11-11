@@ -6,8 +6,31 @@ import path from "path";
 import { convertMp3ToWav } from "../../utils/convertMp3ToWav";
 import { extractWavFromVideo } from "../../utils/extractWavFromVideo";
 import { downloadVideoFromYoutube } from "../../utils/downloadVideoFromYoutube";
+import { readTextFile } from "../../utils/readTextFile";
 
 const TranscriptController = {
+  convertTextToText: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { filePath } = req.body;
+      const absoluteFilePath = path.join(__dirname, filePath);
+
+      if (!absoluteFilePath) {
+        res.status(400).json({ error: "File path is required" });
+        return;
+      }
+
+      if (!fs.existsSync(absoluteFilePath)) {
+        res.status(404).json({ error: "File not found" });
+        return;
+      }
+
+      const result = readTextFile(absoluteFilePath);
+      res.json({ text: result });
+    } catch (error) {
+      console.error("Error processing text:", error);
+      res.status(500).json({ error: "Failed to process text" });
+    }
+  },
   convertImageToText: async (req: Request, res: Response): Promise<void> => {
     try {
       const { filePath } = req.body;
@@ -65,6 +88,7 @@ const TranscriptController = {
       });
 
       pythonProcess.on("close", (code) => {
+        fs.unlinkSync(wavFilePath);
         if (code !== 0) {
           res.status(500).json({ error: "Python processing error" });
         } else {
@@ -112,6 +136,7 @@ const TranscriptController = {
       });
 
       pythonProcess.on("close", (code) => {
+        fs.unlinkSync(wavFilePath);
         if (code !== 0) {
           res.status(500).json({ error: "Python processing error" });
         } else {
