@@ -6,6 +6,7 @@ import MediaFilesDisplay from "./MediaFilesDisplay";
 import { FileDetail, Template } from "../interfaces/interfaces";
 import transcriptService from "../services/transcript/transcriptService";
 import aiService from "../services/ai/aiService";
+import pptService from "../services/ppt/pptService";
 
 const Dashboard: React.FC = () => {
   const [showMediaModal, setShowMediaModal] = useState(false);
@@ -23,7 +24,7 @@ const Dashboard: React.FC = () => {
   const [tempSelectedTemplate, setTempSelectedTemplate] =
     useState<Template | null>(null);
 
-  const [formattedTranscript, setformattedTranscript] = useState<string>("");
+  // const [formattedTranscript, setformattedTranscript] = useState<string>("");
 
   const mediaFiles: FileDetail[] = JSON.parse(
     localStorage.getItem("mediaDetails") || "[]"
@@ -90,7 +91,9 @@ const Dashboard: React.FC = () => {
     }
 
     const response = await aiService.processTranscript(allExtractedText);
-    setformattedTranscript(response.text);
+    const filePath = "../../upload/beehive.pptx";
+    await pptService.processPpt(filePath, response.text);
+    // setformattedTranscript(response.text);
   };
 
   return (
@@ -181,7 +184,7 @@ const Dashboard: React.FC = () => {
             <Button className="new-button tw-my-4" onClick={handleCreateClick}>
               Create
             </Button>
-            {formattedTranscript}
+            {/* {formattedTranscript} */}
           </div>
         </div>
       </div>

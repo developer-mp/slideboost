@@ -2,23 +2,16 @@ import apiService from "../app/apiService";
 import { config } from "../../../env.config";
 
 const pptService = {
-  createPPT: async (
-    templateId: string,
-    transcript: string[]
-  ): Promise<string> => {
+  processPpt: async (filePath: string, transcript: string) => {
     try {
-      const endpoint = `${config.PPT_ROUTER}`;
-      const configType = { responseType: "blob" } as const;
-
-      const response = await apiService.noSecurePostCall<{
-        templateId: string;
-        transcript: string[];
-      }>(endpoint, { templateId, transcript }, configType);
-
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      return url;
+      const endpoint = `${config.PPT_ROUTER}${config.PPT_ENDPOINT}`;
+      const response = await apiService.noSecurePostCall(endpoint, {
+        filePath,
+        transcript,
+      });
+      return response.data;
     } catch (error) {
-      console.error("Error creating PowerPoint:", error);
+      console.error("Error processing presentation:", error);
       throw error;
     }
   },

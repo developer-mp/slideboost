@@ -14,7 +14,7 @@ const TranscriptController = {
       const { filePath } = req.body;
       const absoluteFilePath = path.join(__dirname, filePath);
 
-      if (!absoluteFilePath) {
+      if (!filePath) {
         res.status(400).json({ error: "File path is required" });
         return;
       }
@@ -36,7 +36,7 @@ const TranscriptController = {
       const { filePath } = req.body;
       const absoluteFilePath = path.join(__dirname, filePath);
 
-      if (!absoluteFilePath) {
+      if (!filePath) {
         res.status(400).json({ error: "File path is required" });
         return;
       }
@@ -60,7 +60,7 @@ const TranscriptController = {
       const { filePath } = req.body;
       const absoluteFilePath = path.join(__dirname, filePath);
 
-      if (!absoluteFilePath) {
+      if (!filePath) {
         res.status(400).json({ error: "File path is required" });
         return;
       }
@@ -105,7 +105,7 @@ const TranscriptController = {
       const { filePath } = req.body;
       const absoluteFilePath = path.join(__dirname, filePath);
 
-      if (!absoluteFilePath) {
+      if (!filePath) {
         res.status(400).json({ error: "File path is required" });
         return;
       }

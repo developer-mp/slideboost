@@ -50,6 +50,7 @@ export interface FileUploaderProps {
       thumbnail?: string;
       title?: string;
       category?: string;
+      path: string;
     }[]
   ) => void;
 }
@@ -65,6 +66,7 @@ export interface FileUploaderRef {
     thumbnail?: string;
     title?: string;
     category?: string;
+    path: string;
   }[];
 }
 

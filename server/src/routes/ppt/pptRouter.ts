@@ -1,8 +1,8 @@
-// import Express from "express";
-// import PPTController from "./pptController";
+import Express from "express";
+import PptController from "./pptController";
 
-// const pptRouter = Express.Router();
+const pptRouter = Express.Router();
 
-// pptRouter.post("/", PPTController.createPPT);
+pptRouter.post("/presentation", PptController.createPpt);
 
-// export default pptRouter;
+export default pptRouter;
