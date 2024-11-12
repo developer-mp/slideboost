@@ -8,7 +8,13 @@ import transcriptService from "../services/transcript/transcriptService";
 import aiService from "../services/ai/aiService";
 import pptService from "../services/ppt/pptService";
 
-const Dashboard: React.FC = () => {
+interface DashboardProps {
+  setSelectedItem: (
+    item: "dashboard" | "media" | "projects" | "templates"
+  ) => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const [showMediaModal, setShowMediaModal] = useState(false);
   const [selectedMediaFiles, setSelectedMediaFiles] = useState<FileDetail[]>(
     []
@@ -23,8 +29,7 @@ const Dashboard: React.FC = () => {
   );
   const [tempSelectedTemplate, setTempSelectedTemplate] =
     useState<Template | null>(null);
-
-  // const [formattedTranscript, setformattedTranscript] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   const mediaFiles: FileDetail[] = JSON.parse(
     localStorage.getItem("mediaDetails") || "[]"
@@ -83,17 +88,25 @@ const Dashboard: React.FC = () => {
   };
 
   const handleCreateClick = async () => {
-    let allExtractedText = "";
+    setLoading(true);
 
-    for (const file of selectedMediaFiles) {
-      const transcript = await processMediaFile(file);
-      allExtractedText += `${transcript.text}`;
+    try {
+      let allExtractedText = "";
+      for (const file of selectedMediaFiles) {
+        const transcript = await processMediaFile(file);
+        allExtractedText += `${transcript.text}`;
+      }
+
+      const response = await aiService.processTranscript(allExtractedText);
+      const filePath = "../../upload/beehive.pptx";
+      await pptService.processPpt(filePath, response.text);
+
+      setSelectedItem("projects");
+    } catch (error) {
+      console.error("Error creating presentation:", error);
+    } finally {
+      setLoading(false);
     }
-
-    const response = await aiService.processTranscript(allExtractedText);
-    const filePath = "../../upload/beehive.pptx";
-    await pptService.processPpt(filePath, response.text);
-    // setformattedTranscript(response.text);
   };
 
   return (
@@ -181,10 +194,14 @@ const Dashboard: React.FC = () => {
             </div>
           )}
           <div className="tw-mt-5">
-            <Button className="new-button tw-my-4" onClick={handleCreateClick}>
+            <Button
+              className="new-button tw-my-4"
+              onClick={handleCreateClick}
+              disabled={loading}
+            >
               Create
             </Button>
-            {/* {formattedTranscript} */}
+            {loading ? "Creating..." : ""}
           </div>
         </div>
       </div>

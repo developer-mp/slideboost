@@ -8,7 +8,9 @@ import Projects from "../components/Projects";
 const Workspace: React.FC = () => {
   type MenuItem = "dashboard" | "media" | "projects" | "templates";
 
-  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(
+    "dashboard"
+  );
 
   const handleItemClick = (item: MenuItem) => {
     setSelectedItem(item);
@@ -17,7 +19,9 @@ const Workspace: React.FC = () => {
   return (
     <div className="tw-bg-[#E7E6F4] tw-flex">
       <SideBar selectedItem={selectedItem} onItemClick={handleItemClick} />
-      {selectedItem === "dashboard" && <Dashboard />}
+      {selectedItem === "dashboard" && (
+        <Dashboard setSelectedItem={setSelectedItem} />
+      )}
       {selectedItem === "media" && <MediaMenu />}
       {selectedItem === "templates" && <TemplatesMenu />}
       {selectedItem === "projects" && <Projects />}

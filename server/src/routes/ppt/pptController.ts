@@ -52,13 +52,9 @@ const PptController = {
       const outputFilePath = path.join(uploadDir, outputFileName);
       await pptx.save(outputFilePath);
 
-      //   res.download(outputFilePath, "generated_presentation.pptx", (err) => {
-      //     if (err) {
-      //       console.error("Error downloading file:", err);
-      //       res.status(500).json({ error: "Failed to download file" });
-      //     }
-      //     fs.unlinkSync(outputFilePath);
-      //   });
+      res.status(200).json({
+        filePath: outputFilePath,
+      });
     } catch (error) {
       console.error("Error processing text:", error);
       res.status(500).json({ error: "Failed to process text" });
