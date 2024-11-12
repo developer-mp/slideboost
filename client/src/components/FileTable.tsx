@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from "react-icons/io";
 import { FileDetail } from "../interfaces/interfaces";
+import { FiTrash2 } from "react-icons/fi";
 
 interface FileTableProps {
   columns: Array<{
@@ -9,9 +10,10 @@ interface FileTableProps {
     render: (file: FileDetail) => JSX.Element | string;
   }>;
   files: FileDetail[];
+  removeFile: (index: number) => void;
 }
 
-const FileTable: FC<FileTableProps> = ({ columns, files }) => {
+const FileTable: FC<FileTableProps> = ({ columns, files, removeFile }) => {
   const [sortConfig, setSortConfig] = useState<{
     key: string;
     direction: "ascending" | "descending";
@@ -78,6 +80,20 @@ const FileTable: FC<FileTableProps> = ({ columns, files }) => {
                 {column.render(file)}
               </td>
             ))}
+            <td className="tw-p-2 tw-text-center">
+              <button
+                onClick={() => removeFile(index)}
+                className="tw-text-[#FD4958] hover:tw-text-[#DB142B] tw-text-xl tw-flex tw-items-center tw-justify-center"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                }}
+              >
+                <FiTrash2 />
+              </button>
+            </td>
           </tr>
         ))}
       </tbody>

@@ -15,6 +15,12 @@ const Projects: React.FC = () => {
     setFiles(existingFiles);
   }, []);
 
+  const removeFile = (index: number) => {
+    const updatedFiles = files.filter((_, i) => i !== index);
+    setFiles(updatedFiles);
+    localStorage.setItem("ppt", JSON.stringify(updatedFiles));
+  };
+
   const columns = [
     {
       key: "filename",
@@ -40,7 +46,11 @@ const Projects: React.FC = () => {
         <div className="tw-bg-white tw-rounded-lg tw-p-5">
           <Row>
             <Col>
-              <FileTable columns={columns} files={files} />
+              <FileTable
+                columns={columns}
+                files={files}
+                removeFile={removeFile}
+              />
             </Col>
           </Row>
         </div>

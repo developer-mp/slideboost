@@ -25,6 +25,12 @@ const MediaMenu: React.FC = () => {
     handleFileUpload(files, "mediaDetails");
   };
 
+  const removeFile = (index: number) => {
+    const updatedFiles = files.filter((_, i) => i !== index);
+    setFiles(updatedFiles);
+    localStorage.setItem("mediaDetails", JSON.stringify(updatedFiles));
+  };
+
   const columns = [
     {
       key: "filename",
@@ -61,7 +67,11 @@ const MediaMenu: React.FC = () => {
         <div className="tw-bg-white tw-rounded-lg tw-p-5">
           <Row>
             <Col>
-              <FileTable columns={columns} files={files} />
+              <FileTable
+                columns={columns}
+                files={files}
+                removeFile={removeFile}
+              />
             </Col>
           </Row>
         </div>
