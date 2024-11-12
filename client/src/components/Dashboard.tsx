@@ -97,9 +97,11 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
         allExtractedText += `${transcript.text}`;
       }
 
-      const response = await aiService.processTranscript(allExtractedText);
+      const transcript = await aiService.processTranscript(allExtractedText);
       const filePath = "../../upload/beehive.pptx";
-      await pptService.processPpt(filePath, response.text);
+      const ppt = await pptService.processPpt(filePath, transcript.text);
+
+      localStorage.setItem("ppt", JSON.stringify(ppt));
 
       setSelectedItem("projects");
     } catch (error) {

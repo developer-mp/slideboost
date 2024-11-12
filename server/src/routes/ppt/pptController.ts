@@ -52,9 +52,20 @@ const PptController = {
       const outputFilePath = path.join(uploadDir, outputFileName);
       await pptx.save(outputFilePath);
 
-      res.status(200).json({
-        filePath: outputFilePath,
-      });
+      res.status(200).json([
+        {
+          id: "123",
+          name: outputFileName,
+          type: "pptx",
+          size: 123,
+          date: "2024-01-01",
+          content: "content",
+          thumbnail: "123",
+          title: "Presentation",
+          category: "Business",
+          path: outputFilePath,
+        },
+      ]);
     } catch (error) {
       console.error("Error processing text:", error);
       res.status(500).json({ error: "Failed to process text" });
