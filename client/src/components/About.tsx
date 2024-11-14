@@ -1,53 +1,79 @@
+import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { useNavigation } from "../utils/useNavigation";
+import LoginModal from "./LoginModal";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import about_img from "../assets/about_img.png";
 
 const About: React.FC = () => {
+  const { navigateToCreateAccount, navigateToWorkspace } = useNavigation();
+  const [modalShow, setModalShow] = useState(false);
+
+  const openLoginModal = () => {
+    setModalShow(true);
+  };
+
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.user.isAuthenticated
+  );
   return (
-    <Container className="tw-flex tw-items-center tw-justify-center tw-text-center tw-mt-6">
-      <div className="tw-bg-[#F0FAFA] tw-rounded-lg tw-shadow-lg tw-p-10 tw-max-w-full tw-mx-auto">
-        <Row>
-          <Col>
-            <h3 className="tw-text-4xl tw-font-bold tw-mb-16">
-              <span className="tw-text-custom-color-teal">
-                BOOST YOUR MEDIA,{" "}
-              </span>
-              <span className="tw-text-custom-color-blue">
-                SLIDE INTO SUCCESS
-              </span>
+    <div
+      style={{
+        height: "100vh",
+      }}
+      className="tw-flex tw-flex-col tw-items-center tw-justify-center"
+    >
+      <Container className="tw-flex tw-grow tw-items-center">
+        <Row className="align-items-center">
+          <Col xs={12} md={6}>
+            <img
+              src={about_img}
+              alt="image"
+              className="tw-w-screen tw-h-auto tw-rounded-lg"
+            />
+          </Col>
+          <Col xs={12} md={8} lg={6}>
+            <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-ml-12 tw-mb-8">
+              SLIDE INTO SUCCESS
             </h3>
-            <h4 className="tw-text-lg tw-mb-2 tw-text-left tw-text-custom-color-blue tw-font-bold">
-              Who We Are
-            </h4>
-            <p className="tw-text-gray-700 tw-mb-4 tw-text-justify">
-              At SlideBoost, we empower creators, educators, and businesses to
-              unlock the full potential of their media effortlessly. Our passion
-              lies in transforming content into impactful presentations that
-              captivate and engage audiences.
-            </p>
-            <h4 className="tw-text-lg tw-mb-2 tw-text-left tw-text-custom-color-blue tw-font-bold">
-              Our Mission
-            </h4>
-            <p className="tw-text-gray-700 tw-mb-4 tw-text-justify">
-              We simplify the presentation creation process, enabling you to
-              focus on what truly matters - your message. With SlideBoost, you
-              can convert, edit, and manage your media seamlessly, streamlining
-              your workflow for optimal results.
-            </p>
-            <h4 className="tw-text-lg tw-mb-2 tw-text-left tw-text-custom-color-blue tw-font-bold">
-              Key Features
-            </h4>
-            <p className="tw-text-gray-700 tw-text-justify">
-              SlideBoost is your ultimate tool for creating engaging
-              presentations from videos, texts, images, and audio. Our automated
-              conversion allows you to upload your media and let our intelligent
-              algorithms handle the design, ensuring a polished, professional
-              outcome every time. Enjoy seamless integration of diverse content
-              types, customizable templates, and advanced editing features to
-              enhance your storytelling.
-            </p>
+            <div className="tw-text-gray-700 tw-text-xl tw-ml-12 tw-mb-4 tw-w-11/12">
+              <p>
+                We empower creators, educators, and businesses to transform
+                their media into engaging presentations that captivate
+                audiences.
+              </p>
+              <p>
+                Effortlessly convert, edit, and manage media using customizable
+                templates and advanced features to create impactful
+                presentations.
+              </p>
+            </div>
+            {!isAuthenticated ? (
+              <button
+                className="button-try tw-mb-4 tw-ml-12"
+                onClick={openLoginModal}
+              >
+                Try for free
+              </button>
+            ) : (
+              <button
+                className="custom-button tw-mb-4 tw-ml-12"
+                onClick={navigateToWorkspace}
+              >
+                Start designing
+              </button>
+            )}
+            <LoginModal
+              show={modalShow}
+              handleClose={() => setModalShow(false)}
+              onGoogleClick={navigateToCreateAccount}
+              onEmailClick={navigateToCreateAccount}
+            />
           </Col>
         </Row>
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
 

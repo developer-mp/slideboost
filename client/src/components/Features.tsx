@@ -1,50 +1,80 @@
+import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { useNavigation } from "../utils/useNavigation";
+import LoginModal from "./LoginModal";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import features_img from "../assets/features_img.jpg";
+import { templatesData } from "../data/templatesData";
+import TemplateCarousel from "../components/TemplateCarousel";
 
 const Features: React.FC = () => {
+  const { navigateToCreateAccount, navigateToWorkspace } = useNavigation();
+  const [modalShow, setModalShow] = useState(false);
+
+  const openLoginModal = () => {
+    setModalShow(true);
+  };
+
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.user.isAuthenticated
+  );
   return (
-    <Container className="tw-flex tw-items-center tw-justify-center tw-text-center tw-mt-16">
-      <Row>
-        <Col>
-          <h3 className="tw-text-4xl tw-font-bold tw-mb-16">
-            <span className="tw-text-custom-color-teal">
-              TRANSFORM PRESENTATIONS{" "}
-            </span>
-            <span className="tw-text-custom-color-blue">
-              WITH TAILORED SOLUTIONS
-            </span>
+    <Container className="tw-flex tw-grow tw-items-center">
+      <Row className="align-items-center">
+        <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-text-center tw-mb-8">
+          CUSTOMIZABLE TEMPLATES
+        </h3>
+        <div className="tw-text-gray-700 tw-text-xl tw-mb-8">
+          Personalize templates to match your brand, style, and content needs.
+          Whether you're creating professional presentations or engaging
+          visuals, our templates provide the flexibility to bring your vision to
+          life.
+        </div>
+        <TemplateCarousel templates={templatesData} />
+        <Col xs={12} md={8} lg={6}>
+          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-mb-8 tw-mt-40">
+            TAILORED SOLUTIONS
           </h3>
-          <h4 className="tw-text-lg tw-mb-2 tw-text-left tw-text-custom-color-blue tw-font-bold">
-            Customization
-          </h4>
-          <p className="tw-text-gray-700 tw-mb-4 tw-text-justify">
-            Our SaaS application revolutionizes the way users create PowerPoint
-            presentations by offering unparalleled customization capabilities.
-            Unlike traditional tools, our platform allows users to customize
-            content from a variety of sources, including video, text, images,
-            and audio.
-          </p>
-          <h4 className="tw-text-lg tw-mb-2 tw-text-left tw-text-custom-color-blue tw-font-bold">
-            Integration
-          </h4>
-          <p className="tw-text-gray-700 tw-mb-4 tw-text-justify">
-            By integrating with various CRM platforms such as Salesforce,
-            HubSpot, and Zoho, users can seamlessly pull in data from their
-            customer interactions, making it easier to create personalized
-            presentations and reports based on real-time insights. This
-            functionality not only enhances the relevance of the content but
-            also strengthens customer relationships by tailoring presentations
-            to specific needs.
-          </p>
-          <h4 className="tw-text-lg tw-mb-2 tw-text-left tw-text-custom-color-blue tw-font-bold">
-            Localization
-          </h4>
-          <p className="tw-text-gray-700 tw-text-justify">
-            Translate your product and marketing materials into multiple
-            languages to reach international markets. Customize your offerings
-            for specific industries (e.g., education, marketing) to meet their
-            unique needs. This approach not only enhances user engagement but
-            also drives adoption and loyalty across diverse sectors.
-          </p>
+          <div className="tw-text-gray-700 tw-text-xl tw-w-11/12">
+            <p>
+              Unlike traditional tools, our platform lets you customize content
+              from video, text, images, and audio.
+            </p>
+            <p>
+              Pull data from CRM platforms and content systems for seamless
+              integration of customer insights.
+            </p>
+            <p>
+              Translate, customize for industries, and instantly share via
+              email, chat, or social media to boost engagement and loyalty.
+            </p>
+          </div>
+          {!isAuthenticated ? (
+            <button className="button-try tw-mb-4" onClick={openLoginModal}>
+              Try for free
+            </button>
+          ) : (
+            <button
+              className="custom-button tw-mb-4"
+              onClick={navigateToWorkspace}
+            >
+              Create presentation
+            </button>
+          )}
+          <LoginModal
+            show={modalShow}
+            handleClose={() => setModalShow(false)}
+            onGoogleClick={navigateToCreateAccount}
+            onEmailClick={navigateToCreateAccount}
+          />
+        </Col>
+        <Col xs={12} md={6}>
+          <img
+            src={features_img}
+            alt="image"
+            className="tw-w-screen tw-h-auto tw-rounded-lg tw-mt-40"
+          />
         </Col>
       </Row>
     </Container>

@@ -2,7 +2,7 @@ export const handleNavClick = (
   sectionId: string,
   navigateToHome: () => void
 ) => {
-  const navbarHeight = 74;
+  const navbarHeight = 76;
 
   if (sectionId === "home") {
     navigateToHome();

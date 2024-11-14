@@ -1,7 +1,5 @@
-import { templatesData } from "../data/templatesData";
 import Home from "../components/Home";
 import About from "../components/About";
-import TemplateCarousel from "../components/TemplateCarousel";
 import Features from "../components/Features";
 import Pricing from "../components/Pricing";
 import Faq from "../components/Faq";
@@ -17,7 +15,6 @@ const Main: React.FC = () => {
         <About />
       </div>
       <div id="features">
-        <TemplateCarousel templates={templatesData} />
         <Features />
       </div>
       <div id="pricing">

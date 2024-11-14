@@ -58,7 +58,7 @@ const NavigationBar: React.FC = () => {
               </Nav.Link>
               <Dropdown>
                 <Dropdown.Toggle variant="link" id="dropdown-basic">
-                  <div className="tw-w-8 tw-h-8 tw-rounded-full tw-bg-custom-color-rose tw-flex tw-items-center tw-justify-center tw-text-white tw-text-sm tw-font-bold tw-mx-auto tw-uppercase">
+                  <div className="tw-w-8 tw-h-8 tw-rounded-full tw-bg-[#EF6C00] tw-flex tw-items-center tw-justify-center tw-text-white tw-text-sm tw-font-bold tw-mx-auto tw-uppercase">
                     {firstInitial}
                   </div>
                 </Dropdown.Toggle>

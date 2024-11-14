@@ -3,27 +3,18 @@ import PricingPlan from "./PricingPlan";
 
 const Pricing: React.FC = () => {
   return (
-    <Container className="tw-text-center tw-mt-6">
-      <div className="tw-bg-[#FDF3F5] tw-rounded-lg tw-shadow-lg tw-p-10 tw-max-w-full tw-mx-auto">
-        <Row>
-          <Col>
-            <h3 className="tw-text-4xl tw-font-bold tw-mb-16">
-              <span className="tw-text-custom-color-teal">
-                CHOOSE THE PLAN THAT ALIGNS{" "}
-              </span>
-              <span className="tw-text-custom-color-blue">
-                BEST WITH YOUR NEEDS
-              </span>
-            </h3>
-            <p className="tw-text-gray-700 tw-mb-8 tw-text-justify">
-              Experience the power of content transformation with our Plans.
-              Whether you're a content creator, educator, or business
-              professional, our Plans offer a taste of what our platform can do.
-              Convert, edit, and manage your media with ease, ensuring seamless
-              control, enhanced creativity, and professional quality
-              presentations over your content.
-            </p>
-          </Col>
+    <Container className="tw-flex tw-grow tw-items-center tw-text-center tw-mt-40">
+      <div className="tw-max-w-full tw-mx-auto">
+        <Row className="align-items-center">
+          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-text-center tw-mb-8">
+            CHOOSE THE PLAN THAT SUITS YOU BEST
+          </h3>
+          <div className="tw-text-gray-700 tw-text-xl tw-mb-8">
+            Personalize templates to match your brand, style, and content needs.
+            Whether you're creating professional presentations or engaging
+            visuals, our templates provide the flexibility to bring your vision
+            to life.
+          </div>
         </Row>
         <Row className="tw-justify-center">
           <Col

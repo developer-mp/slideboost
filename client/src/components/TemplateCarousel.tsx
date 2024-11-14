@@ -11,14 +11,14 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ templates }) => {
       const currentTemplates = templates.slice(i, i + itemsPerScreen);
       items.push(
         <Carousel.Item key={i}>
-          <Container fluid className="tw-mt-16">
+          <Container fluid>
             <Row className="tw-flex tw-justify-center">
               {currentTemplates.map((template: PPTTemplate) => (
                 <Col key={template.id}>
                   <img
                     src={template.imgPath}
                     alt="Template"
-                    className="img-fluid img-hover"
+                    className="img-fluid img-hover tw-rounded-lg"
                   />
                 </Col>
               ))}
