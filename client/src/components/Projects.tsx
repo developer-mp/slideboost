@@ -21,6 +21,10 @@ const Projects: React.FC = () => {
     localStorage.setItem("ppt", JSON.stringify(updatedFiles));
   };
 
+  const downloadFile = (file: FileDetail) => {
+    console.log("Download clicked: " + file.path);
+  };
+
   const columns = [
     {
       key: "filename",
@@ -50,6 +54,7 @@ const Projects: React.FC = () => {
                 columns={columns}
                 files={files}
                 removeFile={removeFile}
+                downloadFile={downloadFile}
               />
             </Col>
           </Row>

@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from "react-icons/io";
 import { FileDetail } from "../interfaces/interfaces";
-import { FiTrash2 } from "react-icons/fi";
+import { FiTrash2, FiDownload } from "react-icons/fi";
 
 interface FileTableProps {
   columns: Array<{
@@ -11,9 +11,15 @@ interface FileTableProps {
   }>;
   files: FileDetail[];
   removeFile: (index: number) => void;
+  downloadFile?: (file: FileDetail) => void;
 }
 
-const FileTable: FC<FileTableProps> = ({ columns, files, removeFile }) => {
+const FileTable: FC<FileTableProps> = ({
+  columns,
+  files,
+  removeFile,
+  downloadFile,
+}) => {
   const [sortConfig, setSortConfig] = useState<{
     key: string;
     direction: "ascending" | "descending";
@@ -80,10 +86,24 @@ const FileTable: FC<FileTableProps> = ({ columns, files, removeFile }) => {
                 {column.render(file)}
               </td>
             ))}
-            <td className="tw-p-2 tw-text-center">
+            <td className="tw-p-2 tw-text-center tw-flex tw-justify-center tw-items-center">
+              {downloadFile && file.path && (
+                <button
+                  onClick={() => downloadFile(file)}
+                  className="tw-text-[#4CAF50] hover:tw-text-[#388E3C] tw-text-xl"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                  }}
+                >
+                  <FiDownload />
+                </button>
+              )}
               <button
                 onClick={() => removeFile(index)}
-                className="tw-text-[#FD4958] hover:tw-text-[#DB142B] tw-text-xl tw-flex tw-items-center tw-justify-center"
+                className="tw-text-[#FD4958] hover:tw-text-[#DB142B] tw-text-xl tw-flex tw-items-center tw-justify-center tw-ml-4"
                 style={{
                   display: "flex",
                   alignItems: "center",
