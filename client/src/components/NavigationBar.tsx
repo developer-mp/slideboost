@@ -2,10 +2,10 @@ import { Button, Container, Dropdown, Nav, Navbar } from "react-bootstrap";
 import { logout } from "../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import { firstChar } from "../utils/firstChar";
-import { useNavigation } from "./../utils/useNavigation";
-import { handleNavClick } from "../utils/handleNavClick";
-import logo_text from "../assets/logo_text.png";
+import { getFirstChar } from "../utils/login/getFirstChar";
+import { useNavigation } from "../utils/login/useNavigation";
+import { handleNavClick } from "../utils/common/handleNavClick";
+import logo_text from "../assets/main/logo_text.png";
 
 const NavigationBar: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const NavigationBar: React.FC = () => {
   );
 
   const userName = useSelector((state: RootState) => state.user.userName);
-  const firstInitial = firstChar(userName);
+  const firstInitial = getFirstChar(userName);
 
   const handleLogout = () => {
     navigateToHome();
@@ -30,24 +30,16 @@ const NavigationBar: React.FC = () => {
         <img src={logo_text} alt="logo" className="tw-w-40 tw-mr-8" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link onClick={() => handleNavClick("home", navigateToHome)}>
-              Home
-            </Nav.Link>
-            <Nav.Link onClick={() => handleNavClick("about", navigateToHome)}>
-              About
-            </Nav.Link>
-            <Nav.Link
-              onClick={() => handleNavClick("features", navigateToHome)}
-            >
+            <Nav.Link onClick={() => handleNavClick("home")}>Home</Nav.Link>
+            <Nav.Link onClick={() => handleNavClick("about")}>About</Nav.Link>
+            <Nav.Link onClick={() => handleNavClick("features")}>
               Features
             </Nav.Link>
-            <Nav.Link onClick={() => handleNavClick("pricing", navigateToHome)}>
+            <Nav.Link onClick={() => handleNavClick("pricing")}>
               Pricing
             </Nav.Link>
-            <Nav.Link onClick={() => handleNavClick("faq", navigateToHome)}>
-              FAQ
-            </Nav.Link>
-            <Nav.Link onClick={() => handleNavClick("contact", navigateToHome)}>
+            <Nav.Link onClick={() => handleNavClick("faq")}>FAQ</Nav.Link>
+            <Nav.Link onClick={() => handleNavClick("contact")}>
               Contact
             </Nav.Link>
           </Nav>
@@ -70,7 +62,7 @@ const NavigationBar: React.FC = () => {
             </Nav>
           ) : (
             <Nav className="ms-auto">
-              <Button className="button-login" href="login">
+              <Button className="button button-login" href="login">
                 Login
               </Button>
             </Nav>

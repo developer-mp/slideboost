@@ -10,7 +10,7 @@ import {
   Template,
 } from "../interfaces/interfaces";
 import { templatesCategories } from "../data/templatesCategories";
-import { handleFileUpload } from "../utils/handleFileUpload";
+import { handleFileUpload } from "../utils/ppt/handleFileUpload";
 import TemplatesDisplay from "./TemplatesDisplay";
 
 const TemplatesMenu: React.FC = () => {
@@ -38,7 +38,7 @@ const TemplatesMenu: React.FC = () => {
     <Container className="tw-w-full">
       <div className="tw-mx-6 tw-my-6">
         <Button
-          className="new-button tw-my-4"
+          className="button button-primary tw-my-4"
           onClick={() => setShowModal(true)}
         >
           Add Template
@@ -49,11 +49,11 @@ const TemplatesMenu: React.FC = () => {
         <Dropdown className="tw-mb-4 tw-w-40">
           <Dropdown.Toggle
             id="dropdown-basic"
-            className="tw-w-full custom-dropdown-toggle"
+            className="tw-w-full dropdown-toggle-menu"
           >
             {selectedCategory}
           </Dropdown.Toggle>
-          <Dropdown.Menu className="tw-w-full custom-dropdown-menu">
+          <Dropdown.Menu className="tw-w-full dropdown-menu">
             {options.map(({ id, label }) => (
               <Dropdown.Item
                 key={id}

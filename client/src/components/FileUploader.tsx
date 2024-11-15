@@ -4,7 +4,7 @@ import { IoCloudUploadOutline } from "react-icons/io5";
 import { FileUploaderProps } from "../interfaces/interfaces";
 import MediaFilesDisplay from "./MediaFilesDisplay";
 import { FileDetail } from "../interfaces/interfaces";
-import { generateUniqueId } from "../utils/generateUniqueId";
+import { generateUniqueId } from "../utils/common/generateUniqueId";
 
 const FileUploader = forwardRef(
   (
@@ -96,7 +96,7 @@ const FileUploader = forwardRef(
             <div>Drop a file here</div>
             <Button
               onClick={handleBrowse}
-              className="button-primary"
+              className="button button-browse tw-mt-3"
               style={{ width: "6rem" }}
             >
               Browse

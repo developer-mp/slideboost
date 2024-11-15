@@ -1,6 +1,6 @@
-import { getFileIcon } from "../utils/getFileIcon";
-import { truncateText } from "../utils/truncateText";
-import { getFileSize } from "../utils/getFileSize";
+import { getFileIcon } from "../utils/ppt/getFileIcon";
+import { truncateText } from "../utils/common/truncateText";
+import { getFileSize } from "../utils/ppt/getFileSize";
 import { FileDetail } from "../interfaces/interfaces";
 import { FiTrash2 } from "react-icons/fi";
 

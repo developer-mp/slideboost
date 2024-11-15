@@ -1,4 +1,4 @@
-import { FileDetail } from "../interfaces/interfaces";
+import { FileDetail } from "../../interfaces/interfaces";
 
 export const handleFileUpload = (
   files: FileDetail[],

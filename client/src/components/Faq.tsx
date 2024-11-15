@@ -3,7 +3,10 @@ import { faqData } from "../data/faqData";
 
 const Faq: React.FC = () => {
   return (
-    <Container className="tw-text-center tw-mt-40">
+    <Container
+      className="tw-text-center align-items-center"
+      style={{ minHeight: "calc(100vh - 76px)" }}
+    >
       <Row className="justify-content-center">
         <Col xs={12} md={10} lg={8}>
           <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-text-center tw-mb-8">

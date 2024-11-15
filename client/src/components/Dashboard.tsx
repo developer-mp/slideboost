@@ -130,7 +130,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
           <div className="tw-mb-7">
             <div className="tw-mb-2 tw-font-bold tw-text-gray-500">Media</div>
             <Button
-              className="button-select"
+              className="button button-select"
               onClick={() => {
                 setTempSelectedMediaFiles([...selectedMediaFiles]);
                 setShowMediaModal(true);
@@ -166,7 +166,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
           </div>
           <div className="tw-mb-2 tw-font-bold tw-text-gray-500">Template</div>
           <Button
-            className="button-select"
+            className="button button-select"
             onClick={() => {
               setTempSelectedTemplate(selectedTemplate);
               setShowTemplateModal(true);
@@ -197,7 +197,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
           )}
           <div className="tw-mt-5">
             <Button
-              className="new-button tw-my-4"
+              className="button button-primary tw-my-4"
               onClick={handleCreateClick}
               disabled={loading}
             >

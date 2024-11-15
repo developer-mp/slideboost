@@ -1,7 +1,7 @@
 import { Carousel, Col, Container, Row } from "react-bootstrap";
 import { PPTTemplate } from "../interfaces/interfaces";
 import { TemplateCarouselProps } from "../interfaces/interfaces";
-import { getItemsPerScreen } from "../utils/getItemsPerScreen";
+import { getItemsPerScreen } from "../utils/common/getItemsPerScreen";
 
 const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ templates }) => {
   const getCarouselItems = (templates: PPTTemplate[]) => {

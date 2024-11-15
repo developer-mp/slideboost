@@ -5,10 +5,10 @@ import { Form, Container, Button, Row, Col, Tab, Tabs } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { updateUserName, updatePassword } from "../store/actions/userAction";
-import { formatEmail } from "../utils/formatEmail";
-import { validateName } from "../utils/validateName";
-import { validatePassword } from "../utils/validatePassword";
-import { showErrorToast, showSuccessToast } from "../utils/toast";
+import { formatEmail } from "../utils/login/formatEmail";
+import { validateName } from "../utils/login/validateName";
+import { validatePassword } from "../utils/login/validatePassword";
+import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 import PasswordInput from "../components/PasswordInput";
 
 const Profile: React.FC = () => {

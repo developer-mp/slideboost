@@ -36,7 +36,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
     <Modal
       show={show}
       onHide={handleClose}
-      dialogClassName="custom-modal"
+      dialogClassName="modal-dialog"
       centered
     >
       <Modal.Header closeButton>
@@ -44,11 +44,11 @@ const CustomModal: React.FC<CustomModalProps> = ({
       </Modal.Header>
       <Modal.Body style={{ padding: "1.2em" }}>{children}</Modal.Body>
       <Modal.Footer>
-        <Button className="button-secondary" onClick={handleClose}>
+        <Button className="button button-secondary" onClick={handleClose}>
           Cancel
         </Button>
         {actionLabel && (
-          <Button className="custom-button" onClick={onAction}>
+          <Button className="button button-primary" onClick={onAction}>
             {actionLabel}
           </Button>
         )}

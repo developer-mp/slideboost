@@ -3,9 +3,9 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { loginUser } from "../store/actions/userAction";
-import { useNavigation } from "./../utils/useNavigation";
-import { showErrorToast, showSuccessToast } from "../utils/toast";
-import { validateEmail } from "../utils/validateEmail";
+import { useNavigation } from "../utils/login/useNavigation";
+import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
+import { validateEmail } from "../utils/login/validateEmail";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -77,16 +77,16 @@ const Login: React.FC = () => {
             </Form.Group>
             <Button
               type="submit"
-              className="button-primary"
+              className="button button-main tw-mt-3"
               onClick={handleLoginUser}
             >
               Login
             </Button>
-            <div className="text-center mt-5">
+            <div className="text-center tw-mt-10">
               <span>Don't have an account? </span>
             </div>
             <Button
-              className="button-secondary"
+              className="button button-secondary tw-mt-3"
               onClick={navigateToCreateAccount}
             >
               Create account

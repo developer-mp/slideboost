@@ -3,17 +3,19 @@ import PricingPlan from "./PricingPlan";
 
 const Pricing: React.FC = () => {
   return (
-    <Container className="tw-flex tw-grow tw-items-center tw-text-center tw-mt-40">
+    <Container
+      className="d-flex align-items-center text-center tw-mt-36"
+      style={{ minHeight: "calc(100vh - 76px)" }}
+    >
       <div className="tw-max-w-full tw-mx-auto">
         <Row className="align-items-center">
           <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-text-center tw-mb-8">
             CHOOSE THE PLAN THAT SUITS YOU BEST
           </h3>
           <div className="tw-text-gray-700 tw-text-xl tw-mb-8">
-            Personalize templates to match your brand, style, and content needs.
-            Whether you're creating professional presentations or engaging
-            visuals, our templates provide the flexibility to bring your vision
-            to life.
+            Choose the plan that works best for you, tailored to your needs and
+            goals. Whether you're looking for flexibility, advanced features, or
+            cost-effective solutions, our plans offer something for everyone.
           </div>
         </Row>
         <Row className="tw-justify-center">

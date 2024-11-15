@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { setToken, removeToken } from "../../utils/auth";
+import { setToken, removeToken } from "../../utils/login/handleAuthToken";
 import {
   registerUser,
   verifyEmail,

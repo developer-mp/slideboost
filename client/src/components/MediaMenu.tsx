@@ -3,10 +3,10 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import CustomModal from "./CustomModal";
 import FileUploader from "./FileUploader";
 import { FileUploaderRef, FileDetail } from "../interfaces/interfaces";
-import { handleFileUpload } from "../utils/handleFileUpload";
-import { getFileSize } from "../utils/getFileSize";
+import { handleFileUpload } from "../utils/ppt/handleFileUpload";
+import { getFileSize } from "../utils/ppt/getFileSize";
 import FileTable from "./FileTable";
-import { truncateText } from "../utils/truncateText";
+import { truncateText } from "../utils/common/truncateText";
 
 const MediaMenu: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -58,7 +58,7 @@ const MediaMenu: React.FC = () => {
     <Container className="tw-w-full">
       <div className="tw-mx-6 tw-my-6">
         <Button
-          className="new-button tw-my-4"
+          className="button button-primary tw-my-4"
           onClick={() => setShowModal(true)}
         >
           Add Media

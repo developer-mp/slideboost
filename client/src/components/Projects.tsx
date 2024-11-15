@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import FileTable from "./FileTable";
 import { FileDetail } from "../interfaces/interfaces";
-import { getFileSize } from "../utils/getFileSize";
+import { getFileSize } from "../utils/ppt/getFileSize";
 
 const Projects: React.FC = () => {
   const [files, setFiles] = useState<FileDetail[]>([]);

@@ -7,7 +7,6 @@ export default {
       colors: {
         "custom-color-teal": "#0ecfde",
         "custom-color-blue": "#15426c",
-        "custom-color-rose": "#cc6b7c",
       },
     },
   },

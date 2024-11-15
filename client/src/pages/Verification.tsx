@@ -6,7 +6,7 @@ import { RootState } from "../store/store";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { verifyEmail } from "../store/actions/userAction";
-import { showErrorToast, showSuccessToast } from "../utils/toast";
+import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 
 const Verification: React.FC = () => {
   const userEmail = useSelector((state: RootState) => state.user.userEmail);

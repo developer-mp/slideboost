@@ -27,7 +27,7 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
                   <li key={index}>{feature}</li>
                 ))}
               </ul>
-              <Button className="custom-button">Subscribe</Button>
+              <Button className="button button-main">Subscribe</Button>
             </Card.Body>
           </Card>
         </Col>

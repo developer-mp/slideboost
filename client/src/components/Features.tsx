@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { useNavigation } from "../utils/useNavigation";
+import { useNavigation } from "../utils/login/useNavigation";
 import LoginModal from "./LoginModal";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import features_img from "../assets/features_img.jpg";
+import features_img from "../assets/main/features_img.png";
 import { templatesData } from "../data/templatesData";
 import TemplateCarousel from "../components/TemplateCarousel";
 
@@ -20,8 +20,11 @@ const Features: React.FC = () => {
     (state: RootState) => state.user.isAuthenticated
   );
   return (
-    <Container className="tw-flex tw-grow tw-items-center">
-      <Row className="align-items-center">
+    <Container
+      className="d-flex align-items-center"
+      style={{ minHeight: "calc(100vh - 76px)" }}
+    >
+      <Row className="w-100">
         <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-text-center tw-mb-8">
           CUSTOMIZABLE TEMPLATES
         </h3>
@@ -51,12 +54,15 @@ const Features: React.FC = () => {
             </p>
           </div>
           {!isAuthenticated ? (
-            <button className="button-try tw-mb-4" onClick={openLoginModal}>
-              Try for free
+            <button
+              className="button button-try tw-mb-4"
+              onClick={openLoginModal}
+            >
+              Start right away
             </button>
           ) : (
             <button
-              className="custom-button tw-mb-4"
+              className="button button-workspace tw-mb-4"
               onClick={navigateToWorkspace}
             >
               Create presentation

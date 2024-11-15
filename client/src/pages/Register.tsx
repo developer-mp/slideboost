@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { registerUser } from "../store/actions/userAction";
-import { validateName } from "../utils/validateName";
-import { validatePassword } from "../utils/validatePassword";
-import { validateEmail } from "../utils/validateEmail";
-import { showErrorToast, showSuccessToast } from "../utils/toast";
+import { validateName } from "../utils/login/validateName";
+import { validatePassword } from "../utils/login/validatePassword";
+import { validateEmail } from "../utils/login/validateEmail";
+import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 import PasswordInput from "./../components/PasswordInput";
 
 const Register: React.FC = () => {
@@ -174,7 +174,7 @@ const Register: React.FC = () => {
             />
             <Button
               type="submit"
-              className="button-primary"
+              className="button button-main"
               onClick={(e) => handleRegisterUser(e, name, email, password)}
             >
               Create Account
@@ -184,7 +184,7 @@ const Register: React.FC = () => {
             </div>
             <Button
               variant="secondary"
-              className="button-secondary tw-mb-16"
+              className="button button-secondary tw-mb-16"
               onClick={navigateToVerification}
             >
               Login

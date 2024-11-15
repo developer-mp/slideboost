@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { getToken } from "../utils/auth";
+import { getToken } from "../utils/login/handleAuthToken";
 import { ProtectedRouteProps } from "../interfaces/interfaces";
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {

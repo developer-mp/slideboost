@@ -19,7 +19,7 @@ const LoginModal: React.FC<LoginModalProps> = ({
     <Modal
       show={show}
       onHide={handleClose}
-      dialogClassName="custom-modal"
+      dialogClassName="modal-dialog"
       centered
     >
       <Modal.Header closeButton>
