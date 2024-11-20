@@ -7,6 +7,7 @@ import { FileDetail, Template } from "../interfaces/interfaces";
 import transcriptService from "../services/transcript/transcriptService";
 import aiService from "../services/ai/aiService";
 import pptService from "../services/ppt/pptService";
+import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 
 interface DashboardProps {
   setSelectedItem: (
@@ -102,10 +103,11 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
       const ppt = await pptService.processPpt(filePath, transcript.text);
 
       localStorage.setItem("ppt", JSON.stringify(ppt));
-
       setSelectedItem("projects");
+      showSuccessToast("Presentation created successfully");
     } catch (error) {
       console.error("Error creating presentation:", error);
+      showErrorToast("Error creating presentation");
     } finally {
       setLoading(false);
     }

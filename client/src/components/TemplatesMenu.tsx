@@ -12,6 +12,7 @@ import {
 import { templatesCategories } from "../data/templatesCategories";
 import { handleFileUpload } from "../utils/ppt/handleFileUpload";
 import TemplatesDisplay from "./TemplatesDisplay";
+import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 
 const TemplatesMenu: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -27,7 +28,15 @@ const TemplatesMenu: React.FC = () => {
   ];
 
   const handleUpload = (files: FileDetail[]) => {
-    handleFileUpload(files, "templateDetails");
+    if (files && files.length > 0) {
+      try {
+        handleFileUpload(files, "templateDetails");
+        showSuccessToast("File uploaded successfully");
+      } catch (error) {
+        console.log(error);
+        showErrorToast("Error uploading file");
+      }
+    }
   };
 
   const templates: Template[] = JSON.parse(

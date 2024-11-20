@@ -7,6 +7,7 @@ import { handleFileUpload } from "../utils/ppt/handleFileUpload";
 import { getFileSize } from "../utils/ppt/getFileSize";
 import FileTable from "./FileTable";
 import { truncateText } from "../utils/common/truncateText";
+import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 
 const MediaMenu: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -22,13 +23,27 @@ const MediaMenu: React.FC = () => {
   }, []);
 
   const handleUpload = (files: FileDetail[]) => {
-    handleFileUpload(files, "mediaDetails");
+    if (files && files.length > 0) {
+      try {
+        handleFileUpload(files, "mediaDetails");
+        showSuccessToast("File uploaded successfully");
+      } catch (error) {
+        console.log(error);
+        showErrorToast("Error uploading file");
+      }
+    }
   };
 
   const removeFile = (index: number) => {
-    const updatedFiles = files.filter((_, i) => i !== index);
-    setFiles(updatedFiles);
-    localStorage.setItem("mediaDetails", JSON.stringify(updatedFiles));
+    try {
+      const updatedFiles = files.filter((_, i) => i !== index);
+      setFiles(updatedFiles);
+      localStorage.setItem("mediaDetails", JSON.stringify(updatedFiles));
+      showSuccessToast("File deleted successfully");
+    } catch (error) {
+      console.log("Error deleting file:", error);
+      showErrorToast("Error deleting file");
+    }
   };
 
   const columns = [
