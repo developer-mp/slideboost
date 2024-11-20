@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { getFirstChar } from "../utils/login/getFirstChar";
 import { useNavigation } from "../utils/login/useNavigation";
-import { handleNavClick } from "../utils/common/handleNavClick";
+import { adjustScrollForNavbar } from "../utils/common/adjustScrollForNavbar";
 import logo_text from "../assets/main/logo_text.png";
+import { HashLink as Link } from "react-router-hash-link";
 
 const NavigationBar: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,16 +31,52 @@ const NavigationBar: React.FC = () => {
         <img src={logo_text} alt="logo" className="tw-w-40 tw-mr-8" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link onClick={() => handleNavClick("home")}>Home</Nav.Link>
-            <Nav.Link onClick={() => handleNavClick("about")}>About</Nav.Link>
-            <Nav.Link onClick={() => handleNavClick("features")}>
+            <Nav.Link
+              as={Link}
+              smooth
+              to="/#home"
+              scroll={(el: HTMLElement) => adjustScrollForNavbar(el)}
+            >
+              Home
+            </Nav.Link>
+            <Nav.Link
+              as={Link}
+              smooth
+              to="/#about"
+              scroll={(el: HTMLElement) => adjustScrollForNavbar(el)}
+            >
+              About
+            </Nav.Link>
+            <Nav.Link
+              as={Link}
+              smooth
+              to="/#features"
+              scroll={(el: HTMLElement) => adjustScrollForNavbar(el)}
+            >
               Features
             </Nav.Link>
-            <Nav.Link onClick={() => handleNavClick("pricing")}>
+            <Nav.Link
+              as={Link}
+              smooth
+              to="/#pricing"
+              scroll={(el: HTMLElement) => adjustScrollForNavbar(el)}
+            >
               Pricing
             </Nav.Link>
-            <Nav.Link onClick={() => handleNavClick("faq")}>FAQ</Nav.Link>
-            <Nav.Link onClick={() => handleNavClick("contact")}>
+            <Nav.Link
+              as={Link}
+              smooth
+              to="/#faq"
+              scroll={(el: HTMLElement) => adjustScrollForNavbar(el)}
+            >
+              FAQ
+            </Nav.Link>
+            <Nav.Link
+              as={Link}
+              smooth
+              to="/#contact"
+              scroll={(el: HTMLElement) => adjustScrollForNavbar(el)}
+            >
               Contact
             </Nav.Link>
           </Nav>
