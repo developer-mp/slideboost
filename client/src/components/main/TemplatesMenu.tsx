@@ -1,22 +1,22 @@
 import { useState, useRef } from "react";
 import { Button, Col, Container, Dropdown, Row } from "react-bootstrap";
-import CustomModal from "./CustomModal";
-import FileUploader from "./FileUploader";
-import { templatesData } from "../data/templatesData";
+import CustomModal from "../shared/CustomModal";
+import FileUploader from "../shared/FileUploader";
+import { templatesData } from "../../data/templatesData";
 import {
-  PPTTemplate,
+  PPTTemplateProps,
   FileUploaderRef,
-  FileDetail,
-  Template,
-} from "../interfaces/interfaces";
-import { templatesCategories } from "../data/templatesCategories";
-import { handleFileUpload } from "../utils/ppt/handleFileUpload";
-import TemplatesDisplay from "./TemplatesDisplay";
+  FileDetailProps,
+  TemplateProps,
+} from "../../interfaces/interfaces";
+import { templatesCategories } from "../../data/templatesCategories";
+import { handleFileUpload } from "../../utils/ppt/handleFileUpload";
+import TemplatesDisplay from "../widgets/TemplatesDisplay";
 import {
   showErrorToast,
   showWarningToast,
   showSuccessToast,
-} from "../utils/common/handleToast";
+} from "../../utils/common/handleToast";
 
 const TemplatesMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -32,7 +32,7 @@ const TemplatesMenu: React.FC = () => {
     })),
   ];
 
-  const handleUpload = (files: FileDetail[]) => {
+  const handleUpload = (files: FileDetailProps[]) => {
     if (files && files.length > 0) {
       try {
         handleFileUpload(files, "templateDetails");
@@ -44,22 +44,22 @@ const TemplatesMenu: React.FC = () => {
     }
   };
 
-  const templates: Template[] = JSON.parse(
+  const templates: TemplateProps[] = JSON.parse(
     localStorage.getItem("templateDetails") || "[]"
   );
 
   return (
     <Container className="tw-w-full">
       <div className="tw-mx-6 tw-my-6">
+        <h2 className="tw-text-lg tw-font-bold tw-text-gray-900">
+          Templates Collection
+        </h2>
         <Button
           className="button button-primary-auto tw-my-4"
           onClick={() => setShowModal(true)}
         >
           Add Template
         </Button>
-        <h2 className="tw-text-lg tw-font-bold tw-mb-4">
-          Templates Collection
-        </h2>
         <Dropdown className="tw-mb-4 tw-w-40">
           <Dropdown.Toggle
             id="dropdown-basic"
@@ -86,7 +86,7 @@ const TemplatesMenu: React.FC = () => {
                   ? true
                   : template.category === selectedCategory
               )
-              .map((template: PPTTemplate) => (
+              .map((template: PPTTemplateProps) => (
                 <Col xs={12} md={4} key={template.id} className="tw-mb-6">
                   <img
                     src={template.imgPath}

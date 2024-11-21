@@ -1,10 +1,10 @@
 import { Carousel, Col, Container, Row } from "react-bootstrap";
-import { PPTTemplate } from "../interfaces/interfaces";
-import { TemplateCarouselProps } from "../interfaces/interfaces";
-import { getItemsPerScreen } from "../utils/common/getItemsPerScreen";
+import { PPTTemplateProps } from "../../interfaces/interfaces";
+import { TemplateCarouselProps } from "../../interfaces/interfaces";
+import { getItemsPerScreen } from "../../utils/common/getItemsPerScreen";
 
 const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ templates }) => {
-  const getCarouselItems = (templates: PPTTemplate[]) => {
+  const getCarouselItems = (templates: PPTTemplateProps[]) => {
     const items = [];
     const itemsPerScreen = getItemsPerScreen();
     for (let i = 0; i < templates.length; i += itemsPerScreen) {
@@ -13,7 +13,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ templates }) => {
         <Carousel.Item key={i}>
           <Container fluid>
             <Row className="tw-flex tw-justify-center">
-              {currentTemplates.map((template: PPTTemplate) => (
+              {currentTemplates.map((template: PPTTemplateProps) => (
                 <Col key={template.id}>
                   <img
                     src={template.imgPath}

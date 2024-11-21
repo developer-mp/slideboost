@@ -1,5 +1,5 @@
 import { Accordion, Card, Col, Container, Row } from "react-bootstrap";
-import { faqData } from "../data/faqData";
+import { faqData } from "../../data/faqData";
 
 const Faq: React.FC = () => {
   return (

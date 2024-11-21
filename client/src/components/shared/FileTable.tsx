@@ -1,17 +1,17 @@
 import { FC, useState } from "react";
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from "react-icons/io";
-import { FileDetail } from "../interfaces/interfaces";
+import { FileDetailProps } from "../../interfaces/interfaces";
 import { FiTrash2, FiDownload } from "react-icons/fi";
 
 interface FileTableProps {
   columns: Array<{
     key: string;
     label: string;
-    render: (file: FileDetail) => JSX.Element | string;
+    render: (file: FileDetailProps) => JSX.Element | string;
   }>;
-  files: FileDetail[];
+  files: FileDetailProps[];
   removeFile: (index: number) => void;
-  downloadFile?: (file: FileDetail) => void;
+  downloadFile?: (file: FileDetailProps) => void;
 }
 
 const FileTable: FC<FileTableProps> = ({
@@ -52,8 +52,8 @@ const FileTable: FC<FileTableProps> = ({
     if (!sortConfig) return 0;
     const { key, direction } = sortConfig;
 
-    const aValue = a[key as keyof FileDetail] ?? "";
-    const bValue = b[key as keyof FileDetail] ?? "";
+    const aValue = a[key as keyof FileDetailProps] ?? "";
+    const bValue = b[key as keyof FileDetailProps] ?? "";
 
     if (aValue < bValue) return direction === "ascending" ? -1 : 1;
     if (aValue > bValue) return direction === "ascending" ? 1 : -1;
@@ -82,7 +82,7 @@ const FileTable: FC<FileTableProps> = ({
         {sortedFiles.map((file, index) => (
           <tr key={index}>
             {columns.map((column) => (
-              <td key={column.key} style={{ padding: "10px" }}>
+              <td key={column.key} className="tw-p-3">
                 {column.render(file)}
               </td>
             ))}
@@ -90,13 +90,7 @@ const FileTable: FC<FileTableProps> = ({
               {downloadFile && file.path && (
                 <button
                   onClick={() => downloadFile(file)}
-                  className="tw-text-[#4CAF50] hover:tw-text-[#388E3C] tw-text-xl"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%",
-                  }}
+                  className="tw-text-[#4CAF50] hover:tw-text-[#388E3C] tw-text-xl tw-flex tw-items-center tw-justify-center tw-h-full"
                 >
                   <FiDownload />
                 </button>
@@ -104,12 +98,6 @@ const FileTable: FC<FileTableProps> = ({
               <button
                 onClick={() => removeFile(index)}
                 className="tw-text-[#FD4958] hover:tw-text-[#DB142B] tw-text-xl tw-flex tw-items-center tw-justify-center tw-ml-4"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100%",
-                }}
               >
                 <FiTrash2 />
               </button>

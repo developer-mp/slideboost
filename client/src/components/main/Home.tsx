@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import home_img from "../assets/main/home_img.png";
-import { useNavigation } from "../utils/login/useNavigation";
-import LoginModal from "./LoginModal";
+import { useNavigation } from "../../utils/login/useNavigation";
 import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { RootState } from "../../store/store";
+import LoginModal from "../widgets/LoginModal";
+import home_img from "../../assets/main/home_img.png";
 
 const Home: React.FC = () => {
   const { navigateToCreateAccount, navigateToWorkspace } = useNavigation();
@@ -20,10 +20,10 @@ const Home: React.FC = () => {
 
   return (
     <Container
-      className="d-flex align-items-center"
+      className="tw-flex tw-items-center"
       style={{ minHeight: "calc(100vh - 76px)" }}
     >
-      <Row className="w-100">
+      <Row className="tw-w-full">
         <Col xs={12} md={8} lg={6}>
           <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-mb-8">
             BOOST YOUR SLIDES

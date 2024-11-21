@@ -1,4 +1,4 @@
-import { NewsItemProps } from "../interfaces/interfaces";
+import { NewsItemProps } from "../../interfaces/interfaces";
 
 const NewsItem: React.FC<NewsItemProps> = ({ date, text }) => {
   return (

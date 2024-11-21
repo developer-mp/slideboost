@@ -1,15 +1,15 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
-import logo from "../assets/main/logo.png";
+import logo from "../../assets/main/logo.png";
 
 const Footer = () => {
   return (
-    <Navbar variant="dark">
-      <Container className="d-flex justify-content-between align-items-center">
+    <Navbar variant="dark" className="tw-mt-8">
+      <Container className="tw-flex tw-justify-between tw-items-center">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <img src={logo} alt="logo" className="tw-w-8" />
         <Navbar.Collapse
           id="basic-navbar-nav"
-          className="d-flex justify-content-center"
+          className="tw-flex tw-justify-center"
         >
           <Nav>
             <Nav.Link className="footer-link" href="news">
@@ -23,7 +23,7 @@ const Footer = () => {
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
-        <Navbar.Text className="text-light" style={{ fontSize: "0.9em" }}>
+        <Navbar.Text className="text-light tw-text-[0.9em]">
           © {new Date().getFullYear()} SlideBoost
         </Navbar.Text>
       </Container>

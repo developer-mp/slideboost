@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { useNavigation } from "../utils/login/useNavigation";
-import LoginModal from "./LoginModal";
+import { useNavigation } from "../../utils/login/useNavigation";
 import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
-import features_img from "../assets/main/features_img.png";
-import { templatesData } from "../data/templatesData";
-import TemplateCarousel from "../components/TemplateCarousel";
+import { RootState } from "../../store/store";
+import LoginModal from "../widgets/LoginModal";
+import TemplateCarousel from "../shared/TemplateCarousel";
+import features_img from "../../assets/main/features_img.png";
+import { templatesData } from "../../data/templatesData";
 
 const Features: React.FC = () => {
   const { navigateToCreateAccount, navigateToWorkspace } = useNavigation();

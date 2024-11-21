@@ -1,17 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Main from "./pages/Main";
-import NavigationBar from "./components/NavigationBar";
+import NavigationBar from "./components/main/NavigationBar";
 import Workspace from "./pages/Workspace";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Verification from "./pages/Verification";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/widgets/ProtectedRoute";
 import Profile from "./pages/Profile";
 import Privacy from "./pages/Privacy";
 import Conditions from "./pages/Conditions";
 import News from "./pages/News";
-import ToastProvider from "./components/ToastProvider";
-import Footer from "./components/Footer";
+import ToastProvider from "./components/shared/ToastProvider";
+import Footer from "./components/main/Footer";
 import "./styles/tailwind.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 

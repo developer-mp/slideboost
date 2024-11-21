@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import FileTable from "./FileTable";
-import { FileDetail } from "../interfaces/interfaces";
-import { getFileSize } from "../utils/ppt/getFileSize";
+import FileTable from "../shared/FileTable";
+import { FileDetailProps } from "../../interfaces/interfaces";
+import { getFileSize } from "../../utils/ppt/getFileSize";
 
 const Projects: React.FC = () => {
-  const [files, setFiles] = useState<FileDetail[]>([]);
+  const [files, setFiles] = useState<FileDetailProps[]>([]);
 
   useEffect(() => {
     const existingFilesString = localStorage.getItem("ppt");
@@ -21,7 +21,7 @@ const Projects: React.FC = () => {
     localStorage.setItem("ppt", JSON.stringify(updatedFiles));
   };
 
-  const downloadFile = (file: FileDetail) => {
+  const downloadFile = (file: FileDetailProps) => {
     console.log("Download clicked: " + file.path);
   };
 
@@ -29,24 +29,26 @@ const Projects: React.FC = () => {
     {
       key: "filename",
       label: "Filename",
-      render: (file: FileDetail) => file.name,
+      render: (file: FileDetailProps) => file.name,
     },
     {
       key: "size",
       label: "Size",
-      render: (file: FileDetail) => getFileSize(file.size),
+      render: (file: FileDetailProps) => getFileSize(file.size),
     },
     {
       key: "date",
       label: "Date Uploaded",
-      render: (file: FileDetail) => file.date,
+      render: (file: FileDetailProps) => file.date,
     },
   ];
 
   return (
     <Container className="tw-w-full">
       <div className="tw-mx-6 tw-my-6">
-        <h2 className="tw-text-lg tw-font-bold tw-mb-4">Project List</h2>
+        <h2 className="tw-text-lg tw-font-bold tw-mb-4 tw-text-gray-900">
+          Project List
+        </h2>
         <div className="tw-bg-white tw-rounded-lg tw-p-5">
           <Row>
             <Col>

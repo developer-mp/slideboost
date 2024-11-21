@@ -1,9 +1,9 @@
 import { useState } from "react";
-import SideBar from "../components/SideBar";
-import Dashboard from "../components/Dashboard";
-import MediaMenu from "../components/MediaMenu";
-import TemplatesMenu from "../components/TemplatesMenu";
-import Projects from "../components/Projects";
+import SideBar from "../components/main/SideBar";
+import Dashboard from "../components/main/Dashboard";
+import MediaMenu from "../components/main/MediaMenu";
+import TemplatesMenu from "../components/main/TemplatesMenu";
+import Projects from "../components/main/Projects";
 
 const Workspace: React.FC = () => {
   type MenuItem = "dashboard" | "media" | "projects" | "templates";

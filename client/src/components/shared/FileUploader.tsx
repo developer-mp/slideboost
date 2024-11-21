@@ -1,17 +1,17 @@
 import { useState, useRef, forwardRef, useImperativeHandle } from "react";
 import { Button, Card, Container } from "react-bootstrap";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import { FileUploaderProps } from "../interfaces/interfaces";
-import MediaFilesDisplay from "./MediaFilesDisplay";
-import { FileDetail } from "../interfaces/interfaces";
-import { generateUniqueId } from "../utils/common/generateUniqueId";
+import { FileUploaderProps } from "../../interfaces/interfaces";
+import MediaFilesDisplay from "../widgets/MediaFilesDisplay";
+import { FileDetailProps } from "../../interfaces/interfaces";
+import { generateUniqueId } from "../../utils/common/generateUniqueId";
 
 const FileUploader = forwardRef(
   (
     { onUpload, isTemplate }: FileUploaderProps & { isTemplate?: boolean },
     ref
   ) => {
-    const [fileDetails, setFileDetails] = useState<FileDetail[]>([]);
+    const [fileDetails, setFileDetails] = useState<FileDetailProps[]>([]);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     useImperativeHandle(ref, () => ({
@@ -43,11 +43,11 @@ const FileUploader = forwardRef(
     };
 
     const handleFiles = (files: FileList) => {
-      const newFileDetails: Promise<FileDetail>[] = [];
+      const newFileDetails: Promise<FileDetailProps>[] = [];
 
       Array.from(files).forEach((file) => {
         const reader = new FileReader();
-        const fileDetailPromise = new Promise<FileDetail>((resolve) => {
+        const fileDetailPromise = new Promise<FileDetailProps>((resolve) => {
           reader.onload = () => {
             resolve({
               id: generateUniqueId(),
@@ -96,8 +96,7 @@ const FileUploader = forwardRef(
             <div>Drop a file here</div>
             <Button
               onClick={handleBrowse}
-              className="button button-tertiary tw-mt-3"
-              style={{ width: "6rem" }}
+              className="button button-tertiary tw-mt-3 tw-w-24"
             >
               Browse
             </Button>

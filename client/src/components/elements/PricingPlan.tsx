@@ -1,5 +1,5 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { PricingPlanProps } from "../interfaces/interfaces";
+import { PricingPlanProps } from "../../interfaces/interfaces";
 
 const PricingPlan: React.FC<PricingPlanProps> = ({
   title,
@@ -12,7 +12,7 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
     <Container>
       <Row>
         <Col>
-          <Card className="tw-w-72 tw-shadow-md card-hover">
+          <Card className="tw-w-72 tw-shadow-md card-hover tw-cursor-pointer">
             <Card.Body>
               <div
                 className="tw-text-white tw-p-2 tw-rounded-md tw-mb-2"

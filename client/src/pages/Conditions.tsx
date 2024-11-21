@@ -2,16 +2,18 @@ import { Col, Container, Row } from "react-bootstrap";
 
 const Conditions: React.FC = () => {
   return (
-    <Container className="tw-text-center tw-mt-12 tw-mb-28">
+    <Container className="tw-text-center tw-mt-12">
       <Row className="justify-content-center">
         <Col xs={12} md={10} lg={8}>
-          <h4 className="tw-mb-12 tw-font-bold">CONDITIONS OF USE</h4>
-          <h6 className="tw-mb-4 tw-font-bold tw-mx-auto tw-max-w-3xl tw-text-justify">
+          <h4 className="tw-mb-12 tw-font-bold tw-text-custom-color-blue">
+            CONDITIONS OF USE
+          </h4>
+          <h6 className="tw-mb-4 tw-font-bold tw-text-gray-900 tw-mx-auto tw-max-w-3xl tw-text-justify">
             Last updated June 17, 2024
           </h6>
           <hr className="tw-mb-4 tw-text-gray-900 tw-mx-auto tw-max-w-3xl" />
           <div className="tw-text-gray-700 tw-mx-auto tw-max-w-3xl tw-text-justify">
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               AGREEMENT TO OUR LEGAL TERMS
             </h5>
             <p className="tw-mb-4">
@@ -56,7 +58,7 @@ const Conditions: React.FC = () => {
               We recommend that you print a copy of these Legal Terms for your
               records.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               TABLE OF CONTENTS
             </h5>
             <div>
@@ -118,7 +120,7 @@ const Conditions: React.FC = () => {
             <div className="tw-mb-12">
               <a href="#">19. CONTACT US</a>
             </div>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               1. OUR SERVICES
             </h5>
             <p className="tw-mb-12">
@@ -132,10 +134,10 @@ const Conditions: React.FC = () => {
               responsible for compliance with local laws, if and to the extent
               local laws are applicable.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               2. INTELLECTUAL PROPERTY RIGHTS
             </h5>
-            <p className="tw-mb-4 tw-font-bold tw-text-black">
+            <p className="tw-mb-4 tw-font-bold tw-text-gray-900">
               Our intellectual property
             </p>
             <p className="tw-mb-4">
@@ -157,7 +159,7 @@ const Conditions: React.FC = () => {
               IS" for your personal, non-commercial use or internal business
               purpose only.
             </p>
-            <p className="tw-mb-4 tw-font-bold tw-text-black">
+            <p className="tw-mb-4 tw-font-bold tw-text-gray-900">
               Your use of our Services
             </p>
             <p className="tw-mb-4">
@@ -203,7 +205,7 @@ const Conditions: React.FC = () => {
               material breach of our Legal Terms and your right to use our
               Services will terminate immediately.
             </p>
-            <p className="tw-mb-4 tw-font-bold tw-text-black">
+            <p className="tw-mb-4 tw-font-bold tw-text-gray-900">
               Your submissions
             </p>
             <p className="tw-mb-4">
@@ -257,7 +259,7 @@ const Conditions: React.FC = () => {
               because of your breach of (a) this section, (b) any third party's
               intellectual property rights, or (c) applicable law.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               3. USER REPRESENTATIONS
             </h5>
             <p className="tw-mb-4">
@@ -276,7 +278,7 @@ const Conditions: React.FC = () => {
               your account and refuse any and all current or future use of the
               Services (or any portion thereof).
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               4. PROHIBITED ACTIVITIES
             </h5>
             <p className="tw-mb-4">
@@ -402,7 +404,7 @@ const Conditions: React.FC = () => {
                 revenue-generating endeavor or commercial enterprise.
               </li>
             </ul>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               5. USER GENERATED CONTRIBUTIONS
             </h5>
             <p className="tw-mb-12">
@@ -417,7 +419,7 @@ const Conditions: React.FC = () => {
               you create or make available any Contributions, you thereby
               represent and warrant that.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               6. CONTRIBUTION LICENSE
             </h5>
             <p className="tw-mb-4">
@@ -441,7 +443,7 @@ const Conditions: React.FC = () => {
               and all responsibility and to refrain from any legal action
               against us regarding your Contributions.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               7. SERVICES MANAGEMENT
             </h5>
             <p className="tw-mb-12">
@@ -460,7 +462,7 @@ const Conditions: React.FC = () => {
               Services in a manner designed to protect our rights and property
               and to facilitate the proper functioning of the Services.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               8. TERM AND TERMINATION
             </h5>
             <p className="tw-mb-4">
@@ -485,7 +487,7 @@ const Conditions: React.FC = () => {
               right to take appropriate legal action, including without
               limitation pursuing civil, criminal, and injunctive redress.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               9. MODIFICATIONS AND INTERRUPTIONS
             </h5>
             <p className="tw-mb-4">
@@ -510,7 +512,7 @@ const Conditions: React.FC = () => {
               maintain and support the Services or to supply any corrections,
               updates, or releases in connection therewith.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               10. GOVERNING LAW
             </h5>
             <p className="tw-mb-12">
@@ -519,10 +521,10 @@ const Conditions: React.FC = () => {
               have exclusive jurisdiction to resolve any dispute which may arise
               in connection with these Legal Terms.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               11. DISPUTE RESOLUTION
             </h5>
-            <p className="tw-mb-4 tw-font-bold tw-text-black">
+            <p className="tw-mb-4 tw-font-bold tw-text-gray-900">
               Informal Negotiations
             </p>
             <p className="tw-mb-4">
@@ -536,7 +538,7 @@ const Conditions: React.FC = () => {
               negotiations commence upon written notice from one Party to the
               other Party.
             </p>
-            <p className="tw-mb-4 tw-font-bold tw-text-black">
+            <p className="tw-mb-4 tw-font-bold tw-text-gray-900">
               Binding Arbitration
             </p>
             <p className="tw-mb-4">
@@ -551,7 +553,9 @@ const Conditions: React.FC = () => {
               arbitration shall be proceedings shall be The governing law of
               these Legal Terms shall be substantive law of The language of the
             </p>
-            <p className="tw-mb-4 tw-font-bold tw-text-black">Restrictions</p>
+            <p className="tw-mb-4 tw-font-bold tw-text-gray-900">
+              Restrictions
+            </p>
             <p className="tw-mb-4">
               The Parties agree that any arbitration shall be limited to the
               Dispute between the Parties individually. To the full extent
@@ -562,7 +566,7 @@ const Conditions: React.FC = () => {
               for any Dispute to be brought in a purported representative
               capacity on behalf of the general public or any other persons.
             </p>
-            <p className="tw-mb-4 tw-font-bold tw-text-black">
+            <p className="tw-mb-4 tw-font-bold tw-text-gray-900">
               Exceptions to Informal Negotiations and Arbitration
             </p>
             <p className="tw-mb-12">
@@ -580,7 +584,7 @@ const Conditions: React.FC = () => {
               courts listed for jurisdiction above, and the Parties agree to
               submit to the personal jurisdiction of that court.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               12. CORRECTIONS
             </h5>
             <p className="tw-mb-12">
@@ -591,7 +595,7 @@ const Conditions: React.FC = () => {
               inaccuracies, or omissions and to change or update the information
               on the Services at any time, without prior notice.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               13. DISCLAIMER
             </h5>
             <p className="tw-mb-12">
@@ -627,7 +631,7 @@ const Conditions: React.FC = () => {
               IN ANY ENVIRONMENT, YOU SHOULD USE YOUR BEST JUDGMENT AND EXERCISE
               CAUTION WHERE APPROPRIATE.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               14. LIMITATIONS OF LIABILITY
             </h5>
             <p className="tw-mb-12">
@@ -647,7 +651,7 @@ const Conditions: React.FC = () => {
               LIMITATIONS MAY NOT APPLY TO YOU, AND YOU MAY HAVE ADDITIONAL
               RIGHTS.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               15. INDEMNIFICATION
             </h5>
             <p className="tw-mb-12">
@@ -670,7 +674,7 @@ const Conditions: React.FC = () => {
               which is subject to this indemnification upon becoming aware of
               it.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               16. USER DATA
             </h5>
             <p className="tw-mb-12">
@@ -684,7 +688,7 @@ const Conditions: React.FC = () => {
               such data, and you hereby waive any right of action against us
               arising from any such loss or corruption of such data.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               17. ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES
             </h5>
             <p className="tw-mb-12">
@@ -703,7 +707,7 @@ const Conditions: React.FC = () => {
               retention of non-electronic records, or to payments or the
               granting of credits by any means other than electronic means.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               18. MISCELLANEOUS
             </h5>
             <p className="tw-mb-12">
@@ -729,7 +733,7 @@ const Conditions: React.FC = () => {
               these Legal Terms and the lack of signing by the parties hereto to
               execute these Legal Terms.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               19. CONTACT US
             </h5>
             <p className="tw-mb-12">

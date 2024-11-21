@@ -1,12 +1,12 @@
 import { Button, Container, Dropdown, Nav, Navbar } from "react-bootstrap";
-import { logout } from "../store/slices/userSlice";
+import { useNavigation } from "../../utils/login/useNavigation";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store/store";
-import { getFirstChar } from "../utils/login/getFirstChar";
-import { useNavigation } from "../utils/login/useNavigation";
-import { adjustScrollForNavbar } from "../utils/common/adjustScrollForNavbar";
-import logo_text from "../assets/main/logo_text.png";
+import { RootState } from "../../store/store";
 import { HashLink as Link } from "react-router-hash-link";
+import { getFirstChar } from "../../utils/login/getFirstChar";
+import { adjustScrollForNavbar } from "../../utils/common/adjustScrollForNavbar";
+import { logout } from "../../store/slices/userSlice";
+import logo_text from "../../assets/main/logo_text.png";
 
 const NavigationBar: React.FC = () => {
   const dispatch = useDispatch();

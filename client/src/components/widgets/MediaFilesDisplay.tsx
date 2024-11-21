@@ -1,17 +1,17 @@
-import { getFileIcon } from "../utils/ppt/getFileIcon";
-import { truncateText } from "../utils/common/truncateText";
-import { getFileSize } from "../utils/ppt/getFileSize";
-import { FileDetail } from "../interfaces/interfaces";
+import { getFileIcon } from "../../utils/ppt/getFileIcon";
+import { truncateText } from "../../utils/common/truncateText";
+import { getFileSize } from "../../utils/ppt/getFileSize";
+import { FileDetailProps } from "../../interfaces/interfaces";
 import { FiTrash2 } from "react-icons/fi";
 
 interface FileListDisplayProps {
-  mediaFiles: FileDetail[];
+  mediaFiles: FileDetailProps[];
   showSize?: boolean;
   showDate?: boolean;
   showCheckbox?: boolean;
-  selectedMediaFiles?: FileDetail[];
-  onSelect?: (selectedFiles: FileDetail[]) => void;
-  setMediaFiles?: React.Dispatch<React.SetStateAction<FileDetail[]>>;
+  selectedMediaFiles?: FileDetailProps[];
+  onSelect?: (selectedFiles: FileDetailProps[]) => void;
+  setMediaFiles?: React.Dispatch<React.SetStateAction<FileDetailProps[]>>;
   showRemoveButton?: boolean;
   removeButtonPosition?: "margin-left";
 }
@@ -27,7 +27,7 @@ const MediaFilesDisplay: React.FC<FileListDisplayProps> = ({
   showRemoveButton = true,
   removeButtonPosition,
 }) => {
-  const handleFileSelection = (file: FileDetail) => {
+  const handleFileSelection = (file: FileDetailProps) => {
     const isSelected = selectedMediaFiles.some((f) => f.id === file.id);
     const newSelectedFiles = isSelected
       ? selectedMediaFiles.filter((f) => f.id !== file.id)

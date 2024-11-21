@@ -1,20 +1,16 @@
-export interface DbQueryResult {
+export interface DbQueryResultProps {
   rows: any[];
   rowCount: number | null;
 }
 
-export interface TranscriptQueryParams {
-  videoId?: string;
-}
+// export interface ApiRequestData {
+//   contents: ApiContent[];
+// }
 
-export interface ApiRequestData {
-  contents: ApiContent[];
-}
+// export interface ApiContent {
+//   parts: ApiPart[];
+// }
 
-export interface ApiContent {
-  parts: ApiPart[];
-}
-
-export interface ApiPart {
-  text: string;
-}
+// export interface ApiPart {
+//   text: string;
+// }

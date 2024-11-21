@@ -5,7 +5,7 @@ import { pool } from "../../db/config/pool";
 import { generateVerificationCode } from "../../utils/generateVerificationCode";
 import AuthService from "../../services/auth/authService";
 import { config } from "../../../env.config";
-import { DbQueryResult } from "../../interfaces/interfaces";
+import { DbQueryResultProps } from "../../interfaces/interfaces";
 
 const authController = {
   registerUser: async (req: Request, res: Response) => {
@@ -19,7 +19,7 @@ const authController = {
       const isUserExist = (await pool.query(
         "SELECT email FROM users WHERE email = $1",
         [email]
-      )) as DbQueryResult;
+      )) as DbQueryResultProps;
 
       const userExists = isUserExist.rowCount ?? 0;
 
@@ -34,7 +34,7 @@ const authController = {
       (await pool.query(
         "INSERT INTO users (name, email, password, verification_code, expires_at) VALUES ($1, $2, $3, $4, $5) RETURNING *",
         [name, email, hashedPassword, verificationCode, expiresAt]
-      )) as DbQueryResult;
+      )) as DbQueryResultProps;
 
       try {
         if (verificationCode) {
@@ -60,7 +60,7 @@ const authController = {
       const result = (await pool.query(
         "SELECT verification_code, expires_at FROM users WHERE email = $1 AND is_verified = false",
         [email]
-      )) as DbQueryResult;
+      )) as DbQueryResultProps;
 
       if (result.rowCount === 0) {
         res.status(400).json({ message: "Invalid email" });
@@ -79,7 +79,7 @@ const authController = {
       (await pool.query(
         "UPDATE users SET is_verified = true, verification_code = NULL, expires_at = NULL WHERE email = $1",
         [email]
-      )) as DbQueryResult;
+      )) as DbQueryResultProps;
 
       res.status(201).json({
         message: "Verification successful",
@@ -142,7 +142,7 @@ const authController = {
       const isUserExist = (await pool.query(
         "SELECT email FROM users WHERE email = $1",
         [email]
-      )) as DbQueryResult;
+      )) as DbQueryResultProps;
 
       if (isUserExist.rowCount === 0) {
         res.status(400).json({ message: "User does not exist" });
@@ -151,7 +151,7 @@ const authController = {
       const updateQuery = (await pool.query(
         "UPDATE users SET name = $1 WHERE email = $2 RETURNING *",
         [name, email]
-      )) as DbQueryResult;
+      )) as DbQueryResultProps;
 
       if (updateQuery.rowCount === 0) {
         res.status(400).json({ message: "User name change failed" });
@@ -173,7 +173,7 @@ const authController = {
       const isUserExist = (await pool.query(
         "SELECT email FROM users WHERE email = $1",
         [email]
-      )) as DbQueryResult;
+      )) as DbQueryResultProps;
 
       if (isUserExist.rowCount === 0) {
         res.status(400).json({ message: "User does not exist" });
@@ -184,7 +184,7 @@ const authController = {
       const updateQuery = (await pool.query(
         "UPDATE users SET password = $1 WHERE email = $2 RETURNING *",
         [hashedPassword, email]
-      )) as DbQueryResult;
+      )) as DbQueryResultProps;
 
       if (updateQuery.rowCount === 0) {
         res.status(400).json({ message: "Password change failed" });

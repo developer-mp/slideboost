@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { Button, Container } from "react-bootstrap";
-import CustomModal from "./CustomModal";
-import TemplatesDisplay from "./TemplatesDisplay";
-import MediaFilesDisplay from "./MediaFilesDisplay";
-import { FileDetail, Template } from "../interfaces/interfaces";
-import transcriptService from "../services/transcript/transcriptService";
-import aiService from "../services/ai/aiService";
-import pptService from "../services/ppt/pptService";
-import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
+import { Button, Container, Form } from "react-bootstrap";
+import CustomModal from "../shared/CustomModal";
+import TemplatesDisplay from "../widgets/TemplatesDisplay";
+import MediaFilesDisplay from "../widgets/MediaFilesDisplay";
+import { FileDetailProps, TemplateProps } from "../../interfaces/interfaces";
+import transcriptService from "../../services/transcript/transcriptService";
+import aiService from "../../services/ai/aiService";
+import pptService from "../../services/ppt/pptService";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "../../utils/common/handleToast";
 
 interface DashboardProps {
   setSelectedItem: (
@@ -17,26 +20,25 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const [showMediaModal, setShowMediaModal] = useState<boolean>(false);
-  const [selectedMediaFiles, setSelectedMediaFiles] = useState<FileDetail[]>(
-    []
-  );
+  const [selectedMediaFiles, setSelectedMediaFiles] = useState<
+    FileDetailProps[]
+  >([]);
   const [tempSelectedMediaFiles, setTempSelectedMediaFiles] = useState<
-    FileDetail[]
+    FileDetailProps[]
   >([]);
 
   const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
-  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
-    null
-  );
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<TemplateProps | null>(null);
   const [tempSelectedTemplate, setTempSelectedTemplate] =
-    useState<Template | null>(null);
+    useState<TemplateProps | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [presentationTitle, setPresentationTitle] = useState<string>("");
 
-  const mediaFiles: FileDetail[] = JSON.parse(
+  const mediaFiles: FileDetailProps[] = JSON.parse(
     localStorage.getItem("mediaDetails") || "[]"
   );
-  const templates: Template[] = JSON.parse(
+  const templates: TemplateProps[] = JSON.parse(
     localStorage.getItem("templateDetails") || "[]"
   );
 
@@ -50,7 +52,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     setShowTemplateModal(false);
   };
 
-  const processMediaFile = async (file: FileDetail) => {
+  const processMediaFile = async (file: FileDetailProps) => {
     const filePath = file.path;
 
     try {
@@ -135,20 +137,27 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   return (
     <Container className="tw-w-full">
       <div className="tw-mx-6 tw-my-6">
-        <h2 className="tw-text-lg tw-font-bold tw-mb-4">Create Presentation</h2>
+        <h2 className="tw-text-lg tw-font-bold tw-mb-4 tw-text-gray-900">
+          Create Presentation
+        </h2>
         <div className="tw-bg-white tw-rounded-lg tw-p-5">
           <div className="tw-mb-7">
-            <label className="tw-block tw-mb-2 tw-font-bold tw-text-gray-500">
-              Title
-            </label>
-            <input
-              id="presentationTitle"
-              type="text"
-              placeholder="Title of the presentation"
-              value={presentationTitle}
-              onChange={(e) => setPresentationTitle(e.target.value)}
-              className="tw-w-4/12 tw-p-2 tw-rounded-lg tw-border tw-border-gray-500"
-            />
+            <Form>
+              <Form.Group className="tw-mb-3">
+                <Form.Label className="tw-block tw-mb-2 tw-font-bold tw-text-gray-500">
+                  Title
+                </Form.Label>
+                <Form.Control
+                  id="presentationTitle"
+                  type="text"
+                  placeholder="Enter title of presentation"
+                  name="name"
+                  value={presentationTitle}
+                  onChange={(e) => setPresentationTitle(e.target.value)}
+                  className="input-focus input-title"
+                />
+              </Form.Group>
+            </Form>
           </div>
           <div className="tw-mb-7">
             <div className="tw-mb-2 tw-font-bold tw-text-gray-500">Media</div>

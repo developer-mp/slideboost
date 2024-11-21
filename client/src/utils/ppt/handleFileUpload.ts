@@ -1,7 +1,7 @@
-import { FileDetail } from "../../interfaces/interfaces";
+import { FileDetailProps } from "../../interfaces/interfaces";
 
 export const handleFileUpload = (
-  files: FileDetail[],
+  files: FileDetailProps[],
   localStorageKey: string
 ) => {
   const key = localStorageKey;

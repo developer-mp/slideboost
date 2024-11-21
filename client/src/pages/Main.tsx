@@ -1,9 +1,9 @@
-import Home from "../components/Home";
-import About from "../components/About";
-import Features from "../components/Features";
-import Pricing from "../components/Pricing";
-import Faq from "../components/Faq";
-import Contact from "../components/Contact";
+import Home from "../components/main/Home";
+import About from "../components/main/About";
+import Features from "../components/main/Features";
+import Pricing from "../components/main/Pricing";
+import Faq from "../components/main/Faq";
+import Contact from "../components/main/Contact";
 
 const Main: React.FC = () => {
   return (

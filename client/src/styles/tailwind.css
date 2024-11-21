@@ -240,3 +240,18 @@
   border-radius: 1em;
   padding: 1em;
 }
+
+.input-field {
+  border-color: #d1d4d9 !important;
+}
+
+.input-title {
+  width: 30% !important;
+  border-color: #d1d4d9 !important;
+}
+
+.input-field:focus,
+.input-title:focus {
+  border-color: #d1d4d9 !important;
+  box-shadow: 5px 5px 10px #ccc !important;
+}

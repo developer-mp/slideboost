@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
-import { FormData } from "../interfaces/interfaces";
-import { showErrorToast } from "../utils/common/handleToast";
-import { validateForm } from "../utils/common/validateForm";
+import { FormDataProps } from "../../interfaces/interfaces";
+import { showErrorToast } from "../../utils/common/handleToast";
+import { validateForm } from "../../utils/common/validateForm";
 
 const Contact = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<FormDataProps>({
     name: "",
     email: "",
     message: "",
@@ -68,6 +68,7 @@ const Contact = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
+            className="input-field"
           />
         </Form.Group>
         <Form.Group className="tw-mb-3">
@@ -80,6 +81,7 @@ const Contact = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
+            className="input-field"
           />
         </Form.Group>
         <Form.Group className="tw-mb-3">
@@ -93,6 +95,7 @@ const Contact = () => {
             name="message"
             value={formData.message}
             onChange={handleChange}
+            className="input-field"
           />
         </Form.Group>
         <Button className="button button-primary tw-w-full" type="submit">

@@ -1,10 +1,10 @@
 import { Col, Row } from "react-bootstrap";
-import { Template } from "../interfaces/interfaces";
+import { TemplateProps } from "../../interfaces/interfaces";
 
 interface TemplatesDisplayProps {
-  templates: Template[];
-  selectedTemplate?: Template | null;
-  onSelect?: (template: Template | null) => void;
+  templates: TemplateProps[];
+  selectedTemplate?: TemplateProps | null;
+  onSelect?: (template: TemplateProps | null) => void;
   showTemplateDetails?: boolean;
 }
 
@@ -14,7 +14,7 @@ const TemplatesDisplay: React.FC<TemplatesDisplayProps> = ({
   onSelect,
   showTemplateDetails = true,
 }) => {
-  const handleTemplateClick = (template: Template) => {
+  const handleTemplateClick = (template: TemplateProps) => {
     if (onSelect) {
       const newSelectedTemplate =
         selectedTemplate?.id === template.id ? null : template;

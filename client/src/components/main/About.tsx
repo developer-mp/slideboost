@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { useNavigation } from "../utils/login/useNavigation";
-import LoginModal from "./LoginModal";
+import { useNavigation } from "../../utils/login/useNavigation";
 import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
-import about_img from "../assets/main/about_img.png";
+import { RootState } from "../../store/store";
+import LoginModal from "../widgets/LoginModal";
+import about_img from "../../assets/main/about_img.png";
 
 const About: React.FC = () => {
   const { navigateToCreateAccount, navigateToWorkspace } = useNavigation();
@@ -22,7 +22,7 @@ const About: React.FC = () => {
       className="d-flex align-items-center"
       style={{ minHeight: "calc(100vh - 76px)" }}
     >
-      <Row className="w-100">
+      <Row className="tw-w-full">
         <Col xs={12} md={6}>
           <img
             src={about_img}

@@ -1,6 +1,6 @@
 import apiService from "../app/apiService";
 import { config } from "../../../env.config";
-import { LoginResponse } from "../../interfaces/interfaces";
+import { LoginResponseProps } from "../../interfaces/interfaces";
 
 const authService = {
   async registerUser(name: string, email: string, password: string) {
@@ -20,7 +20,10 @@ const authService = {
     });
     return response;
   },
-  async loginUser(email: string, password: string): Promise<LoginResponse> {
+  async loginUser(
+    email: string,
+    password: string
+  ): Promise<LoginResponseProps> {
     const endpoint = `${config.AUTH_ROUTER}${config.LOGIN_ENDPOINT}`;
     const response = await apiService.noSecurePostCall(endpoint, {
       email,

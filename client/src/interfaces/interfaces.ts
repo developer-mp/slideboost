@@ -1,4 +1,4 @@
-export interface FormData {
+export interface FormDataProps {
   name: string;
   email: string;
   message: string;
@@ -20,12 +20,12 @@ export interface ProtectedRouteProps {
   element: React.ReactElement;
 }
 
-export interface LoginResponse {
+export interface LoginResponseProps {
   token: string;
   name: string;
 }
 
-export interface PPTTemplate {
+export interface PPTTemplateProps {
   id: string;
   imgPath: string;
   title: string;
@@ -33,7 +33,7 @@ export interface PPTTemplate {
 }
 
 export interface TemplateCarouselProps {
-  templates: PPTTemplate[];
+  templates: PPTTemplateProps[];
 }
 
 export interface ContentCardProps {
@@ -43,39 +43,7 @@ export interface ContentCardProps {
   onClickMethod: () => void;
 }
 
-export interface FileUploaderProps {
-  onUpload: (
-    files: {
-      id: string;
-      name: string;
-      type: string;
-      size: number;
-      date: string;
-      content: string | ArrayBuffer | null;
-      thumbnail?: string;
-      title?: string;
-      category?: string;
-      path: string;
-    }[]
-  ) => void;
-}
-
-export interface FileUploaderRef {
-  getFileDetails: () => {
-    id: string;
-    name: string;
-    type: string;
-    size: number;
-    date: string;
-    content: string | ArrayBuffer | null;
-    thumbnail?: string;
-    title?: string;
-    category?: string;
-    path: string;
-  }[];
-}
-
-export interface FileDetail {
+export interface FileDetailProps {
   id: string;
   name: string;
   type: string;
@@ -88,7 +56,15 @@ export interface FileDetail {
   path: string;
 }
 
-export interface Template {
+export interface FileUploaderProps {
+  onUpload: (files: FileDetailProps[]) => void;
+}
+
+export interface FileUploaderRef {
+  getFileDetails: () => FileDetailProps[];
+}
+
+export interface TemplateProps {
   id: string;
   thumbnail?: string;
   title?: string;
@@ -96,6 +72,6 @@ export interface Template {
 }
 
 export interface TemplatesDisplayProps {
-  templates: Template[];
+  templates: TemplateProps[];
   useCarousel?: boolean;
 }

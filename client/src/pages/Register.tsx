@@ -8,7 +8,7 @@ import { validateName } from "../utils/login/validateName";
 import { validatePassword } from "../utils/login/validatePassword";
 import { validateEmail } from "../utils/login/validateEmail";
 import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
-import PasswordInput from "./../components/PasswordInput";
+import PasswordInput from "../components/widgets/PasswordInput";
 
 const Register: React.FC = () => {
   const [name, setName] = useState<string>("");

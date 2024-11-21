@@ -1,10 +1,10 @@
 import { Col, Container, Row } from "react-bootstrap";
-import PricingPlan from "./PricingPlan";
+import PricingPlan from "../elements/PricingPlan";
 
 const Pricing: React.FC = () => {
   return (
     <Container
-      className="d-flex align-items-center text-center tw-mt-36"
+      className="tw-flex tw-items-center tw-text-center tw-mt-36"
       style={{ minHeight: "calc(100vh - 76px)" }}
     >
       <div className="tw-max-w-full tw-mx-auto">

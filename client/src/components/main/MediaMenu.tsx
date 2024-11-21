@@ -1,21 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import CustomModal from "./CustomModal";
-import FileUploader from "./FileUploader";
-import { FileUploaderRef, FileDetail } from "../interfaces/interfaces";
-import { handleFileUpload } from "../utils/ppt/handleFileUpload";
-import { getFileSize } from "../utils/ppt/getFileSize";
-import FileTable from "./FileTable";
-import { truncateText } from "../utils/common/truncateText";
+import CustomModal from "../shared/CustomModal";
+import FileUploader from "../shared/FileUploader";
+import { FileUploaderRef, FileDetailProps } from "../../interfaces/interfaces";
+import { handleFileUpload } from "../../utils/ppt/handleFileUpload";
+import { getFileSize } from "../../utils/ppt/getFileSize";
+import FileTable from "../shared/FileTable";
+import { truncateText } from "../../utils/common/truncateText";
 import {
   showErrorToast,
   showWarningToast,
   showSuccessToast,
-} from "../utils/common/handleToast";
+} from "../../utils/common/handleToast";
 
 const MediaMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [files, setFiles] = useState<FileDetail[]>([]);
+  const [files, setFiles] = useState<FileDetailProps[]>([]);
   const fileUploaderRef = useRef<FileUploaderRef>(null);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const MediaMenu: React.FC = () => {
     setFiles(existingFiles);
   }, []);
 
-  const handleUpload = (files: FileDetail[]) => {
+  const handleUpload = (files: FileDetailProps[]) => {
     if (files && files.length > 0) {
       try {
         handleFileUpload(files, "mediaDetails");
@@ -54,35 +54,37 @@ const MediaMenu: React.FC = () => {
     {
       key: "filename",
       label: "Filename",
-      render: (file: FileDetail) => file.name,
+      render: (file: FileDetailProps) => file.name,
     },
     {
       key: "size",
       label: "Size",
-      render: (file: FileDetail) => getFileSize(file.size),
+      render: (file: FileDetailProps) => getFileSize(file.size),
     },
     {
       key: "type",
       label: "Type",
-      render: (file: FileDetail) => truncateText(file.type),
+      render: (file: FileDetailProps) => truncateText(file.type),
     },
     {
       key: "date",
       label: "Date Uploaded",
-      render: (file: FileDetail) => file.date,
+      render: (file: FileDetailProps) => file.date,
     },
   ];
 
   return (
     <Container className="tw-w-full">
       <div className="tw-mx-6 tw-my-6">
+        <h2 className="tw-text-lg tw-font-bold tw-text-gray-900">
+          Media Content
+        </h2>
         <Button
           className="button button-primary-auto tw-my-4"
           onClick={() => setShowModal(true)}
         >
           Add Media
         </Button>
-        <h2 className="tw-text-lg tw-font-bold tw-mb-4">Media Content</h2>
         <div className="tw-bg-white tw-rounded-lg tw-p-5">
           <Row>
             <Col>

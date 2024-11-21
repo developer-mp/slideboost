@@ -2,10 +2,12 @@ import { Col, Container, Row } from "react-bootstrap";
 
 const Privacy: React.FC = () => {
   return (
-    <Container className="tw-text-center tw-mt-12 tw-mb-28">
+    <Container className="tw-text-center tw-mt-12">
       <Row className="justify-content-center">
         <Col xs={14} md={12} lg={10}>
-          <h4 className="tw-mb-12 tw-font-bold">PRIVACY NOTICE</h4>
+          <h4 className="tw-mb-12 tw-font-bold tw-text-custom-color-blue">
+            PRIVACY NOTICE
+          </h4>
           <h6 className="tw-mb-4 tw-font-bold tw-mx-auto tw-max-w-3xl tw-text-justify">
             Last updated June 17, 2024
           </h6>
@@ -37,7 +39,7 @@ const Privacy: React.FC = () => {
                 with our policies and practices, please do not use our Services.
               </strong>
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               SUMMARY OF KEY POINTS
             </h5>
             <p className="tw-mb-4 tw-font-bold">
@@ -116,7 +118,7 @@ const Privacy: React.FC = () => {
               Want to learn more about what we do with any information we
               collect? <a href="#">Review the privacy notice in full.</a>
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               TABLE OF CONTENTS
             </h5>
             <div>
@@ -176,7 +178,7 @@ const Privacy: React.FC = () => {
                 FROM YOU?
               </a>
             </div>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               1. WHAT INFORMATION DO WE COLLECT?
             </h5>
             <p className="tw-mb-4 tw-font-bold">
@@ -239,7 +241,7 @@ const Privacy: React.FC = () => {
               complete, and accurate, and you must notify us of any changes to
               such personal information.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               2. HOW DO WE PROCESS YOUR INFORMATION?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -272,7 +274,7 @@ const Privacy: React.FC = () => {
                 protect an individual's vital interest, such as to prevent harm.
               </li>
             </ul>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               3. WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR INFORMATION?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -380,7 +382,7 @@ const Privacy: React.FC = () => {
                 regulations
               </li>
             </ul>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               4. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -400,7 +402,7 @@ const Privacy: React.FC = () => {
                 all or a portion of our business to another company.
               </li>
             </ul>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               5. DO WE USE COOKIES AND OTHER TRACKING TECHNOLOGIES?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -438,7 +440,7 @@ const Privacy: React.FC = () => {
               Specific information about how we use such technologies and how
               you can refuse certain cookies is set out in our Cookie Notice:
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               6. HOW DO WE HANDLE YOUR SOCIAL LOGINS?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -467,7 +469,7 @@ const Privacy: React.FC = () => {
               they collect, use, and share your personal information, and how
               you can set your privacy preferences on their sites and apps.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               7. HOW LONG DO WE KEEP YOUR INFORMATION?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -492,7 +494,7 @@ const Privacy: React.FC = () => {
               then we will securely store your personal information and isolate
               it from any further processing until deletion is possible.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               8. HOW DO WE KEEP YOUR INFORMATION SAFE?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -515,7 +517,7 @@ const Privacy: React.FC = () => {
               at your own risk. You should only access the Services within a
               secure environment.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               9. WHAT ARE YOUR PRIVACY RIGHTS?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -616,7 +618,7 @@ const Privacy: React.FC = () => {
               this could affect certain features or services of our Services.
               For further information, please see our Cookie Notice:
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               10. CONTROLS FOR DO-NOT-TRACK FEATURES
             </h5>
             <p className="tw-mb-4">
@@ -638,7 +640,7 @@ const Privacy: React.FC = () => {
               legal standard for recognizing or honoring DNT signals, we do not
               respond to them at this time.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               11. DO UNITED STATES RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -1002,7 +1004,7 @@ const Privacy: React.FC = () => {
               contact details provided in the section{" "}
               <a href="#">"HOW CAN YOU CONTACT US ABOUT THIS NOTICE?"</a>
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-black">
+            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
               12. DO OTHER REGIONS HAVE SPECIFIC PRIVACY RIGHTS?
             </h5>
             <p className="tw-mb-4 tw-italic">

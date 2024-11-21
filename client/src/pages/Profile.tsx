@@ -9,7 +9,7 @@ import { formatEmail } from "../utils/login/formatEmail";
 import { validateName } from "../utils/login/validateName";
 import { validatePassword } from "../utils/login/validatePassword";
 import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
-import PasswordInput from "../components/PasswordInput";
+import PasswordInput from "../components/widgets/PasswordInput";
 
 const Profile: React.FC = () => {
   const userEmail = useSelector((state: RootState) => state.user.userEmail);
