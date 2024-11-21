@@ -96,7 +96,7 @@ const FileUploader = forwardRef(
             <div>Drop a file here</div>
             <Button
               onClick={handleBrowse}
-              className="button button-browse tw-mt-3"
+              className="button button-tertiary tw-mt-3"
               style={{ width: "6rem" }}
             >
               Browse

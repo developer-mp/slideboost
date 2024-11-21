@@ -11,7 +11,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   selectedOption,
   onChange,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const handleOptionSelect = (option: string) => {

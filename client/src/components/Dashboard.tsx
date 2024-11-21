@@ -16,7 +16,7 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
-  const [showMediaModal, setShowMediaModal] = useState(false);
+  const [showMediaModal, setShowMediaModal] = useState<boolean>(false);
   const [selectedMediaFiles, setSelectedMediaFiles] = useState<FileDetail[]>(
     []
   );
@@ -24,13 +24,14 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     FileDetail[]
   >([]);
 
-  const [showTemplateModal, setShowTemplateModal] = useState(false);
+  const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
     null
   );
   const [tempSelectedTemplate, setTempSelectedTemplate] =
     useState<Template | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [presentationTitle, setPresentationTitle] = useState<string>("");
 
   const mediaFiles: FileDetail[] = JSON.parse(
     localStorage.getItem("mediaDetails") || "[]"
@@ -91,6 +92,24 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const handleCreateClick = async () => {
     setLoading(true);
 
+    if (!presentationTitle.trim()) {
+      showErrorToast("Title is required");
+      setLoading(false);
+      return;
+    }
+
+    if (selectedMediaFiles.length === 0) {
+      showErrorToast("Please select media files");
+      setLoading(false);
+      return;
+    }
+
+    if (!selectedTemplate) {
+      showErrorToast("Please select a template");
+      setLoading(false);
+      return;
+    }
+
     try {
       let allExtractedText = "";
       for (const file of selectedMediaFiles) {
@@ -126,13 +145,15 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
               id="presentationTitle"
               type="text"
               placeholder="Title of the presentation"
+              value={presentationTitle}
+              onChange={(e) => setPresentationTitle(e.target.value)}
               className="tw-w-4/12 tw-p-2 tw-rounded-lg tw-border tw-border-gray-500"
             />
           </div>
           <div className="tw-mb-7">
             <div className="tw-mb-2 tw-font-bold tw-text-gray-500">Media</div>
             <Button
-              className="button button-select"
+              className="button button-tertiary"
               onClick={() => {
                 setTempSelectedMediaFiles([...selectedMediaFiles]);
                 setShowMediaModal(true);
@@ -168,7 +189,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
           </div>
           <div className="tw-mb-2 tw-font-bold tw-text-gray-500">Template</div>
           <Button
-            className="button button-select"
+            className="button button-tertiary"
             onClick={() => {
               setTempSelectedTemplate(selectedTemplate);
               setShowTemplateModal(true);
@@ -199,7 +220,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
           )}
           <div className="tw-mt-5">
             <Button
-              className="button button-primary tw-my-4"
+              className="button button-primary-auto tw-my-4"
               onClick={handleCreateClick}
               disabled={loading}
             >

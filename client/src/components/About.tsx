@@ -8,7 +8,7 @@ import about_img from "../assets/main/about_img.png";
 
 const About: React.FC = () => {
   const { navigateToCreateAccount, navigateToWorkspace } = useNavigation();
-  const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState<boolean>(false);
 
   const openLoginModal = () => {
     setModalShow(true);
@@ -46,14 +46,14 @@ const About: React.FC = () => {
           </div>
           {!isAuthenticated ? (
             <button
-              className="button button-try tw-mb-4 tw-ml-12"
+              className="button button-tertiary-pad tw-mb-4 tw-ml-12"
               onClick={openLoginModal}
             >
               Launch now
             </button>
           ) : (
             <button
-              className="button button-workspace tw-mb-4 tw-ml-12"
+              className="button button-tertiary-pad tw-mb-4 tw-ml-12"
               onClick={navigateToWorkspace}
             >
               Start designing

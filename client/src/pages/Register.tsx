@@ -174,7 +174,7 @@ const Register: React.FC = () => {
             />
             <Button
               type="submit"
-              className="button button-main"
+              className="button button-primary"
               onClick={(e) => handleRegisterUser(e, name, email, password)}
             >
               Create Account

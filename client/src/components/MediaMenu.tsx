@@ -7,10 +7,14 @@ import { handleFileUpload } from "../utils/ppt/handleFileUpload";
 import { getFileSize } from "../utils/ppt/getFileSize";
 import FileTable from "./FileTable";
 import { truncateText } from "../utils/common/truncateText";
-import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
+import {
+  showErrorToast,
+  showWarningToast,
+  showSuccessToast,
+} from "../utils/common/handleToast";
 
 const MediaMenu: React.FC = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [files, setFiles] = useState<FileDetail[]>([]);
   const fileUploaderRef = useRef<FileUploaderRef>(null);
 
@@ -28,7 +32,7 @@ const MediaMenu: React.FC = () => {
         handleFileUpload(files, "mediaDetails");
         showSuccessToast("File uploaded successfully");
       } catch (error) {
-        console.log(error);
+        console.log("Error uploading file: ", error);
         showErrorToast("Error uploading file");
       }
     }
@@ -73,7 +77,7 @@ const MediaMenu: React.FC = () => {
     <Container className="tw-w-full">
       <div className="tw-mx-6 tw-my-6">
         <Button
-          className="button button-primary tw-my-4"
+          className="button button-primary-auto tw-my-4"
           onClick={() => setShowModal(true)}
         >
           Add Media
@@ -98,6 +102,10 @@ const MediaMenu: React.FC = () => {
         actionLabel="Upload"
         onAction={() => {
           const filesToUpload = fileUploaderRef.current?.getFileDetails();
+          if (!filesToUpload || filesToUpload.length === 0) {
+            showWarningToast("Please select files to upload");
+            return;
+          }
           if (filesToUpload) {
             handleUpload(filesToUpload);
             setShowModal(false);

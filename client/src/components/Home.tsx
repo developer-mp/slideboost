@@ -8,7 +8,7 @@ import { RootState } from "../store/store";
 
 const Home: React.FC = () => {
   const { navigateToCreateAccount, navigateToWorkspace } = useNavigation();
-  const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState<boolean>(false);
 
   const openLoginModal = () => {
     setModalShow(true);
@@ -41,14 +41,14 @@ const Home: React.FC = () => {
           </div>
           {!isAuthenticated ? (
             <button
-              className="button button-try tw-mb-4"
+              className="button button-tertiary-pad tw-mb-4"
               onClick={openLoginModal}
             >
               Try for free
             </button>
           ) : (
             <button
-              className="button button-workspace tw-mb-4"
+              className="button button-tertiary-pad tw-mb-4"
               onClick={navigateToWorkspace}
             >
               Go to workspace

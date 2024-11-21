@@ -10,7 +10,7 @@ import TemplateCarousel from "../components/TemplateCarousel";
 
 const Features: React.FC = () => {
   const { navigateToCreateAccount, navigateToWorkspace } = useNavigation();
-  const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState<boolean>(false);
 
   const openLoginModal = () => {
     setModalShow(true);
@@ -55,14 +55,14 @@ const Features: React.FC = () => {
           </div>
           {!isAuthenticated ? (
             <button
-              className="button button-try tw-mb-4"
+              className="button button-tertiary-pad tw-mb-4"
               onClick={openLoginModal}
             >
               Start right away
             </button>
           ) : (
             <button
-              className="button button-workspace tw-mb-4"
+              className="button button-tertiary-pad tw-mb-4"
               onClick={navigateToWorkspace}
             >
               Create presentation

@@ -42,13 +42,13 @@ const CustomModal: React.FC<CustomModalProps> = ({
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{ padding: "1.2em" }}>{children}</Modal.Body>
+      <Modal.Body>{children}</Modal.Body>
       <Modal.Footer>
-        <Button className="button button-secondary" onClick={handleClose}>
+        <Button className="button button-secondary-auto" onClick={handleClose}>
           Cancel
         </Button>
         {actionLabel && (
-          <Button className="button button-primary" onClick={onAction}>
+          <Button className="button button-primary-auto" onClick={onAction}>
             {actionLabel}
           </Button>
         )}

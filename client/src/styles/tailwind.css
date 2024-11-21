@@ -6,12 +6,6 @@
   display: none !important;
 }
 
-.dropdown-toggle {
-  border: none !important;
-  outline: none !important;
-  text-decoration: none !important;
-}
-
 .nav-link {
   color: #132332 !important;
   font-size: 1.1em !important;
@@ -19,47 +13,74 @@
 
 .nav-link:hover {
   color: #15426c !important;
-  font-weight: 700 !important;
+  font-weight: 700;
 }
 
 .button {
-  width: 100% !important;
-  color: #ffffff !important;
+  width: 100%;
+  color: #ffffff;
   font-weight: 700 !important;
   border: none !important;
   padding: 0.5em !important;
   border-radius: 0.5rem !important;
-  font-size: 1rem !important;
-  cursor: pointer !important;
+  cursor: pointer;
   transition: background-color 0.3s ease !important;
 }
 
-.button-main {
-  background-color: #5c5ce0 !important;
+.button-primary {
+  background-color: #5b4bad !important;
 }
 
-.button-main:hover {
-  background-color: #4646c6 !important;
+.button-primary-auto {
+  width: auto;
+  background-color: #5b4bad !important;
 }
 
-.button-try {
-  width: auto !important;
+.button-primary:hover,
+.button-primary-auto:hover {
+  background-color: #4e4196 !important;
+}
+
+.button-secondary {
+  background-color: #6c757d !important;
+}
+
+.button-secondary-auto {
+  width: auto;
+  background-color: #6c757d !important;
+}
+
+.button-secondary:hover,
+.button-secondary-auto:hover {
+  background-color: #5c636a !important;
+}
+
+.button-tertiary {
+  background-color: #ffffff !important;
+  color: #0ecfde !important;
+  border: 1px solid #0ecfde !important;
+  width: auto;
+}
+
+.button-tertiary-auto {
+  background-color: #ffffff !important;
+  color: #0ecfde !important;
+  border: 1px solid #0ecfde !important;
+}
+
+.button-tertiary-pad {
+  background-color: #ffffff !important;
+  color: #0ecfde !important;
+  border: 1px solid #0ecfde !important;
+  width: auto;
   padding: 1em !important;
-  background-color: #3ab662 !important;
 }
 
-.button-try:hover {
-  background-color: #2a8b43 !important;
-}
-
-.button-workspace {
-  width: auto !important;
-  padding: 1em !important;
-  background-color: #5c5ce0 !important;
-}
-
-.button-workspace:hover {
-  background-color: #4646c6 !important;
+.button-tertiary:hover,
+.button-tertiary-auto:hover,
+.button-tertiary-pad:hover {
+  background-color: #0ecfde !important;
+  color: #ffffff !important;
 }
 
 .button-login {
@@ -70,62 +91,8 @@
   background-color: #e65217 !important;
 }
 
-.button-select {
-  background-color: #ffffff !important;
-  color: #0ecfde !important;
-  border: 1px solid #0ecfde !important;
-  width: auto !important;
-}
-
-.button-select:hover {
-  background-color: #0ecfde !important;
-  color: #ffffff !important;
-  border: 1px solid #0ecfde !important;
-}
-
-.button-browse {
-  background-color: #ffffff !important;
-  color: #0ecfde !important;
-  border: 1px solid #0ecfde !important;
-}
-
-.button-browse:hover {
-  background-color: #0ecfde !important;
-  color: #ffffff !important;
-  border: 1px solid #0ecfde !important;
-}
-
-.button-primary {
-  width: auto !important;
-  background-color: #5c5ce0 !important;
-}
-
-.button-primary:hover {
-  background-color: #4646c6 !important;
-}
-
-.button-secondary {
-  width: auto !important;
-  background-color: #6c757d !important;
-}
-
-.button-secondary:hover {
-  background-color: #5c636a !important;
-}
-
-.input-group
-  > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(
-    .valid-feedback
-  ):not(.invalid-tooltip):not(.invalid-feedback) {
-  border: 2px solid #d3d3d3 !important;
-}
-
-.bg-dark {
-  background-color: #383c57 !important;
-}
-
 .navbar-dark {
-  background-color: #383c57 !important;
+  background-color: #383c57;
 }
 
 .footer-link {
@@ -135,7 +102,7 @@
 
 .footer-link:hover {
   color: #0ecfde !important;
-  font-weight: 700 !important;
+  font-weight: 700;
 }
 
 .img-hover:hover {
@@ -153,11 +120,11 @@
 }
 
 .login-choice {
-  width: 100% !important;
+  width: 100%;
   display: flex !important;
-  align-items: center !important;
+  align-items: center;
   padding: 0.5em !important;
-  margin-bottom: 1em !important;
+  margin-bottom: 1em;
   background-color: white !important;
   color: black !important;
   border: 1px solid #cdd1d6 !important;
@@ -169,9 +136,9 @@
 }
 
 .modal-dialog {
-  max-width: 28rem !important;
-  width: 100% !important;
-  margin: auto !important;
+  max-width: 28rem;
+  width: 100%;
+  margin: auto;
 }
 
 .icon-size {
@@ -221,7 +188,7 @@
 }
 
 .dropdown-menu .dropdown-item:hover {
-  background-color: #f2f3f5 !important;
+  background-color: #f2f3f5;
   color: black;
 }
 
@@ -267,4 +234,9 @@
   font-size: 16px;
   color: green;
   font-weight: bold;
+}
+
+.Toastify__toast {
+  border-radius: 1em;
+  padding: 1em;
 }

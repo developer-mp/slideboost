@@ -77,7 +77,7 @@ const Login: React.FC = () => {
             </Form.Group>
             <Button
               type="submit"
-              className="button button-main tw-mt-3"
+              className="button button-primary tw-mt-3"
               onClick={handleLoginUser}
             >
               Login

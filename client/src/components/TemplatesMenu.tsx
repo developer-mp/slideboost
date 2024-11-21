@@ -12,11 +12,16 @@ import {
 import { templatesCategories } from "../data/templatesCategories";
 import { handleFileUpload } from "../utils/ppt/handleFileUpload";
 import TemplatesDisplay from "./TemplatesDisplay";
-import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
+import {
+  showErrorToast,
+  showWarningToast,
+  showSuccessToast,
+} from "../utils/common/handleToast";
 
 const TemplatesMenu: React.FC = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] =
+    useState<string>("All Categories");
   const fileUploaderRef = useRef<FileUploaderRef>(null);
 
   const options = [
@@ -33,7 +38,7 @@ const TemplatesMenu: React.FC = () => {
         handleFileUpload(files, "templateDetails");
         showSuccessToast("File uploaded successfully");
       } catch (error) {
-        console.log(error);
+        console.log("Error uploading file: ", error);
         showErrorToast("Error uploading file");
       }
     }
@@ -47,7 +52,7 @@ const TemplatesMenu: React.FC = () => {
     <Container className="tw-w-full">
       <div className="tw-mx-6 tw-my-6">
         <Button
-          className="button button-primary tw-my-4"
+          className="button button-primary-auto tw-my-4"
           onClick={() => setShowModal(true)}
         >
           Add Template
@@ -107,6 +112,10 @@ const TemplatesMenu: React.FC = () => {
         actionLabel="Upload"
         onAction={() => {
           const filesToUpload = fileUploaderRef.current?.getFileDetails();
+          if (!filesToUpload || filesToUpload.length === 0) {
+            showWarningToast("Please select files to upload");
+            return;
+          }
           if (filesToUpload) {
             handleUpload(filesToUpload);
             setShowModal(false);
