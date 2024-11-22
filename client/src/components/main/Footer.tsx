@@ -53,11 +53,12 @@ const Footer = () => {
             <FaYoutube size={20} />
           </a>
         </div>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse
           id="basic-navbar-nav"
           className="tw-flex tw-justify-center"
         >
-          <Nav>
+          <Nav className="ml-auto">
             <Nav.Link className="footer-link" href="/news">
               News
             </Nav.Link>
