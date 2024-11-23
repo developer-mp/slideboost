@@ -23,6 +23,8 @@ export interface ProtectedRouteProps {
 export interface LoginResponseProps {
   token: string;
   name: string;
+  createdAt: string;
+  plan: string;
 }
 
 export interface PPTTemplateProps {

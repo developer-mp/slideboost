@@ -121,6 +121,7 @@ const Register: React.FC = () => {
                 placeholder="Enter first and last name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className="input-field"
               />
             </Form.Group>
             <Form.Group controlId="formBasicEmail" className="tw-mb-3">
@@ -132,6 +133,7 @@ const Register: React.FC = () => {
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="input-field"
               />
             </Form.Group>
             <Form.Group controlId="formBasicPassword" className="tw-mb-3">
@@ -143,6 +145,7 @@ const Register: React.FC = () => {
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="input-field"
               />
             </Form.Group>
             <Form.Group
@@ -156,6 +159,7 @@ const Register: React.FC = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm Password"
+                className="input-field"
               />
             </Form.Group>
             <Form.Check

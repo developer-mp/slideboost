@@ -62,6 +62,7 @@ const Login: React.FC = () => {
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="input-field"
               />
             </Form.Group>
             <Form.Group controlId="formBasicPassword" className="tw-mb-3">
@@ -73,6 +74,7 @@ const Login: React.FC = () => {
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="input-field"
               />
             </Form.Group>
             <Button

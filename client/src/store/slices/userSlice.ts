@@ -11,6 +11,8 @@ interface UserState {
   isAuthenticated: boolean;
   userEmail: string;
   userName: string;
+  createdAt: string;
+  plan: string;
   status: "idle" | "loading" | "success" | "fail";
   error: string | null;
   message: string | null;
@@ -20,6 +22,8 @@ const initialState: UserState = {
   isAuthenticated: false,
   userEmail: "",
   userName: "",
+  createdAt: "",
+  plan: "",
   status: "idle",
   message: null,
   error: null,
@@ -75,6 +79,8 @@ const userSlice = createSlice({
         state.isAuthenticated = true;
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
+        state.createdAt = action.payload.createdAt;
+        state.plan = action.payload.plan;
         setToken(action.payload.token);
       })
       .addCase(loginUser.rejected, (state, action) => {

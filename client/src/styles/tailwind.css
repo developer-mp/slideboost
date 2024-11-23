@@ -255,3 +255,7 @@
   border-color: #d1d4d9 !important;
   box-shadow: 5px 5px 10px #ccc !important;
 }
+
+.active-tab .nav-link.active {
+  background-color: #f2f3f5 !important;
+}

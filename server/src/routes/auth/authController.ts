@@ -103,7 +103,12 @@ const authController = {
         const token = jwt.sign({ userId: user.id }, config.JWT_SECRET, {
           expiresIn: "1h",
         });
-        res.json({ token: token, name: user.name });
+        res.json({
+          token: token,
+          name: user.name,
+          createdAt: user.created_at,
+          plan: user.plan,
+        });
       } else {
         res.status(401).json({ error: "Invalid credentials" });
       }

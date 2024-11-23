@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import authService from "../../services/auth/authService";
 import userService from "../../services/user/userService";
-import { LoginResponse } from "../../interfaces/interfaces";
+import { LoginResponseProps } from "../../interfaces/interfaces";
 
 export const registerUser = createAsyncThunk<
   { name: string; email: string; message?: string },
@@ -44,16 +44,30 @@ export const verifyEmail = createAsyncThunk<
 });
 
 export const loginUser = createAsyncThunk<
-  { token: string; name: string; email: string; message?: string },
+  {
+    token: string;
+    name: string;
+    email: string;
+    createdAt: string;
+    plan: string;
+    message?: string;
+  },
   { email: string; password: string },
   { rejectValue: { message: string } }
 >("auth/loginUser", async ({ email, password }, { rejectWithValue }) => {
   try {
-    const response: LoginResponse = await authService.loginUser(
+    const response: LoginResponseProps = await authService.loginUser(
       email,
       password
     );
-    return { ...response, email };
+    const { token, name, createdAt, plan } = response;
+    return {
+      token,
+      name,
+      email,
+      createdAt,
+      plan,
+    };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       return rejectWithValue({
