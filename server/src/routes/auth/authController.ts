@@ -38,7 +38,7 @@ const authController = {
 
       try {
         if (verificationCode) {
-          AuthService.sendVerificationEmail(name, email, verificationCode);
+          AuthService.sendVerificationEmail(email, verificationCode);
         }
       } catch (error) {
         console.error("Error sending verification email:", error);
@@ -58,7 +58,7 @@ const authController = {
 
     try {
       const result = (await pool.query(
-        "SELECT verification_code, expires_at FROM users WHERE email = $1 AND is_verified = false",
+        "SELECT verification_code, expires_at FROM users WHERE email = $1 AND is_verified = true",
         [email]
       )) as DbQueryResultProps;
 
@@ -171,7 +171,46 @@ const authController = {
     }
   },
 
-  updatePassword: async (req: Request, res: Response) => {
+  sendEmail: async (req: Request, res: Response) => {
+    const { email }: { email: string } = req.body;
+
+    try {
+      const isUserExist = (await pool.query(
+        "SELECT email FROM users WHERE email = $1",
+        [email]
+      )) as DbQueryResultProps;
+
+      if (isUserExist.rowCount === 0) {
+        res.status(404).json({ message: "User not found" });
+      }
+      const user = isUserExist.rows[0];
+
+      const verificationCode = generateVerificationCode();
+      const expiresAt = new Date();
+      expiresAt.setMinutes(expiresAt.getMinutes() + 15);
+      (await pool.query(
+        "UPDATE users SET verification_code = $1, expires_at = $2 WHERE email = $3 RETURNING *",
+        [verificationCode, expiresAt, email]
+      )) as DbQueryResultProps;
+
+      try {
+        if (verificationCode) {
+          AuthService.sendVerificationEmail(email, verificationCode);
+        }
+      } catch (error) {
+        console.error("Error sending verification email:", error);
+      }
+
+      res.status(201).json({
+        email: user.email,
+        message: "Check your email for verification code",
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Email validation failed", error });
+    }
+  },
+
+  resetPassword: async (req: Request, res: Response) => {
     const { email, password }: { email: string; password: string } = req.body;
 
     try {
@@ -181,26 +220,42 @@ const authController = {
       )) as DbQueryResultProps;
 
       if (isUserExist.rowCount === 0) {
-        res.status(400).json({ message: "User does not exist" });
+        res.status(404).json({ message: "User not found" });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-
-      const updateQuery = (await pool.query(
+      (await pool.query(
         "UPDATE users SET password = $1 WHERE email = $2 RETURNING *",
         [hashedPassword, email]
       )) as DbQueryResultProps;
 
-      if (updateQuery.rowCount === 0) {
-        res.status(400).json({ message: "Password change failed" });
-      }
-
       res.status(201).json({
-        message: "Password updated successfully",
+        message: "Password reset successfully",
       });
     } catch (error) {
-      console.error("Password update failed:", error);
-      res.status(500).json({ message: "Password update failed", error });
+      res.status(500).json({ message: "Password reset failed", error });
+    }
+  },
+
+  deactivateAccount: async (req: Request, res: Response) => {
+    const { email, reason }: { email: string; reason: string } = req.body;
+    try {
+      const result = (await pool.query("DELETE FROM users WHERE email = $1", [
+        email,
+      ])) as DbQueryResultProps;
+
+      if (result.rowCount === 0) {
+        res.status(404).json({ message: "User not found" });
+      }
+
+      (await pool.query(
+        "INSERT INTO deactivation_reasons (reason) VALUES ($1)",
+        [reason]
+      )) as DbQueryResultProps;
+      res.status(200).json({ message: "Account deactivated successfully" });
+    } catch (error) {
+      console.error("Account deactivation failed:", error);
+      res.status(500).json({ message: "Account deactivation failed", error });
     }
   },
 };

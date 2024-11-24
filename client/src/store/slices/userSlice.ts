@@ -5,6 +5,8 @@ import {
   verifyEmail,
   loginUser,
   updateUserName,
+  deactivateAccount,
+  sendEmail,
 } from "../actions/userAction";
 
 interface UserState {
@@ -98,6 +100,42 @@ const userSlice = createSlice({
       .addCase(updateUserName.rejected, (state, action) => {
         state.status = "fail";
         state.error = action.error.message || "Failed to update user name";
+      })
+      .addCase(sendEmail.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(sendEmail.fulfilled, (state, action) => {
+        state.status = "success";
+        state.userEmail = action.payload.email;
+      })
+      .addCase(sendEmail.rejected, (state, action) => {
+        state.status = "fail";
+        state.error = action.error.message || "Failed to send email";
+      })
+      // .addCase(resetPassword.pending, (state) => {
+      //   state.status = "loading";
+      //   state.error = null;
+      // })
+      // .addCase(resetPassword.fulfilled, (state, action) => {
+      //   state.status = "success";
+      //   state.userEmail = action.payload.email;
+      // })
+      // .addCase(resetPassword.rejected, (state, action) => {
+      //   state.status = "fail";
+      //   state.error = action.payload?.message || "Failed to reset password";
+      // })
+      .addCase(deactivateAccount.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(deactivateAccount.fulfilled, (state) => {
+        state.status = "success";
+        state.isAuthenticated = false;
+      })
+      .addCase(deactivateAccount.rejected, (state, action) => {
+        state.status = "fail";
+        state.error = action.payload?.message || "Failed to deactivate account";
       });
   },
 });

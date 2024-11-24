@@ -8,6 +8,8 @@ authRouter.post("/verify", authController.verifyEmail);
 authRouter.post("/login", authController.loginUser);
 authRouter.get("/protected", authController.authenticateToken);
 authRouter.post("/username", authController.updateUserName);
-authRouter.post("/password", authController.updatePassword);
+authRouter.post("/password", authController.resetPassword);
+authRouter.post("/email", authController.sendEmail);
+authRouter.post("/deactivation", authController.deactivateAccount);
 
 export default authRouter;

@@ -2,10 +2,11 @@ import { useState } from "react";
 import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
 import {
+  Button,
   Card,
   Col,
   Container,
-  Button,
+  Dropdown,
   Form,
   Row,
   Tab,
@@ -13,24 +14,37 @@ import {
 } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
+import { logout } from "../store/slices/userSlice";
+import { useNavigation } from "../utils/login/useNavigation";
+import { deactivateAccount } from "../store/actions/userAction";
 import { updateUserName, updatePassword } from "../store/actions/userAction";
 import { formatEmail } from "../utils/login/formatEmail";
 import { validateName } from "../utils/login/validateName";
 import { validatePassword } from "../utils/login/validatePassword";
-import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 import PasswordInput from "../components/widgets/PasswordInput";
+import { deactivationReasons } from "../data/deactivationReasons";
+import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 
 const Settings: React.FC = () => {
   const userEmail = useSelector((state: RootState) => state.user.userEmail);
   const userAppName = useSelector((state: RootState) => state.user.userName);
 
   const dispatch = useDispatch<AppDispatch>();
+  const { navigateToHome } = useNavigation();
   const formattedEmail = formatEmail(userEmail);
 
   const [activeKey, setActiveKey] = useState<string>("account");
   const [name, setName] = useState<string>(userAppName);
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [selectedReason, setSelectedReason] = useState<string>("");
+
+  const options = [
+    ...deactivationReasons.map((reason) => ({
+      id: reason.id,
+      label: reason.text,
+    })),
+  ];
 
   const handleUpdateUserName = async (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -102,6 +116,24 @@ const Settings: React.FC = () => {
     }
   };
 
+  const handleDeactivateAccount = async (reason: string) => {
+    try {
+      await dispatch(deactivateAccount({ email: userEmail, reason })).unwrap();
+      dispatch(logout());
+      navigateToHome();
+      showSuccessToast("Your account has been deactivated successfully");
+      setSelectedReason("");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        showErrorToast("Error deactivating account");
+        console.error("Error deactivating account:", error.message);
+      } else {
+        showErrorToast("An unexpected error occurred");
+        console.error("An unexpected error occurred:", error);
+      }
+    }
+  };
+
   return (
     <Container className="tw-text-center tw-mt-12">
       <Row className="justify-content-center">
@@ -115,14 +147,23 @@ const Settings: React.FC = () => {
                 activeKey={activeKey}
                 onSelect={(k) => setActiveKey(k as string)}
                 id="profile-tabs"
-                className="input-field mb-5 active-tab"
+                className="input-field mb-4 active-tab"
               >
                 <Tab eventKey="account" title="Account">
+                  <div>
+                    <h3 className="tw-text-base tw-font-bold tw-text-gray-500 tw-text-left">
+                      Personal Data
+                    </h3>
+                    <hr className="tw-border-t" />
+                  </div>
                   <Form>
-                    <Form.Group controlId="formBasicName" className="tw-mb-6">
+                    <Form.Group
+                      controlId="formBasicName"
+                      className="tw-mb-6 tw-mt-8"
+                    >
                       <Row>
                         <Col md={3} className="d-flex align-items-center">
-                          <Form.Label className="fw-bold mb-1 text-end tw-text-gray-900 tw-text-sm">
+                          <Form.Label className="fw-bold tw-text-gray-500 tw-text-sm">
                             User Name
                           </Form.Label>
                         </Col>
@@ -131,7 +172,7 @@ const Settings: React.FC = () => {
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="input-field w-full" // Added w-full to make it responsive
+                            className="input-field w-full"
                           />
                         </Col>
                       </Row>
@@ -139,7 +180,7 @@ const Settings: React.FC = () => {
                     <Form.Group controlId="formBasicEmail" className="tw-mb-6">
                       <Row>
                         <Col md={3} className="d-flex align-items-center">
-                          <Form.Label className="fw-bold mb-1 text-end tw-text-gray-900 tw-text-sm">
+                          <Form.Label className="fw-bold tw-text-gray-500 tw-text-sm">
                             User Email
                           </Form.Label>
                         </Col>
@@ -148,21 +189,71 @@ const Settings: React.FC = () => {
                             type="text"
                             value={formattedEmail}
                             disabled
-                            className="input-field w-full" // Added w-full to make it responsive
+                            className="input-field w-full"
                           />
                         </Col>
                       </Row>
                     </Form.Group>
                     <Button
                       variant="secondary"
-                      className="w-20 mt-3"
                       onClick={(e) => handleUpdateUserName(e, name, userEmail)}
                     >
                       Save Changes
                     </Button>
                   </Form>
+                  <div>
+                    <h3 className="tw-text-base tw-font-bold tw-text-gray-500 tw-text-left tw-mt-8">
+                      Account Deactivation
+                    </h3>
+                    <hr className="tw-border-t" />
+                  </div>
+                  <Form.Group
+                    controlId="formBasicConfirmPassword"
+                    className="tw-mb-6 tw-mt-8"
+                  >
+                    <Row>
+                      <Col md={3} className="d-flex align-items-center">
+                        <Form.Label className="fw-bold tw-text-gray-500 tw-text-sm">
+                          Select a reason
+                        </Form.Label>
+                      </Col>
+                      <Col md={9} className="d-flex align-items-center">
+                        <Dropdown className="tw-w-60">
+                          <Dropdown.Toggle
+                            id="dropdown-basic"
+                            className="tw-w-full tw-h-9 dropdown-toggle-menu"
+                          >
+                            {selectedReason}
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu className="tw-w-full dropdown-menu">
+                            {options.map(({ id, label }) => (
+                              <Dropdown.Item
+                                key={id}
+                                onClick={() => setSelectedReason(label)}
+                              >
+                                {label}
+                              </Dropdown.Item>
+                            ))}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </Col>
+                    </Row>
+                  </Form.Group>
+                  <Button
+                    variant="secondary"
+                    disabled={!selectedReason}
+                    onClick={() => handleDeactivateAccount(selectedReason)}
+                  >
+                    Deactivate Account
+                  </Button>
                 </Tab>
                 <Tab eventKey="security" title="Security">
+                  <div>
+                    <h3 className="tw-text-base tw-font-bold tw-text-gray-500 tw-text-left tw-mt-8">
+                      Set Password
+                    </h3>
+                    <hr className="tw-border-t" />
+                  </div>
                   <Form>
                     <Form.Group
                       controlId="formBasicPassword"
@@ -170,7 +261,7 @@ const Settings: React.FC = () => {
                     >
                       <Row>
                         <Col md={3} className="d-flex align-items-center">
-                          <Form.Label className="fw-bold mb-1 text-end tw-text-gray-900 tw-text-sm">
+                          <Form.Label className="fw-bold tw-text-gray-500 tw-text-sm">
                             New Password
                           </Form.Label>
                         </Col>
@@ -179,7 +270,7 @@ const Settings: React.FC = () => {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="input-field w-full" // Added w-full to make it responsive
+                            className="input-field w-full"
                           />
                         </Col>
                       </Row>
@@ -190,7 +281,7 @@ const Settings: React.FC = () => {
                     >
                       <Row>
                         <Col md={3} className="d-flex align-items-center">
-                          <Form.Label className="fw-bold mb-1 text-end tw-text-gray-900 tw-text-sm">
+                          <Form.Label className="fw-bold tw-text-gray-500 tw-text-sm">
                             Confirm Password
                           </Form.Label>
                         </Col>
@@ -199,14 +290,13 @@ const Settings: React.FC = () => {
                             type="password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="input-field w-full" // Added w-full to make it responsive
+                            className="input-field w-full"
                           />
                         </Col>
                       </Row>
                     </Form.Group>
                     <Button
                       variant="secondary"
-                      className="w-20 mt-3"
                       onClick={(e) =>
                         handleUpdatePassword(e, password, userEmail)
                       }

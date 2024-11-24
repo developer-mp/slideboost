@@ -25,6 +25,24 @@ export const registerUser = createAsyncThunk<
   }
 );
 
+export const sendEmail = createAsyncThunk<
+  { email: string; message?: string },
+  { email: string },
+  { rejectValue: { message: string } }
+>("auth/sendEmail", async ({ email }, { rejectWithValue }) => {
+  try {
+    const response = await authService.sendEmail(email);
+    return { ...response.data, email };
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      return rejectWithValue({
+        message: error.response.data.message || "Could not send email",
+      });
+    }
+    return rejectWithValue({ message: "An unexpected error occurred" });
+  }
+});
+
 export const verifyEmail = createAsyncThunk<
   { email: string; code: string; message?: string },
   { email: string; code: string },
@@ -107,6 +125,41 @@ export const updatePassword = createAsyncThunk<
     if (axios.isAxiosError(error) && error.response) {
       return rejectWithValue({
         message: error.response.data.message || "Failed to update password",
+      });
+    }
+    return rejectWithValue({ message: "An unexpected error occurred" });
+  }
+});
+
+export const resetPassword = createAsyncThunk<
+  { email: string; password: string; message?: string },
+  { email: string; password: string },
+  { rejectValue: { message: string } }
+>("auth/resetPassword", async ({ email, password }, { rejectWithValue }) => {
+  try {
+    const response = await authService.resetPassword(email, password);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      return rejectWithValue({
+        message: error.response.data.message || "Verification failed",
+      });
+    }
+    return rejectWithValue({ message: "An unexpected error occurred" });
+  }
+});
+
+export const deactivateAccount = createAsyncThunk<
+  void,
+  { email: string; reason: string },
+  { rejectValue: { message: string } }
+>("auth/deactivateAccount", async ({ email, reason }, { rejectWithValue }) => {
+  try {
+    await userService.deactivateAccount(email, reason);
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      return rejectWithValue({
+        message: error.response.data.message || "Reset password failed",
       });
     }
     return rejectWithValue({ message: "An unexpected error occurred" });

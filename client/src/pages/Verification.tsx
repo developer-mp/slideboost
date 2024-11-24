@@ -106,7 +106,7 @@ const Verification: React.FC = () => {
                 variant="primary"
                 type="submit"
                 onClick={(e) => handleVerifyEmail(e, userEmail, code)}
-                className="w-40 mt-3"
+                className="w-40 mt-3 button button-primary-auto"
               >
                 Verify
               </Button>

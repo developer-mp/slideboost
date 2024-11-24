@@ -31,6 +31,21 @@ const authService = {
     });
     return response.data;
   },
+  async sendEmail(email: string) {
+    const endpoint = `${config.AUTH_ROUTER}${config.EMAIL_ENDPOINT}`;
+    const response = await apiService.noSecurePostCall(endpoint, {
+      email,
+    });
+    return response;
+  },
+  async resetPassword(email: string, password: string) {
+    const endpoint = `${config.AUTH_ROUTER}${config.RESET_ENDPOINT}`;
+    const response = await apiService.noSecurePostCall(endpoint, {
+      email,
+      password,
+    });
+    return response;
+  },
 };
 
 export default authService;

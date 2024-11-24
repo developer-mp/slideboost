@@ -20,7 +20,6 @@ const transporter = nodemailer.createTransport(smtp);
 
 const AuthService = {
   async createVerificationEmail(
-    name: string,
     email: string,
     verificationCode: string,
     template: string,
@@ -28,7 +27,6 @@ const AuthService = {
   ): Promise<void> {
     try {
       const html = pug.renderFile(`./src/templates/${template}.pug`, {
-        name,
         subject,
         verificationCode,
       });
@@ -47,9 +45,8 @@ const AuthService = {
     }
   },
 
-  sendVerificationEmail(name: string, email: string, verificationCode: string) {
+  sendVerificationEmail(email: string, verificationCode: string) {
     this.createVerificationEmail(
-      name,
       email,
       verificationCode,
       "verificationEmail",

@@ -7,7 +7,11 @@ import { registerUser } from "../store/actions/userAction";
 import { validateName } from "../utils/login/validateName";
 import { validatePassword } from "../utils/login/validatePassword";
 import { validateEmail } from "../utils/login/validateEmail";
-import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
+import {
+  showErrorToast,
+  showSuccessToast,
+  showWarningToast,
+} from "../utils/common/handleToast";
 import PasswordInput from "../components/widgets/PasswordInput";
 
 const Register: React.FC = () => {
@@ -38,7 +42,7 @@ const Register: React.FC = () => {
     const { isEmailRequired, isFormatInvalid } = validateEmail(email);
 
     if (isEmailRequired) {
-      showErrorToast("Email is required");
+      showWarningToast("Email is required");
       return;
     }
     if (isFormatInvalid) {
@@ -59,11 +63,11 @@ const Register: React.FC = () => {
     );
 
     if (isPasswordRequired) {
-      showErrorToast("Password is required");
+      showWarningToast("Password is required");
       return;
     }
     if (isNotPattern) {
-      showErrorToast(
+      showWarningToast(
         "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character"
       );
       return;
@@ -74,7 +78,7 @@ const Register: React.FC = () => {
     }
 
     if (!checked) {
-      showErrorToast(
+      showWarningToast(
         "You must agree to the Terms & Conditions and Privacy Notice"
       );
       return;
