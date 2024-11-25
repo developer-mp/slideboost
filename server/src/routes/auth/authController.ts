@@ -77,16 +77,16 @@ const authController = {
       }
 
       (await pool.query(
-        "UPDATE users SET is_verified = true, verification_code = NULL, expires_at = NULL WHERE email = $1",
+        "UPDATE users SET is_verified = true WHERE email = $1",
         [email]
       )) as DbQueryResultProps;
 
       res.status(201).json({
-        message: "Verification successful",
+        message: "Email verification successful",
       });
     } catch (error) {
-      console.error("Verification email:", error);
-      res.status(500).json({ message: "Verification failed", error });
+      console.error("Email verification failed:", error);
+      res.status(500).json({ message: "Email verification failed", error });
     }
   },
 

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -7,51 +7,17 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { verifyEmail } from "../store/actions/userAction";
 import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
+import VerificationCodeInput from "../components/shared/VerificationCodeInput";
 
 const Verification: React.FC = () => {
   const userEmail = useSelector((state: RootState) => state.user.userEmail);
 
   const [code, setCode] = useState<string>("");
-  const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
   const navigateToLogin = () => {
     navigate("/login");
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const value = e.target.value;
-
-    if (/^\d$/.test(value)) {
-      const newCode = code.split("");
-      newCode[index] = value;
-      setCode(newCode.join(""));
-
-      if (index < 5) {
-        inputsRef.current[index + 1]?.focus();
-      }
-    }
-  };
-
-  const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    if (e.key === "Backspace") {
-      if (!inputsRef.current[index]?.value) {
-        if (index > 0) {
-          inputsRef.current[index - 1]?.focus();
-        }
-      } else {
-        const newCode = code.split("");
-        newCode[index] = "";
-        setCode(newCode.join(""));
-      }
-    }
   };
 
   const handleVerifyEmail = async (
@@ -88,20 +54,7 @@ const Verification: React.FC = () => {
               Enter verification code
             </h2>
             <form className="tw-flex tw-flex-col tw-items-center">
-              <div className="tw-flex tw-gap-2">
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    maxLength={1}
-                    value={code[index] || ""}
-                    onChange={(e) => handleChange(e, index)}
-                    onKeyDown={(e) => handleKeyDown(e, index)}
-                    ref={(el) => (inputsRef.current[index] = el)}
-                    className="tw-w-10 tw-h-10 tw-text-center tw-text-lg tw-border tw-border-gray-300 tw-rounded"
-                  />
-                ))}
-              </div>
+              <VerificationCodeInput code={code} setCode={setCode} />
               <Button
                 variant="primary"
                 type="submit"

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
@@ -12,6 +12,7 @@ import {
 import { validateEmail } from "../utils/login/validateEmail";
 import CustomModal from "../components/shared/CustomModal";
 import { sendEmail } from "../store/actions/userAction";
+import VerificationCodeInput from "../components/shared/VerificationCodeInput";
 
 const Login: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -20,7 +21,6 @@ const Login: React.FC = () => {
   const [showVerificationCode, setShowVerificationCode] =
     useState<boolean>(false);
   const [code, setCode] = useState<string>("");
-  const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   const { navigateToHome, navigateToCreateAccount, navigateToResetPassword } =
     useNavigation();
@@ -80,40 +80,6 @@ const Login: React.FC = () => {
           (error as { message?: string }).message || "Failed to send email";
         showErrorToast(errorMessage);
         console.error("Failed to send email:", error);
-      }
-    }
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const value = e.target.value;
-
-    if (/^\d$/.test(value)) {
-      const newCode = code.split("");
-      newCode[index] = value;
-      setCode(newCode.join(""));
-
-      if (index < 5) {
-        inputsRef.current[index + 1]?.focus();
-      }
-    }
-  };
-
-  const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    if (e.key === "Backspace") {
-      if (!inputsRef.current[index]?.value) {
-        if (index > 0) {
-          inputsRef.current[index - 1]?.focus();
-        }
-      } else {
-        const newCode = code.split("");
-        newCode[index] = "";
-        setCode(newCode.join(""));
       }
     }
   };
@@ -217,23 +183,10 @@ const Login: React.FC = () => {
               controlId="formBasicVerificationCode"
               className="tw-mb-3"
             >
-              <Form.Label className="tw-text-custom-color-blue tw-font-bold tw-text-sm">
+              <Form.Label className="tw-text-custom-color-blue tw-font-bold tw-text-sm tw-mt-3">
                 Verification Code
               </Form.Label>
-              <div className="tw-flex tw-gap-2">
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <input
-                    key={index}
-                    type="text"
-                    maxLength={1}
-                    value={code[index] || ""}
-                    onChange={(e) => handleChange(e, index)}
-                    onKeyDown={(e) => handleKeyDown(e, index)}
-                    ref={(el) => (inputsRef.current[index] = el)}
-                    className="tw-w-10 tw-h-10 tw-text-center tw-text-lg tw-border tw-border-gray-300 tw-rounded"
-                  />
-                ))}
-              </div>
+              <VerificationCodeInput code={code} setCode={setCode} />
             </Form.Group>
           )}
         </Form>
