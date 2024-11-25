@@ -56,7 +56,7 @@ const userSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.status = "fail";
         state.message = null;
-        state.error = action.error.message || "Registration failed";
+        state.error = action.error.message || null;
       })
       .addCase(verifyEmail.pending, (state) => {
         state.status = "loading";
@@ -70,7 +70,7 @@ const userSlice = createSlice({
       .addCase(verifyEmail.rejected, (state, action) => {
         state.status = "fail";
         state.message = null;
-        state.error = action.error.message || "Verification failed";
+        state.error = action.error.message || null;
       })
       .addCase(loginUser.pending, (state) => {
         state.status = "loading";
@@ -87,7 +87,7 @@ const userSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "fail";
-        state.error = action.error.message || "Login failed";
+        state.error = action.error.message || null;
       })
       .addCase(updateUserName.pending, (state) => {
         state.status = "loading";
@@ -99,7 +99,7 @@ const userSlice = createSlice({
       })
       .addCase(updateUserName.rejected, (state, action) => {
         state.status = "fail";
-        state.error = action.error.message || "Failed to update user name";
+        state.error = action.error.message || null;
       })
       .addCase(sendEmail.pending, (state) => {
         state.status = "loading";
@@ -111,20 +111,8 @@ const userSlice = createSlice({
       })
       .addCase(sendEmail.rejected, (state, action) => {
         state.status = "fail";
-        state.error = action.error.message || "Failed to send email";
+        state.error = action.error.message || null;
       })
-      // .addCase(resetPassword.pending, (state) => {
-      //   state.status = "loading";
-      //   state.error = null;
-      // })
-      // .addCase(resetPassword.fulfilled, (state, action) => {
-      //   state.status = "success";
-      //   state.userEmail = action.payload.email;
-      // })
-      // .addCase(resetPassword.rejected, (state, action) => {
-      //   state.status = "fail";
-      //   state.error = action.payload?.message || "Failed to reset password";
-      // })
       .addCase(deactivateAccount.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -135,7 +123,7 @@ const userSlice = createSlice({
       })
       .addCase(deactivateAccount.rejected, (state, action) => {
         state.status = "fail";
-        state.error = action.payload?.message || "Failed to deactivate account";
+        state.error = action.error.message || null;
       });
   },
 });

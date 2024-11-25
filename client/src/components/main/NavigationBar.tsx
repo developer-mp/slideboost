@@ -17,6 +17,8 @@ const NavigationBar: React.FC = () => {
   );
 
   const userName = useSelector((state: RootState) => state.user.userName);
+  const userName1 = useSelector((state: RootState) => state.user);
+  console.log(userName1);
   const firstInitial = getFirstChar(userName);
 
   const handleLogout = () => {

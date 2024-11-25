@@ -66,9 +66,18 @@ const PptController = {
           path: outputFilePath,
         },
       ]);
-    } catch (error) {
-      console.error("Error processing text:", error);
-      res.status(500).json({ error: "Failed to process text" });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while processing the content: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while processing the content");
+      }
+      res
+        .status(500)
+        .json({ error: "An error occurred while processing the content" });
     }
   },
 };

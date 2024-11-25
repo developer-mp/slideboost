@@ -8,6 +8,10 @@ import { AppDispatch } from "../store/store";
 import { verifyEmail } from "../store/actions/userAction";
 import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 import VerificationCodeInput from "../components/shared/VerificationCodeInput";
+import {
+  handleErrorMessage,
+  handleSuccessMessage,
+} from "../utils/common/handleReturnMessage";
 
 const Verification: React.FC = () => {
   const userEmail = useSelector((state: RootState) => state.user.userEmail);
@@ -31,14 +35,13 @@ const Verification: React.FC = () => {
       const resultAction = await dispatch(
         verifyEmail({ email, code })
       ).unwrap();
-      const successMessage = resultAction.message;
+      const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
       setTimeout(() => navigateToLogin(), 2000);
     } catch (error) {
-      const errorMessage =
-        (error as { message?: string }).message || "Verification failed";
+      const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
-      console.error("Verification failed:", error);
+      console.error("Email verification failed:", errorMessage);
     }
   };
 

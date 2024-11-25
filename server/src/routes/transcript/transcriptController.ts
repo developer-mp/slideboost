@@ -26,9 +26,18 @@ const TranscriptController = {
 
       const result = readTextFile(absoluteFilePath);
       res.json({ text: result });
-    } catch (error) {
-      console.error("Error processing text:", error);
-      res.status(500).json({ error: "Failed to process text" });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while processing the text: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while processing the text");
+      }
+      res
+        .status(500)
+        .json({ error: "An error occurred while processing the text" });
     }
   },
   convertImageToText: async (req: Request, res: Response): Promise<void> => {
@@ -50,9 +59,18 @@ const TranscriptController = {
 
       const result = await Tesseract.recognize(buffer, "eng");
       res.json({ text: result.data.text });
-    } catch (error) {
-      console.error("Error processing image:", error);
-      res.status(500).json({ error: "Failed to process image" });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while processing the image: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while processing the image");
+      }
+      res
+        .status(500)
+        .json({ error: "An error occurred while processing the image" });
     }
   },
   convertAudioToText: async (req: Request, res: Response): Promise<void> => {
@@ -95,9 +113,18 @@ const TranscriptController = {
           res.json({ text: scriptOutput.trim() });
         }
       });
-    } catch (error) {
-      console.error("Error processing audio:", error);
-      res.status(500).json({ error: "Failed to process audio" });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while processing the audio: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while processing the audio");
+      }
+      res
+        .status(500)
+        .json({ error: "An error occurred while processing the audio" });
     }
   },
   convertVideoToText: async (req: Request, res: Response): Promise<void> => {
@@ -143,9 +170,18 @@ const TranscriptController = {
           res.json({ text: scriptOutput.trim() });
         }
       });
-    } catch (error) {
-      console.error("Error processing video:", error);
-      res.status(500).json({ error: "Failed to process video" });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while processing the video: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while processing the video");
+      }
+      res
+        .status(500)
+        .json({ error: "An error occurred while processing the video" });
     }
   },
   convertYoutubeToText: async (req: Request, res: Response): Promise<void> => {
@@ -188,9 +224,22 @@ const TranscriptController = {
           res.json({ text: scriptOutput.trim() });
         }
       });
-    } catch (error) {
-      console.error("Error processing video:", error);
-      res.status(500).json({ error: "Failed to process video" });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while processing the Youtube video: ",
+          error.message
+        );
+      } else {
+        console.error(
+          "An unknown error occurred while processing the Youtube video"
+        );
+      }
+      res
+        .status(500)
+        .json({
+          error: "An error occurred while processing the Youtube video",
+        });
     }
   },
 };

@@ -9,13 +9,13 @@ import { DbQueryResultProps } from "../../interfaces/interfaces";
 
 const authController = {
   registerUser: async (req: Request, res: Response) => {
-    const {
-      name,
-      email,
-      password,
-    }: { name: string; email: string; password: string } = req.body;
-
     try {
+      const {
+        name,
+        email,
+        password,
+      }: { name: string; email: string; password: string } = req.body;
+
       const isUserExist = (await pool.query(
         "SELECT email FROM users WHERE email = $1",
         [email]
@@ -40,25 +40,47 @@ const authController = {
         if (verificationCode) {
           AuthService.sendVerificationEmail(email, verificationCode);
         }
-      } catch (error) {
-        console.error("Error sending verification email:", error);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error(
+            "An error occurred while sending the verification email: ",
+            error.message
+          );
+        } else {
+          console.error(
+            "An unknown error occurred while sending the verification email"
+          );
+        }
+        res.status(500).json({
+          error: "An error occurred while sending the verification email",
+        });
       }
 
       res.status(201).json({
         message:
           "Registration successful. Please check your email for verification code",
       });
-    } catch (error) {
-      res.status(500).json({ message: "Registration failed", error });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while registering a user: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while registering a user");
+      }
+      res
+        .status(500)
+        .json({ message: "An error occurred while registering a user" });
     }
   },
 
   verifyEmail: async (req: Request, res: Response) => {
-    const { email, code }: { email: string; code: string } = req.body;
-
     try {
+      const { email, code }: { email: string; code: string } = req.body;
+
       const result = (await pool.query(
-        "SELECT verification_code, expires_at FROM users WHERE email = $1 AND is_verified = true",
+        "SELECT verification_code, expires_at FROM users WHERE email = $1",
         [email]
       )) as DbQueryResultProps;
 
@@ -84,9 +106,20 @@ const authController = {
       res.status(201).json({
         message: "Email verification successful",
       });
-    } catch (error) {
-      console.error("Email verification failed:", error);
-      res.status(500).json({ message: "Email verification failed", error });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while sending the verification email: ",
+          error.message
+        );
+      } else {
+        console.error(
+          "An unknown error occurred while sending the verification"
+        );
+      }
+      res.status(500).json({
+        message: "An error occurred while sending the verification email",
+      });
     }
   },
 
@@ -108,13 +141,23 @@ const authController = {
           name: user.name,
           createdAt: user.created_at,
           plan: user.plan,
+          message: "Login successful",
         });
       } else {
         res.status(401).json({ error: "Invalid credentials" });
       }
-    } catch (error) {
-      console.error("Login failed:", error);
-      res.status(500).json({ message: "Login failed", error });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while loggin in a user: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while loggin in a user");
+      }
+      res
+        .status(500)
+        .json({ message: "An error occurred while loggin in a user", error });
     }
   },
 
@@ -124,10 +167,8 @@ const authController = {
     next: NextFunction
   ): void => {
     const authHeader = req.headers.authorization;
-    // const token = authHeader && authHeader.split(" ")[1];
     const token = authHeader?.split(" ")[1];
 
-    // if (token == null) return res.sendStatus(401);
     if (!token) {
       res.sendStatus(401);
       return;
@@ -141,9 +182,9 @@ const authController = {
   },
 
   updateUserName: async (req: Request, res: Response) => {
-    const { name, email }: { name: string; email: string } = req.body;
-
     try {
+      const { name, email }: { name: string; email: string } = req.body;
+
       const isUserExist = (await pool.query(
         "SELECT email FROM users WHERE email = $1",
         [email]
@@ -159,22 +200,33 @@ const authController = {
       )) as DbQueryResultProps;
 
       if (updateQuery.rowCount === 0) {
-        res.status(400).json({ message: "User name change failed" });
+        res.status(400).json({
+          message: "An error occurred while updating the database",
+        });
       }
 
       res.status(201).json({
         message: "User name updated successfully",
       });
-    } catch (error) {
-      console.error("User name update failed:", error);
-      res.status(500).json({ message: "User name update failed", error });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while updating the user name: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while updating the user name");
+      }
+      res.status(500).json({
+        message: "An error occurred while updating the user name",
+      });
     }
   },
 
   sendEmail: async (req: Request, res: Response) => {
-    const { email }: { email: string } = req.body;
-
     try {
+      const { email }: { email: string } = req.body;
+
       const isUserExist = (await pool.query(
         "SELECT email FROM users WHERE email = $1",
         [email]
@@ -197,23 +249,47 @@ const authController = {
         if (verificationCode) {
           AuthService.sendVerificationEmail(email, verificationCode);
         }
-      } catch (error) {
-        console.error("Error sending verification email:", error);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error(
+            "An error occurred while generating a verification code: ",
+            error.message
+          );
+        } else {
+          console.error(
+            "An unknown error occurred while generating a verification code"
+          );
+        }
+        res.status(500).json({
+          error: "An error occurred while generating a verification code",
+        });
       }
 
       res.status(201).json({
         email: user.email,
         message: "Check your email for verification code",
       });
-    } catch (error) {
-      res.status(500).json({ message: "Email validation failed", error });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while sending the verification email: ",
+          error.message
+        );
+      } else {
+        console.error(
+          "An unknown error occurred while sending the verification email"
+        );
+      }
+      res.status(500).json({
+        message: "An error occurred while sending the verification email",
+      });
     }
   },
 
   resetPassword: async (req: Request, res: Response) => {
-    const { email, password }: { email: string; password: string } = req.body;
-
     try {
+      const { email, password }: { email: string; password: string } = req.body;
+
       const isUserExist = (await pool.query(
         "SELECT email FROM users WHERE email = $1",
         [email]
@@ -232,14 +308,23 @@ const authController = {
       res.status(201).json({
         message: "Password reset successfully",
       });
-    } catch (error) {
-      res.status(500).json({ message: "Password reset failed", error });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while resetting the password: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while resetting the password");
+      }
+      res.status(500).json({ message: "resetting the password" });
     }
   },
 
   deactivateAccount: async (req: Request, res: Response) => {
-    const { email, reason }: { email: string; reason: string } = req.body;
     try {
+      const { email, reason }: { email: string; reason: string } = req.body;
+
       const result = (await pool.query("DELETE FROM users WHERE email = $1", [
         email,
       ])) as DbQueryResultProps;
@@ -253,9 +338,18 @@ const authController = {
         [reason]
       )) as DbQueryResultProps;
       res.status(200).json({ message: "Account deactivated successfully" });
-    } catch (error) {
-      console.error("Account deactivation failed:", error);
-      res.status(500).json({ message: "Account deactivation failed", error });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while deactivating the account: ",
+          error.message
+        );
+      } else {
+        console.error(
+          "An unknown error occurred while deactivating the account"
+        );
+      }
+      res.status(500).json({ message: "deactivating the account" });
     }
   },
 };

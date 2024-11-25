@@ -45,9 +45,20 @@ const AiController = {
           res.json({ text: scriptOutput.trim() });
         }
       });
-    } catch (error) {
-      console.error("Error formatting transcript:", error);
-      res.status(500).json({ error: "Failed to format transcript" });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while formatting the transcript: ",
+          error.message
+        );
+      } else {
+        console.error(
+          "An unknown error occurred while formatting the transcript"
+        );
+      }
+      res
+        .status(500)
+        .json({ error: "An error occurred while formatting the transcript" });
     }
   },
 };
