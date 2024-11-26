@@ -159,7 +159,7 @@ const Login: React.FC = () => {
         show={showModal}
         handleClose={() => setShowModal(false)}
         title="Confirm Email To Reset Password"
-        actionLabel={showVerificationCode ? "Reset" : "Send"}
+        actionLabel={showVerificationCode ? "Submit" : "Send"}
         onAction={
           showVerificationCode
             ? () => handleVerifyEmail(email, code)

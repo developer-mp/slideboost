@@ -1,3 +1,5 @@
+import { MenuItem } from "./types";
+
 export interface FormDataProps {
   name: string;
   email: string;
@@ -18,13 +20,6 @@ export interface PricingPlanProps {
 
 export interface ProtectedRouteProps {
   element: React.ReactElement;
-}
-
-export interface LoginResponseProps {
-  token: string;
-  name: string;
-  createdAt: string;
-  plan: string;
 }
 
 export interface PPTTemplateProps {
@@ -76,4 +71,48 @@ export interface TemplateProps {
 export interface TemplatesDisplayProps {
   templates: TemplateProps[];
   useCarousel?: boolean;
+}
+
+export interface SideBarProps {
+  selectedItem: MenuItem | null;
+  onItemClick: (item: MenuItem) => void;
+}
+
+export interface CustomDropdownProps {
+  options: { id: string; label: string }[];
+  selectedOption: string;
+  onChange: (option: string) => void;
+}
+
+export interface CustomModalProps {
+  show: boolean;
+  handleClose: () => void;
+  title: string;
+  children: React.ReactNode;
+  actionLabel?: string;
+  onAction?: () => void;
+}
+
+export interface VerificationCodeInputProps {
+  code: string;
+  setCode: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface LoginModalProps {
+  show: boolean;
+  handleClose: () => void;
+  onGoogleClick: () => void;
+  onEmailClick: () => void;
+}
+
+export interface FileListDisplayProps {
+  mediaFiles: FileDetailProps[];
+  showSize?: boolean;
+  showDate?: boolean;
+  showCheckbox?: boolean;
+  selectedMediaFiles?: FileDetailProps[];
+  onSelect?: (selectedFiles: FileDetailProps[]) => void;
+  setMediaFiles?: React.Dispatch<React.SetStateAction<FileDetailProps[]>>;
+  showRemoveButton?: boolean;
+  removeButtonPosition?: "margin-left";
 }

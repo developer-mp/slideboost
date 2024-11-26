@@ -1,31 +1,6 @@
 import apiService from "../app/apiService";
 import { config } from "../../../env.config";
 
-const userService = {
-  async updateUserName(name: string, email: string) {
-    const endpoint = `${config.AUTH_ROUTER}${config.USER_ENDPOINT}`;
-    const response = await apiService.noSecurePostCall(endpoint, {
-      name,
-      email,
-    });
-    return response.data;
-  },
-  async updatePassword(password: string, email: string) {
-    const endpoint = `${config.AUTH_ROUTER}${config.PASSWORD_ENDPOINT}`;
-    const response = await apiService.noSecurePostCall(endpoint, {
-      password,
-      email,
-    });
-    return response.data;
-  },
-  async deactivateAccount(email: string, reason: string) {
-    const endpoint = `${config.AUTH_ROUTER}${config.DEACTIVATION_ENDPOINT}`;
-    const response = await apiService.noSecurePostCall(endpoint, {
-      email,
-      reason,
-    });
-    return response.data;
-  },
-};
+const userService = {};
 
 export default userService;

@@ -103,38 +103,35 @@ const Settings: React.FC = () => {
 
     if (!isPasswordRequired && !isNotPattern && !isNotMatch) {
       try {
-        await dispatch(updatePassword({ password, email })).unwrap();
-        // await userService.updatePassword(password, email);
-        showSuccessToast("Password updated successfully");
+        const resultAction = await dispatch(
+          updatePassword({ password, email })
+        ).unwrap();
+        const successMessage = handleSuccessMessage(resultAction);
+        showSuccessToast(successMessage);
         setPassword("");
         setConfirmPassword("");
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          showErrorToast("Error updating user password");
-          console.error("Error updating user password:", error.message);
-        } else {
-          showErrorToast("Error updating user password");
-          console.error("Error updating user password:", error);
-        }
+      } catch (error) {
+        const errorMessage = handleErrorMessage(error);
+        showErrorToast(errorMessage);
+        console.error("Error updating user password: ", errorMessage);
       }
     }
   };
 
   const handleDeactivateAccount = async (reason: string) => {
     try {
-      await dispatch(deactivateAccount({ email: userEmail, reason })).unwrap();
+      const resultAction = await dispatch(
+        deactivateAccount({ email: userEmail, reason })
+      ).unwrap();
       dispatch(logout());
       navigateToHome();
-      showSuccessToast("Your account has been deactivated successfully");
+      const successMessage = handleSuccessMessage(resultAction);
+      showSuccessToast(successMessage);
       setSelectedReason("");
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        showErrorToast("Error deactivating account");
-        console.error("Error deactivating account:", error.message);
-      } else {
-        showErrorToast("An unexpected error occurred");
-        console.error("An unexpected error occurred:", error);
-      }
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error("Account deactivation failed: ", errorMessage);
     }
   };
 

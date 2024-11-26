@@ -1,9 +1,5 @@
 import React, { useRef } from "react";
-
-interface VerificationCodeInputProps {
-  code: string;
-  setCode: React.Dispatch<React.SetStateAction<string>>;
-}
+import { VerificationCodeInputProps } from "../../interfaces/interfaces";
 
 const VerificationCodeInput: React.FC<VerificationCodeInputProps> = ({
   code,

@@ -1,13 +1,7 @@
 import { Button, Modal } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
 import { TfiEmail } from "react-icons/tfi";
-
-interface LoginModalProps {
-  show: boolean;
-  handleClose: () => void;
-  onGoogleClick: () => void;
-  onEmailClick: () => void;
-}
+import { LoginModalProps } from "../../interfaces/interfaces";
 
 const LoginModal: React.FC<LoginModalProps> = ({
   show,

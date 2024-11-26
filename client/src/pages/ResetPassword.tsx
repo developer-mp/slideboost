@@ -12,7 +12,7 @@ import {
   handleSuccessMessage,
 } from "../utils/common/handleActionMessage";
 
-const ForgotPassword: React.FC = () => {
+const ResetPassword: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const { navigateToLogin } = useNavigation();
@@ -110,4 +110,4 @@ const ForgotPassword: React.FC = () => {
   );
 };
 
-export default ForgotPassword;
+export default ResetPassword;

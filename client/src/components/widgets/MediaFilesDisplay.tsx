@@ -1,20 +1,11 @@
 import { getFileIcon } from "../../utils/ppt/getFileIcon";
 import { truncateText } from "../../utils/common/truncateText";
 import { getFileSize } from "../../utils/ppt/getFileSize";
-import { FileDetailProps } from "../../interfaces/interfaces";
+import {
+  FileDetailProps,
+  FileListDisplayProps,
+} from "../../interfaces/interfaces";
 import { FiTrash2 } from "react-icons/fi";
-
-interface FileListDisplayProps {
-  mediaFiles: FileDetailProps[];
-  showSize?: boolean;
-  showDate?: boolean;
-  showCheckbox?: boolean;
-  selectedMediaFiles?: FileDetailProps[];
-  onSelect?: (selectedFiles: FileDetailProps[]) => void;
-  setMediaFiles?: React.Dispatch<React.SetStateAction<FileDetailProps[]>>;
-  showRemoveButton?: boolean;
-  removeButtonPosition?: "margin-left";
-}
 
 const MediaFilesDisplay: React.FC<FileListDisplayProps> = ({
   mediaFiles,

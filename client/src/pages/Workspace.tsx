@@ -4,10 +4,9 @@ import Dashboard from "../components/main/Dashboard";
 import MediaMenu from "../components/main/MediaMenu";
 import TemplatesMenu from "../components/main/TemplatesMenu";
 import Projects from "../components/main/Projects";
+import { MenuItem } from "../interfaces/types";
 
 const Workspace: React.FC = () => {
-  type MenuItem = "dashboard" | "media" | "projects" | "templates";
-
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(
     "dashboard"
   );

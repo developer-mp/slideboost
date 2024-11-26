@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import authService from "../../services/auth/authService";
-import userService from "../../services/user/userService";
 
 export const registerUser = createAsyncThunk<
   { name: string; email: string; message: string },
@@ -79,7 +78,7 @@ export const updateUserName = createAsyncThunk<
   { rejectValue: { message: string } }
 >("user/updateUserName", async ({ name, email }, { rejectWithValue }) => {
   try {
-    const { message } = await userService.updateUserName(name, email);
+    const { message } = await authService.updateUserName(name, email);
     return { name, message };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -99,7 +98,7 @@ export const updatePassword = createAsyncThunk<
   { rejectValue: { message: string } }
 >("user/updatePassword", async ({ password, email }, { rejectWithValue }) => {
   try {
-    const { message } = await userService.updatePassword(password, email);
+    const { message } = await authService.updatePassword(password, email);
     return { message };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -137,7 +136,7 @@ export const deactivateAccount = createAsyncThunk<
   { rejectValue: { message: string } }
 >("auth/deactivateAccount", async ({ email, reason }, { rejectWithValue }) => {
   try {
-    const { message } = await userService.deactivateAccount(email, reason);
+    const { message } = await authService.deactivateAccount(email, reason);
     return { message };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

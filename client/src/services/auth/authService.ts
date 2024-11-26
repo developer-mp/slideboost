@@ -34,6 +34,30 @@ const authService = {
     });
     return response.data;
   },
+  async updateUserName(name: string, email: string) {
+    const endpoint = `${config.AUTH_ROUTER}${config.USER_ENDPOINT}`;
+    const response = await apiService.noSecurePostCall(endpoint, {
+      name,
+      email,
+    });
+    return response.data;
+  },
+  async updatePassword(password: string, email: string) {
+    const endpoint = `${config.AUTH_ROUTER}${config.PASSWORD_ENDPOINT}`;
+    const response = await apiService.noSecurePostCall(endpoint, {
+      password,
+      email,
+    });
+    return response.data;
+  },
+  async deactivateAccount(email: string, reason: string) {
+    const endpoint = `${config.AUTH_ROUTER}${config.DEACTIVATION_ENDPOINT}`;
+    const response = await apiService.noSecurePostCall(endpoint, {
+      email,
+      reason,
+    });
+    return response.data;
+  },
 };
 
 export default authService;

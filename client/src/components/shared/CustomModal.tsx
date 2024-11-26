@@ -1,14 +1,6 @@
 import { useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
-
-interface CustomModalProps {
-  show: boolean;
-  handleClose: () => void;
-  title: string;
-  children: React.ReactNode;
-  actionLabel?: string;
-  onAction?: () => void;
-}
+import { CustomModalProps } from "../../interfaces/interfaces";
 
 const CustomModal: React.FC<CustomModalProps> = ({
   show,

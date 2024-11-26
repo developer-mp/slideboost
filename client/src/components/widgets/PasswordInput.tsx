@@ -1,8 +1,6 @@
-import { useRef, useEffect, InputHTMLAttributes } from "react";
-import { Form, FormControlProps } from "react-bootstrap";
-
-type PasswordInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> &
-  FormControlProps;
+import { useRef, useEffect } from "react";
+import { Form } from "react-bootstrap";
+import { PasswordInputProps } from "../../interfaces/types";
 
 const PasswordInput: React.FC<PasswordInputProps> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);

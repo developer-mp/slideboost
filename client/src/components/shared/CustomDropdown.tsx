@@ -1,10 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-
-interface CustomDropdownProps {
-  options: { id: string; label: string }[];
-  selectedOption: string;
-  onChange: (option: string) => void;
-}
+import { CustomDropdownProps } from "../../interfaces/interfaces";
 
 const CustomDropdown: React.FC<CustomDropdownProps> = ({
   options,

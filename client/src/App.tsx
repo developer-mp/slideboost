@@ -5,7 +5,7 @@ import Workspace from "./pages/Workspace";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Verification from "./pages/Verification";
-import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoute from "./components/widgets/ProtectedRoute";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
@@ -32,7 +32,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/verify" element={<Verification />} />
-            <Route path="/reset" element={<ForgotPassword />} />
+            <Route path="/reset" element={<ResetPassword />} />
             <Route
               path="/profile"
               element={<ProtectedRoute element={<Profile />} />}

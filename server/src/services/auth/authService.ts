@@ -53,17 +53,6 @@ const AuthService = {
       "Email Verification"
     );
   },
-
-  // async sendForgotPasswordEmail(firstName, lastName, email, url) {
-  //   this.createVerificationEmail(
-  //     firstName,
-  //     lastName,
-  //     email,
-  //     url,
-  //     "forgotPassword",
-  //     "Console password reset"
-  //   );
-  // },
 };
 
 export default AuthService;

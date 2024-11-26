@@ -2,13 +2,7 @@ import { RxDashboard } from "react-icons/rx";
 import { MdOutlinePermMedia } from "react-icons/md";
 import { FaRegFolder, FaRegFileAlt } from "react-icons/fa";
 import { Row, Col } from "react-bootstrap";
-
-type MenuItem = "dashboard" | "media" | "templates" | "projects";
-
-interface SideBarProps {
-  selectedItem: MenuItem | null;
-  onItemClick: (item: MenuItem) => void;
-}
+import { SideBarProps } from "../../interfaces/interfaces";
 
 const SideBar: React.FC<SideBarProps> = ({ selectedItem, onItemClick }) => {
   return (
