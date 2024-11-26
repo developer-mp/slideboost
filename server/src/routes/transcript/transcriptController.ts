@@ -38,6 +38,7 @@ const TranscriptController = {
       res
         .status(500)
         .json({ error: "An error occurred while processing the text" });
+      return;
     }
   },
   convertImageToText: async (req: Request, res: Response): Promise<void> => {
@@ -71,6 +72,7 @@ const TranscriptController = {
       res
         .status(500)
         .json({ error: "An error occurred while processing the image" });
+      return;
     }
   },
   convertAudioToText: async (req: Request, res: Response): Promise<void> => {
@@ -125,6 +127,7 @@ const TranscriptController = {
       res
         .status(500)
         .json({ error: "An error occurred while processing the audio" });
+      return;
     }
   },
   convertVideoToText: async (req: Request, res: Response): Promise<void> => {
@@ -182,6 +185,7 @@ const TranscriptController = {
       res
         .status(500)
         .json({ error: "An error occurred while processing the video" });
+      return;
     }
   },
   convertYoutubeToText: async (req: Request, res: Response): Promise<void> => {
@@ -235,11 +239,10 @@ const TranscriptController = {
           "An unknown error occurred while processing the Youtube video"
         );
       }
-      res
-        .status(500)
-        .json({
-          error: "An error occurred while processing the Youtube video",
-        });
+      res.status(500).json({
+        error: "An error occurred while processing the Youtube video",
+      });
+      return;
     }
   },
 };

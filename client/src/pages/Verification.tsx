@@ -11,7 +11,7 @@ import VerificationCodeInput from "../components/shared/VerificationCodeInput";
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../utils/common/handleReturnMessage";
+} from "../utils/common/handleActionMessage";
 
 const Verification: React.FC = () => {
   const userEmail = useSelector((state: RootState) => state.user.userEmail);

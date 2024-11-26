@@ -13,6 +13,10 @@ import {
   showWarningToast,
 } from "../utils/common/handleToast";
 import PasswordInput from "../components/widgets/PasswordInput";
+import {
+  handleErrorMessage,
+  handleSuccessMessage,
+} from "../utils/common/handleActionMessage";
 
 const Register: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -96,14 +100,13 @@ const Register: React.FC = () => {
         const resultAction = await dispatch(
           registerUser({ name, email, password })
         ).unwrap();
-        const successMessage = resultAction.message;
+        const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
         setTimeout(() => navigateToVerification(), 2000);
       } catch (error) {
-        const errorMessage =
-          (error as { message?: string }).message || "Registration failed";
+        const errorMessage = handleErrorMessage(error);
         showErrorToast(errorMessage);
-        console.error("Registration failed:", error);
+        console.error("Registration failed: ", errorMessage);
       }
     }
   };

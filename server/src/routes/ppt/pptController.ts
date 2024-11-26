@@ -78,6 +78,7 @@ const PptController = {
       res
         .status(500)
         .json({ error: "An error occurred while processing the content" });
+      return;
     }
   },
 };

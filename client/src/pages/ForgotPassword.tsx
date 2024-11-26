@@ -6,7 +6,11 @@ import { useNavigation } from "../utils/login/useNavigation";
 import { validatePassword } from "../utils/login/validatePassword";
 import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 import PasswordInput from "../components/widgets/PasswordInput";
-import { resetPassword } from "../store/actions/userAction";
+import { updatePassword } from "../store/actions/userAction";
+import {
+  handleErrorMessage,
+  handleSuccessMessage,
+} from "../utils/common/handleActionMessage";
 
 const ForgotPassword: React.FC = () => {
   const [password, setPassword] = useState<string>("");
@@ -45,16 +49,15 @@ const ForgotPassword: React.FC = () => {
     if (!isPasswordRequired && !isNotPattern && !isNotMatch) {
       try {
         const resultAction = await dispatch(
-          resetPassword({ email, password })
+          updatePassword({ email, password })
         ).unwrap();
-        const successMessage = resultAction.message;
+        const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
         navigateToLogin();
       } catch (error) {
-        const errorMessage =
-          (error as { message?: string }).message || "Reset password failed";
+        const errorMessage = handleErrorMessage(error);
         showErrorToast(errorMessage);
-        console.error("Reset password failed:", error);
+        console.error("Reset password failed: ", errorMessage);
       }
     }
   };

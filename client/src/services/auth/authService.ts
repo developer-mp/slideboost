@@ -9,7 +9,7 @@ const authService = {
       email,
       password,
     });
-    return response;
+    return response.data;
   },
   async verifyEmail(email: string, code: string) {
     const endpoint = `${config.AUTH_ROUTER}${config.VERIFY_ENDPOINT}`;
@@ -17,7 +17,7 @@ const authService = {
       email,
       code,
     });
-    return response;
+    return response.data;
   },
   async loginUser(email: string, password: string) {
     const endpoint = `${config.AUTH_ROUTER}${config.LOGIN_ENDPOINT}`;
@@ -32,15 +32,7 @@ const authService = {
     const response = await apiService.noSecurePostCall(endpoint, {
       email,
     });
-    return response;
-  },
-  async resetPassword(email: string, password: string) {
-    const endpoint = `${config.AUTH_ROUTER}${config.RESET_ENDPOINT}`;
-    const response = await apiService.noSecurePostCall(endpoint, {
-      email,
-      password,
-    });
-    return response;
+    return response.data;
   },
 };
 

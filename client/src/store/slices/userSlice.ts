@@ -51,7 +51,7 @@ const userSlice = createSlice({
         state.status = "success";
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
-        state.message = action.payload.message || null;
+        state.message = action.payload.message;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = "fail";
@@ -65,7 +65,7 @@ const userSlice = createSlice({
       })
       .addCase(verifyEmail.fulfilled, (state, action) => {
         state.status = "success";
-        state.message = action.payload.message || null;
+        state.message = action.payload.message;
       })
       .addCase(verifyEmail.rejected, (state, action) => {
         state.status = "fail";
@@ -83,6 +83,7 @@ const userSlice = createSlice({
         state.userName = action.payload.name;
         state.createdAt = action.payload.createdAt;
         state.plan = action.payload.plan;
+        state.message = action.payload.message;
         setToken(action.payload.token);
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -95,7 +96,8 @@ const userSlice = createSlice({
       })
       .addCase(updateUserName.fulfilled, (state, action) => {
         state.status = "success";
-        state.userName = action.payload;
+        state.userName = action.payload.name;
+        state.message = action.payload.message;
       })
       .addCase(updateUserName.rejected, (state, action) => {
         state.status = "fail";
@@ -108,6 +110,7 @@ const userSlice = createSlice({
       .addCase(sendEmail.fulfilled, (state, action) => {
         state.status = "success";
         state.userEmail = action.payload.email;
+        state.message = action.payload.message;
       })
       .addCase(sendEmail.rejected, (state, action) => {
         state.status = "fail";
@@ -117,9 +120,10 @@ const userSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      .addCase(deactivateAccount.fulfilled, (state) => {
+      .addCase(deactivateAccount.fulfilled, (state, action) => {
         state.status = "success";
         state.isAuthenticated = false;
+        state.message = action.payload.message;
       })
       .addCase(deactivateAccount.rejected, (state, action) => {
         state.status = "fail";

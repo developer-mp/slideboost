@@ -59,6 +59,7 @@ const AiController = {
       res
         .status(500)
         .json({ error: "An error occurred while formatting the transcript" });
+      return;
     }
   },
 };

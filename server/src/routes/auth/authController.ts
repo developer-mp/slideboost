@@ -8,13 +8,18 @@ import { config } from "../../../env.config";
 import { DbQueryResultProps } from "../../interfaces/interfaces";
 
 const authController = {
-  registerUser: async (req: Request, res: Response) => {
+  registerUser: async (req: Request, res: Response): Promise<void> => {
     try {
       const {
         name,
         email,
         password,
       }: { name: string; email: string; password: string } = req.body;
+
+      if (!name || !email || !password) {
+        res.status(400).json({ message: "Invalid input parameters" });
+        return;
+      }
 
       const isUserExist = (await pool.query(
         "SELECT email FROM users WHERE email = $1",
@@ -25,6 +30,7 @@ const authController = {
 
       if (userExists > 0) {
         res.status(400).json({ message: "User already exists" });
+        return;
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -54,11 +60,11 @@ const authController = {
         res.status(500).json({
           error: "An error occurred while sending the verification email",
         });
+        return;
       }
 
       res.status(201).json({
-        message:
-          "Registration successful. Please check your email for verification code",
+        message: "Check your email for verification code",
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -72,6 +78,7 @@ const authController = {
       res
         .status(500)
         .json({ message: "An error occurred while registering a user" });
+      return;
     }
   },
 
@@ -86,11 +93,13 @@ const authController = {
 
       if (result.rowCount === 0) {
         res.status(400).json({ message: "Invalid email" });
+        return;
       }
 
       const user = result.rows[0];
       if (user.verification_code !== code) {
         res.status(400).json({ message: "Invalid verification code" });
+        return;
       }
 
       const now = new Date();
@@ -120,6 +129,7 @@ const authController = {
       res.status(500).json({
         message: "An error occurred while sending the verification email",
       });
+      return;
     }
   },
 
@@ -136,15 +146,17 @@ const authController = {
         const token = jwt.sign({ userId: user.id }, config.JWT_SECRET, {
           expiresIn: "1h",
         });
-        res.json({
+        res.status(200).json({
           token: token,
           name: user.name,
+          email: user.email,
           createdAt: user.created_at,
           plan: user.plan,
           message: "Login successful",
         });
       } else {
         res.status(401).json({ error: "Invalid credentials" });
+        return;
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -153,11 +165,12 @@ const authController = {
           error.message
         );
       } else {
-        console.error("An unknown error occurred while loggin in a user");
+        console.error("An unknown error occurred while loggin in the user");
       }
       res
         .status(500)
-        .json({ message: "An error occurred while loggin in a user", error });
+        .json({ message: "An error occurred while loggin in the user", error });
+      return;
     }
   },
 
@@ -192,6 +205,7 @@ const authController = {
 
       if (isUserExist.rowCount === 0) {
         res.status(400).json({ message: "User does not exist" });
+        return;
       }
 
       const updateQuery = (await pool.query(
@@ -203,6 +217,7 @@ const authController = {
         res.status(400).json({
           message: "An error occurred while updating the database",
         });
+        return;
       }
 
       res.status(201).json({
@@ -220,6 +235,46 @@ const authController = {
       res.status(500).json({
         message: "An error occurred while updating the user name",
       });
+      return;
+    }
+  },
+
+  updatePassword: async (req: Request, res: Response) => {
+    try {
+      const { email, password }: { email: string; password: string } = req.body;
+
+      const isUserExist = (await pool.query(
+        "SELECT email FROM users WHERE email = $1",
+        [email]
+      )) as DbQueryResultProps;
+
+      if (isUserExist.rowCount === 0) {
+        res.status(404).json({ message: "User not found" });
+        return;
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+      (await pool.query(
+        "UPDATE users SET password = $1 WHERE email = $2 RETURNING *",
+        [hashedPassword, email]
+      )) as DbQueryResultProps;
+
+      res.status(201).json({
+        message: "Password reset successfully",
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while resetting the password: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while resetting the password");
+      }
+      res
+        .status(500)
+        .json({ message: "An error occurred while resetting the password" });
+      return;
     }
   },
 
@@ -234,6 +289,7 @@ const authController = {
 
       if (isUserExist.rowCount === 0) {
         res.status(404).json({ message: "User not found" });
+        return;
       }
       const user = isUserExist.rows[0];
 
@@ -263,6 +319,7 @@ const authController = {
         res.status(500).json({
           error: "An error occurred while generating a verification code",
         });
+        return;
       }
 
       res.status(201).json({
@@ -283,41 +340,7 @@ const authController = {
       res.status(500).json({
         message: "An error occurred while sending the verification email",
       });
-    }
-  },
-
-  resetPassword: async (req: Request, res: Response) => {
-    try {
-      const { email, password }: { email: string; password: string } = req.body;
-
-      const isUserExist = (await pool.query(
-        "SELECT email FROM users WHERE email = $1",
-        [email]
-      )) as DbQueryResultProps;
-
-      if (isUserExist.rowCount === 0) {
-        res.status(404).json({ message: "User not found" });
-      }
-
-      const hashedPassword = await bcrypt.hash(password, 10);
-      (await pool.query(
-        "UPDATE users SET password = $1 WHERE email = $2 RETURNING *",
-        [hashedPassword, email]
-      )) as DbQueryResultProps;
-
-      res.status(201).json({
-        message: "Password reset successfully",
-      });
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while resetting the password: ",
-          error.message
-        );
-      } else {
-        console.error("An unknown error occurred while resetting the password");
-      }
-      res.status(500).json({ message: "resetting the password" });
+      return;
     }
   },
 
@@ -331,6 +354,7 @@ const authController = {
 
       if (result.rowCount === 0) {
         res.status(404).json({ message: "User not found" });
+        return;
       }
 
       (await pool.query(
@@ -349,7 +373,10 @@ const authController = {
           "An unknown error occurred while deactivating the account"
         );
       }
-      res.status(500).json({ message: "deactivating the account" });
+      res
+        .status(500)
+        .json({ message: "An error occurred while deactivating the account" });
+      return;
     }
   },
 };

@@ -24,6 +24,10 @@ import { validatePassword } from "../utils/login/validatePassword";
 import PasswordInput from "../components/widgets/PasswordInput";
 import { deactivationReasons } from "../data/deactivationReasons";
 import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
+import {
+  handleErrorMessage,
+  handleSuccessMessage,
+} from "../utils/common/handleActionMessage";
 
 const Settings: React.FC = () => {
   const userEmail = useSelector((state: RootState) => state.user.userEmail);
@@ -55,21 +59,21 @@ const Settings: React.FC = () => {
 
     const isValidName = validateName(name);
 
-    if (isValidName) {
-      try {
-        await dispatch(updateUserName({ name, email })).unwrap();
-        showSuccessToast("User name updated successfully");
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          showErrorToast("Error updating user name");
-          console.error("Error updating user name:", error.message);
-        } else {
-          showErrorToast("Error updating user name");
-          console.error("Error updating user name:", error);
-        }
-      }
-    } else {
+    if (!isValidName) {
       showErrorToast("Name is required");
+      return;
+    }
+
+    try {
+      const resultAction = await dispatch(
+        updateUserName({ name, email })
+      ).unwrap();
+      const successMessage = handleSuccessMessage(resultAction);
+      showSuccessToast(successMessage);
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error("Error updating user name: ", errorMessage);
     }
   };
 

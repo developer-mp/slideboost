@@ -13,6 +13,10 @@ import { validateEmail } from "../utils/login/validateEmail";
 import CustomModal from "../components/shared/CustomModal";
 import { sendEmail } from "../store/actions/userAction";
 import VerificationCodeInput from "../components/shared/VerificationCodeInput";
+import {
+  handleErrorMessage,
+  handleSuccessMessage,
+} from "../utils/common/handleActionMessage";
 
 const Login: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -43,17 +47,16 @@ const Login: React.FC = () => {
     }
 
     try {
-      await dispatch(loginUser({ email, password })).unwrap();
-      showSuccessToast("Login successful");
+      const resultAction = await dispatch(
+        loginUser({ email, password })
+      ).unwrap();
+      const successMessage = handleSuccessMessage(resultAction);
+      showSuccessToast(successMessage);
       setTimeout(() => navigateToHome(), 2000);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        showErrorToast("Error logging in");
-        console.error("Error logging in:", error.message);
-      } else {
-        showErrorToast("An unexpected error occurred");
-        console.error("An unexpected error occurred:", error);
-      }
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error("Login failed: ", errorMessage);
     }
   };
 
@@ -72,14 +75,13 @@ const Login: React.FC = () => {
     if (!isEmailRequired && !isFormatInvalid) {
       try {
         const resultAction = await dispatch(sendEmail({ email })).unwrap();
-        const successMessage = resultAction.message;
+        const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
         setShowVerificationCode(true);
       } catch (error) {
-        const errorMessage =
-          (error as { message?: string }).message || "Failed to send email";
+        const errorMessage = handleErrorMessage(error);
         showErrorToast(errorMessage);
-        console.error("Failed to send email:", error);
+        console.error("Failed to send email: ", errorMessage);
       }
     }
   };
@@ -89,14 +91,13 @@ const Login: React.FC = () => {
       const resultAction = await dispatch(
         verifyEmail({ email, code })
       ).unwrap();
-      const successMessage = resultAction.message;
+      const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
       navigateToResetPassword();
     } catch (error) {
-      const errorMessage =
-        (error as { message?: string }).message || "Verification failed";
+      const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
-      console.error("Verification failed:", error);
+      console.error("Verification failed: ", error);
     }
   };
 

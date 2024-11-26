@@ -2,62 +2,47 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import authService from "../../services/auth/authService";
 import userService from "../../services/user/userService";
-import { LoginResponseProps } from "../../interfaces/interfaces";
 
 export const registerUser = createAsyncThunk<
-  { name: string; email: string; message?: string },
+  { name: string; email: string; message: string },
   { name: string; email: string; password: string },
   { rejectValue: { message: string } }
 >(
   "auth/registerUser",
   async ({ name, email, password }, { rejectWithValue }) => {
     try {
-      const response = await authService.registerUser(name, email, password);
-      return { ...response.data, name, email };
+      const { message } = await authService.registerUser(name, email, password);
+      return { name, email, message };
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         return rejectWithValue({
-          message: error.response.data.message || "Registration failed",
+          message: error.response.data.message,
         });
       }
-      return rejectWithValue({ message: "An unexpected error occurred" });
+      return rejectWithValue({
+        message: "An unknown error occurred while registering a user",
+      });
     }
   }
 );
 
-export const sendEmail = createAsyncThunk<
-  { email: string; message?: string },
-  { email: string },
-  { rejectValue: { message: string } }
->("auth/sendEmail", async ({ email }, { rejectWithValue }) => {
-  try {
-    const response = await authService.sendEmail(email);
-    return { ...response.data, email };
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      return rejectWithValue({
-        message: error.response.data.message || "Could not send email",
-      });
-    }
-    return rejectWithValue({ message: "An unexpected error occurred" });
-  }
-});
-
 export const verifyEmail = createAsyncThunk<
-  { email: string; code: string; message?: string },
+  { message: string },
   { email: string; code: string },
   { rejectValue: { message: string } }
 >("auth/verifyEmail", async ({ email, code }, { rejectWithValue }) => {
   try {
-    const response = await authService.verifyEmail(email, code);
-    return response.data;
+    const { message } = await authService.verifyEmail(email, code);
+    return { message };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       return rejectWithValue({
-        message: error.response.data.message || "Verification failed",
+        message: error.response.data.message,
       });
     }
-    return rejectWithValue({ message: "An unexpected error occurred" });
+    return rejectWithValue({
+      message: "An unknown error occurred while sending the verification email",
+    });
   }
 });
 
@@ -68,100 +53,100 @@ export const loginUser = createAsyncThunk<
     email: string;
     createdAt: string;
     plan: string;
-    message?: string;
+    message: string;
   },
   { email: string; password: string },
   { rejectValue: { message: string } }
 >("auth/loginUser", async ({ email, password }, { rejectWithValue }) => {
   try {
-    const response: LoginResponseProps = await authService.loginUser(
-      email,
-      password
-    );
-    const { token, name, createdAt, plan } = response;
-    return {
-      token,
-      name,
-      email,
-      createdAt,
-      plan,
-    };
+    const response = await authService.loginUser(email, password);
+    return response;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       return rejectWithValue({
-        message: error.response.data.message || "Login failed",
+        message: error.response.data.message,
       });
     }
-    return rejectWithValue({ message: "An unexpected error occurred" });
+    return rejectWithValue({
+      message: "An unknown error occurred while loggin in the user",
+    });
   }
 });
 
 export const updateUserName = createAsyncThunk<
-  string,
+  { name: string; message: string },
   { name: string; email: string },
   { rejectValue: { message: string } }
 >("user/updateUserName", async ({ name, email }, { rejectWithValue }) => {
   try {
-    await userService.updateUserName(name, email);
-    return name;
+    const { message } = await userService.updateUserName(name, email);
+    return { name, message };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       return rejectWithValue({
-        message: error.response.data.message || "Failed to update password",
+        message: error.response.data.message,
       });
     }
-    return rejectWithValue({ message: "An unexpected error occurred" });
+    return rejectWithValue({
+      message: "An unknown error occurred while updating the user name",
+    });
   }
 });
 
 export const updatePassword = createAsyncThunk<
-  void,
+  { message: string },
   { password: string; email: string },
   { rejectValue: { message: string } }
 >("user/updatePassword", async ({ password, email }, { rejectWithValue }) => {
   try {
-    await userService.updatePassword(password, email);
+    const { message } = await userService.updatePassword(password, email);
+    return { message };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       return rejectWithValue({
-        message: error.response.data.message || "Failed to update password",
+        message: error.response.data.message,
       });
     }
     return rejectWithValue({ message: "An unexpected error occurred" });
   }
 });
 
-export const resetPassword = createAsyncThunk<
-  { email: string; password: string; message?: string },
-  { email: string; password: string },
+export const sendEmail = createAsyncThunk<
+  { message: string; email: string },
+  { email: string },
   { rejectValue: { message: string } }
->("auth/resetPassword", async ({ email, password }, { rejectWithValue }) => {
+>("auth/sendEmail", async ({ email }, { rejectWithValue }) => {
   try {
-    const response = await authService.resetPassword(email, password);
-    return response.data;
+    const { message } = await authService.sendEmail(email);
+    return { message, email };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       return rejectWithValue({
-        message: error.response.data.message || "Verification failed",
+        message: error.response.data.message,
       });
     }
-    return rejectWithValue({ message: "An unexpected error occurred" });
+    return rejectWithValue({
+      message: "An unknown error occurred while sending the verification email",
+    });
   }
 });
 
 export const deactivateAccount = createAsyncThunk<
-  void,
+  { message: string },
   { email: string; reason: string },
   { rejectValue: { message: string } }
 >("auth/deactivateAccount", async ({ email, reason }, { rejectWithValue }) => {
   try {
-    await userService.deactivateAccount(email, reason);
+    const { message } = await userService.deactivateAccount(email, reason);
+    return { message };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       return rejectWithValue({
-        message: error.response.data.message || "Reset password failed",
+        message: error.response.data.message,
       });
     }
-    return rejectWithValue({ message: "An unexpected error occurred" });
+    return rejectWithValue({
+      message: "An unknown error occurred while deactivating the account",
+    });
   }
 });

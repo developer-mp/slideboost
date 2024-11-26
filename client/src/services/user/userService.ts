@@ -8,21 +8,23 @@ const userService = {
       name,
       email,
     });
-    return response;
+    return response.data;
   },
-  async updatePassword(password: string, email: string): Promise<void> {
+  async updatePassword(password: string, email: string) {
     const endpoint = `${config.AUTH_ROUTER}${config.PASSWORD_ENDPOINT}`;
-    await apiService.noSecurePostCall(endpoint, {
+    const response = await apiService.noSecurePostCall(endpoint, {
       password,
       email,
     });
+    return response.data;
   },
-  async deactivateAccount(email: string, reason: string): Promise<void> {
+  async deactivateAccount(email: string, reason: string) {
     const endpoint = `${config.AUTH_ROUTER}${config.DEACTIVATION_ENDPOINT}`;
-    await apiService.noSecurePostCall(endpoint, {
+    const response = await apiService.noSecurePostCall(endpoint, {
       email,
       reason,
     });
+    return response.data;
   },
 };
 
