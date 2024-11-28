@@ -12,6 +12,7 @@ import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../utils/common/handleActionMessage";
+import { setIsRegister } from "../store/slices/userSlice";
 
 const Verification: React.FC = () => {
   const userEmail = useSelector((state: RootState) => state.user.userEmail);
@@ -37,6 +38,7 @@ const Verification: React.FC = () => {
       ).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
+      dispatch(setIsRegister(false));
       setTimeout(() => navigateToLogin(), 2000);
     } catch (error) {
       const errorMessage = handleErrorMessage(error);

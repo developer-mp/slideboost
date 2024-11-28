@@ -11,6 +11,7 @@ import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../utils/common/handleActionMessage";
+import { setIsReset } from "../store/slices/userSlice";
 
 const ResetPassword: React.FC = () => {
   const [password, setPassword] = useState<string>("");
@@ -53,6 +54,7 @@ const ResetPassword: React.FC = () => {
         ).unwrap();
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
+        dispatch(setIsReset(false));
         navigateToLogin();
       } catch (error) {
         const errorMessage = handleErrorMessage(error);

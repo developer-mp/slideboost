@@ -17,6 +17,7 @@ import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../utils/common/handleActionMessage";
+import { setIsRegister } from "../store/slices/userSlice";
 
 const Register: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -102,6 +103,7 @@ const Register: React.FC = () => {
         ).unwrap();
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
+        dispatch(setIsRegister(true));
         setTimeout(() => navigateToVerification(), 2000);
       } catch (error) {
         const errorMessage = handleErrorMessage(error);

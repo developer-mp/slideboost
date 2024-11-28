@@ -3,6 +3,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { loginUser, verifyEmail } from "../store/actions/userAction";
+import { setIsReset } from "../store/slices/userSlice";
 import { useNavigation } from "../utils/login/useNavigation";
 import {
   showErrorToast,
@@ -93,6 +94,7 @@ const Login: React.FC = () => {
       ).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
+      dispatch(setIsReset(true));
       navigateToResetPassword();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);

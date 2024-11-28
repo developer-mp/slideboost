@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setToken, removeToken } from "../../utils/login/handleAuthToken";
 import {
   registerUser,
@@ -14,6 +14,8 @@ interface UserState {
   userEmail: string;
   userName: string;
   createdAt: string;
+  isRegister: boolean;
+  isReset: boolean;
   plan: string;
   status: "idle" | "loading" | "success" | "fail";
   error: string | null;
@@ -25,6 +27,8 @@ const initialState: UserState = {
   userEmail: "",
   userName: "",
   createdAt: "",
+  isRegister: false,
+  isReset: false,
   plan: "",
   status: "idle",
   message: null,
@@ -39,6 +43,12 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
       removeToken();
     },
+    setIsRegister(state, action: PayloadAction<boolean>) {
+      state.isRegister = action.payload;
+    },
+    setIsReset(state, action: PayloadAction<boolean>) {
+      state.isReset = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -51,6 +61,7 @@ const userSlice = createSlice({
         state.status = "success";
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
+        state.isRegister = true;
         state.message = action.payload.message;
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -65,6 +76,7 @@ const userSlice = createSlice({
       })
       .addCase(verifyEmail.fulfilled, (state, action) => {
         state.status = "success";
+        state.isRegister = false;
         state.message = action.payload.message;
       })
       .addCase(verifyEmail.rejected, (state, action) => {
@@ -132,5 +144,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, setIsRegister, setIsReset } = userSlice.actions;
 export default userSlice.reducer;

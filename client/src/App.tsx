@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Verification from "./pages/Verification";
 import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoute from "./components/widgets/ProtectedRoute";
+import PrivateRoute from "./components/widgets/PrivateRoute";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Privacy from "./pages/Privacy";
@@ -31,8 +32,18 @@ const App = () => {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/verify" element={<Verification />} />
-            <Route path="/reset" element={<ResetPassword />} />
+            <Route
+              path="/verify"
+              element={
+                <PrivateRoute element={<Verification />} flag="isRegister" />
+              }
+            />
+            <Route
+              path="/reset"
+              element={
+                <PrivateRoute element={<ResetPassword />} flag="isReset" />
+              }
+            />
             <Route
               path="/profile"
               element={<ProtectedRoute element={<Profile />} />}

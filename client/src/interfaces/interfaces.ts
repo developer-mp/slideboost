@@ -116,3 +116,8 @@ export interface FileListDisplayProps {
   showRemoveButton?: boolean;
   removeButtonPosition?: "margin-left";
 }
+
+export interface PrivateRouteProps {
+  element: JSX.Element;
+  flag: "isRegister" | "isReset";
+}
