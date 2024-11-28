@@ -143,11 +143,31 @@ const authController = {
       const user = result.rows[0];
 
       if (user && (await bcrypt.compare(password, user.password))) {
-        const token = jwt.sign({ userId: user.id }, config.JWT_SECRET, {
-          expiresIn: "1h",
+        const accessToken = jwt.sign({ userId: user.id }, config.JWT_SECRET, {
+          expiresIn: config.TOKEN_EXPIRATION,
         });
+
+        const refreshToken = jwt.sign(
+          { userId: user.id },
+          config.JWT_REFRESH_SECRET,
+          { expiresIn: config.REFRESH_TOKEN_EXPIRATION }
+        );
+
+        res.cookie("accessToken", accessToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          maxAge: 3600000,
+        });
+
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          maxAge: 604800000,
+        });
+
         res.status(200).json({
-          token: token,
           name: user.name,
           email: user.email,
           createdAt: user.created_at,
@@ -179,8 +199,7 @@ const authController = {
     res: Response,
     next: NextFunction
   ): void => {
-    const authHeader = req.headers.authorization;
-    const token = authHeader?.split(" ")[1];
+    const token = req.cookies?.accessToken;
 
     if (!token) {
       res.sendStatus(401);
@@ -188,10 +207,54 @@ const authController = {
     }
 
     jwt.verify(token, config.JWT_SECRET, (err: any, user: any) => {
-      if (err) return res.sendStatus(403);
+      if (err) {
+        return res.sendStatus(403);
+      }
       (req as any).user = user;
       next();
     });
+  },
+
+  refreshAccessToken: (req: Request, res: Response) => {
+    try {
+      const { refreshToken } = req.cookies;
+
+      if (!refreshToken) {
+        res.status(401).json({ message: "Refresh token missing" });
+        return;
+      }
+
+      jwt.verify(
+        refreshToken,
+        config.JWT_REFRESH_SECRET,
+        (err: jwt.VerifyErrors | null, decoded: any) => {
+          if (err) {
+            res.status(403).json({ message: "Invalid refresh token" });
+            return;
+          }
+
+          const newAccessToken = jwt.sign(
+            { userId: decoded.userId },
+            config.JWT_SECRET,
+            { expiresIn: config.TOKEN_EXPIRATION }
+          );
+
+          res.cookie("accessToken", newAccessToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 3600000,
+          });
+
+          res.status(200).json({ message: "Access token refreshed" });
+          return;
+        }
+      );
+    } catch (error: unknown) {
+      console.error("An error occurred while refreshing access token: ", error);
+      res.status(500).json({ message: "Internal server error" });
+      return;
+    }
   },
 
   updateUserName: async (req: Request, res: Response) => {

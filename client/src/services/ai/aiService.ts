@@ -5,7 +5,7 @@ const aiService = {
   processTranscript: async (transcript: string): Promise<{ text: string }> => {
     try {
       const endpoint = `${config.AI_ROUTER}${config.TRANSCRIPT_ENDPOINT}`;
-      const response = await apiService.noSecurePostCall(endpoint, {
+      const response = await apiService.postCall(endpoint, {
         transcript,
       });
       return response.data;

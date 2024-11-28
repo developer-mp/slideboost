@@ -5,7 +5,7 @@ const pptService = {
   processPpt: async (filePath: string, transcript: string) => {
     try {
       const endpoint = `${config.PPT_ROUTER}${config.PPT_ENDPOINT}`;
-      const response = await apiService.noSecurePostCall(endpoint, {
+      const response = await apiService.postCall(endpoint, {
         filePath,
         transcript,
       });

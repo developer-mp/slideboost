@@ -5,7 +5,7 @@ const transcriptService = {
   fetchTranscriptFromText: async (filePath: string) => {
     try {
       const endpoint = `${config.TRANSCRIPT_ROUTER}${config.TEXTTOTXT_ENDPOINT}`;
-      const response = await apiService.noSecurePostCall(endpoint, {
+      const response = await apiService.postCall(endpoint, {
         filePath,
       });
       return response.data;
@@ -17,7 +17,7 @@ const transcriptService = {
   fetchTranscriptFromImage: async (filePath: string) => {
     try {
       const endpoint = `${config.TRANSCRIPT_ROUTER}${config.IMGTOTXT_ENDPOINT}`;
-      const response = await apiService.noSecurePostCall(endpoint, {
+      const response = await apiService.postCall(endpoint, {
         filePath,
       });
       return response.data;
@@ -29,7 +29,7 @@ const transcriptService = {
   fetchTranscriptFromAudio: async (filePath: string) => {
     try {
       const endpoint = `${config.TRANSCRIPT_ROUTER}${config.AUDIOTOTXT_ENDPOINT}`;
-      const response = await apiService.noSecurePostCall(endpoint, {
+      const response = await apiService.postCall(endpoint, {
         filePath,
       });
       return response.data;
@@ -41,7 +41,7 @@ const transcriptService = {
   fetchTranscriptFromVideo: async (filePath: string) => {
     try {
       const endpoint = `${config.TRANSCRIPT_ROUTER}${config.VIDEOTOTXT_ENDPOINT}`;
-      const response = await apiService.noSecurePostCall(endpoint, {
+      const response = await apiService.postCall(endpoint, {
         filePath,
       });
       return response.data;
@@ -53,7 +53,7 @@ const transcriptService = {
   fetchTranscriptFromYoutube: async (filePath: string) => {
     try {
       const endpoint = `${config.TRANSCRIPT_ROUTER}${config.YOUTUBETOTXT_ENDPOINT}`;
-      const response = await apiService.noSecurePostCall(endpoint, {
+      const response = await apiService.postCall(endpoint, {
         filePath,
       });
       return response.data;

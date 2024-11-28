@@ -4,7 +4,7 @@ import { config } from "../../../env.config";
 const authService = {
   async registerUser(name: string, email: string, password: string) {
     const endpoint = `${config.AUTH_ROUTER}${config.REGISTER_ENDPOINT}`;
-    const response = await apiService.noSecurePostCall(endpoint, {
+    const response = await apiService.postCall(endpoint, {
       name,
       email,
       password,
@@ -13,7 +13,7 @@ const authService = {
   },
   async verifyEmail(email: string, code: string) {
     const endpoint = `${config.AUTH_ROUTER}${config.VERIFY_ENDPOINT}`;
-    const response = await apiService.noSecurePostCall(endpoint, {
+    const response = await apiService.postCall(endpoint, {
       email,
       code,
     });
@@ -21,7 +21,7 @@ const authService = {
   },
   async loginUser(email: string, password: string) {
     const endpoint = `${config.AUTH_ROUTER}${config.LOGIN_ENDPOINT}`;
-    const response = await apiService.noSecurePostCall(endpoint, {
+    const response = await apiService.postCall(endpoint, {
       email,
       password,
     });
@@ -29,14 +29,14 @@ const authService = {
   },
   async sendEmail(email: string) {
     const endpoint = `${config.AUTH_ROUTER}${config.EMAIL_ENDPOINT}`;
-    const response = await apiService.noSecurePostCall(endpoint, {
+    const response = await apiService.postCall(endpoint, {
       email,
     });
     return response.data;
   },
   async updateUserName(name: string, email: string) {
     const endpoint = `${config.AUTH_ROUTER}${config.USER_ENDPOINT}`;
-    const response = await apiService.noSecurePostCall(endpoint, {
+    const response = await apiService.postCall(endpoint, {
       name,
       email,
     });
@@ -44,7 +44,7 @@ const authService = {
   },
   async updatePassword(password: string, email: string) {
     const endpoint = `${config.AUTH_ROUTER}${config.PASSWORD_ENDPOINT}`;
-    const response = await apiService.noSecurePostCall(endpoint, {
+    const response = await apiService.postCall(endpoint, {
       password,
       email,
     });
@@ -52,7 +52,7 @@ const authService = {
   },
   async deactivateAccount(email: string, reason: string) {
     const endpoint = `${config.AUTH_ROUTER}${config.DEACTIVATION_ENDPOINT}`;
-    const response = await apiService.noSecurePostCall(endpoint, {
+    const response = await apiService.postCall(endpoint, {
       email,
       reason,
     });
