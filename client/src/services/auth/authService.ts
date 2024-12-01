@@ -27,6 +27,26 @@ const authService = {
     });
     return response.data;
   },
+  async logoutUser() {
+    const endpoint = `${config.AUTH_ROUTER}${config.LOGOUT_ENDPOINT}`;
+    const response = await apiService.postCall(endpoint, {});
+    return response.data;
+  },
+  async verifyToken() {
+    try {
+      const endpoint = `${config.AUTH_ROUTER}${config.TOKEN_ENDPOINT}`;
+      const response = await apiService.getCall(endpoint, {});
+      return response.data;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const errorMessage = error.message;
+        throw new Error(errorMessage);
+      }
+      throw new Error(
+        "An unknown error occurred while verifying the token in the authentication service"
+      );
+    }
+  },
   async sendEmail(email: string) {
     const endpoint = `${config.AUTH_ROUTER}${config.EMAIL_ENDPOINT}`;
     const response = await apiService.postCall(endpoint, {

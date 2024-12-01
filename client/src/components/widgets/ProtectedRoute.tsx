@@ -1,49 +1,50 @@
-// import { Navigate } from "react-router-dom";
-// import { getToken } from "../../utils/login/handleAuthToken";
-// import { ProtectedRouteProps } from "../../interfaces/interfaces";
-
-// const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
-//   const token = getToken();
-//   return token ? element : <Navigate to="/" />;
-// };
-
-// export default ProtectedRoute;
-
-import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
-import apiService from "../../services/app/apiService";
+import React, { useEffect, useState, useRef } from "react";
 import { ProtectedRouteProps } from "../../interfaces/interfaces";
+import { useNavigation } from "../../utils/login/useNavigation";
+import { AppDispatch } from "../../store/store";
+import { useDispatch } from "react-redux";
+import { verifyToken } from "../../store/actions/userAction";
+import { handleErrorMessage } from "../../utils/common/handleActionMessage";
+import { showErrorToast } from "../../utils/common/handleToast";
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   const [isTokenValid, setIsTokenValid] = useState<boolean | null>(null);
-
-  // Function to verify token with the backend
-  const verifyToken = async () => {
-    try {
-      // Call your backend to verify the token
-      const response = await apiService.postCall("/protected", {});
-      if (response.status === 200) {
-        setIsTokenValid(true); // Token is valid
-      } else {
-        setIsTokenValid(false); // Token is invalid or expired
-      }
-    } catch (error) {
-      setIsTokenValid(false); // Handle error case, e.g., network failure
-      console.log(error);
-    }
-  };
+  const { navigateToHome } = useNavigation();
+  const dispatch = useDispatch<AppDispatch>();
+  const toastShown = useRef(false);
 
   useEffect(() => {
-    verifyToken(); // Verify token on component mount
-  }, []);
+    const authToken = async () => {
+      try {
+        const response = await dispatch(verifyToken()).unwrap();
+        if (response === 200) {
+          setIsTokenValid(true);
+        }
+      } catch (error) {
+        setIsTokenValid(false);
+        const errorMessage = handleErrorMessage(error);
 
-  // While checking token validity, show a loading state
-  if (isTokenValid === null) {
-    return <div>Loading...</div>; // Or a spinner or placeholder
+        if (!toastShown.current) {
+          showErrorToast(errorMessage);
+          toastShown.current = true;
+        }
+      }
+    };
+
+    authToken();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isTokenValid === false) {
+      navigateToHome();
+    }
+  }, [isTokenValid, navigateToHome]);
+
+  if (!isTokenValid) {
+    return null;
   }
 
-  // If token is valid, render the protected element, otherwise redirect to login
-  return isTokenValid ? element : <Navigate to="/" />;
+  return element;
 };
 
 export default ProtectedRoute;

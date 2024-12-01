@@ -69,15 +69,15 @@ const authController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while registering a user: ",
+          "An error occurred while registering the user: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while registering a user");
+        console.error("An unknown error occurred while registering the user");
       }
       res
         .status(500)
-        .json({ message: "An error occurred while registering a user" });
+        .json({ message: "An error occurred while registering the user" });
       return;
     }
   },
@@ -172,7 +172,7 @@ const authController = {
           email: user.email,
           createdAt: user.created_at,
           plan: user.plan,
-          message: "Login successful",
+          message: "Logged in successfully",
         });
       } else {
         res.status(401).json({ error: "Invalid credentials" });
@@ -181,7 +181,7 @@ const authController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while loggin in a user: ",
+          "An error occurred while loggin in the user: ",
           error.message
         );
       } else {
@@ -194,25 +194,68 @@ const authController = {
     }
   },
 
-  authenticateToken: (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): void => {
-    const token = req.cookies?.accessToken;
+  logoutUser: async (req: Request, res: Response) => {
+    try {
+      res.clearCookie("accessToken");
+      res.clearCookie("refreshToken");
 
-    if (!token) {
-      res.sendStatus(401);
+      res.status(200).json({
+        message: "Logged out successfully",
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while logging out the user: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while logging out the user");
+      }
+      res.status(500).json({
+        message: "An error occurred while logging out in the user",
+        error,
+      });
       return;
     }
+  },
 
-    jwt.verify(token, config.JWT_SECRET, (err: any, user: any) => {
-      if (err) {
-        return res.sendStatus(403);
+  verifyToken: (req: Request, res: Response, next: NextFunction): void => {
+    try {
+      const token = req.cookies?.accessToken;
+
+      if (!token) {
+        res.status(401).json({
+          message: "User not authenticated",
+        });
+        return;
       }
-      (req as any).user = user;
-      next();
-    });
+
+      jwt.verify(token, config.JWT_SECRET, (err: any, user: any) => {
+        if (err) {
+          res.status(403).json({
+            message: "Access forbidden",
+          });
+          return;
+        }
+
+        (req as any).user = user;
+        next();
+        // res.status(200);
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while verifying token: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while verifying token");
+      }
+      res.status(500).json({
+        message: "An error occurred while verifying the token",
+        error,
+      });
+    }
   },
 
   refreshAccessToken: (req: Request, res: Response) => {

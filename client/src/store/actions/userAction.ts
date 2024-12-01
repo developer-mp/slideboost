@@ -47,7 +47,6 @@ export const verifyEmail = createAsyncThunk<
 
 export const loginUser = createAsyncThunk<
   {
-    token: string;
     name: string;
     email: string;
     createdAt: string;
@@ -68,6 +67,51 @@ export const loginUser = createAsyncThunk<
     }
     return rejectWithValue({
       message: "An unknown error occurred while loggin in the user",
+    });
+  }
+});
+
+export const logoutUser = createAsyncThunk<
+  {
+    message: string;
+  },
+  void,
+  { rejectValue: { message: string } }
+>("auth/logoutUser", async (_, { rejectWithValue }) => {
+  try {
+    const response = await authService.logoutUser();
+    return response;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      return rejectWithValue({
+        message: error.response.data.message,
+      });
+    }
+    return rejectWithValue({
+      message: "An unknown error occurred while logging out the user",
+    });
+  }
+});
+
+export const verifyToken = createAsyncThunk<
+  unknown,
+  void,
+  { rejectValue: { message: string } }
+>("auth/verifyToken", async (_, { rejectWithValue }) => {
+  try {
+    const response = await authService.verifyToken();
+    return response;
+  } catch (error) {
+    if (error instanceof Error) {
+      const errorMessage = error.message;
+
+      return rejectWithValue({
+        message: errorMessage,
+      });
+    }
+    return rejectWithValue({
+      message:
+        "An unknown error occurred while verifying the token in the user action state",
     });
   }
 });

@@ -14,9 +14,8 @@ import {
 } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { logout } from "../store/slices/userSlice";
 import { useNavigation } from "../utils/login/useNavigation";
-import { deactivateAccount } from "../store/actions/userAction";
+import { deactivateAccount, logoutUser } from "../store/actions/userAction";
 import { updateUserName, updatePassword } from "../store/actions/userAction";
 import { formatEmail } from "../utils/login/formatEmail";
 import { validateName } from "../utils/login/validateName";
@@ -123,7 +122,7 @@ const Settings: React.FC = () => {
       const resultAction = await dispatch(
         deactivateAccount({ email: userEmail, reason })
       ).unwrap();
-      dispatch(logout());
+      dispatch(logoutUser());
       navigateToHome();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);

@@ -1,15 +1,23 @@
 import { Button, Container, Dropdown, Nav, Navbar } from "react-bootstrap";
 import { useNavigation } from "../../utils/login/useNavigation";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { AppDispatch, RootState } from "../../store/store";
 import { HashLink as Link } from "react-router-hash-link";
 import { getFirstChar } from "../../utils/login/getFirstChar";
 import { adjustScrollForNavbar } from "../../utils/common/adjustScrollForNavbar";
-import { logout } from "../../store/slices/userSlice";
+import { logoutUser } from "../../store/actions/userAction";
 import logo_text from "../../assets/main/logo_text.png";
+import {
+  handleErrorMessage,
+  handleSuccessMessage,
+} from "../../utils/common/handleActionMessage";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "../../utils/common/handleToast";
 
 const NavigationBar: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { navigateToHome } = useNavigation();
 
   const isAuthenticated = useSelector(
@@ -19,9 +27,17 @@ const NavigationBar: React.FC = () => {
   const userName = useSelector((state: RootState) => state.user.userName);
   const firstInitial = getFirstChar(userName);
 
-  const handleLogout = () => {
-    navigateToHome();
-    dispatch(logout());
+  const handleLogout = async () => {
+    try {
+      const resultAction = await dispatch(logoutUser()).unwrap();
+      const successMessage = handleSuccessMessage(resultAction);
+      showSuccessToast(successMessage);
+      setTimeout(() => navigateToHome(), 2000);
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error("Logout failed: ", errorMessage);
+    }
   };
 
   return (
