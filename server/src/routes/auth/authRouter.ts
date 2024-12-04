@@ -8,6 +8,7 @@ authRouter.post("/verify", authController.verifyEmail);
 authRouter.post("/login", authController.loginUser);
 authRouter.post("/logout", authController.logoutUser);
 authRouter.get("/token", authController.verifyToken);
+authRouter.post("/refreshtoken", authController.refreshToken);
 authRouter.post("/username", authController.updateUserName);
 authRouter.post("/password", authController.updatePassword);
 authRouter.post("/email", authController.sendEmail);

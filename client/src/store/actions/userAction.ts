@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import authService from "../../services/auth/authService";
+import { RootState } from "../store";
 
 export const registerUser = createAsyncThunk<
   { name: string; email: string; message: string },
@@ -94,24 +95,47 @@ export const logoutUser = createAsyncThunk<
 });
 
 export const verifyToken = createAsyncThunk<
-  unknown,
+  {
+    userId: string;
+  },
   void,
   { rejectValue: { message: string } }
->("auth/verifyToken", async (_, { rejectWithValue }) => {
+>("auth/verifyToken", async (_, { rejectWithValue, getState }) => {
+  const state = getState() as RootState;
+  const email = state.user.userEmail;
   try {
     const response = await authService.verifyToken();
     return response;
   } catch (error) {
     if (error instanceof Error) {
       const errorMessage = error.message;
+      if (
+        errorMessage === "User not authenticated" ||
+        errorMessage === "Access forbidden"
+      )
+        try {
+          const response = await authService.refreshToken(email);
+          return response;
+        } catch (refreshError) {
+          let refreshErrorMessage = "Error occurred while refreshing the token";
 
+          if (refreshError instanceof Error) {
+            refreshErrorMessage = refreshError.message;
+          } else if (typeof refreshError === "string") {
+            refreshErrorMessage = refreshError;
+          }
+
+          return rejectWithValue({
+            message: refreshErrorMessage,
+          });
+        }
       return rejectWithValue({
         message: errorMessage,
       });
     }
     return rejectWithValue({
       message:
-        "An unknown error occurred while verifying the token in the user action state",
+        "An unknown error occurred while refreshing the token in the User Action",
     });
   }
 });

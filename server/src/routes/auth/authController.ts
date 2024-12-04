@@ -219,18 +219,18 @@ const authController = {
     }
   },
 
-  verifyToken: (req: Request, res: Response, next: NextFunction): void => {
+  verifyToken: (req: Request, res: Response): void => {
     try {
-      const token = req.cookies?.accessToken;
+      const accessToken = req.cookies?.accessToken;
 
-      if (!token) {
+      if (!accessToken) {
         res.status(401).json({
           message: "User not authenticated",
         });
         return;
       }
 
-      jwt.verify(token, config.JWT_SECRET, (err: any, user: any) => {
+      jwt.verify(accessToken, config.JWT_SECRET, (err: any, user: any) => {
         if (err) {
           res.status(403).json({
             message: "Access forbidden",
@@ -238,18 +238,17 @@ const authController = {
           return;
         }
 
-        (req as any).user = user;
-        next();
-        // res.status(200);
+        res.status(200).json({ userId: user.userId });
+        return;
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while verifying token: ",
+          "An error occurred while verifying the token: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while verifying token");
+        console.error("An unknown error occurred while verifying the token");
       }
       res.status(500).json({
         message: "An error occurred while verifying the token",
@@ -258,9 +257,16 @@ const authController = {
     }
   },
 
-  refreshAccessToken: (req: Request, res: Response) => {
+  refreshToken: async (req: Request, res: Response) => {
     try {
-      const { refreshToken } = req.cookies;
+      const { email }: { email: string } = req.body;
+
+      const result = await pool.query("SELECT * FROM users WHERE email = $1", [
+        email,
+      ]);
+      const user = result.rows[0];
+
+      const refreshToken = req.cookies?.refreshToken;
 
       if (!refreshToken) {
         res.status(401).json({ message: "Refresh token missing" });
@@ -270,16 +276,24 @@ const authController = {
       jwt.verify(
         refreshToken,
         config.JWT_REFRESH_SECRET,
-        (err: jwt.VerifyErrors | null, decoded: any) => {
+        (err: jwt.VerifyErrors | null) => {
           if (err) {
             res.status(403).json({ message: "Invalid refresh token" });
             return;
           }
 
           const newAccessToken = jwt.sign(
-            { userId: decoded.userId },
+            { userId: user.id },
             config.JWT_SECRET,
-            { expiresIn: config.TOKEN_EXPIRATION }
+            {
+              expiresIn: config.TOKEN_EXPIRATION,
+            }
+          );
+
+          const newRefreshToken = jwt.sign(
+            { userId: user.id },
+            config.JWT_REFRESH_SECRET,
+            { expiresIn: config.REFRESH_TOKEN_EXPIRATION }
           );
 
           res.cookie("accessToken", newAccessToken, {
@@ -289,14 +303,30 @@ const authController = {
             maxAge: 3600000,
           });
 
-          res.status(200).json({ message: "Access token refreshed" });
+          res.cookie("refreshToken", newRefreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 604800000,
+          });
+
+          res.status(200).json({ userId: user.id });
           return;
         }
       );
     } catch (error: unknown) {
-      console.error("An error occurred while refreshing access token: ", error);
-      res.status(500).json({ message: "Internal server error" });
-      return;
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while refreshing the token: ",
+          error.message
+        );
+      } else {
+        console.error("An unknown error occurred while refreshing the token");
+      }
+      res.status(500).json({
+        message: "An error occurred while refreshing the token",
+        error,
+      });
     }
   },
 

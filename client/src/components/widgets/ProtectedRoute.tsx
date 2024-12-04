@@ -17,7 +17,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
     const authToken = async () => {
       try {
         const response = await dispatch(verifyToken()).unwrap();
-        if (response === 200) {
+        if (response.userId) {
           setIsTokenValid(true);
         }
       } catch (error) {
