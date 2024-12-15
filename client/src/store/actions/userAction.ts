@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import authService from "../../services/auth/authService";
+import userService from "../../services/user/userService";
 import { RootState } from "../store";
 
 export const registerUser = createAsyncThunk<
@@ -11,16 +10,18 @@ export const registerUser = createAsyncThunk<
   "auth/registerUser",
   async ({ name, email, password }, { rejectWithValue }) => {
     try {
-      const { message } = await authService.registerUser(name, email, password);
+      const { message } = await userService.registerUser(name, email, password);
       return { name, email, message };
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
+      if (error instanceof Error) {
+        const errorMessage = error.message;
         return rejectWithValue({
-          message: error.response.data.message,
+          message: errorMessage,
         });
       }
       return rejectWithValue({
-        message: "An unknown error occurred while registering a user",
+        message:
+          "An unknown error occurred while registering the user in the User Action",
       });
     }
   }
@@ -32,16 +33,18 @@ export const verifyEmail = createAsyncThunk<
   { rejectValue: { message: string } }
 >("auth/verifyEmail", async ({ email, code }, { rejectWithValue }) => {
   try {
-    const { message } = await authService.verifyEmail(email, code);
+    const { message } = await userService.verifyEmail(email, code);
     return { message };
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
+    if (error instanceof Error) {
+      const errorMessage = error.message;
       return rejectWithValue({
-        message: error.response.data.message,
+        message: errorMessage,
       });
     }
     return rejectWithValue({
-      message: "An unknown error occurred while sending the verification email",
+      message:
+        "An unknown error occurred while sending the verification email in the User Action",
     });
   }
 });
@@ -58,16 +61,18 @@ export const loginUser = createAsyncThunk<
   { rejectValue: { message: string } }
 >("auth/loginUser", async ({ email, password }, { rejectWithValue }) => {
   try {
-    const response = await authService.loginUser(email, password);
+    const response = await userService.loginUser(email, password);
     return response;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
+    if (error instanceof Error) {
+      const errorMessage = error.message;
       return rejectWithValue({
-        message: error.response.data.message,
+        message: errorMessage,
       });
     }
     return rejectWithValue({
-      message: "An unknown error occurred while loggin in the user",
+      message:
+        "An unknown error occurred while logging in the user in the User Action",
     });
   }
 });
@@ -80,16 +85,18 @@ export const logoutUser = createAsyncThunk<
   { rejectValue: { message: string } }
 >("auth/logoutUser", async (_, { rejectWithValue }) => {
   try {
-    const response = await authService.logoutUser();
+    const response = await userService.logoutUser();
     return response;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
+    if (error instanceof Error) {
+      const errorMessage = error.message;
       return rejectWithValue({
-        message: error.response.data.message,
+        message: errorMessage,
       });
     }
     return rejectWithValue({
-      message: "An unknown error occurred while logging out the user",
+      message:
+        "An unknown error occurred while logging out the user in the User Action",
     });
   }
 });
@@ -104,7 +111,7 @@ export const verifyToken = createAsyncThunk<
   const state = getState() as RootState;
   const email = state.user.userEmail;
   try {
-    const response = await authService.verifyToken();
+    const response = await userService.verifyToken();
     return response;
   } catch (error) {
     if (error instanceof Error) {
@@ -114,10 +121,11 @@ export const verifyToken = createAsyncThunk<
         errorMessage === "Access forbidden"
       )
         try {
-          const response = await authService.refreshToken(email);
+          const response = await userService.refreshToken(email);
           return response;
         } catch (refreshError) {
-          let refreshErrorMessage = "Error occurred while refreshing the token";
+          let refreshErrorMessage =
+            "Error occurred while refreshing the token in the User Action";
 
           if (refreshError instanceof Error) {
             refreshErrorMessage = refreshError.message;
@@ -140,22 +148,46 @@ export const verifyToken = createAsyncThunk<
   }
 });
 
+export const sendEmail = createAsyncThunk<
+  { message: string; email: string },
+  { email: string },
+  { rejectValue: { message: string } }
+>("auth/sendEmail", async ({ email }, { rejectWithValue }) => {
+  try {
+    const { message } = await userService.sendEmail(email);
+    return { message, email };
+  } catch (error) {
+    if (error instanceof Error) {
+      const errorMessage = error.message;
+      return rejectWithValue({
+        message: errorMessage,
+      });
+    }
+    return rejectWithValue({
+      message:
+        "An unknown error occurred while sending the verification email in the User Action",
+    });
+  }
+});
+
 export const updateUserName = createAsyncThunk<
   { name: string; message: string },
   { name: string; email: string },
   { rejectValue: { message: string } }
 >("user/updateUserName", async ({ name, email }, { rejectWithValue }) => {
   try {
-    const { message } = await authService.updateUserName(name, email);
+    const { message } = await userService.updateUserName(name, email);
     return { name, message };
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
+    if (error instanceof Error) {
+      const errorMessage = error.message;
       return rejectWithValue({
-        message: error.response.data.message,
+        message: errorMessage,
       });
     }
     return rejectWithValue({
-      message: "An unknown error occurred while updating the user name",
+      message:
+        "An unknown error occurred while updating the user name in the User Action",
     });
   }
 });
@@ -166,35 +198,16 @@ export const updatePassword = createAsyncThunk<
   { rejectValue: { message: string } }
 >("user/updatePassword", async ({ password, email }, { rejectWithValue }) => {
   try {
-    const { message } = await authService.updatePassword(password, email);
+    const { message } = await userService.updatePassword(password, email);
     return { message };
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
+    if (error instanceof Error) {
+      const errorMessage = error.message;
       return rejectWithValue({
-        message: error.response.data.message,
+        message: errorMessage,
       });
     }
     return rejectWithValue({ message: "An unexpected error occurred" });
-  }
-});
-
-export const sendEmail = createAsyncThunk<
-  { message: string; email: string },
-  { email: string },
-  { rejectValue: { message: string } }
->("auth/sendEmail", async ({ email }, { rejectWithValue }) => {
-  try {
-    const { message } = await authService.sendEmail(email);
-    return { message, email };
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      return rejectWithValue({
-        message: error.response.data.message,
-      });
-    }
-    return rejectWithValue({
-      message: "An unknown error occurred while sending the verification email",
-    });
   }
 });
 
@@ -204,16 +217,18 @@ export const deactivateAccount = createAsyncThunk<
   { rejectValue: { message: string } }
 >("auth/deactivateAccount", async ({ email, reason }, { rejectWithValue }) => {
   try {
-    const { message } = await authService.deactivateAccount(email, reason);
+    const { message } = await userService.deactivateAccount(email, reason);
     return { message };
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
+    if (error instanceof Error) {
+      const errorMessage = error.message;
       return rejectWithValue({
-        message: error.response.data.message,
+        message: errorMessage,
       });
     }
     return rejectWithValue({
-      message: "An unknown error occurred while deactivating the account",
+      message:
+        "An unknown error occurred while deactivating the account in the User Action",
     });
   }
 });

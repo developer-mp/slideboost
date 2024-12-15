@@ -108,7 +108,7 @@ const Register: React.FC = () => {
       } catch (error) {
         const errorMessage = handleErrorMessage(error);
         showErrorToast(errorMessage);
-        console.error("Registration failed: ", errorMessage);
+        console.error("Error occurred while registering the user: ", error);
       }
     }
   };

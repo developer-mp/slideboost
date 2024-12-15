@@ -28,6 +28,7 @@ const AI_API_URL = getEnvVar("AI_API_URL");
 const AI_API_KEY = getEnvVar("AI_API_KEY");
 const TOKEN_EXPIRATION = getEnvVar("TOKEN_EXPIRATION");
 const REFRESH_TOKEN_EXPIRATION = getEnvVar("REFRESH_TOKEN_EXPIRATION");
+const PROMPT_STRING = getEnvVar("PROMPT_STRING");
 
 export const config = {
   CLIENT_HOST,
@@ -49,4 +50,5 @@ export const config = {
   AI_API_KEY,
   TOKEN_EXPIRATION,
   REFRESH_TOKEN_EXPIRATION,
+  PROMPT_STRING,
 };

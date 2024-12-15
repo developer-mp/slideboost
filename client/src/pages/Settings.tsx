@@ -72,7 +72,7 @@ const Settings: React.FC = () => {
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
-      console.error("Error updating user name: ", errorMessage);
+      console.error("Error occurred while updating the user name: ", error);
     }
   };
 
@@ -112,7 +112,7 @@ const Settings: React.FC = () => {
       } catch (error) {
         const errorMessage = handleErrorMessage(error);
         showErrorToast(errorMessage);
-        console.error("Error updating user password: ", errorMessage);
+        console.error("Error occurred while updating the password: ", error);
       }
     }
   };
@@ -130,7 +130,10 @@ const Settings: React.FC = () => {
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
-      console.error("Account deactivation failed: ", errorMessage);
+      console.error(
+        "Error occurred while deactivating the user account: ",
+        error
+      );
     }
   };
 

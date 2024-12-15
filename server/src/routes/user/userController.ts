@@ -3,19 +3,18 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { pool } from "../../db/config/pool";
 import { generateVerificationCode } from "../../utils/generateVerificationCode";
-import AuthService from "../../services/auth/authService";
+import userService from "../../services/user/userService";
 import { config } from "../../../env.config";
 import { DbQueryResultProps } from "../../interfaces/interfaces";
 
-const authController = {
+const userController = {
   registerUser: async (req: Request, res: Response): Promise<void> => {
+    const {
+      name,
+      email,
+      password,
+    }: { name: string; email: string; password: string } = req.body;
     try {
-      const {
-        name,
-        email,
-        password,
-      }: { name: string; email: string; password: string } = req.body;
-
       if (!name || !email || !password) {
         res.status(400).json({ message: "Invalid input parameters" });
         return;
@@ -44,21 +43,23 @@ const authController = {
 
       try {
         if (verificationCode) {
-          AuthService.sendVerificationEmail(email, verificationCode);
+          userService.sendVerificationEmail(email, verificationCode);
         }
       } catch (error: unknown) {
         if (error instanceof Error) {
           console.error(
-            "An error occurred while sending the verification email: ",
+            "An error occurred while sending the verification email in the Auth Controller: ",
             error.message
           );
         } else {
           console.error(
-            "An unknown error occurred while sending the verification email"
+            "An unknown error occurred while sending the verification email in the Auth Controller"
           );
         }
         res.status(500).json({
-          error: "An error occurred while sending the verification email",
+          mesage:
+            "An error occurred while sending the verification email in the Auth Controller",
+          error,
         });
         return;
       }
@@ -69,23 +70,26 @@ const authController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while registering the user: ",
+          "An error occurred while registering the user in the Auth Controller: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while registering the user");
+        console.error(
+          "An unknown error occurred while registering the user in the Auth Controller"
+        );
       }
-      res
-        .status(500)
-        .json({ message: "An error occurred while registering the user" });
+      res.status(500).json({
+        message:
+          "An error occurred while registering the user in the Auth Controller",
+        error,
+      });
       return;
     }
   },
 
-  verifyEmail: async (req: Request, res: Response) => {
+  verifyEmail: async (req: Request, res: Response): Promise<void> => {
+    const { email, code }: { email: string; code: string } = req.body;
     try {
-      const { email, code }: { email: string; code: string } = req.body;
-
       const result = (await pool.query(
         "SELECT verification_code, expires_at FROM users WHERE email = $1",
         [email]
@@ -118,25 +122,26 @@ const authController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while sending the verification email: ",
+          "An error occurred while sending the verification email in the Auth Controller: ",
           error.message
         );
       } else {
         console.error(
-          "An unknown error occurred while sending the verification"
+          "An unknown error occurred while sending the verification in the Auth Controller"
         );
       }
       res.status(500).json({
-        message: "An error occurred while sending the verification email",
+        message:
+          "An error occurred while sending the verification email in the Auth Controller",
+        error,
       });
       return;
     }
   },
 
-  loginUser: async (req: Request, res: Response) => {
+  loginUser: async (req: Request, res: Response): Promise<void> => {
+    const { email, password }: { email: string; password: string } = req.body;
     try {
-      const { email, password }: { email: string; password: string } = req.body;
-
       const result = await pool.query("SELECT * FROM users WHERE email = $1", [
         email,
       ]);
@@ -181,38 +186,44 @@ const authController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while loggin in the user: ",
+          "An error occurred while logging in the user in the Auth Controller: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while loggin in the user");
+        console.error(
+          "An unknown error occurred while logging in the user in the Auth Controller"
+        );
       }
-      res
-        .status(500)
-        .json({ message: "An error occurred while loggin in the user", error });
+      res.status(500).json({
+        message:
+          "An error occurred while logging in the user in the Auth Controller",
+        error,
+      });
       return;
     }
   },
 
-  logoutUser: async (req: Request, res: Response) => {
+  logoutUser: (req: Request, res: Response): void => {
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
     try {
-      res.clearCookie("accessToken");
-      res.clearCookie("refreshToken");
-
       res.status(200).json({
         message: "Logged out successfully",
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while logging out the user: ",
+          "An error occurred while logging out the user in the Auth Controller: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while logging out the user");
+        console.error(
+          "An unknown error occurred while logging out the user in the Auth Controller"
+        );
       }
       res.status(500).json({
-        message: "An error occurred while logging out in the user",
+        message:
+          "An error occurred while logging out in the user in the Auth Controller",
         error,
       });
       return;
@@ -220,9 +231,8 @@ const authController = {
   },
 
   verifyToken: (req: Request, res: Response): void => {
+    const accessToken = req.cookies?.accessToken;
     try {
-      const accessToken = req.cookies?.accessToken;
-
       if (!accessToken) {
         res.status(401).json({
           message: "User not authenticated",
@@ -244,23 +254,26 @@ const authController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while verifying the token: ",
+          "An error occurred while verifying the token in the Auth Controller: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while verifying the token");
+        console.error(
+          "An unknown error occurred while verifying the token in the Auth Controller"
+        );
       }
       res.status(500).json({
-        message: "An error occurred while verifying the token",
+        message:
+          "An error occurred while verifying the token in the Auth Controller",
         error,
       });
+      return;
     }
   },
 
-  refreshToken: async (req: Request, res: Response) => {
+  refreshToken: async (req: Request, res: Response): Promise<void> => {
+    const { email }: { email: string } = req.body;
     try {
-      const { email }: { email: string } = req.body;
-
       const result = await pool.query("SELECT * FROM users WHERE email = $1", [
         email,
       ]);
@@ -317,23 +330,26 @@ const authController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while refreshing the token: ",
+          "An error occurred while refreshing the token in the Auth Controller: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while refreshing the token");
+        console.error(
+          "An unknown error occurred while refreshing the token in the Auth Controller"
+        );
       }
       res.status(500).json({
-        message: "An error occurred while refreshing the token",
+        message:
+          "An error occurred while refreshing the token in the Auth Controller",
         error,
       });
+      return;
     }
   },
 
-  updateUserName: async (req: Request, res: Response) => {
+  updateUserName: async (req: Request, res: Response): Promise<void> => {
+    const { name, email }: { name: string; email: string } = req.body;
     try {
-      const { name, email }: { name: string; email: string } = req.body;
-
       const isUserExist = (await pool.query(
         "SELECT email FROM users WHERE email = $1",
         [email]
@@ -362,23 +378,26 @@ const authController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while updating the user name: ",
+          "An error occurred while updating the user name in the Auth Controller: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while updating the user name");
+        console.error(
+          "An unknown error occurred while updating the user name in the Auth Controller"
+        );
       }
       res.status(500).json({
-        message: "An error occurred while updating the user name",
+        message:
+          "An error occurred while updating the user name in the Auth Controller",
+        error,
       });
       return;
     }
   },
 
-  updatePassword: async (req: Request, res: Response) => {
+  updatePassword: async (req: Request, res: Response): Promise<void> => {
+    const { email, password }: { email: string; password: string } = req.body;
     try {
-      const { email, password }: { email: string; password: string } = req.body;
-
       const isUserExist = (await pool.query(
         "SELECT email FROM users WHERE email = $1",
         [email]
@@ -401,23 +420,26 @@ const authController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while resetting the password: ",
+          "An error occurred while resetting the password in the Auth Controller: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while resetting the password");
+        console.error(
+          "An unknown error occurred while resetting the password in the Auth Controller"
+        );
       }
-      res
-        .status(500)
-        .json({ message: "An error occurred while resetting the password" });
+      res.status(500).json({
+        message:
+          "An error occurred while resetting the password in the Auth Controller",
+        error,
+      });
       return;
     }
   },
 
-  sendEmail: async (req: Request, res: Response) => {
+  sendEmail: async (req: Request, res: Response): Promise<void> => {
+    const { email }: { email: string } = req.body;
     try {
-      const { email }: { email: string } = req.body;
-
       const isUserExist = (await pool.query(
         "SELECT email FROM users WHERE email = $1",
         [email]
@@ -439,21 +461,23 @@ const authController = {
 
       try {
         if (verificationCode) {
-          AuthService.sendVerificationEmail(email, verificationCode);
+          userService.sendVerificationEmail(email, verificationCode);
         }
       } catch (error: unknown) {
         if (error instanceof Error) {
           console.error(
-            "An error occurred while generating a verification code: ",
+            "An error occurred while generating a verification code in the Auth Controller: ",
             error.message
           );
         } else {
           console.error(
-            "An unknown error occurred while generating a verification code"
+            "An unknown error occurred while generating a verification code in the Auth Controller"
           );
         }
         res.status(500).json({
-          error: "An error occurred while generating a verification code",
+          message:
+            "An error occurred while generating a verification code in the Auth Controller",
+          error,
         });
         return;
       }
@@ -465,25 +489,26 @@ const authController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while sending the verification email: ",
+          "An error occurred while sending the verification email in the Auth Controller: ",
           error.message
         );
       } else {
         console.error(
-          "An unknown error occurred while sending the verification email"
+          "An unknown error occurred while sending the verification email in the Auth Controller"
         );
       }
       res.status(500).json({
-        message: "An error occurred while sending the verification email",
+        message:
+          "An error occurred while sending the verification email in the Auth Controller",
+        error,
       });
       return;
     }
   },
 
-  deactivateAccount: async (req: Request, res: Response) => {
+  deactivateAccount: async (req: Request, res: Response): Promise<void> => {
+    const { email, reason }: { email: string; reason: string } = req.body;
     try {
-      const { email, reason }: { email: string; reason: string } = req.body;
-
       const result = (await pool.query("DELETE FROM users WHERE email = $1", [
         email,
       ])) as DbQueryResultProps;
@@ -501,20 +526,22 @@ const authController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while deactivating the account: ",
+          "An error occurred while deactivating the account in the Auth Controller: ",
           error.message
         );
       } else {
         console.error(
-          "An unknown error occurred while deactivating the account"
+          "An unknown error occurred while deactivating the account in the Auth Controller"
         );
       }
-      res
-        .status(500)
-        .json({ message: "An error occurred while deactivating the account" });
+      res.status(500).json({
+        message:
+          "An error occurred while deactivating the account in the Auth Controller",
+        error,
+      });
       return;
     }
   },
 };
 
-export default authController;
+export default userController;

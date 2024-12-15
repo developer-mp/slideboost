@@ -18,8 +18,8 @@ import PPTX from "nodejs-pptx";
 
 const PptController = {
   createPpt: async (req: Request, res: Response): Promise<void> => {
+    const { filePath, transcript } = req.body;
     try {
-      const { filePath, transcript } = req.body;
       const absoluteFilePath = path.join(__dirname, filePath);
 
       if (!filePath) {
@@ -69,15 +69,19 @@ const PptController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while processing the content: ",
+          "An error occurred while processing the content in the PPT Controller: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while processing the content");
+        console.error(
+          "An unknown error occurred while processing the content in the PPT Controller"
+        );
       }
-      res
-        .status(500)
-        .json({ error: "An error occurred while processing the content" });
+      res.status(500).json({
+        message:
+          "An error occurred while processing the content in the PPT Controller",
+        error,
+      });
       return;
     }
   },

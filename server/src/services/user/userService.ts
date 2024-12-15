@@ -18,7 +18,7 @@ const smtp = {
 
 const transporter = nodemailer.createTransport(smtp);
 
-const AuthService = {
+const userService = {
   async createVerificationEmail(
     email: string,
     verificationCode: string,
@@ -40,11 +40,22 @@ const AuthService = {
       };
 
       await transporter.sendMail(mailOptions);
-    } catch (error) {
-      console.error("Error with nodemailer transporter:", error);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(
+          "An error occurred while processing the nodemailer transporter in the Auth Service: ",
+          error.message
+        );
+      } else {
+        console.error(
+          "An unknown error occurred while processing the nodemailer transporter in the Auth Service"
+        );
+      }
+      throw new Error(
+        "An error occurred while processing the nodemailer transporter in the Auth Service"
+      );
     }
   },
-
   sendVerificationEmail(email: string, verificationCode: string) {
     this.createVerificationEmail(
       email,
@@ -55,4 +66,4 @@ const AuthService = {
   },
 };
 
-export default AuthService;
+export default userService;

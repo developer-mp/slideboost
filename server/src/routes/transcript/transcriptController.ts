@@ -10,8 +10,8 @@ import { readTextFile } from "../../utils/readTextFile";
 
 const TranscriptController = {
   convertTextToText: async (req: Request, res: Response): Promise<void> => {
+    const { filePath } = req.body;
     try {
-      const { filePath } = req.body;
       const absoluteFilePath = path.join(__dirname, filePath);
 
       if (!filePath) {
@@ -29,21 +29,25 @@ const TranscriptController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while processing the text: ",
+          "An error occurred while processing the text in the Transcript Controller: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while processing the text");
+        console.error(
+          "An unknown error occurred while processing the text in the Transcript Controller"
+        );
       }
-      res
-        .status(500)
-        .json({ error: "An error occurred while processing the text" });
+      res.status(500).json({
+        message:
+          "An error occurred while processing the text in the Transcript Controller",
+        error,
+      });
       return;
     }
   },
   convertImageToText: async (req: Request, res: Response): Promise<void> => {
+    const { filePath } = req.body;
     try {
-      const { filePath } = req.body;
       const absoluteFilePath = path.join(__dirname, filePath);
 
       if (!filePath) {
@@ -63,21 +67,25 @@ const TranscriptController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while processing the image: ",
+          "An error occurred while processing the image in the Transcript Controller: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while processing the image");
+        console.error(
+          "An unknown error occurred while processing the image in the Transcript Controller"
+        );
       }
-      res
-        .status(500)
-        .json({ error: "An error occurred while processing the image" });
+      res.status(500).json({
+        message:
+          "An error occurred while processing the image in the Transcript Controller",
+        error,
+      });
       return;
     }
   },
   convertAudioToText: async (req: Request, res: Response): Promise<void> => {
+    const { filePath } = req.body;
     try {
-      const { filePath } = req.body;
       const absoluteFilePath = path.join(__dirname, filePath);
 
       if (!filePath) {
@@ -118,21 +126,25 @@ const TranscriptController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while processing the audio: ",
+          "An error occurred while processing the audio in the Transcript Controller: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while processing the audio");
+        console.error(
+          "An unknown error occurred while processing the audio in the Transcript Controller"
+        );
       }
-      res
-        .status(500)
-        .json({ error: "An error occurred while processing the audio" });
+      res.status(500).json({
+        message:
+          "An error occurred while processing the audio in the Transcript Controller",
+        error,
+      });
       return;
     }
   },
   convertVideoToText: async (req: Request, res: Response): Promise<void> => {
+    const { filePath } = req.body;
     try {
-      const { filePath } = req.body;
       const absoluteFilePath = path.join(__dirname, filePath);
 
       if (!filePath) {
@@ -176,22 +188,25 @@ const TranscriptController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while processing the video: ",
+          "An error occurred while processing the video in the Transcript Controller: ",
           error.message
         );
       } else {
-        console.error("An unknown error occurred while processing the video");
+        console.error(
+          "An unknown error occurred while processing the video in the Transcript Controller"
+        );
       }
-      res
-        .status(500)
-        .json({ error: "An error occurred while processing the video" });
+      res.status(500).json({
+        message:
+          "An error occurred while processing the video in the Transcript Controller",
+        error,
+      });
       return;
     }
   },
   convertYoutubeToText: async (req: Request, res: Response): Promise<void> => {
+    const { filePath } = req.body;
     try {
-      const { filePath } = req.body;
-
       if (!filePath) {
         res.status(400).json({ error: "YouTube URL is required" });
         return;
@@ -231,16 +246,18 @@ const TranscriptController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while processing the Youtube video: ",
+          "An error occurred while processing the Youtube video in the Transcript Controller: ",
           error.message
         );
       } else {
         console.error(
-          "An unknown error occurred while processing the Youtube video"
+          "An unknown error occurred while processing the Youtube video in the Transcript Controller"
         );
       }
       res.status(500).json({
-        error: "An error occurred while processing the Youtube video",
+        message:
+          "An error occurred while processing the Youtube video in the Transcript Controller",
+        error,
       });
       return;
     }

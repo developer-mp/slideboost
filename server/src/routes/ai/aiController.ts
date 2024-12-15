@@ -2,19 +2,16 @@ import { Request, Response } from "express";
 import { spawn } from "child_process";
 import path from "path";
 import fs from "fs";
+import { config } from "../../../env.config";
 
 const AiController = {
   formatTranscript: async (req: Request, res: Response): Promise<void> => {
+    const { transcript } = req.body;
     try {
-      const { transcript } = req.body;
-
       if (!transcript) {
         res.status(400).json({ error: "No transcript provided" });
         return;
       }
-
-      const promptText =
-        "Rewrite and clean the following transcript by removing all non-readable characters. Don't include the prompt: ";
 
       const tempFilePath = path.join(__dirname, "temp_transcript.txt");
       fs.writeFileSync(tempFilePath, transcript);
@@ -24,7 +21,7 @@ const AiController = {
       const pythonProcess = spawn("python", [
         scriptPath,
         tempFilePath,
-        promptText,
+        config.PROMPT_STRING,
       ]);
 
       let scriptOutput = "";
@@ -48,17 +45,19 @@ const AiController = {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(
-          "An error occurred while formatting the transcript: ",
+          "An error occurred while formatting the transcript in the AI Controller: ",
           error.message
         );
       } else {
         console.error(
-          "An unknown error occurred while formatting the transcript"
+          "An unknown error occurred while formatting the transcript in the AI Controller"
         );
       }
-      res
-        .status(500)
-        .json({ error: "An error occurred while formatting the transcript" });
+      res.status(500).json({
+        message:
+          "An error occurred while formatting the transcript in the AI Controller",
+        error,
+      });
       return;
     }
   },

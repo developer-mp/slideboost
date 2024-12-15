@@ -36,7 +36,7 @@ const NavigationBar: React.FC = () => {
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
-      console.error("Logout failed: ", errorMessage);
+      console.error("Error occurred while logging out: ", error);
     }
   };
 

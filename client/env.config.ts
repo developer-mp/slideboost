@@ -9,7 +9,7 @@ const getEnvVar = (name: string): string => {
 const API_BASE_URL = getEnvVar("API_BASE_URL");
 const API = getEnvVar("API");
 const API_VERSION = getEnvVar("API_VERSION");
-const AUTH_ROUTER = getEnvVar("AUTH_ROUTER");
+const USER_ROUTER = getEnvVar("USER_ROUTER");
 const USER_ENDPOINT = getEnvVar("USER_ENDPOINT");
 const PASSWORD_ENDPOINT = getEnvVar("PASSWORD_ENDPOINT");
 const REGISTER_ENDPOINT = getEnvVar("REGISTER_ENDPOINT");
@@ -35,7 +35,7 @@ export const config = {
   API_BASE_URL,
   API,
   API_VERSION,
-  AUTH_ROUTER,
+  USER_ROUTER,
   USER_ENDPOINT,
   PASSWORD_ENDPOINT,
   REGISTER_ENDPOINT,

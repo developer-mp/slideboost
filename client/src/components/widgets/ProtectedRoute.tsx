@@ -16,13 +16,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
   useEffect(() => {
     const authToken = async () => {
       try {
-        const response = await dispatch(verifyToken()).unwrap();
-        if (response.userId) {
+        const resultAction = await dispatch(verifyToken()).unwrap();
+        if (resultAction.userId) {
           setIsTokenValid(true);
         }
       } catch (error) {
         setIsTokenValid(false);
         const errorMessage = handleErrorMessage(error);
+        console.error("Access restricted: ", error);
 
         if (!toastShown.current) {
           showErrorToast(errorMessage);

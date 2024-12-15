@@ -43,7 +43,7 @@ const Verification: React.FC = () => {
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
-      console.error("Email verification failed:", errorMessage);
+      console.error("Error occurred while verifying the email:", error);
     }
   };
 

@@ -121,3 +121,35 @@ export interface PrivateRouteProps {
   element: JSX.Element;
   flag: "isRegister" | "isReset";
 }
+
+export interface RegisterResponse {
+  name: string;
+  email: string;
+  message: string;
+}
+
+export interface LoginResponse {
+  name: string;
+  email: string;
+  createdAt: string;
+  plan: string;
+  message: string;
+}
+
+export interface VerifyTokenResponse {
+  userId: string;
+}
+
+export interface MessageResponse {
+  message: string;
+}
+
+export interface SendEmailResponse {
+  email: string;
+  message: string;
+}
+
+export interface UpdateUserNameResponse {
+  email: string;
+  message: string;
+}

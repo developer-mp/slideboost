@@ -59,7 +59,7 @@ const ResetPassword: React.FC = () => {
       } catch (error) {
         const errorMessage = handleErrorMessage(error);
         showErrorToast(errorMessage);
-        console.error("Reset password failed: ", errorMessage);
+        console.error("Error occurred while resetting the password: ", error);
       }
     }
   };

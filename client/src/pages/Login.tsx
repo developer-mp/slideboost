@@ -57,7 +57,7 @@ const Login: React.FC = () => {
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
-      console.error("Login failed: ", errorMessage);
+      console.error("Error occurred while logging in: ", error);
     }
   };
 
@@ -82,7 +82,7 @@ const Login: React.FC = () => {
       } catch (error) {
         const errorMessage = handleErrorMessage(error);
         showErrorToast(errorMessage);
-        console.error("Failed to send email: ", errorMessage);
+        console.error("Error occurred while sending the email: ", error);
       }
     }
   };
@@ -99,7 +99,10 @@ const Login: React.FC = () => {
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
-      console.error("Verification failed: ", error);
+      console.error(
+        "Error occurred while sending the verification email: ",
+        error
+      );
     }
   };
 
