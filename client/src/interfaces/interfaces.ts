@@ -136,7 +136,7 @@ export interface LoginResponse {
   message: string;
 }
 
-export interface VerifyTokenResponse {
+export interface TokenResponse {
   userId: string;
 }
 

@@ -360,6 +360,11 @@
   dependencies:
     "@swc/helpers" "^0.5.0"
 
+"@react-oauth/google@^0.12.1":
+  version "0.12.1"
+  resolved "https://registry.npmjs.org/@react-oauth/google/-/google-0.12.1.tgz"
+  integrity sha512-qagsy22t+7UdkYAiT5ZhfM4StXi9PPNvw0zuwNmabrWyMKddczMtBIOARflbaIj+wHiQjnMAsZmzsUYuXeyoSg==
+
 "@reduxjs/toolkit@^2.3.0":
   version "2.3.0"
   resolved "https://registry.npmjs.org/@reduxjs/toolkit/-/toolkit-2.3.0.tgz"
@@ -796,6 +801,7 @@ classnames@^2.3.2:
   version "1.0.0"
   resolved "file:"
   dependencies:
+    "@react-oauth/google" "^0.12.1"
     "@reduxjs/toolkit" "^2.3.0"
     axios "^1.7.7"
     bootstrap "^5.3.3"
@@ -1732,7 +1738,7 @@ react-bootstrap@^2.10.5:
     uncontrollable "^7.2.1"
     warning "^4.0.3"
 
-react-dom@^18.3.1, react-dom@>=16.14.0, react-dom@>=16.6.0, react-dom@>=16.8, react-dom@>=18:
+react-dom@^18.3.1, react-dom@>=16.14.0, react-dom@>=16.6.0, react-dom@>=16.8, react-dom@>=16.8.0, react-dom@>=18:
   version "18.3.1"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.3.1.tgz"
   integrity sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==

@@ -6,6 +6,7 @@ import { generateVerificationCode } from "../../utils/generateVerificationCode";
 import userService from "../../services/user/userService";
 import { config } from "../../../env.config";
 import { DbQueryResultProps } from "../../interfaces/interfaces";
+import { client } from "../../utils/googleAuthClient";
 
 const userController = {
   registerUser: async (req: Request, res: Response): Promise<void> => {
@@ -197,6 +198,97 @@ const userController = {
       res.status(500).json({
         message:
           "An error occurred while logging in the user in the Auth Controller",
+        error,
+      });
+      return;
+    }
+  },
+
+  loginUserWithGoogle: async (req: Request, res: Response): Promise<void> => {
+    const { idToken } = req.body;
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken,
+        audience: config.GOOGLE_CLIENT_ID,
+      });
+
+      const payload = ticket.getPayload();
+
+      if (!payload) {
+        res
+          .status(400)
+          .json({ success: false, message: "Invalid Google token payload" });
+        return;
+      }
+
+      const googleId = payload["sub"];
+
+      let result = await pool.query(
+        "SELECT * FROM users WHERE google_id = $1",
+        [googleId]
+      );
+
+      let user = result.rows[0];
+
+      if (!user) {
+        result = await pool.query(
+          "INSERT INTO users (google_id, name, email, is_verified) VALUES ($1, $2, $3, $4) RETURNING *",
+          [googleId, payload["name"], payload["email"], true]
+        );
+
+        user = result.rows[0];
+      }
+
+      const accessToken = jwt.sign({ userId: user.id }, config.JWT_SECRET, {
+        expiresIn: config.TOKEN_EXPIRATION,
+      });
+      const refreshToken = jwt.sign(
+        { userId: user.id },
+        config.JWT_REFRESH_SECRET,
+        {
+          expiresIn: config.REFRESH_TOKEN_EXPIRATION,
+        }
+      );
+
+      res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 3600000,
+      });
+
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 604800000,
+      });
+
+      res.status(200).json({
+        success: true,
+        name: user.name,
+        email: user.email,
+        createdAt: user.created_at,
+        plan: user.plan,
+        message: "Logged in successfully",
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res
+          .status(400)
+          .json({ success: false, message: "Invalid Google token" });
+        console.error(
+          "An error occurred while verifying Google token in the Auth Controller: ",
+          error.message
+        );
+      } else {
+        console.error(
+          "An unknown error occurred while verifying Google token in the Auth Controller"
+        );
+      }
+      res.status(500).json({
+        message:
+          "An error occurred while verifying Google token in the Auth Controller",
         error,
       });
       return;

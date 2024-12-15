@@ -29,6 +29,7 @@ const AI_API_KEY = getEnvVar("AI_API_KEY");
 const TOKEN_EXPIRATION = getEnvVar("TOKEN_EXPIRATION");
 const REFRESH_TOKEN_EXPIRATION = getEnvVar("REFRESH_TOKEN_EXPIRATION");
 const PROMPT_STRING = getEnvVar("PROMPT_STRING");
+const GOOGLE_CLIENT_ID = getEnvVar("GOOGLE_CLIENT_ID");
 
 export const config = {
   CLIENT_HOST,
@@ -51,4 +52,5 @@ export const config = {
   TOKEN_EXPIRATION,
   REFRESH_TOKEN_EXPIRATION,
   PROMPT_STRING,
+  GOOGLE_CLIENT_ID,
 };

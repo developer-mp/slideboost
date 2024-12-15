@@ -4,11 +4,13 @@ import { useNavigation } from "../../utils/login/useNavigation";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import LoginModal from "../widgets/LoginModal";
+import GoogleAuth from "../shared/GoogleAuth";
 import about_img from "../../assets/main/about_img.png";
 
 const About: React.FC = () => {
   const { navigateToCreateAccount, navigateToWorkspace } = useNavigation();
   const [modalShow, setModalShow] = useState<boolean>(false);
+  const [googleAuth, setGoogleAuth] = useState<boolean>(false);
 
   const openLoginModal = () => {
     setModalShow(true);
@@ -17,6 +19,12 @@ const About: React.FC = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.user.isAuthenticated
   );
+
+  const navigateToGoogleAuth = () => {
+    setGoogleAuth(true);
+    setModalShow(false);
+  };
+
   return (
     <Container
       className="d-flex align-items-center"
@@ -62,11 +70,12 @@ const About: React.FC = () => {
           <LoginModal
             show={modalShow}
             handleClose={() => setModalShow(false)}
-            onGoogleClick={navigateToCreateAccount}
+            onGoogleClick={navigateToGoogleAuth}
             onEmailClick={navigateToCreateAccount}
           />
         </Col>
       </Row>
+      {googleAuth && <GoogleAuth />}
     </Container>
   );
 };

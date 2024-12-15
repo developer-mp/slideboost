@@ -77,6 +77,34 @@ export const loginUser = createAsyncThunk<
   }
 });
 
+export const loginUserWithGoogle = createAsyncThunk<
+  {
+    name: string;
+    email: string;
+    createdAt: string;
+    plan: string;
+    message: string;
+  },
+  { idToken: string },
+  { rejectValue: { message: string } }
+>("auth/loginUserWithGoogle", async ({ idToken }, { rejectWithValue }) => {
+  try {
+    const response = await userService.loginUserWithGoogle(idToken);
+    return response;
+  } catch (error) {
+    if (error instanceof Error) {
+      const errorMessage = error.message;
+      return rejectWithValue({
+        message: errorMessage,
+      });
+    }
+    return rejectWithValue({
+      message:
+        "An unknown error occurred while logging in the user with Google in the User Action",
+    });
+  }
+});
+
 export const logoutUser = createAsyncThunk<
   {
     message: string;

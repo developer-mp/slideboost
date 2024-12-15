@@ -7,7 +7,7 @@ import {
   RegisterResponse,
   SendEmailResponse,
   UpdateUserNameResponse,
-  VerifyTokenResponse,
+  TokenResponse,
 } from "../../interfaces/interfaces";
 
 const userService = {
@@ -73,6 +73,24 @@ const userService = {
     }
   },
 
+  async loginUserWithGoogle(idToken: string): Promise<LoginResponse> {
+    const endpoint = `${config.USER_ROUTER}${config.GOOGLE_ENDPOINT}`;
+    try {
+      const response = await apiService.postCall(endpoint, {
+        idToken,
+      });
+      return response.data;
+    } catch (error) {
+      if (error instanceof Error) {
+        const errorMessage = error.message;
+        throw new Error(errorMessage);
+      }
+      throw new Error(
+        "An unknown error occurred while logging in the user with Google in the Auth Service"
+      );
+    }
+  },
+
   async logoutUser(): Promise<MessageResponse> {
     const endpoint = `${config.USER_ROUTER}${config.LOGOUT_ENDPOINT}`;
     try {
@@ -89,7 +107,7 @@ const userService = {
     }
   },
 
-  async verifyToken(): Promise<VerifyTokenResponse> {
+  async verifyToken(): Promise<TokenResponse> {
     const endpoint = `${config.USER_ROUTER}${config.TOKEN_ENDPOINT}`;
     try {
       const response = await apiService.getCall(endpoint, {});
@@ -105,7 +123,7 @@ const userService = {
     }
   },
 
-  async refreshToken(email: string): Promise<MessageResponse> {
+  async refreshToken(email: string): Promise<TokenResponse> {
     const endpoint = `${config.USER_ROUTER}${config.REFRESH_TOKEN_ENDPOINT}`;
     try {
       const response = await apiService.postCall(endpoint, {

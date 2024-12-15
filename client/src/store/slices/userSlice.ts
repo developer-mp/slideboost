@@ -3,6 +3,7 @@ import {
   registerUser,
   verifyEmail,
   loginUser,
+  loginUserWithGoogle,
   logoutUser,
   verifyToken,
   updateUserName,
@@ -93,6 +94,23 @@ const userSlice = createSlice({
         state.message = action.payload.message;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.status = "fail";
+        state.error = action.error.message || null;
+      })
+      .addCase(loginUserWithGoogle.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(loginUserWithGoogle.fulfilled, (state, action) => {
+        state.status = "success";
+        state.isAuthenticated = true;
+        state.userEmail = action.payload.email;
+        state.userName = action.payload.name;
+        state.createdAt = action.payload.createdAt;
+        state.plan = action.payload.plan;
+        state.message = action.payload.message;
+      })
+      .addCase(loginUserWithGoogle.rejected, (state, action) => {
         state.status = "fail";
         state.error = action.error.message || null;
       })
