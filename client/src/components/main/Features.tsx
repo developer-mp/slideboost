@@ -4,6 +4,7 @@ import { useNavigation } from "../../utils/login/useNavigation";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import LoginModal from "../widgets/LoginModal";
+import GoogleLoginModal from "../widgets/GoogleLoginModal";
 import TemplateCarousel from "../shared/TemplateCarousel";
 import features_img from "../../assets/main/features_img.png";
 import { templatesData } from "../../data/templatesData";
@@ -11,6 +12,7 @@ import { templatesData } from "../../data/templatesData";
 const Features: React.FC = () => {
   const { navigateToCreateAccount, navigateToWorkspace } = useNavigation();
   const [modalShow, setModalShow] = useState<boolean>(false);
+  const [modalGoogleShow, setModalGoogleShow] = useState<boolean>(false);
 
   const openLoginModal = () => {
     setModalShow(true);
@@ -19,6 +21,16 @@ const Features: React.FC = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.user.isAuthenticated
   );
+
+  const navigateToGoogleLogin = () => {
+    setModalGoogleShow(true);
+    setModalShow(false);
+  };
+
+  const handleGoogleModalClose = () => {
+    setModalGoogleShow(false);
+  };
+
   return (
     <Container
       className="d-flex align-items-center"
@@ -71,7 +83,7 @@ const Features: React.FC = () => {
           <LoginModal
             show={modalShow}
             handleClose={() => setModalShow(false)}
-            onGoogleClick={navigateToCreateAccount}
+            onGoogleClick={navigateToGoogleLogin}
             onEmailClick={navigateToCreateAccount}
           />
         </Col>
@@ -83,6 +95,12 @@ const Features: React.FC = () => {
           />
         </Col>
       </Row>
+      {modalGoogleShow && (
+        <GoogleLoginModal
+          show={modalGoogleShow}
+          handleClose={handleGoogleModalClose}
+        />
+      )}
     </Container>
   );
 };

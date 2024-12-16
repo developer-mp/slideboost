@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button, Container, Dropdown, Nav, Navbar } from "react-bootstrap";
 import { useNavigation } from "../../utils/login/useNavigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +7,8 @@ import { HashLink as Link } from "react-router-hash-link";
 import { getFirstChar } from "../../utils/login/getFirstChar";
 import { adjustScrollForNavbar } from "../../utils/common/adjustScrollForNavbar";
 import { logoutUser } from "../../store/actions/userAction";
+import LoginModal from "../widgets/LoginModal";
+import GoogleLoginModal from "../widgets/GoogleLoginModal";
 import logo_text from "../../assets/main/logo_text.png";
 import {
   handleErrorMessage,
@@ -17,6 +20,24 @@ import {
 } from "../../utils/common/handleToast";
 
 const NavigationBar: React.FC = () => {
+  const [modalShow, setModalShow] = useState<boolean>(false);
+  const [modalGoogleShow, setModalGoogleShow] = useState<boolean>(false);
+
+  const openLoginModal = () => {
+    setModalShow(true);
+  };
+
+  const navigateToGoogleLogin = () => {
+    setModalGoogleShow(true);
+    setModalShow(false);
+  };
+
+  const handleGoogleModalClose = () => {
+    setModalGoogleShow(false);
+  };
+
+  const { navigateToLogin } = useNavigation();
+
   const dispatch = useDispatch<AppDispatch>();
   const { navigateToHome } = useNavigation();
 
@@ -116,12 +137,26 @@ const NavigationBar: React.FC = () => {
             </Nav>
           ) : (
             <Nav className="ms-auto">
-              <Button className="button button-login" href="login">
+              <Button className="button button-login" onClick={openLoginModal}>
                 Login
               </Button>
             </Nav>
           )}
+          <LoginModal
+            show={modalShow}
+            handleClose={() => setModalShow(false)}
+            title="Sign In"
+            header="Choose how you want to sign in"
+            onGoogleClick={navigateToGoogleLogin}
+            onEmailClick={navigateToLogin}
+          />
         </Navbar.Collapse>
+        {modalGoogleShow && (
+          <GoogleLoginModal
+            show={modalGoogleShow}
+            handleClose={handleGoogleModalClose}
+          />
+        )}
       </Container>
     </Navbar>
   );

@@ -17,7 +17,11 @@ import {
 import { useNavigation } from "../../utils/login/useNavigation";
 import { config } from "../../../env.config";
 
-const GoogleAuth = () => {
+interface GoogleAuthProps {
+  onLoginStart: () => void;
+}
+
+const GoogleAuth: React.FC<GoogleAuthProps> = ({ onLoginStart }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { navigateToHome } = useNavigation();
 
@@ -30,6 +34,8 @@ const GoogleAuth = () => {
     }
 
     try {
+      onLoginStart();
+
       const resultAction = await dispatch(
         loginUserWithGoogle({ idToken: credential })
       ).unwrap();
@@ -41,27 +47,6 @@ const GoogleAuth = () => {
       showErrorToast(errorMessage);
       console.error("Error occurred while logging in with Google: ", error);
     }
-
-    // try {
-    //   const response = await fetch("http://localhost:3000/api/v1/user/google", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ idToken: credential }),
-    //   });
-
-    //   const data = await response.json();
-    //   console.log(data);
-
-    //   if (data.success) {
-    //     console.log("User authenticated with Google: ", data.user);
-    //   } else {
-    //     console.error("Google authentication failed: ", data);
-    //   }
-    // } catch (error) {
-    //   console.error("Error occurred during Google login: ", error);
-    // }
   };
 
   const handleGoogleError = () => {

@@ -6,6 +6,8 @@ import { LoginModalProps } from "../../interfaces/interfaces";
 const LoginModal: React.FC<LoginModalProps> = ({
   show,
   handleClose,
+  title = "Sign Up",
+  header = "Use your email to continue with SlideBoost for free!",
   onGoogleClick,
   onEmailClick,
 }) => {
@@ -17,10 +19,10 @@ const LoginModal: React.FC<LoginModalProps> = ({
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title>Sign Up</Modal.Title>
+        <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Use your email to continue with SlideBoost for free!</p>
+        <p>{header}</p>
         <Button
           className="login-choice"
           onClick={() => {

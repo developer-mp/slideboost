@@ -101,8 +101,15 @@ export interface VerificationCodeInputProps {
 export interface LoginModalProps {
   show: boolean;
   handleClose: () => void;
+  title?: string;
+  header?: string;
   onGoogleClick: () => void;
   onEmailClick: () => void;
+}
+
+export interface GoogleLoginModalProps {
+  show: boolean;
+  handleClose: () => void;
 }
 
 export interface FileListDisplayProps {
