@@ -9,7 +9,7 @@ const Conditions: React.FC = () => {
             CONDITIONS OF USE
           </h4>
           <h6 className="tw-mb-4 tw-font-bold tw-text-gray-900 tw-mx-auto tw-max-w-3xl tw-text-justify">
-            Last updated June 17, 2024
+            Last updated January 1, 2025
           </h6>
           <hr className="tw-mb-4 tw-text-gray-900 tw-mx-auto tw-max-w-3xl" />
           <div className="tw-text-gray-700 tw-mx-auto tw-max-w-3xl tw-text-justify">
@@ -24,10 +24,11 @@ const Conditions: React.FC = () => {
               We operate, as well as any other related products and services
               that refer or link to these legal terms (the{" "}
               <strong>"Legal Terms"</strong>) (collectively, the{" "}
-              <strong>"Services"</strong>).{" "}
+              <strong>"Services"</strong>).
             </p>
             <p className="tw-mb-4">
-              You can contact us by email at or by mail to{" "}
+              You can contact us by email at{" "}
+              <a href="mailto:support@slideboost.io">support@slideboost.io</a>
             </p>
             <p className="tw-mb-4">
               These Legal Terms constitute a legally binding agreement made
@@ -37,7 +38,7 @@ const Conditions: React.FC = () => {
               agreed to be bound by all of these Legal Terms. IF YOU DO NOT
               AGREE WITH ALL OF THESE LEGAL TERMS, THEN YOU ARE EXPRESSLY
               PROHIBITED FROM USING THE SERVICES AND YOU MUST DISCONTINUE USE
-              IMMEDIATELY.{" "}
+              IMMEDIATELY.
             </p>
             <p className="tw-mb-4">
               Supplemental terms and conditions or documents that may be posted
@@ -52,7 +53,7 @@ const Conditions: React.FC = () => {
               and will be deemed to have been made aware of and to have
               accepted, the changes in any revised Legal Terms by your continued
               use of the Services after the date such revised Legal Terms are
-              posted.{" "}
+              posted.
             </p>
             <p className="tw-mb-12">
               We recommend that you print a copy of these Legal Terms for your
@@ -62,65 +63,67 @@ const Conditions: React.FC = () => {
               TABLE OF CONTENTS
             </h5>
             <div>
-              <a href="#">1. OUR SERVICES</a>
+              <a href="#services">1. OUR SERVICES</a>
             </div>
             <div>
-              <a href="#">2. INTELLECTUAL PROPERTY RIGHTS</a>
+              <a href="#intellectual-property">
+                2. INTELLECTUAL PROPERTY RIGHTS
+              </a>
             </div>
             <div>
-              <a href="#">3. USER REPRESENTATIONS</a>
+              <a href="#representations">3. USER REPRESENTATIONS</a>
             </div>
             <div>
-              <a href="#">4. PROHIBITED ACTIVITIES</a>
+              <a href="#prohibited-activities">4. PROHIBITED ACTIVITIES</a>
             </div>
             <div>
-              <a href="#">5. USER GENERATED CONTRIBUTIONS</a>
+              <a href="#contributions">5. USER GENERATED CONTRIBUTIONS</a>
             </div>
             <div>
-              <a href="#">6. CONTRIBUTION LICENSE</a>
+              <a href="#contribution-license">6. CONTRIBUTION LICENSE</a>
             </div>
             <div>
-              <a href="#">7. SERVICES MANAGEMENT</a>
+              <a href="#services-management">7. SERVICES MANAGEMENT</a>
             </div>
             <div>
-              <a href="#">8. TERM AND TERMINATION</a>
+              <a href="#termination">8. TERM AND TERMINATION</a>
             </div>
             <div>
-              <a href="#">9. MODIFICATIONS AND INTERRUPTIONS</a>
+              <a href="#modifications">9. MODIFICATIONS AND INTERRUPTIONS</a>
             </div>
             <div>
-              <a href="#">10. GOVERNING LAW</a>
+              <a href="#law">10. GOVERNING LAW</a>
             </div>
             <div>
-              <a href="#">11. DISPUTE RESOLUTION</a>
+              <a href="#dispute">11. DISPUTE RESOLUTION</a>
             </div>
             <div>
-              <a href="#">12. CORRECTIONS</a>
+              <a href="#corrections">12. CORRECTIONS</a>
             </div>
             <div>
-              <a href="#">13. DISCLAIMER</a>
+              <a href="#disclaimer">13. DISCLAIMER</a>
             </div>
             <div>
-              <a href="#">14. LIMITATIONS OF LIABILITY</a>
+              <a href="#limitations">14. LIMITATIONS OF LIABILITY</a>
             </div>
             <div>
-              <a href="#">15. INDEMNIFICATION</a>
+              <a href="#indemnification">15. INDEMNIFICATION</a>
             </div>
             <div>
-              <a href="#">16. USER DATA</a>
+              <a href="#data">16. USER DATA</a>
             </div>
             <div>
-              <a href="#">
+              <a href="#communications">
                 17. ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES
               </a>
             </div>
             <div>
-              <a href="#">18. MISCELLANEOUS</a>
+              <a href="#miscellaneous">18. MISCELLANEOUS</a>
             </div>
             <div className="tw-mb-12">
-              <a href="#">19. CONTACT US</a>
+              <a href="#contact">19. CONTACT US</a>
             </div>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5 id="services" className="tw-font-bold tw-mb-8 tw-text-gray-900">
               1. OUR SERVICES
             </h5>
             <p className="tw-mb-12">
@@ -134,7 +137,10 @@ const Conditions: React.FC = () => {
               responsible for compliance with local laws, if and to the extent
               local laws are applicable.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="intellectual-property"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               2. INTELLECTUAL PROPERTY RIGHTS
             </h5>
             <p className="tw-mb-4 tw-font-bold tw-text-gray-900">
@@ -163,9 +169,10 @@ const Conditions: React.FC = () => {
               Your use of our Services
             </p>
             <p className="tw-mb-4">
-              Subject to your compliance with these Legal Terms, including the
-              <a href="#"> "PROHIBITED ACTIVITIES"</a> section below, we grant
-              you a non-exclusive, non-transferable, revocable license to:
+              Subject to your compliance with these Legal Terms, including the{" "}
+              <a href="#prohibited-activities">"PROHIBITED ACTIVITIES"</a>{" "}
+              section below, we grant you a non-exclusive, non-transferable,
+              revocable license to:
             </p>
             <ul className="tw-list-disc tw-list-inside">
               <li>access the Services; and</li>
@@ -210,10 +217,10 @@ const Conditions: React.FC = () => {
             </p>
             <p className="tw-mb-4">
               Please review this section and the{" "}
-              <a href="#"> "PROHIBITED ACTIVITIES" </a>section carefully prior
-              to using our Services to understand the (a) rights you give us and
-              (b) obligations you have when you post or upload any content
-              through the Services.
+              <a href="#prohibited-activities">"PROHIBITED ACTIVITIES"</a>{" "}
+              section carefully prior to using our Services to understand the
+              (a) rights you give us and (b) obligations you have when you post
+              or upload any content through the Services.
             </p>
             <p className="tw-mb-4">
               Submissions: By directly sending us any question, comment,
@@ -231,10 +238,10 @@ const Conditions: React.FC = () => {
             <ul className="tw-list-disc tw-list-inside">
               <li>
                 confirm that you have read and agree with our{" "}
-                <a href="#"> "PROHIBITED ACTIVITIES" </a>and will not post,
-                send, publish, upload, or transmit through the Services any
-                Submission that is illegal, harassing, hateful, harmful,
-                defamatory, obscene, bullying, abusive, discriminatory,
+                <a href="#prohibited-activities">"PROHIBITED ACTIVITIES"</a> and
+                will not post, send, publish, upload, or transmit through the
+                Services any Submission that is illegal, harassing, hateful,
+                harmful, defamatory, obscene, bullying, abusive, discriminatory,
                 threatening to any person or group, sexually explicit, false,
                 inaccurate, deceitful, or misleading:
               </li>
@@ -259,7 +266,10 @@ const Conditions: React.FC = () => {
               because of your breach of (a) this section, (b) any third party's
               intellectual property rights, or (c) applicable law.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="representations"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               3. USER REPRESENTATIONS
             </h5>
             <p className="tw-mb-4">
@@ -278,7 +288,10 @@ const Conditions: React.FC = () => {
               your account and refuse any and all current or future use of the
               Services (or any portion thereof).
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="prohibited-activities"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               4. PROHIBITED ACTIVITIES
             </h5>
             <p className="tw-mb-4">
@@ -404,7 +417,10 @@ const Conditions: React.FC = () => {
                 revenue-generating endeavor or commercial enterprise.
               </li>
             </ul>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="contributions"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               5. USER GENERATED CONTRIBUTIONS
             </h5>
             <p className="tw-mb-12">
@@ -419,7 +435,10 @@ const Conditions: React.FC = () => {
               you create or make available any Contributions, you thereby
               represent and warrant that.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="contribution-license"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               6. CONTRIBUTION LICENSE
             </h5>
             <p className="tw-mb-4">
@@ -443,7 +462,10 @@ const Conditions: React.FC = () => {
               and all responsibility and to refrain from any legal action
               against us regarding your Contributions.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="services-management"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               7. SERVICES MANAGEMENT
             </h5>
             <p className="tw-mb-12">
@@ -462,7 +484,10 @@ const Conditions: React.FC = () => {
               Services in a manner designed to protect our rights and property
               and to facilitate the proper functioning of the Services.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="termination"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               8. TERM AND TERMINATION
             </h5>
             <p className="tw-mb-4">
@@ -487,7 +512,10 @@ const Conditions: React.FC = () => {
               right to take appropriate legal action, including without
               limitation pursuing civil, criminal, and injunctive redress.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="modifications"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               9. MODIFICATIONS AND INTERRUPTIONS
             </h5>
             <p className="tw-mb-4">
@@ -512,7 +540,7 @@ const Conditions: React.FC = () => {
               maintain and support the Services or to supply any corrections,
               updates, or releases in connection therewith.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5 id="law" className="tw-font-bold tw-mb-8 tw-text-gray-900">
               10. GOVERNING LAW
             </h5>
             <p className="tw-mb-12">
@@ -521,7 +549,7 @@ const Conditions: React.FC = () => {
               have exclusive jurisdiction to resolve any dispute which may arise
               in connection with these Legal Terms.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5 id="dispute" className="tw-font-bold tw-mb-8 tw-text-gray-900">
               11. DISPUTE RESOLUTION
             </h5>
             <p className="tw-mb-4 tw-font-bold tw-text-gray-900">
@@ -584,7 +612,10 @@ const Conditions: React.FC = () => {
               courts listed for jurisdiction above, and the Parties agree to
               submit to the personal jurisdiction of that court.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="corrections"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               12. CORRECTIONS
             </h5>
             <p className="tw-mb-12">
@@ -595,7 +626,10 @@ const Conditions: React.FC = () => {
               inaccuracies, or omissions and to change or update the information
               on the Services at any time, without prior notice.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="disclaimer"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               13. DISCLAIMER
             </h5>
             <p className="tw-mb-12">
@@ -631,7 +665,10 @@ const Conditions: React.FC = () => {
               IN ANY ENVIRONMENT, YOU SHOULD USE YOUR BEST JUDGMENT AND EXERCISE
               CAUTION WHERE APPROPRIATE.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="limitations"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               14. LIMITATIONS OF LIABILITY
             </h5>
             <p className="tw-mb-12">
@@ -651,7 +688,10 @@ const Conditions: React.FC = () => {
               LIMITATIONS MAY NOT APPLY TO YOU, AND YOU MAY HAVE ADDITIONAL
               RIGHTS.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="indemnification"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               15. INDEMNIFICATION
             </h5>
             <p className="tw-mb-12">
@@ -674,7 +714,7 @@ const Conditions: React.FC = () => {
               which is subject to this indemnification upon becoming aware of
               it.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5 id="data" className="tw-font-bold tw-mb-8 tw-text-gray-900">
               16. USER DATA
             </h5>
             <p className="tw-mb-12">
@@ -688,7 +728,10 @@ const Conditions: React.FC = () => {
               such data, and you hereby waive any right of action against us
               arising from any such loss or corruption of such data.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="communications"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               17. ELECTRONIC COMMUNICATIONS, TRANSACTIONS, AND SIGNATURES
             </h5>
             <p className="tw-mb-12">
@@ -707,7 +750,10 @@ const Conditions: React.FC = () => {
               retention of non-electronic records, or to payments or the
               granting of credits by any means other than electronic means.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="miscellaneous"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               18. MISCELLANEOUS
             </h5>
             <p className="tw-mb-12">
@@ -733,13 +779,14 @@ const Conditions: React.FC = () => {
               these Legal Terms and the lack of signing by the parties hereto to
               execute these Legal Terms.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5 id="contact" className="tw-font-bold tw-mb-8 tw-text-gray-900">
               19. CONTACT US
             </h5>
             <p className="tw-mb-12">
               In order to resolve a complaint regarding the Services or to
               receive further information regarding use of the Services, please
-              contact us at
+              contact us at{" "}
+              <a href="mailto:support@slideboost.io">support@slideboost.io</a>
             </p>
           </div>
         </Col>

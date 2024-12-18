@@ -9,7 +9,7 @@ const Privacy: React.FC = () => {
             PRIVACY NOTICE
           </h4>
           <h6 className="tw-mb-4 tw-font-bold tw-mx-auto tw-max-w-3xl tw-text-justify">
-            Last updated June 17, 2024
+            Last updated January 1, 2025
           </h6>
           <hr className="tw-mb-4 tw-text-gray-900 tw-mx-auto tw-max-w-3xl" />
           <div className="tw-text-gray-700 tw-mx-auto tw-max-w-3xl tw-text-justify">
@@ -33,7 +33,6 @@ const Privacy: React.FC = () => {
             </ul>
             <p className="tw-mb-12">
               <strong>
-                {" "}
                 By using SlideBoost Services, you are consenting to the
                 practices described in this Privacy Policy. If you do not agree
                 with our policies and practices, please do not use our Services.
@@ -46,8 +45,8 @@ const Privacy: React.FC = () => {
               This summary provides key points from our privacy notice, but you
               can find out more details about any of these topics by clicking
               the link following each key point or by using our{" "}
-              <a href="#">table of contents</a> below to find the section you
-              are looking for.
+              <a href="#table">table of contents</a> below to find the section
+              you are looking for.
             </p>
             <p className="tw-mb-4">
               <strong>What personal information do we process?</strong> When you
@@ -55,7 +54,7 @@ const Privacy: React.FC = () => {
               information depending on how you interact with us and the
               Services, the choices you make, and the products and features you
               use.{" "}
-              <a href="#">
+              <a href="#collect-info">
                 Learn more about personal information you disclose to us.
               </a>
             </p>
@@ -74,7 +73,9 @@ const Privacy: React.FC = () => {
               comply with the law. We may also process your information for
               other purposes with your consent. We process your information only
               when we have a valid legal reason to do so.{" "}
-              <a href="#">Learn more about how we process your information.</a>
+              <a href="#process-info">
+                Learn more about how we process your information.
+              </a>
             </p>
             <p className="tw-mb-4">
               <strong>
@@ -83,7 +84,7 @@ const Privacy: React.FC = () => {
               </strong>{" "}
               We may share information in specific situations and with specific
               third parties.{" "}
-              <a href="#">
+              <a href="#share-info">
                 Learn more about when and with whom we share your personal
                 information.
               </a>
@@ -97,7 +98,7 @@ const Privacy: React.FC = () => {
               guarantee that hackers, cybercriminals, or other unauthorized
               third parties will not be able to defeat our security and
               improperly collect, access, steal, or modify your information.{" "}
-              <a href="#">
+              <a href="#keep-info-safe">
                 Learn more about how we keep your information safe.
               </a>
             </p>
@@ -105,80 +106,90 @@ const Privacy: React.FC = () => {
               <strong>What are your rights?</strong> Depending on where you are
               located geographically, the applicable privacy law may mean you
               have certain rights regarding your personal information.{" "}
-              <a href="#">Learn more about your privacy rights.</a>
-            </p>
-            <p className="tw-mb-4">
-              <strong>How do you exercise your rights?</strong> The easiest way
-              to exercise your rights is by visiting{" "}
-              <a href="#">[Link to rights exercise page]</a> or by contacting
-              us. We will consider and act upon any request in accordance with
-              applicable data protection laws.
+              <a href="#privacy-rights">
+                Learn more about your privacy rights.
+              </a>
             </p>
             <p className="tw-mb-12">
-              Want to learn more about what we do with any information we
-              collect? <a href="#">Review the privacy notice in full.</a>
+              <strong>How do you exercise your rights?</strong> The easiest way
+              to exercise your rights by contacting us. We will consider and act
+              upon any request in accordance with applicable data protection
+              laws.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5 id="table" className="tw-font-bold tw-mb-8 tw-text-gray-900">
               TABLE OF CONTENTS
             </h5>
             <div>
-              <a href="#">1. WHAT INFORMATION DO WE COLLECT?</a>
+              <a href="#collect-info">1. WHAT INFORMATION DO WE COLLECT?</a>
             </div>
             <div>
-              <a href="#">2. HOW DO WE PROCESS YOUR INFORMATION?</a>
+              <a href="#process-info">2. HOW DO WE PROCESS YOUR INFORMATION?</a>
             </div>
             <div>
-              <a href="#">
+              <a href="#legal-bases">
                 3. WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR PERSONAL
                 INFORMATION?
               </a>
             </div>
             <div>
-              <a href="#">
+              <a href="#share-info">
                 4. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
               </a>
             </div>
             <div>
-              <a href="#">
+              <a href="#cookies">
                 5. DO WE USE COOKIES AND OTHER TRACKING TECHNOLOGIES?
               </a>
             </div>
             <div>
-              <a href="#">
-                6. HOW DO WE HANDLE YOUR SOCIAL LOGINS? 7. HOW LONG DO WE KEEP
-                YOUR INFORMATION?
+              <a href="#logins">6. HOW DO WE HANDLE YOUR SOCIAL LOGINS?</a>
+            </div>
+            <div>
+              <a href="#keep-info-long">
+                7. HOW LONG DO WE KEEP YOUR INFORMATION?
               </a>
             </div>
             <div>
-              <a href="#">8. HOW DO WE KEEP YOUR INFORMATION SAFE?</a>
+              <a href="#keep-info-safe">
+                8. HOW DO WE KEEP YOUR INFORMATION SAFE?
+              </a>
             </div>
             <div>
-              <a href="#">9. WHAT ARE YOUR PRIVACY RIGHTS?</a>
+              <a href="#privacy-rights">9. WHAT ARE YOUR PRIVACY RIGHTS?</a>
             </div>
             <div>
-              <a href="#">10. CONTROLS FOR DO-NOT-TRACK FEATURES</a>
+              <a href="#do-not-track">10. CONTROLS FOR DO-NOT-TRACK FEATURES</a>
             </div>
             <div>
-              <a href="#">
+              <a href="#specific-rights-us">
                 11. DO UNITED STATES RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?
               </a>
             </div>
             <div>
-              <a href="#">12. DO OTHER REGIONS HAVE SPECIFIC PRIVACY RIGHTS?</a>
+              <a href="#specific-rights-other">
+                12. DO OTHER REGIONS HAVE SPECIFIC PRIVACY RIGHTS?
+              </a>
             </div>
             <div>
-              <a href="#">13. DO WE MAKE UPDATES TO THIS NOTICE?</a>
+              <a href="#notice-updates">
+                13. DO WE MAKE UPDATES TO THIS NOTICE?
+              </a>
             </div>
             <div>
-              <a href="#">14. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</a>
+              <a href="#contact">
+                14. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
+              </a>
             </div>
             <div className="tw-mb-12">
-              <a href="#">
+              <a href="#update-data">
                 15. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT
                 FROM YOU?
               </a>
             </div>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="collect-info"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               1. WHAT INFORMATION DO WE COLLECT?
             </h5>
             <p className="tw-mb-4 tw-font-bold">
@@ -223,7 +234,10 @@ const Privacy: React.FC = () => {
               and the security code associated with your payment instrument. All
               payment data is handled and stored by Stripe. You may find their
               privacy notice link(s) here:{" "}
-              <a href="https://stripe.com/en-ca/legal/privacy-center">
+              <a
+                href="https://stripe.com/en-ca/legal/privacy-center"
+                target="_blank"
+              >
                 Stripe Privacy Center
               </a>
             </p>
@@ -234,14 +248,18 @@ const Privacy: React.FC = () => {
               other social media account. If you choose to register in this way,
               we will collect certain profile information about you from the
               social media provider, as described in the section called{" "}
-              <a href="#">"HOW DO WE HANDLE YOUR SOCIAL LOGINS?"</a> below.
+              <a href="#logins">"HOW DO WE HANDLE YOUR SOCIAL LOGINS?"</a>{" "}
+              below.
             </p>
             <p className="tw-mb-12">
               All personal information that you provide to us must be true,
               complete, and accurate, and you must notify us of any changes to
               such personal information.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="process-info"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               2. HOW DO WE PROCESS YOUR INFORMATION?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -258,23 +276,24 @@ const Privacy: React.FC = () => {
             <ul className="tw-list-disc tw-list-inside tw-mb-12">
               <li>
                 <strong>
-                  {" "}
                   To facilitate account creation and authentication and
                   otherwise manage user accounts.
-                </strong>{" "}
+                </strong>
                 We may process your information so you can create and log in to
                 your account, as well as keep your account in working order.
               </li>
               <li>
                 <strong>
-                  {" "}
                   To save or protect an individual's vital interest.
-                </strong>{" "}
+                </strong>
                 We may process your information when necessary to save or
                 protect an individual's vital interest, such as to prevent harm.
               </li>
             </ul>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="legal-bases"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               3. WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR INFORMATION?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -300,8 +319,7 @@ const Privacy: React.FC = () => {
                 <strong>Consent:</strong> We may process your information if you
                 have given us permission (i.e., consent) to use your personal
                 information for a specific purpose. You can withdraw your
-                consent at any time. Learn more about{" "}
-                <a href="#">withdrawing your consent.</a>
+                consent at any time by contacting us.
               </li>
               <li>
                 <strong>Legal Obligations:</strong> We may process your
@@ -326,8 +344,8 @@ const Privacy: React.FC = () => {
               We may process your information if you have given us specific
               permission (i.e., express consent) to use your personal
               information for a specific purpose, or in situations where your
-              permission can be inferred (i.e., implied consent). You can{" "}
-              <a href="#">withdraw your consent at any time.</a>
+              permission can be inferred (i.e., implied consent). You can
+              withdraw your consent at any time by contacting us.
             </p>
             <p className="tw-mb-4">
               In some exceptional cases, we may be legally permitted under
@@ -382,7 +400,10 @@ const Privacy: React.FC = () => {
                 regulations
               </li>
             </ul>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="share-info"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               4. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -402,7 +423,7 @@ const Privacy: React.FC = () => {
                 all or a portion of our business to another company.
               </li>
             </ul>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5 id="cookies" className="tw-font-bold tw-mb-8 tw-text-gray-900">
               5. DO WE USE COOKIES AND OTHER TRACKING TECHNOLOGIES?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -415,7 +436,7 @@ const Privacy: React.FC = () => {
               our Services. Some online tracking technologies help us maintain
               the security of our Services and your account, prevent crashes,
               fix bugs, save your preferences, and assist with basic site
-              functions.{" "}
+              functions.
             </p>
             <p className="tw-mb-4">
               We also permit third parties and service providers to use online
@@ -432,15 +453,15 @@ const Privacy: React.FC = () => {
               applicable US state laws, you can opt out of these online tracking
               technologies by submitting a request as described below under
               section{" "}
-              <a href="#">
+              <a href="#specific-rights-us">
                 DO UNITED STATES RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?"
-              </a>{" "}
+              </a>
             </p>
             <p className="tw-mb-12">
               Specific information about how we use such technologies and how
               you can refuse certain cookies is set out in our Cookie Notice:
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5 id="logins" className="tw-font-bold tw-mb-8 tw-text-gray-900">
               6. HOW DO WE HANDLE YOUR SOCIAL LOGINS?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -469,7 +490,10 @@ const Privacy: React.FC = () => {
               they collect, use, and share your personal information, and how
               you can set your privacy preferences on their sites and apps.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="keep-info-long"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               7. HOW LONG DO WE KEEP YOUR INFORMATION?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -494,7 +518,10 @@ const Privacy: React.FC = () => {
               then we will securely store your personal information and isolate
               it from any further processing until deletion is possible.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="keep-info-safe"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               8. HOW DO WE KEEP YOUR INFORMATION SAFE?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -517,7 +544,10 @@ const Privacy: React.FC = () => {
               at your own risk. You should only access the Services within a
               secure environment.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="privacy-rights"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               9. WHAT ARE YOUR PRIVACY RIGHTS?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -541,7 +571,8 @@ const Privacy: React.FC = () => {
               processing of your personal information. You can make such a
               request by contacting us using the contact details provided in the
               section{" "}
-              <a href="#">HOW CAN YOU CONTACT US ABOUT THIS NOTICE?" </a> below.
+              <a href="#contact">HOW CAN YOU CONTACT US ABOUT THIS NOTICE?" </a>{" "}
+              below.
             </p>
             <p className="tw-mb-4">
               We will consider and act upon any request in accordance with
@@ -551,12 +582,23 @@ const Privacy: React.FC = () => {
               If you are located in the EEA or UK and you believe we are
               unlawfully processing your personal information, you also have the
               right to complain to your{" "}
-              <a href="#">Member State data protection authority</a> or{" "}
-              <a href="#">UK data protection authority.</a>
+              <a
+                href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en"
+                target="_blank"
+              >
+                Member State data protection authority
+              </a>{" "}
+              or{" "}
+              <a href="https://ico.org.uk/" target="_blank">
+                UK data protection authority.
+              </a>
             </p>
             <p className="tw-mb-4">
               If you are located in Switzerland, you may contact the{" "}
-              <a href="#">
+              <a
+                href="https://www.edoeb.admin.ch/edoeb/en/home.html"
+                target="_blank"
+              >
                 Federal Data Protection and Information Commissioner.
               </a>
             </p>
@@ -566,8 +608,8 @@ const Privacy: React.FC = () => {
               express and/or implied consent depending on the applicable law,
               you have the right to withdraw your consent at any time. You can
               withdraw your consent at any time by contacting us using the
-              contact details provided in the section
-              <a href="#">"HOW CAN YOU CONTACT US ABOUT THIS NOTICE?"</a>
+              contact details provided in the section{" "}
+              <a href="#contact">"HOW CAN YOU CONTACT US ABOUT THIS NOTICE?"</a>{" "}
               below or updating your preferences.
             </p>
             <p className="tw-mb-4">
@@ -584,10 +626,10 @@ const Privacy: React.FC = () => {
               You can unsubscribe from our marketing and promotional
               communications at any time by clicking on the unsubscribe link in
               the emails that we send, or by contacting us using the details
-              provided in the section
-              <a href="#">"HOW CAN YOU CONTACT US ABOUT THIS NOTICE?"</a> below.
-              You will then be removed from the marketing lists. However, we may
-              still communicate with you - for example, to send you
+              provided in the section{" "}
+              <a href="#contact">"HOW CAN YOU CONTACT US ABOUT THIS NOTICE?"</a>{" "}
+              below. You will then be removed from the marketing lists. However,
+              we may still communicate with you - for example, to send you
               service-related messages that are necessary for the administration
               and use of your account, to respond to service requests, or for
               other non-marketing purposes.
@@ -618,7 +660,10 @@ const Privacy: React.FC = () => {
               this could affect certain features or services of our Services.
               For further information, please see our Cookie Notice:
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="do-not-track"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               10. CONTROLS FOR DO-NOT-TRACK FEATURES
             </h5>
             <p className="tw-mb-4">
@@ -640,7 +685,10 @@ const Privacy: React.FC = () => {
               legal standard for recognizing or honoring DNT signals, we do not
               respond to them at this time.
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="specific-rights-us"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               11. DO UNITED STATES RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -850,14 +898,14 @@ const Privacy: React.FC = () => {
             </p>
             <p className="tw-mb-4">
               Learn more about the sources of personal information we collect in{" "}
-              <a href="#">"WHAT INFORMATION DO WE COLLECT?"</a>
+              <a href="#collect-info">"WHAT INFORMATION DO WE COLLECT?"</a>
             </p>
             <p className="tw-mb-4 tw-font-bold">
               How We Use and Share Personal Information
             </p>
             <p className="tw-mb-4">
               Learn about how we use your personal information in the section,{" "}
-              <a href="#">"HOW DO WE PROCESS YOUR INFORMATION?"</a>
+              <a href="#process-info">"HOW DO WE PROCESS YOUR INFORMATION?"</a>
             </p>
             <p className="tw-mb-4 tw-font-bold">
               Will your information be shared with anyone else?
@@ -867,7 +915,7 @@ const Privacy: React.FC = () => {
               providers pursuant to a written contract between us and each
               service provider. Learn more about how we disclose personal
               information in the section,{" "}
-              <a href="#">
+              <a href="#share-info">
                 "WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?"
               </a>
             </p>
@@ -956,12 +1004,15 @@ const Privacy: React.FC = () => {
               To exercise these rights, you can contact us by visiting or by
               referring to the contact details at the bottom of this document.
               We will honor your opt-out preferences if you enact the{" "}
-              <a href="#">Global Privacy Control</a> (GPC) opt-out signal on
-              your browser. Under certain US state data protection laws, you can
-              designate an authorized agent to make a request on your behalf. We
-              may deny a request from an authorized agent that does not submit
-              proof that they have been validly authorized to act on your behalf
-              in accordance with applicable laws.
+              <a href="https://globalprivacycontrol.org/" target="_blank">
+                Global Privacy Control
+              </a>{" "}
+              (GPC) opt-out signal on your browser. Under certain US state data
+              protection laws, you can designate an authorized agent to make a
+              request on your behalf. We may deny a request from an authorized
+              agent that does not submit proof that they have been validly
+              authorized to act on your behalf in accordance with applicable
+              laws.
             </p>
             <p className="tw-mb-4 tw-font-bold">Request Verification</p>
             <p className="tw-mb-4">
@@ -1002,9 +1053,12 @@ const Privacy: React.FC = () => {
               If you are a California resident and would like to make such a
               request, please submit your request in writing to us by using the
               contact details provided in the section{" "}
-              <a href="#">"HOW CAN YOU CONTACT US ABOUT THIS NOTICE?"</a>
+              <a href="#contact">"HOW CAN YOU CONTACT US ABOUT THIS NOTICE?"</a>
             </p>
-            <h5 className="tw-font-bold tw-mb-8 tw-text-gray-900">
+            <h5
+              id="specific-rights-other"
+              className="tw-font-bold tw-mb-8 tw-text-gray-900"
+            >
               12. DO OTHER REGIONS HAVE SPECIFIC PRIVACY RIGHTS?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -1038,7 +1092,7 @@ const Privacy: React.FC = () => {
               At any time, you have the right to request access to or correction
               of your personal information. You can make such a request by
               contacting us by using the contact details provided in the section{" "}
-              <a href="#">
+              <a href="#update-data">
                 "HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM
                 YOU?"
               </a>{" "}
@@ -1056,7 +1110,7 @@ const Privacy: React.FC = () => {
               At any time, you have the right to request access to or correction
               of your personal information. You can make such a request by
               contacting us by using the contact details provided in the section{" "}
-              <a href="#">
+              <a href="#update-data">
                 "HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM
                 YOU?"
               </a>{" "}
@@ -1073,7 +1127,7 @@ const Privacy: React.FC = () => {
               <li>Complaints (complete POPIA/PAIA form 5)</li>
               <li>PAIAComplaints@inforegulator.org.za</li>
             </ul>
-            <h5 className="tw-mb-8 tw-font-bold">
+            <h5 id="notice-updates" className="tw-mb-8 tw-font-bold">
               13. DO WE MAKE UPDATES TO THIS NOTICE?
             </h5>
             <p className="tw-mb-4 tw-italic">
@@ -1089,21 +1143,15 @@ const Privacy: React.FC = () => {
               We encourage you to review this privacy notice frequently to be
               informed of how we are protecting your information.
             </p>
-            <h5 className="tw-mb-8 tw-font-bold">
+            <h5 id="contact" className="tw-mb-8 tw-font-bold">
               14. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
             </h5>
-            <p className="tw-mb-4">
+            <p className="tw-mb-12">
               If you have questions or comments about this notice, you may email
               us at{" "}
-              <a href="mailto:privacy@slideboost.io">privacy@slideboost.io</a>{" "}
-              or contact us by post at:
+              <a href="mailto:support@slideboost.io">support@slideboost.io</a>
             </p>
-            <p className="tw-mb-12">
-              SlideBoost
-              <br />
-              [Address]
-            </p>
-            <h5 className="tw-mb-8 tw-font-bold">
+            <h5 id="#update-data" className="tw-mb-8 tw-font-bold">
               15. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM
               YOU?
             </h5>
@@ -1115,8 +1163,9 @@ const Privacy: React.FC = () => {
               information. You may also have the right to withdraw your consent
               to our processing of your personal information. These rights may
               be limited in some circumstances by applicable law. To request to
-              review, update, or delete your personal information, please visit
-              [link or provide instructions].
+              review, update, or delete your personal information, please
+              contact us at{" "}
+              <a href="mailto:support@slideboost.io">support@slideboost.io</a>
             </p>
           </div>
         </Col>

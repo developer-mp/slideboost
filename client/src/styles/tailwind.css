@@ -258,3 +258,7 @@
 .active-tab .nav-link.active {
   background-color: #f2f3f5 !important;
 }
+
+h5 {
+  scroll-margin-top: 76px;
+}
