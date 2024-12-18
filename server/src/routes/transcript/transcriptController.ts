@@ -15,12 +15,12 @@ const TranscriptController = {
       const absoluteFilePath = path.join(__dirname, filePath);
 
       if (!filePath) {
-        res.status(400).json({ error: "File path is required" });
+        res.status(400).json({ message: "File path is required" });
         return;
       }
 
       if (!fs.existsSync(absoluteFilePath)) {
-        res.status(404).json({ error: "File not found" });
+        res.status(404).json({ message: "File not found" });
         return;
       }
 
@@ -40,7 +40,6 @@ const TranscriptController = {
       res.status(500).json({
         message:
           "An error occurred while processing the text in the Transcript Controller",
-        error,
       });
       return;
     }
@@ -51,12 +50,12 @@ const TranscriptController = {
       const absoluteFilePath = path.join(__dirname, filePath);
 
       if (!filePath) {
-        res.status(400).json({ error: "File path is required" });
+        res.status(400).json({ message: "File path is required" });
         return;
       }
 
       if (!fs.existsSync(absoluteFilePath)) {
-        res.status(404).json({ error: "File not found" });
+        res.status(404).json({ message: "File not found" });
         return;
       }
 
@@ -78,7 +77,6 @@ const TranscriptController = {
       res.status(500).json({
         message:
           "An error occurred while processing the image in the Transcript Controller",
-        error,
       });
       return;
     }
@@ -89,12 +87,12 @@ const TranscriptController = {
       const absoluteFilePath = path.join(__dirname, filePath);
 
       if (!filePath) {
-        res.status(400).json({ error: "File path is required" });
+        res.status(400).json({ message: "File path is required" });
         return;
       }
 
       if (!fs.existsSync(absoluteFilePath)) {
-        res.status(404).json({ error: "File not found" });
+        res.status(404).json({ message: "File not found" });
         return;
       }
 
@@ -118,7 +116,7 @@ const TranscriptController = {
       pythonProcess.on("close", (code) => {
         fs.unlinkSync(wavFilePath);
         if (code !== 0) {
-          res.status(500).json({ error: "Python processing error" });
+          res.status(500).json({ message: "Python processing error" });
         } else {
           res.json({ text: scriptOutput.trim() });
         }
@@ -137,7 +135,6 @@ const TranscriptController = {
       res.status(500).json({
         message:
           "An error occurred while processing the audio in the Transcript Controller",
-        error,
       });
       return;
     }
@@ -148,12 +145,12 @@ const TranscriptController = {
       const absoluteFilePath = path.join(__dirname, filePath);
 
       if (!filePath) {
-        res.status(400).json({ error: "File path is required" });
+        res.status(400).json({ message: "File path is required" });
         return;
       }
 
       if (!fs.existsSync(absoluteFilePath)) {
-        res.status(404).json({ error: "File not found" });
+        res.status(404).json({ message: "File not found" });
         return;
       }
 
@@ -180,7 +177,7 @@ const TranscriptController = {
       pythonProcess.on("close", (code) => {
         fs.unlinkSync(wavFilePath);
         if (code !== 0) {
-          res.status(500).json({ error: "Python processing error" });
+          res.status(500).json({ message: "Python processing error" });
         } else {
           res.json({ text: scriptOutput.trim() });
         }
@@ -199,7 +196,6 @@ const TranscriptController = {
       res.status(500).json({
         message:
           "An error occurred while processing the video in the Transcript Controller",
-        error,
       });
       return;
     }
@@ -208,7 +204,7 @@ const TranscriptController = {
     const { filePath } = req.body;
     try {
       if (!filePath) {
-        res.status(400).json({ error: "YouTube URL is required" });
+        res.status(400).json({ message: "YouTube URL is required" });
         return;
       }
 
@@ -238,7 +234,7 @@ const TranscriptController = {
       pythonProcess.on("close", (code) => {
         fs.unlinkSync(wavFilePath);
         if (code !== 0) {
-          res.status(500).json({ error: "Python processing error" });
+          res.status(500).json({ message: "Python processing error" });
         } else {
           res.json({ text: scriptOutput.trim() });
         }
@@ -257,7 +253,6 @@ const TranscriptController = {
       res.status(500).json({
         message:
           "An error occurred while processing the Youtube video in the Transcript Controller",
-        error,
       });
       return;
     }

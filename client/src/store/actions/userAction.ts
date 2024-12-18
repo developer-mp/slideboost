@@ -10,8 +10,8 @@ export const registerUser = createAsyncThunk<
   "auth/registerUser",
   async ({ name, email, password }, { rejectWithValue }) => {
     try {
-      const { message } = await userService.registerUser(name, email, password);
-      return { name, email, message };
+      const response = await userService.registerUser(name, email, password);
+      return response;
     } catch (error) {
       if (error instanceof Error) {
         const errorMessage = error.message;
@@ -204,8 +204,8 @@ export const updateUserName = createAsyncThunk<
   { rejectValue: { message: string } }
 >("user/updateUserName", async ({ name, email }, { rejectWithValue }) => {
   try {
-    const { message } = await userService.updateUserName(name, email);
-    return { name, message };
+    const response = await userService.updateUserName(name, email);
+    return response;
   } catch (error) {
     if (error instanceof Error) {
       const errorMessage = error.message;

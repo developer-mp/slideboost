@@ -157,6 +157,6 @@ export interface SendEmailResponse {
 }
 
 export interface UpdateUserNameResponse {
-  email: string;
+  name: string;
   message: string;
 }

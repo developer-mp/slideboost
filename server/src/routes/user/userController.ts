@@ -37,10 +37,12 @@ const userController = {
       const verificationCode = generateVerificationCode();
       const expiresAt = new Date();
       expiresAt.setMinutes(expiresAt.getMinutes() + 15);
-      (await pool.query(
-        "INSERT INTO users (name, email, password, verification_code, expires_at) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      const result = (await pool.query(
+        "INSERT INTO users (name, email, password, verification_code, expires_at) VALUES ($1, $2, $3, $4, $5) RETURNING name, email",
         [name, email, hashedPassword, verificationCode, expiresAt]
       )) as DbQueryResultProps;
+
+      const user = result.rows[0];
 
       try {
         if (verificationCode) {
@@ -60,12 +62,13 @@ const userController = {
         res.status(500).json({
           mesage:
             "An error occurred while sending the verification email in the Auth Controller",
-          error,
         });
         return;
       }
 
       res.status(201).json({
+        name: user.name,
+        email: user.email,
         message: "Check your email for verification code",
       });
     } catch (error: unknown) {
@@ -82,7 +85,6 @@ const userController = {
       res.status(500).json({
         message:
           "An error occurred while registering the user in the Auth Controller",
-        error,
       });
       return;
     }
@@ -134,7 +136,6 @@ const userController = {
       res.status(500).json({
         message:
           "An error occurred while sending the verification email in the Auth Controller",
-        error,
       });
       return;
     }
@@ -181,7 +182,7 @@ const userController = {
           message: "Logged in successfully",
         });
       } else {
-        res.status(401).json({ error: "Invalid credentials" });
+        res.status(401).json({ message: "Invalid credentials" });
         return;
       }
     } catch (error: unknown) {
@@ -198,7 +199,6 @@ const userController = {
       res.status(500).json({
         message:
           "An error occurred while logging in the user in the Auth Controller",
-        error,
       });
       return;
     }
@@ -215,9 +215,7 @@ const userController = {
       const payload = ticket.getPayload();
 
       if (!payload) {
-        res
-          .status(400)
-          .json({ success: false, message: "Invalid Google token payload" });
+        res.status(400).json({ message: "Invalid Google token payload" });
         return;
       }
 
@@ -232,7 +230,7 @@ const userController = {
 
       if (!user) {
         result = await pool.query(
-          "INSERT INTO users (google_id, name, email, is_verified) VALUES ($1, $2, $3, $4) RETURNING *",
+          "INSERT INTO users (google_id, name, email, is_verified) VALUES ($1, $2, $3, $4) RETURNING id, name, email, created_at, plan",
           [googleId, payload["name"], payload["email"], true]
         );
 
@@ -265,7 +263,6 @@ const userController = {
       });
 
       res.status(200).json({
-        success: true,
         name: user.name,
         email: user.email,
         createdAt: user.created_at,
@@ -274,9 +271,7 @@ const userController = {
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
-        res
-          .status(400)
-          .json({ success: false, message: "Invalid Google token" });
+        res.status(400).json({ message: "Invalid Google token" });
         console.error(
           "An error occurred while verifying Google token in the Auth Controller: ",
           error.message
@@ -289,7 +284,6 @@ const userController = {
       res.status(500).json({
         message:
           "An error occurred while verifying Google token in the Auth Controller",
-        error,
       });
       return;
     }
@@ -316,7 +310,6 @@ const userController = {
       res.status(500).json({
         message:
           "An error occurred while logging out in the user in the Auth Controller",
-        error,
       });
       return;
     }
@@ -357,7 +350,6 @@ const userController = {
       res.status(500).json({
         message:
           "An error occurred while verifying the token in the Auth Controller",
-        error,
       });
       return;
     }
@@ -433,7 +425,6 @@ const userController = {
       res.status(500).json({
         message:
           "An error occurred while refreshing the token in the Auth Controller",
-        error,
       });
       return;
     }
@@ -452,12 +443,14 @@ const userController = {
         return;
       }
 
-      const updateQuery = (await pool.query(
-        "UPDATE users SET name = $1 WHERE email = $2 RETURNING *",
+      const result = (await pool.query(
+        "UPDATE users SET name = $1 WHERE email = $2 RETURNING name",
         [name, email]
       )) as DbQueryResultProps;
 
-      if (updateQuery.rowCount === 0) {
+      const user = result.rows[0];
+
+      if (user.rowCount === 0) {
         res.status(400).json({
           message: "An error occurred while updating the database",
         });
@@ -465,6 +458,7 @@ const userController = {
       }
 
       res.status(201).json({
+        name: user.name,
         message: "User name updated successfully",
       });
     } catch (error: unknown) {
@@ -481,7 +475,6 @@ const userController = {
       res.status(500).json({
         message:
           "An error occurred while updating the user name in the Auth Controller",
-        error,
       });
       return;
     }
@@ -501,10 +494,10 @@ const userController = {
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      (await pool.query(
-        "UPDATE users SET password = $1 WHERE email = $2 RETURNING *",
-        [hashedPassword, email]
-      )) as DbQueryResultProps;
+      (await pool.query("UPDATE users SET password = $1 WHERE email = $2", [
+        hashedPassword,
+        email,
+      ])) as DbQueryResultProps;
 
       res.status(201).json({
         message: "Password reset successfully",
@@ -523,7 +516,6 @@ const userController = {
       res.status(500).json({
         message:
           "An error occurred while resetting the password in the Auth Controller",
-        error,
       });
       return;
     }
@@ -547,7 +539,7 @@ const userController = {
       const expiresAt = new Date();
       expiresAt.setMinutes(expiresAt.getMinutes() + 15);
       (await pool.query(
-        "UPDATE users SET verification_code = $1, expires_at = $2 WHERE email = $3 RETURNING *",
+        "UPDATE users SET verification_code = $1, expires_at = $2 WHERE email = $3",
         [verificationCode, expiresAt, email]
       )) as DbQueryResultProps;
 
@@ -569,7 +561,6 @@ const userController = {
         res.status(500).json({
           message:
             "An error occurred while generating a verification code in the Auth Controller",
-          error,
         });
         return;
       }
@@ -592,7 +583,6 @@ const userController = {
       res.status(500).json({
         message:
           "An error occurred while sending the verification email in the Auth Controller",
-        error,
       });
       return;
     }
@@ -629,7 +619,6 @@ const userController = {
       res.status(500).json({
         message:
           "An error occurred while deactivating the account in the Auth Controller",
-        error,
       });
       return;
     }

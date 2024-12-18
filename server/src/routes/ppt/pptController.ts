@@ -23,12 +23,12 @@ const PptController = {
       const absoluteFilePath = path.join(__dirname, filePath);
 
       if (!filePath) {
-        res.status(400).json({ error: "File path is required" });
+        res.status(400).json({ message: "File path is required" });
         return;
       }
 
       if (!fs.existsSync(absoluteFilePath)) {
-        res.status(404).json({ error: "File not found" });
+        res.status(404).json({ message: "File not found" });
         return;
       }
 
@@ -80,7 +80,6 @@ const PptController = {
       res.status(500).json({
         message:
           "An error occurred while processing the content in the PPT Controller",
-        error,
       });
       return;
     }

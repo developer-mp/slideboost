@@ -9,7 +9,7 @@ const AiController = {
     const { transcript } = req.body;
     try {
       if (!transcript) {
-        res.status(400).json({ error: "No transcript provided" });
+        res.status(400).json({ message: "No transcript provided" });
         return;
       }
 
@@ -37,7 +37,7 @@ const AiController = {
       pythonProcess.on("close", (code) => {
         fs.unlinkSync(tempFilePath);
         if (code !== 0) {
-          res.status(500).json({ error: "Python processing error" });
+          res.status(500).json({ message: "Python processing error" });
         } else {
           res.json({ text: scriptOutput.trim() });
         }
@@ -56,7 +56,6 @@ const AiController = {
       res.status(500).json({
         message:
           "An error occurred while formatting the transcript in the AI Controller",
-        error,
       });
       return;
     }
