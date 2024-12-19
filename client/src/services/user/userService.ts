@@ -1,6 +1,5 @@
 import apiService from "../app/apiService";
 import { config } from "../../../env.config";
-import { AxiosError } from "axios";
 import {
   LoginResponse,
   MessageResponse,
@@ -131,8 +130,8 @@ const userService = {
       });
       return response.data;
     } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        const errorMessage = error.response?.data?.message ?? error.message;
+      if (error instanceof Error) {
+        const errorMessage = error.message;
         throw new Error(errorMessage);
       }
       throw new Error(

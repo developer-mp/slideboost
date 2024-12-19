@@ -143,11 +143,8 @@ export const verifyToken = createAsyncThunk<
     return response;
   } catch (error) {
     if (error instanceof Error) {
-      const errorMessage = error.message;
-      if (
-        errorMessage === "User not authenticated" ||
-        errorMessage === "Access forbidden"
-      )
+      const errorStatus = parseInt(error.message.slice(-3));
+      if (errorStatus === 401 || errorStatus === 403)
         try {
           const response = await userService.refreshToken(email);
           return response;
@@ -166,7 +163,7 @@ export const verifyToken = createAsyncThunk<
           });
         }
       return rejectWithValue({
-        message: errorMessage,
+        message: error.message,
       });
     }
     return rejectWithValue({

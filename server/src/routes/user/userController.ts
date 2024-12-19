@@ -319,17 +319,13 @@ const userController = {
     const accessToken = req.cookies?.accessToken;
     try {
       if (!accessToken) {
-        res.status(401).json({
-          message: "User not authenticated",
-        });
+        res.sendStatus(401);
         return;
       }
 
       jwt.verify(accessToken, config.JWT_SECRET, (err: any, user: any) => {
         if (err) {
-          res.status(403).json({
-            message: "Access forbidden",
-          });
+          res.sendStatus(403);
           return;
         }
 
@@ -366,7 +362,7 @@ const userController = {
       const refreshToken = req.cookies?.refreshToken;
 
       if (!refreshToken) {
-        res.status(401).json({ message: "Refresh token missing" });
+        res.status(401).json({ message: "User not authenticated" });
         return;
       }
 
@@ -375,7 +371,7 @@ const userController = {
         config.JWT_REFRESH_SECRET,
         (err: jwt.VerifyErrors | null) => {
           if (err) {
-            res.status(403).json({ message: "Invalid refresh token" });
+            res.status(403).json({ message: "Access forbidden" });
             return;
           }
 
