@@ -1,5 +1,6 @@
 import apiService from "../app/apiService";
 import { config } from "../../../env.config";
+import handleError from "../../utils/common/handleError";
 
 const aiService = {
   processTranscript: async (transcript: string): Promise<string> => {
@@ -10,13 +11,8 @@ const aiService = {
       });
       return response.data.text;
     } catch (error) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while processing transcript in the AI Service"
-      );
+      handleError.serviceError(error, "processing the transcript");
+      throw error;
     }
   },
 };

@@ -3,6 +3,7 @@ import { spawn } from "child_process";
 import path from "path";
 import fs from "fs";
 import { config } from "../../../env.config";
+import handleError from "../../utils/handleError";
 
 const AiController = {
   formatTranscript: async (req: Request, res: Response): Promise<void> => {
@@ -43,20 +44,7 @@ const AiController = {
         }
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while formatting the transcript in the AI Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while formatting the transcript in the AI Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while formatting the transcript in the AI Controller",
-      });
+      handleError.controllerError(res, error, "formatting the transcript");
       return;
     }
   },

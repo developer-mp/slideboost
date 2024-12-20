@@ -1,5 +1,6 @@
-import axios, { AxiosResponse, AxiosRequestConfig, AxiosError } from "axios";
+import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 import { config } from "../../../env.config";
+import handleError from "../../utils/common/handleError";
 
 const apiService = {
   postCall: async <T>(
@@ -16,13 +17,8 @@ const apiService = {
       const response = await axios.post(url, data, reqConfig);
       return response;
     } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        const errorMessage = error.response?.data?.message || error.message;
-        throw new Error(errorMessage);
-      } else if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw new Error("An unknown error occurred during the API call");
+      handleError.apiError(error);
+      throw error;
     }
   },
   async getCall<T>(endpoint: string, data: T): Promise<AxiosResponse> {
@@ -36,13 +32,8 @@ const apiService = {
       const response = await axios.get(url, reqConfig);
       return response;
     } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        const errorMessage = error.response?.data?.message || error.message;
-        throw new Error(errorMessage);
-      } else if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-      throw new Error("An unknown error occurred during the API call");
+      handleError.apiError(error);
+      throw error;
     }
   },
 };

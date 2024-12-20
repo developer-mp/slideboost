@@ -23,7 +23,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
       } catch (error) {
         setIsTokenValid(false);
         const errorMessage = handleErrorMessage(error);
-        // console.error("Access restricted: ", error);
 
         if (!toastShown.current) {
           showErrorToast(errorMessage);

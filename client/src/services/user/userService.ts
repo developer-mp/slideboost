@@ -8,6 +8,7 @@ import {
   UpdateUserNameResponse,
   TokenResponse,
 } from "../../interfaces/interfaces";
+import handleError from "../../utils/common/handleError";
 
 const userService = {
   async registerUser(
@@ -24,13 +25,8 @@ const userService = {
       });
       return response.data;
     } catch (error) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while registering the user in the Auth Service"
-      );
+      handleError.serviceError(error, "registering the user");
+      throw error;
     }
   },
 
@@ -43,13 +39,8 @@ const userService = {
       });
       return response.data;
     } catch (error) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while verifying the email in the Auth Service"
-      );
+      handleError.serviceError(error, "verifying the email");
+      throw error;
     }
   },
 
@@ -62,13 +53,8 @@ const userService = {
       });
       return response.data;
     } catch (error) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while logging in the user in the Auth Service"
-      );
+      handleError.serviceError(error, "logging in the user");
+      throw error;
     }
   },
 
@@ -80,13 +66,8 @@ const userService = {
       });
       return response.data;
     } catch (error) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while logging in the user with Google in the Auth Service"
-      );
+      handleError.serviceError(error, "logging in the user with Google");
+      throw error;
     }
   },
 
@@ -96,13 +77,8 @@ const userService = {
       const response = await apiService.postCall(endpoint, {});
       return response.data;
     } catch (error) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while logging out the user in the Auth Service"
-      );
+      handleError.serviceError(error, "logging out the user");
+      throw error;
     }
   },
 
@@ -112,13 +88,8 @@ const userService = {
       const response = await apiService.getCall(endpoint, {});
       return response.data;
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while verifying the token in the Auth Service"
-      );
+      handleError.serviceError(error, "verifying the token");
+      throw error;
     }
   },
 
@@ -130,13 +101,8 @@ const userService = {
       });
       return response.data;
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while refreshing the token in the Auth Service"
-      );
+      handleError.serviceError(error, "refreshing the token");
+      throw error;
     }
   },
 
@@ -148,13 +114,8 @@ const userService = {
       });
       return response.data;
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while sending the email in the Auth Service"
-      );
+      handleError.serviceError(error, "sending the email");
+      throw error;
     }
   },
 
@@ -170,13 +131,8 @@ const userService = {
       });
       return response.data;
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while updating the user name in the Auth Service"
-      );
+      handleError.serviceError(error, "updating the user name");
+      throw error;
     }
   },
 
@@ -192,13 +148,8 @@ const userService = {
       });
       return response.data;
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while updating the password in the Auth Service"
-      );
+      handleError.serviceError(error, "updating the password");
+      throw error;
     }
   },
 
@@ -214,13 +165,8 @@ const userService = {
       });
       return response.data;
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while deactivating the account in the Auth Service"
-      );
+      handleError.serviceError(error, "deactivating the account");
+      throw error;
     }
   },
 };

@@ -1,6 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import userService from "../../services/user/userService";
 import { RootState } from "../store";
+import handleError from "../../utils/common/handleError";
+import axios from "axios";
 
 export const registerUser = createAsyncThunk<
   { name: string; email: string; message: string },
@@ -13,16 +15,11 @@ export const registerUser = createAsyncThunk<
       const response = await userService.registerUser(name, email, password);
       return response;
     } catch (error) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        return rejectWithValue({
-          message: errorMessage,
-        });
-      }
-      return rejectWithValue({
-        message:
-          "An unknown error occurred while registering the user in the User Action",
-      });
+      return handleError.actionError(
+        error,
+        rejectWithValue,
+        "registering the user"
+      );
     }
   }
 );
@@ -36,16 +33,11 @@ export const verifyEmail = createAsyncThunk<
     const { message } = await userService.verifyEmail(email, code);
     return { message };
   } catch (error) {
-    if (error instanceof Error) {
-      const errorMessage = error.message;
-      return rejectWithValue({
-        message: errorMessage,
-      });
-    }
-    return rejectWithValue({
-      message:
-        "An unknown error occurred while sending the verification email in the User Action",
-    });
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "sending the verification email"
+    );
   }
 });
 
@@ -64,16 +56,11 @@ export const loginUser = createAsyncThunk<
     const response = await userService.loginUser(email, password);
     return response;
   } catch (error) {
-    if (error instanceof Error) {
-      const errorMessage = error.message;
-      return rejectWithValue({
-        message: errorMessage,
-      });
-    }
-    return rejectWithValue({
-      message:
-        "An unknown error occurred while logging in the user in the User Action",
-    });
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "logging in the user"
+    );
   }
 });
 
@@ -92,16 +79,11 @@ export const loginUserWithGoogle = createAsyncThunk<
     const response = await userService.loginUserWithGoogle(idToken);
     return response;
   } catch (error) {
-    if (error instanceof Error) {
-      const errorMessage = error.message;
-      return rejectWithValue({
-        message: errorMessage,
-      });
-    }
-    return rejectWithValue({
-      message:
-        "An unknown error occurred while logging in the user with Google in the User Action",
-    });
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "logging in the user with Google"
+    );
   }
 });
 
@@ -116,60 +98,45 @@ export const logoutUser = createAsyncThunk<
     const response = await userService.logoutUser();
     return response;
   } catch (error) {
-    if (error instanceof Error) {
-      const errorMessage = error.message;
-      return rejectWithValue({
-        message: errorMessage,
-      });
-    }
-    return rejectWithValue({
-      message:
-        "An unknown error occurred while logging out the user in the User Action",
-    });
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "logging out the user"
+    );
   }
 });
 
 export const verifyToken = createAsyncThunk<
-  {
-    userId: string;
-  },
+  { userId: string },
   void,
   { rejectValue: { message: string } }
 >("auth/verifyToken", async (_, { rejectWithValue, getState }) => {
   const state = getState() as RootState;
   const email = state.user.userEmail;
+
   try {
     const response = await userService.verifyToken();
     return response;
   } catch (error) {
-    if (error instanceof Error) {
-      const errorStatus = parseInt(error.message.slice(-3));
-      if (errorStatus === 401 || errorStatus === 403)
+    if (axios.isAxiosError(error)) {
+      const { status } = error.response || {};
+      if (status === 401 || status === 403) {
         try {
           const response = await userService.refreshToken(email);
           return response;
         } catch (refreshError) {
-          let refreshErrorMessage =
-            "Error occurred while refreshing the token in the User Action";
-
-          if (refreshError instanceof Error) {
-            refreshErrorMessage = refreshError.message;
-          } else if (typeof refreshError === "string") {
-            refreshErrorMessage = refreshError;
-          }
-
-          return rejectWithValue({
-            message: refreshErrorMessage,
-          });
+          const message = handleError.apiError(refreshError);
+          return rejectWithValue({ message });
         }
-      return rejectWithValue({
-        message: error.message,
-      });
+      }
+      const message = handleError.apiError(error);
+      return rejectWithValue({ message });
     }
-    return rejectWithValue({
-      message:
-        "An unknown error occurred while refreshing the token in the User Action",
-    });
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "verifying the token"
+    );
   }
 });
 
@@ -182,16 +149,11 @@ export const sendEmail = createAsyncThunk<
     const { message } = await userService.sendEmail(email);
     return { message, email };
   } catch (error) {
-    if (error instanceof Error) {
-      const errorMessage = error.message;
-      return rejectWithValue({
-        message: errorMessage,
-      });
-    }
-    return rejectWithValue({
-      message:
-        "An unknown error occurred while sending the verification email in the User Action",
-    });
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "sending the verification email"
+    );
   }
 });
 
@@ -204,16 +166,11 @@ export const updateUserName = createAsyncThunk<
     const response = await userService.updateUserName(name, email);
     return response;
   } catch (error) {
-    if (error instanceof Error) {
-      const errorMessage = error.message;
-      return rejectWithValue({
-        message: errorMessage,
-      });
-    }
-    return rejectWithValue({
-      message:
-        "An unknown error occurred while updating the user name in the User Action",
-    });
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "updating the user name"
+    );
   }
 });
 
@@ -226,13 +183,11 @@ export const updatePassword = createAsyncThunk<
     const { message } = await userService.updatePassword(password, email);
     return { message };
   } catch (error) {
-    if (error instanceof Error) {
-      const errorMessage = error.message;
-      return rejectWithValue({
-        message: errorMessage,
-      });
-    }
-    return rejectWithValue({ message: "An unexpected error occurred" });
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "updating the password"
+    );
   }
 });
 
@@ -245,15 +200,10 @@ export const deactivateAccount = createAsyncThunk<
     const { message } = await userService.deactivateAccount(email, reason);
     return { message };
   } catch (error) {
-    if (error instanceof Error) {
-      const errorMessage = error.message;
-      return rejectWithValue({
-        message: errorMessage,
-      });
-    }
-    return rejectWithValue({
-      message:
-        "An unknown error occurred while deactivating the account in the User Action",
-    });
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "deactivating the account"
+    );
   }
 });

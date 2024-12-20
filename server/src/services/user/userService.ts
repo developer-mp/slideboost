@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 import pug from "pug";
 import { convert } from "html-to-text";
 import { config } from "../../../env.config";
+import handleError from "../../utils/handleError";
 
 const smtp = {
   host: config.SMTP_HOST,
@@ -41,19 +42,8 @@ const userService = {
 
       await transporter.sendMail(mailOptions);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while processing the nodemailer transporter in the Auth Service: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while processing the nodemailer transporter in the Auth Service"
-        );
-      }
-      throw new Error(
-        "An error occurred while processing the nodemailer transporter in the Auth Service"
-      );
+      handleError.serviceError(error, "processing the nodemailer transporter");
+      return;
     }
   },
   sendVerificationEmail(email: string, verificationCode: string) {

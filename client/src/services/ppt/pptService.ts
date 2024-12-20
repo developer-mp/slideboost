@@ -1,5 +1,6 @@
 import apiService from "../app/apiService";
 import { config } from "../../../env.config";
+import handleError from "../../utils/common/handleError";
 
 const pptService = {
   processPpt: async (filePath: string, transcript: string) => {
@@ -11,13 +12,8 @@ const pptService = {
       });
       return response.data;
     } catch (error) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while processing presentation in the PPT Service"
-      );
+      handleError.serviceError(error, "processing the presentation");
+      throw error;
     }
   },
 };

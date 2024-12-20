@@ -15,6 +15,7 @@ import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
 import PPTX from "nodejs-pptx";
+import handleError from "../../utils/handleError";
 
 const PptController = {
   createPpt: async (req: Request, res: Response): Promise<void> => {
@@ -67,20 +68,7 @@ const PptController = {
         },
       ]);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while processing the content in the PPT Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while processing the content in the PPT Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while processing the content in the PPT Controller",
-      });
+      handleError.controllerError(res, error, "processing the content");
       return;
     }
   },

@@ -1,5 +1,6 @@
 import apiService from "../app/apiService";
 import { config } from "../../../env.config";
+import handleError from "../../utils/common/handleError";
 
 const transcriptService = {
   fetchTranscriptFromText: async (filePath: string) => {
@@ -10,13 +11,11 @@ const transcriptService = {
       });
       return response.data;
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while retrieving transcript from the text in the Transcript Service"
+      handleError.serviceError(
+        error,
+        "retrieving the transcript from the text"
       );
+      throw error;
     }
   },
   fetchTranscriptFromImage: async (filePath: string) => {
@@ -27,13 +26,11 @@ const transcriptService = {
       });
       return response.data;
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while retrieving transcript from the image in the Transcript Service"
+      handleError.serviceError(
+        error,
+        "retrieving the transcript from the image"
       );
+      throw error;
     }
   },
   fetchTranscriptFromAudio: async (filePath: string) => {
@@ -44,13 +41,11 @@ const transcriptService = {
       });
       return response.data;
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while retrieving transcript from the audio in the Transcript Service"
+      handleError.serviceError(
+        error,
+        "retrieving the transcript from the audio"
       );
+      throw error;
     }
   },
   fetchTranscriptFromVideo: async (filePath: string) => {
@@ -61,13 +56,11 @@ const transcriptService = {
       });
       return response.data;
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while retrieving transcript from the video in the Transcript Service"
+      handleError.serviceError(
+        error,
+        "retrieving the transcript from the video"
       );
+      throw error;
     }
   },
   fetchTranscriptFromYoutube: async (filePath: string) => {
@@ -78,13 +71,11 @@ const transcriptService = {
       });
       return response.data;
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const errorMessage = error.message;
-        throw new Error(errorMessage);
-      }
-      throw new Error(
-        "An unknown error occurred while retrieving transcript from Youtube in the Transcript Service"
+      handleError.serviceError(
+        error,
+        "retrieving the transcript from the Youtube"
       );
+      throw error;
     }
   },
 };

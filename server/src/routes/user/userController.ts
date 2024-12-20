@@ -7,6 +7,7 @@ import userService from "../../services/user/userService";
 import { config } from "../../../env.config";
 import { DbQueryResultProps } from "../../interfaces/interfaces";
 import { client } from "../../utils/googleAuthClient";
+import handleError from "../../utils/handleError";
 
 const userController = {
   registerUser: async (req: Request, res: Response): Promise<void> => {
@@ -49,20 +50,11 @@ const userController = {
           userService.sendVerificationEmail(email, verificationCode);
         }
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error(
-            "An error occurred while sending the verification email in the Auth Controller: ",
-            error.message
-          );
-        } else {
-          console.error(
-            "An unknown error occurred while sending the verification email in the Auth Controller"
-          );
-        }
-        res.status(500).json({
-          mesage:
-            "An error occurred while sending the verification email in the Auth Controller",
-        });
+        handleError.controllerError(
+          res,
+          error,
+          "sending the verification email"
+        );
         return;
       }
 
@@ -72,20 +64,7 @@ const userController = {
         message: "Check your email for verification code",
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while registering the user in the Auth Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while registering the user in the Auth Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while registering the user in the Auth Controller",
-      });
+      handleError.controllerError(res, error, "registering the user");
       return;
     }
   },
@@ -123,20 +102,7 @@ const userController = {
         message: "Email verification successful",
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while sending the verification email in the Auth Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while sending the verification in the Auth Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while sending the verification email in the Auth Controller",
-      });
+      handleError.controllerError(res, error, "sending the verification email");
       return;
     }
   },
@@ -186,20 +152,7 @@ const userController = {
         return;
       }
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while logging in the user in the Auth Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while logging in the user in the Auth Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while logging in the user in the Auth Controller",
-      });
+      handleError.controllerError(res, error, "logging in the user");
       return;
     }
   },
@@ -270,21 +223,7 @@ const userController = {
         message: "Logged in successfully",
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        res.status(400).json({ message: "Invalid Google token" });
-        console.error(
-          "An error occurred while verifying Google token in the Auth Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while verifying Google token in the Auth Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while verifying Google token in the Auth Controller",
-      });
+      handleError.controllerError(res, error, "verifying the Google token");
       return;
     }
   },
@@ -297,20 +236,11 @@ const userController = {
         message: "Logged out successfully",
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while logging out the user in the Auth Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while logging out the user in the Auth Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while logging out in the user in the Auth Controller",
-      });
+      handleError.controllerError(
+        res,
+        error,
+        "An error occurred while logging out the user"
+      );
       return;
     }
   },
@@ -333,20 +263,7 @@ const userController = {
         return;
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while verifying the token in the Auth Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while verifying the token in the Auth Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while verifying the token in the Auth Controller",
-      });
+      handleError.controllerError(res, error, "while verifying the token");
       return;
     }
   },
@@ -408,20 +325,7 @@ const userController = {
         }
       );
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while refreshing the token in the Auth Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while refreshing the token in the Auth Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while refreshing the token in the Auth Controller",
-      });
+      handleError.controllerError(res, error, "refreshing the token");
       return;
     }
   },
@@ -458,20 +362,7 @@ const userController = {
         message: "User name updated successfully",
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while updating the user name in the Auth Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while updating the user name in the Auth Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while updating the user name in the Auth Controller",
-      });
+      handleError.controllerError(res, error, "updating the user name");
       return;
     }
   },
@@ -499,20 +390,7 @@ const userController = {
         message: "Password reset successfully",
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while resetting the password in the Auth Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while resetting the password in the Auth Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while resetting the password in the Auth Controller",
-      });
+      handleError.controllerError(res, error, "resetting the password");
       return;
     }
   },
@@ -544,20 +422,11 @@ const userController = {
           userService.sendVerificationEmail(email, verificationCode);
         }
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error(
-            "An error occurred while generating a verification code in the Auth Controller: ",
-            error.message
-          );
-        } else {
-          console.error(
-            "An unknown error occurred while generating a verification code in the Auth Controller"
-          );
-        }
-        res.status(500).json({
-          message:
-            "An error occurred while generating a verification code in the Auth Controller",
-        });
+        handleError.controllerError(
+          res,
+          error,
+          "generating a verification code"
+        );
         return;
       }
 
@@ -566,20 +435,7 @@ const userController = {
         message: "Check your email for verification code",
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while sending the verification email in the Auth Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while sending the verification email in the Auth Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while sending the verification email in the Auth Controller",
-      });
+      handleError.controllerError(res, error, "sending the verification code");
       return;
     }
   },
@@ -602,20 +458,7 @@ const userController = {
       )) as DbQueryResultProps;
       res.status(200).json({ message: "Account deactivated successfully" });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while deactivating the account in the Auth Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while deactivating the account in the Auth Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while deactivating the account in the Auth Controller",
-      });
+      handleError.controllerError(res, error, "deactivating the account");
       return;
     }
   },

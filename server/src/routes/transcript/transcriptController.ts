@@ -7,6 +7,7 @@ import { convertMp3ToWav } from "../../utils/convertMp3ToWav";
 import { extractWavFromVideo } from "../../utils/extractWavFromVideo";
 import { downloadVideoFromYoutube } from "../../utils/downloadVideoFromYoutube";
 import { readTextFile } from "../../utils/readTextFile";
+import handleError from "../../utils/handleError";
 
 const TranscriptController = {
   convertTextToText: async (req: Request, res: Response): Promise<void> => {
@@ -27,20 +28,7 @@ const TranscriptController = {
       const result = readTextFile(absoluteFilePath);
       res.json({ text: result });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while processing the text in the Transcript Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while processing the text in the Transcript Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while processing the text in the Transcript Controller",
-      });
+      handleError.controllerError(res, error, "processing the text");
       return;
     }
   },
@@ -64,20 +52,7 @@ const TranscriptController = {
       const result = await Tesseract.recognize(buffer, "eng");
       res.json({ text: result.data.text });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while processing the image in the Transcript Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while processing the image in the Transcript Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while processing the image in the Transcript Controller",
-      });
+      handleError.controllerError(res, error, "processing the image");
       return;
     }
   },
@@ -122,20 +97,7 @@ const TranscriptController = {
         }
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while processing the audio in the Transcript Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while processing the audio in the Transcript Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while processing the audio in the Transcript Controller",
-      });
+      handleError.controllerError(res, error, "processing the audio");
       return;
     }
   },
@@ -183,20 +145,7 @@ const TranscriptController = {
         }
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while processing the video in the Transcript Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while processing the video in the Transcript Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while processing the video in the Transcript Controller",
-      });
+      handleError.controllerError(res, error, "processing the video");
       return;
     }
   },
@@ -240,20 +189,7 @@ const TranscriptController = {
         }
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(
-          "An error occurred while processing the Youtube video in the Transcript Controller: ",
-          error.message
-        );
-      } else {
-        console.error(
-          "An unknown error occurred while processing the Youtube video in the Transcript Controller"
-        );
-      }
-      res.status(500).json({
-        message:
-          "An error occurred while processing the Youtube video in the Transcript Controller",
-      });
+      handleError.controllerError(res, error, "processing the Youtube video");
       return;
     }
   },
