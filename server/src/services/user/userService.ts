@@ -22,14 +22,17 @@ const transporter = nodemailer.createTransport(smtp);
 const userService = {
   async createVerificationEmail(
     email: string,
-    verificationCode: string,
+    name: string,
+    verificationCode: string | undefined,
     template: string,
     subject: string
   ): Promise<void> {
     try {
       const html = pug.renderFile(`./src/templates/${template}.pug`, {
+        name,
+        template,
         subject,
-        verificationCode,
+        verificationCode: verificationCode || null,
       });
 
       const mailOptions = {
@@ -46,12 +49,19 @@ const userService = {
       return;
     }
   },
-  sendVerificationEmail(email: string, verificationCode: string) {
+  sendVerificationEmail(
+    email: string,
+    name: string,
+    verificationCode: string | undefined,
+    template: string,
+    subject: string
+  ) {
     this.createVerificationEmail(
       email,
+      name,
       verificationCode,
-      "verificationEmail",
-      "Email Verification"
+      template,
+      subject
     );
   },
 };

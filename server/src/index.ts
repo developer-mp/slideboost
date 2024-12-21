@@ -4,6 +4,7 @@ import { ServerRouter } from "./routes/router";
 import { config } from "../env.config";
 import cookieParser from "cookie-parser";
 import handleError from "./utils/handleError";
+// import path from "path";
 
 const app = express();
 const port = config.SERVER_PORT;
@@ -15,6 +16,7 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(cookieParser());
+// app.use(express.static("public"));
 
 ServerRouter.setRouter(app);
 

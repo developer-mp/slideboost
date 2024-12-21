@@ -43,11 +43,24 @@ const userController = {
         [name, email, hashedPassword, verificationCode, expiresAt]
       )) as DbQueryResultProps;
 
+      setTimeout(async () => {
+        (await pool.query(
+          "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
+          [email]
+        )) as DbQueryResultProps;
+      }, 900000);
+
       const user = result.rows[0];
 
       try {
         if (verificationCode) {
-          userService.sendVerificationEmail(email, verificationCode);
+          userService.sendVerificationEmail(
+            email,
+            user.name,
+            verificationCode,
+            "verificationEmail",
+            "Account Verification"
+          );
         }
       } catch (error: unknown) {
         handleError.controllerError(
@@ -61,7 +74,7 @@ const userController = {
       res.status(201).json({
         name: user.name,
         email: user.email,
-        message: "Check your email for verification code",
+        message: "Check your email box for verification code",
       });
     } catch (error: unknown) {
       handleError.controllerError(res, error, "registering the user");
@@ -90,6 +103,10 @@ const userController = {
 
       const now = new Date();
       if (now > new Date(user.expires_at)) {
+        (await pool.query(
+          "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
+          [email]
+        )) as DbQueryResultProps;
         res.status(400).json({ message: "Verification code has expired" });
       }
 
@@ -97,6 +114,19 @@ const userController = {
         "UPDATE users SET is_verified = true WHERE email = $1",
         [email]
       )) as DbQueryResultProps;
+
+      try {
+        userService.sendVerificationEmail(
+          email,
+          user.name,
+          undefined,
+          "greetingEmail",
+          "Welcome to SlideBoost"
+        );
+      } catch (error: unknown) {
+        handleError.controllerError(res, error, "sending the greeting email");
+        return;
+      }
 
       res.status(201).json({
         message: "Email verification successful",
@@ -106,6 +136,67 @@ const userController = {
       return;
     }
   },
+
+  // requestNewVerificationCode: async (
+  //   req: Request,
+  //   res: Response
+  // ): Promise<void> => {
+  //   const { email }: { email: string } = req.body;
+  //   try {
+  //     // Check if the user exists
+  //     const result = (await pool.query(
+  //       "SELECT email, verification_code, expires_at FROM users WHERE email = $1",
+  //       [email]
+  //     )) as DbQueryResultProps;
+
+  //     if (result.rowCount === 0) {
+  //       res.status(400).json({ message: "Invalid email" });
+  //       return;
+  //     }
+
+  //     const user = result.rows[0];
+
+  //     const now = new Date();
+  //     if (user.verification_code && now > new Date(user.expires_at)) {
+  //       // If the verification code has expired, reset it
+  //       await pool.query(
+  //         "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
+  //         [email]
+  //       );
+  //     }
+
+  //     // Generate a new verification code and set a new expiration time
+  //     const newVerificationCode = generateVerificationCode();
+  //     const newExpiresAt = new Date();
+  //     newExpiresAt.setMinutes(newExpiresAt.getMinutes() + 15); // 15 minutes from now
+
+  //     // Update the user's verification code and expiration time
+  //     await pool.query(
+  //       "UPDATE users SET verification_code = $1, expires_at = $2 WHERE email = $3",
+  //       [newVerificationCode, newExpiresAt, email]
+  //     );
+
+  //     // Send the new verification email
+  //     userService.sendVerificationEmail(
+  //       email,
+  //       user.name,
+  //       newVerificationCode,
+  //       "verificationEmail",
+  //       "Account Verification"
+  //     );
+
+  //     res.status(200).json({
+  //       message: "A new verification code has been sent to your email.",
+  //     });
+  //   } catch (error: unknown) {
+  //     handleError.controllerError(
+  //       res,
+  //       error,
+  //       "resending the verification email"
+  //     );
+  //     return;
+  //   }
+  // },
 
   loginUser: async (req: Request, res: Response): Promise<void> => {
     const { email, password }: { email: string; password: string } = req.body;
@@ -399,7 +490,7 @@ const userController = {
     const { email }: { email: string } = req.body;
     try {
       const isUserExist = (await pool.query(
-        "SELECT email FROM users WHERE email = $1",
+        "SELECT email, name FROM users WHERE email = $1",
         [email]
       )) as DbQueryResultProps;
 
@@ -417,9 +508,22 @@ const userController = {
         [verificationCode, expiresAt, email]
       )) as DbQueryResultProps;
 
+      setTimeout(async () => {
+        (await pool.query(
+          "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
+          [email]
+        )) as DbQueryResultProps;
+      }, 900000);
+
       try {
         if (verificationCode) {
-          userService.sendVerificationEmail(email, verificationCode);
+          userService.sendVerificationEmail(
+            email,
+            user.name,
+            verificationCode,
+            "forgotPasswordEmail",
+            "Reset Password"
+          );
         }
       } catch (error: unknown) {
         handleError.controllerError(
@@ -432,7 +536,7 @@ const userController = {
 
       res.status(201).json({
         email: user.email,
-        message: "Check your email for verification code",
+        message: "Check your email box for verification code",
       });
     } catch (error: unknown) {
       handleError.controllerError(res, error, "sending the verification code");
