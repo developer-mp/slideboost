@@ -32,7 +32,7 @@ const About: React.FC = () => {
   return (
     <Container
       className="d-flex align-items-center"
-      style={{ minHeight: "calc(100vh - 76px)" }}
+      style={{ minHeight: "calc(100vh - var(--navbar-height))" }}
     >
       <Row className="tw-w-full">
         <Col xs={12} md={6}>

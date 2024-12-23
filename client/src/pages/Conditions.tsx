@@ -2,7 +2,7 @@ import { Col, Container, Row } from "react-bootstrap";
 
 const Conditions: React.FC = () => {
   return (
-    <Container className="tw-text-center tw-mt-12">
+    <Container className="tw-text-center tw-mt-12 tw-mb-12">
       <Row className="justify-content-center">
         <Col xs={12} md={10} lg={8}>
           <h4 className="tw-mb-12 tw-font-bold tw-text-custom-color-blue">

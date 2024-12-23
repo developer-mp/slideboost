@@ -5,7 +5,7 @@ const Faq: React.FC = () => {
   return (
     <Container
       className="tw-text-center align-items-center"
-      style={{ minHeight: "calc(100vh - 76px)" }}
+      style={{ minHeight: "calc(100vh - var(--navbar-height))" }}
     >
       <Row className="justify-content-center">
         <Col xs={12} md={10} lg={8}>

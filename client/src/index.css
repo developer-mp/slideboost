@@ -10,4 +10,6 @@
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   scroll-behavior: smooth;
+  --navbar-height: 77.6px;
+  --footer-height: 53.6px;
 }

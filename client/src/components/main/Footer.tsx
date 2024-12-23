@@ -9,7 +9,7 @@ import {
 
 const Footer = () => {
   return (
-    <Navbar variant="dark" className="tw-mt-8 tw-py-4" expand="lg">
+    <Navbar variant="dark" expand="lg" sticky="bottom">
       <Container className="tw-flex tw-justify-between tw-items-center">
         <div className="tw-flex tw-space-x-4">
           <a

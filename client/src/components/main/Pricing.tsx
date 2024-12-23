@@ -5,7 +5,7 @@ const Pricing: React.FC = () => {
   return (
     <Container
       className="tw-flex tw-items-center tw-text-center tw-mt-36"
-      style={{ minHeight: "calc(100vh - 76px)" }}
+      style={{ minHeight: "calc(100vh - var(--navbar-height))" }}
     >
       <div className="tw-max-w-full tw-mx-auto">
         <Row className="align-items-center">

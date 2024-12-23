@@ -16,7 +16,12 @@ const Workspace: React.FC = () => {
   };
 
   return (
-    <div className="tw-bg-[#E7E6F4] tw-flex">
+    <div
+      className="tw-bg-[#E7E6F4] tw-flex"
+      style={{
+        minHeight: "calc(100vh - var(--navbar-height + --footer-height))",
+      }}
+    >
       <SideBar selectedItem={selectedItem} onItemClick={handleItemClick} />
       {selectedItem === "dashboard" && (
         <Dashboard setSelectedItem={setSelectedItem} />

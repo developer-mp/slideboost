@@ -138,7 +138,7 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <Container className="tw-text-center tw-mt-12">
+    <Container className="tw-text-center tw-mt-12 tw-mb-12">
       <Row className="justify-content-center">
         <Col xs={12} md={8} lg={6} className="tw-px-4">
           <Card className="tw-shadow-xl tw-rounded-lg tw-bg-white tw-p-6">

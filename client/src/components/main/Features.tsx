@@ -34,7 +34,7 @@ const Features: React.FC = () => {
   return (
     <Container
       className="d-flex align-items-center"
-      style={{ minHeight: "calc(100vh - 76px)" }}
+      style={{ minHeight: "calc(100vh - var(--navbar-height))" }}
     >
       <Row className="w-100">
         <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-text-center tw-mb-8">
