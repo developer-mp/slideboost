@@ -19,7 +19,7 @@ const Workspace: React.FC = () => {
     <div
       className="tw-bg-[#E7E6F4] tw-flex"
       style={{
-        minHeight: "calc(100vh - var(--navbar-height + --footer-height))",
+        minHeight: "calc(100vh - var(--navbar-height) - var(--footer-height))",
       }}
     >
       <SideBar selectedItem={selectedItem} onItemClick={handleItemClick} />

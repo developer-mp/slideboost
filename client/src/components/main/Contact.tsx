@@ -50,7 +50,7 @@ const Contact = () => {
     <Container
       className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-gray-700"
       style={{
-        minHeight: "calc(100vh - var(--navbar-height + --footer-height))",
+        minHeight: "calc(100vh - var(--navbar-height) - var(--footer-height))",
       }}
     >
       <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-3xl md:tw-text-4xl tw-text-center tw-mb-8">
