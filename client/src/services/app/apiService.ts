@@ -17,7 +17,7 @@ const apiService = {
       const response = await axios.post(url, data, reqConfig);
       return response;
     } catch (error: unknown) {
-      handleError.apiError(error);
+      handleError.axiosError(error, "making a POST request to the API");
       throw error;
     }
   },
@@ -32,7 +32,7 @@ const apiService = {
       const response = await axios.get(url, reqConfig);
       return response;
     } catch (error: unknown) {
-      handleError.apiError(error);
+      handleError.axiosError(error, "making a GET request to the API");
       throw error;
     }
   },

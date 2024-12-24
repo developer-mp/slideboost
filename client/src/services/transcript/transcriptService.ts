@@ -11,10 +11,7 @@ const transcriptService = {
       });
       return response.data;
     } catch (error: unknown) {
-      handleError.serviceError(
-        error,
-        "retrieving the transcript from the text"
-      );
+      handleError.axiosError(error, "retrieving the transcript from the text");
       throw error;
     }
   },
@@ -26,10 +23,7 @@ const transcriptService = {
       });
       return response.data;
     } catch (error: unknown) {
-      handleError.serviceError(
-        error,
-        "retrieving the transcript from the image"
-      );
+      handleError.axiosError(error, "retrieving the transcript from the image");
       throw error;
     }
   },
@@ -41,10 +35,7 @@ const transcriptService = {
       });
       return response.data;
     } catch (error: unknown) {
-      handleError.serviceError(
-        error,
-        "retrieving the transcript from the audio"
-      );
+      handleError.axiosError(error, "retrieving the transcript from the audio");
       throw error;
     }
   },
@@ -56,10 +47,7 @@ const transcriptService = {
       });
       return response.data;
     } catch (error: unknown) {
-      handleError.serviceError(
-        error,
-        "retrieving the transcript from the video"
-      );
+      handleError.axiosError(error, "retrieving the transcript from the video");
       throw error;
     }
   },
@@ -71,7 +59,7 @@ const transcriptService = {
       });
       return response.data;
     } catch (error: unknown) {
-      handleError.serviceError(
+      handleError.axiosError(
         error,
         "retrieving the transcript from the Youtube"
       );

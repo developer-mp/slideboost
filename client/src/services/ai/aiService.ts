@@ -11,7 +11,7 @@ const aiService = {
       });
       return response.data.text;
     } catch (error) {
-      handleError.serviceError(error, "processing the transcript");
+      handleError.axiosError(error, "processing the transcript");
       throw error;
     }
   },

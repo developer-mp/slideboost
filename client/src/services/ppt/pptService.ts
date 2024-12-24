@@ -12,7 +12,7 @@ const pptService = {
       });
       return response.data;
     } catch (error) {
-      handleError.serviceError(error, "processing the presentation");
+      handleError.axiosError(error, "processing the presentation");
       throw error;
     }
   },

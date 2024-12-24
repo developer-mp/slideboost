@@ -25,7 +25,7 @@ const userService = {
       });
       return response.data;
     } catch (error) {
-      handleError.serviceError(error, "registering the user");
+      handleError.axiosError(error, "registering the user");
       throw error;
     }
   },
@@ -39,7 +39,7 @@ const userService = {
       });
       return response.data;
     } catch (error) {
-      handleError.serviceError(error, "verifying the email");
+      handleError.axiosError(error, "verifying the email");
       throw error;
     }
   },
@@ -53,7 +53,7 @@ const userService = {
       });
       return response.data;
     } catch (error) {
-      handleError.serviceError(error, "logging in the user");
+      handleError.axiosError(error, "logging in the user");
       throw error;
     }
   },
@@ -66,7 +66,7 @@ const userService = {
       });
       return response.data;
     } catch (error) {
-      handleError.serviceError(error, "logging in the user with Google");
+      handleError.axiosError(error, "logging in the user with Google");
       throw error;
     }
   },
@@ -77,7 +77,7 @@ const userService = {
       const response = await apiService.postCall(endpoint, {});
       return response.data;
     } catch (error) {
-      handleError.serviceError(error, "logging out the user");
+      handleError.axiosError(error, "logging out the user");
       throw error;
     }
   },
@@ -88,7 +88,7 @@ const userService = {
       const response = await apiService.getCall(endpoint, {});
       return response.data;
     } catch (error: unknown) {
-      handleError.serviceError(error, "verifying the token");
+      handleError.axiosError(error, "verifying the token");
       throw error;
     }
   },
@@ -101,7 +101,7 @@ const userService = {
       });
       return response.data;
     } catch (error: unknown) {
-      handleError.serviceError(error, "refreshing the token");
+      handleError.axiosError(error, "refreshing the token");
       throw error;
     }
   },
@@ -114,7 +114,7 @@ const userService = {
       });
       return response.data;
     } catch (error: unknown) {
-      handleError.serviceError(error, "sending the email");
+      handleError.axiosError(error, "sending the email");
       throw error;
     }
   },
@@ -131,7 +131,7 @@ const userService = {
       });
       return response.data;
     } catch (error: unknown) {
-      handleError.serviceError(error, "updating the user name");
+      handleError.axiosError(error, "updating the user name");
       throw error;
     }
   },
@@ -148,7 +148,7 @@ const userService = {
       });
       return response.data;
     } catch (error: unknown) {
-      handleError.serviceError(error, "updating the password");
+      handleError.axiosError(error, "updating the password");
       throw error;
     }
   },
@@ -165,7 +165,7 @@ const userService = {
       });
       return response.data;
     } catch (error: unknown) {
-      handleError.serviceError(error, "deactivating the account");
+      handleError.axiosError(error, "deactivating the account");
       throw error;
     }
   },

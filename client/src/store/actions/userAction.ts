@@ -125,18 +125,16 @@ export const verifyToken = createAsyncThunk<
           const response = await userService.refreshToken(email);
           return response;
         } catch (refreshError) {
-          const message = handleError.apiError(refreshError);
+          const message = handleError.axiosError(refreshError);
           return rejectWithValue({ message });
         }
       }
-      const message = handleError.apiError(error);
-      return rejectWithValue({ message });
+      return handleError.actionError(
+        error,
+        rejectWithValue,
+        "verifying the token"
+      );
     }
-    return handleError.actionError(
-      error,
-      rejectWithValue,
-      "verifying the token"
-    );
   }
 });
 
