@@ -1,17 +1,21 @@
 import axios from "axios";
 
 const handleError = {
-  axiosError(error: unknown, context: string): string {
+  axiosError(
+    error: unknown,
+    context: string
+  ): { message: string; requestCode?: boolean } {
     if (axios.isAxiosError(error)) {
       const errorMessage = error.response?.data?.message || error.message;
+      const requestCode = error.response?.data?.requestCode || false;
       console.error(`An error occurred while ${context}: `, errorMessage);
-      return errorMessage;
+      return { message: errorMessage, requestCode };
     } else if (error instanceof Error) {
       console.error(
         `An unknown error occurred while ${context}: `,
         error.message
       );
-      return error.message;
+      return { message: error.message };
     }
     console.error("An unknown error occurred");
     throw new Error("An unknown error occurred");
@@ -20,8 +24,8 @@ const handleError = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   actionError(error: unknown, rejectWithValue: any, actionName: string) {
     if (axios.isAxiosError(error)) {
-      const message = this.axiosError(error, actionName);
-      return rejectWithValue({ message });
+      const { message, requestCode } = this.axiosError(error, actionName);
+      return rejectWithValue({ message, requestCode });
     }
 
     if (error instanceof Error) {

@@ -4,6 +4,7 @@ import {
   LoginResponse,
   MessageResponse,
   RegisterResponse,
+  VerifyEmailResponse,
   SendEmailResponse,
   UpdateUserNameResponse,
   TokenResponse,
@@ -30,7 +31,7 @@ const userService = {
     }
   },
 
-  async verifyEmail(email: string, code: string): Promise<MessageResponse> {
+  async verifyEmail(email: string, code: string): Promise<VerifyEmailResponse> {
     const endpoint = `${config.USER_ROUTER}${config.VERIFY_ENDPOINT}`;
     try {
       const response = await apiService.postCall(endpoint, {

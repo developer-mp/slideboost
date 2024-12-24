@@ -37,18 +37,19 @@ const userController = {
       const hashedPassword = await bcrypt.hash(password, 10);
       const verificationCode = generateVerificationCode();
       const expiresAt = new Date();
-      expiresAt.setMinutes(expiresAt.getMinutes() + 15);
+      // expiresAt.setMinutes(expiresAt.getMinutes() + 15);
+      expiresAt.setSeconds(expiresAt.getSeconds() + 10);
       const result = (await pool.query(
         "INSERT INTO users (name, email, password, verification_code, expires_at) VALUES ($1, $2, $3, $4, $5) RETURNING name, email",
         [name, email, hashedPassword, verificationCode, expiresAt]
       )) as DbQueryResultProps;
 
-      setTimeout(async () => {
-        (await pool.query(
-          "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
-          [email]
-        )) as DbQueryResultProps;
-      }, 900000);
+      // setTimeout(async () => {
+      //   (await pool.query(
+      //     "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
+      //     [email]
+      //   )) as DbQueryResultProps;
+      // }, 900000);
 
       const user = result.rows[0];
 
@@ -101,13 +102,18 @@ const userController = {
         return;
       }
 
+      // (await pool.query(
+      //   "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
+      //   [email]
+      // )) as DbQueryResultProps;
+
       const now = new Date();
       if (now > new Date(user.expires_at)) {
-        (await pool.query(
-          "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
-          [email]
-        )) as DbQueryResultProps;
-        res.status(400).json({ message: "Verification code has expired" });
+        res.status(400).json({
+          message: "Verification code has expired",
+          requestCode: true,
+        });
+        return;
       }
 
       (await pool.query(
@@ -130,73 +136,13 @@ const userController = {
 
       res.status(201).json({
         message: "Email verification successful",
+        // requestCode: false,
       });
     } catch (error: unknown) {
       handleError.controllerError(res, error, "sending the verification email");
       return;
     }
   },
-
-  // requestNewVerificationCode: async (
-  //   req: Request,
-  //   res: Response
-  // ): Promise<void> => {
-  //   const { email }: { email: string } = req.body;
-  //   try {
-  //     // Check if the user exists
-  //     const result = (await pool.query(
-  //       "SELECT email, verification_code, expires_at FROM users WHERE email = $1",
-  //       [email]
-  //     )) as DbQueryResultProps;
-
-  //     if (result.rowCount === 0) {
-  //       res.status(400).json({ message: "Invalid email" });
-  //       return;
-  //     }
-
-  //     const user = result.rows[0];
-
-  //     const now = new Date();
-  //     if (user.verification_code && now > new Date(user.expires_at)) {
-  //       // If the verification code has expired, reset it
-  //       await pool.query(
-  //         "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
-  //         [email]
-  //       );
-  //     }
-
-  //     // Generate a new verification code and set a new expiration time
-  //     const newVerificationCode = generateVerificationCode();
-  //     const newExpiresAt = new Date();
-  //     newExpiresAt.setMinutes(newExpiresAt.getMinutes() + 15); // 15 minutes from now
-
-  //     // Update the user's verification code and expiration time
-  //     await pool.query(
-  //       "UPDATE users SET verification_code = $1, expires_at = $2 WHERE email = $3",
-  //       [newVerificationCode, newExpiresAt, email]
-  //     );
-
-  //     // Send the new verification email
-  //     userService.sendVerificationEmail(
-  //       email,
-  //       user.name,
-  //       newVerificationCode,
-  //       "verificationEmail",
-  //       "Account Verification"
-  //     );
-
-  //     res.status(200).json({
-  //       message: "A new verification code has been sent to your email.",
-  //     });
-  //   } catch (error: unknown) {
-  //     handleError.controllerError(
-  //       res,
-  //       error,
-  //       "resending the verification email"
-  //     );
-  //     return;
-  //   }
-  // },
 
   loginUser: async (req: Request, res: Response): Promise<void> => {
     const { email, password }: { email: string; password: string } = req.body;
@@ -508,12 +454,12 @@ const userController = {
         [verificationCode, expiresAt, email]
       )) as DbQueryResultProps;
 
-      setTimeout(async () => {
-        (await pool.query(
-          "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
-          [email]
-        )) as DbQueryResultProps;
-      }, 900000);
+      // setTimeout(async () => {
+      //   (await pool.query(
+      //     "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
+      //     [email]
+      //   )) as DbQueryResultProps;
+      // }, 900000);
 
       try {
         if (verificationCode) {

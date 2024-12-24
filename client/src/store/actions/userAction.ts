@@ -27,7 +27,7 @@ export const registerUser = createAsyncThunk<
 export const verifyEmail = createAsyncThunk<
   { message: string },
   { email: string; code: string },
-  { rejectValue: { message: string } }
+  { rejectValue: { message: string; requestCode: boolean } }
 >("auth/verifyEmail", async ({ email, code }, { rejectWithValue }) => {
   try {
     const { message } = await userService.verifyEmail(email, code);
@@ -125,8 +125,11 @@ export const verifyToken = createAsyncThunk<
           const response = await userService.refreshToken(email);
           return response;
         } catch (refreshError) {
-          const message = handleError.axiosError(refreshError);
-          return rejectWithValue({ message });
+          const message = handleError.axiosError(
+            refreshError,
+            "verifying the token"
+          );
+          return rejectWithValue(message);
         }
       }
       return handleError.actionError(

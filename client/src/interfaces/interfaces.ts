@@ -90,7 +90,7 @@ export interface CustomModalProps {
   title: string;
   children: React.ReactNode;
   actionLabel?: string;
-  onAction?: () => void;
+  onAction: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 export interface VerificationCodeInputProps {
@@ -148,6 +148,11 @@ export interface TokenResponse {
 }
 
 export interface MessageResponse {
+  message: string;
+}
+
+export interface VerifyEmailResponse {
+  requestCode: boolean;
   message: string;
 }
 
