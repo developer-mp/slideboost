@@ -51,29 +51,36 @@ const Verification: React.FC = () => {
   };
 
   const handleRequestNewCode = async () => {
-    await dispatch(sendEmail({ email: userEmail }));
+    await dispatch(
+      sendEmail({
+        email: userEmail,
+        template: "verificationEmail",
+        subject: "Account Verification",
+      })
+    );
     setShowRequestCodeModal(false);
     setCode("");
   };
 
   return (
-    <Container fluid>
+    <Container
+      className="tw-flex tw-justify-center tw-items-center"
+      style={{
+        minHeight: "calc(100vh - var(--navbar-height) - var(--footer-height))",
+      }}
+    >
       <Row>
-        <Col className="px-0">
-          {/* <div className="tw-bg-yellow-100 tw-text-yellow-800 tw-p-3 tw-text-center">
-            <h6 className="tw-font-semibold">Do not refresh the page</h6>
-          </div> */}
-          <div className="tw-text-center tw-mt-16">
+        <Col>
+          <div className="tw-text-center">
             <h2 className="tw-text-xl tw-font-semibold tw-mb-4">
               Enter verification code
             </h2>
             <form className="tw-flex tw-flex-col tw-items-center">
               <VerificationCodeInput code={code} setCode={setCode} />
               <Button
-                variant="primary"
-                type="submit"
                 onClick={(e) => handleVerifyEmail(e, userEmail, code)}
-                className="w-40 mt-3 button button-primary-auto"
+                className="mt-3 button button-primary-auto"
+                style={{ width: "17.5rem" }}
               >
                 Verify
               </Button>

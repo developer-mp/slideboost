@@ -20,7 +20,7 @@ const smtp = {
 const transporter = nodemailer.createTransport(smtp);
 
 const userService = {
-  async createVerificationEmail(
+  async createEmail(
     email: string,
     name: string,
     verificationCode: string | undefined,
@@ -49,20 +49,14 @@ const userService = {
       return;
     }
   },
-  sendVerificationEmail(
+  sendEmail(
     email: string,
     name: string,
     verificationCode: string | undefined,
     template: string,
     subject: string
   ) {
-    this.createVerificationEmail(
-      email,
-      name,
-      verificationCode,
-      template,
-      subject
-    );
+    this.createEmail(email, name, verificationCode, template, subject);
   },
 };
 

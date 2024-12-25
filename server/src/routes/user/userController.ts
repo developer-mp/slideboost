@@ -37,25 +37,17 @@ const userController = {
       const hashedPassword = await bcrypt.hash(password, 10);
       const verificationCode = generateVerificationCode();
       const expiresAt = new Date();
-      // expiresAt.setMinutes(expiresAt.getMinutes() + 15);
-      expiresAt.setSeconds(expiresAt.getSeconds() + 10);
+      expiresAt.setMinutes(expiresAt.getMinutes() + 15);
       const result = (await pool.query(
         "INSERT INTO users (name, email, password, verification_code, expires_at) VALUES ($1, $2, $3, $4, $5) RETURNING name, email",
         [name, email, hashedPassword, verificationCode, expiresAt]
       )) as DbQueryResultProps;
 
-      // setTimeout(async () => {
-      //   (await pool.query(
-      //     "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
-      //     [email]
-      //   )) as DbQueryResultProps;
-      // }, 900000);
-
       const user = result.rows[0];
 
       try {
         if (verificationCode) {
-          userService.sendVerificationEmail(
+          userService.sendEmail(
             email,
             user.name,
             verificationCode,
@@ -87,12 +79,12 @@ const userController = {
     const { email, code }: { email: string; code: string } = req.body;
     try {
       const result = (await pool.query(
-        "SELECT verification_code, expires_at FROM users WHERE email = $1",
+        "SELECT name, verification_code, expires_at, is_verified FROM users WHERE email = $1",
         [email]
       )) as DbQueryResultProps;
 
       if (result.rowCount === 0) {
-        res.status(400).json({ message: "Invalid email" });
+        res.status(400).json({ message: "User not found" });
         return;
       }
 
@@ -101,11 +93,6 @@ const userController = {
         res.status(400).json({ message: "Invalid verification code" });
         return;
       }
-
-      // (await pool.query(
-      //   "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
-      //   [email]
-      // )) as DbQueryResultProps;
 
       const now = new Date();
       if (now > new Date(user.expires_at)) {
@@ -116,30 +103,31 @@ const userController = {
         return;
       }
 
+      if (!user.is_verified) {
+        try {
+          userService.sendEmail(
+            email,
+            user.name,
+            undefined,
+            "greetingEmail",
+            "Welcome to SlideBoost"
+          );
+        } catch (error: unknown) {
+          handleError.controllerError(res, error, "sending the greeting email");
+          return;
+        }
+      }
+
       (await pool.query(
         "UPDATE users SET is_verified = true WHERE email = $1",
         [email]
       )) as DbQueryResultProps;
 
-      try {
-        userService.sendVerificationEmail(
-          email,
-          user.name,
-          undefined,
-          "greetingEmail",
-          "Welcome to SlideBoost"
-        );
-      } catch (error: unknown) {
-        handleError.controllerError(res, error, "sending the greeting email");
-        return;
-      }
-
       res.status(201).json({
         message: "Email verification successful",
-        // requestCode: false,
       });
     } catch (error: unknown) {
-      handleError.controllerError(res, error, "sending the verification email");
+      handleError.controllerError(res, error, "verifying the email");
       return;
     }
   },
@@ -433,7 +421,11 @@ const userController = {
   },
 
   sendEmail: async (req: Request, res: Response): Promise<void> => {
-    const { email }: { email: string } = req.body;
+    const {
+      email,
+      template,
+      subject,
+    }: { email: string; template: string; subject: string } = req.body;
     try {
       const isUserExist = (await pool.query(
         "SELECT email, name FROM users WHERE email = $1",
@@ -454,21 +446,14 @@ const userController = {
         [verificationCode, expiresAt, email]
       )) as DbQueryResultProps;
 
-      // setTimeout(async () => {
-      //   (await pool.query(
-      //     "UPDATE users SET verification_code = NULL, expires_at = NULL WHERE email = $1",
-      //     [email]
-      //   )) as DbQueryResultProps;
-      // }, 900000);
-
       try {
         if (verificationCode) {
-          userService.sendVerificationEmail(
+          userService.sendEmail(
             email,
             user.name,
             verificationCode,
-            "forgotPasswordEmail",
-            "Reset Password"
+            template,
+            subject
           );
         }
       } catch (error: unknown) {

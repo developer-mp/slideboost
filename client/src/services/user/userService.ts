@@ -107,11 +107,17 @@ const userService = {
     }
   },
 
-  async sendEmail(email: string): Promise<SendEmailResponse> {
+  async sendEmail(
+    email: string,
+    template: string,
+    subject: string
+  ): Promise<SendEmailResponse> {
     const endpoint = `${config.USER_ROUTER}${config.EMAIL_ENDPOINT}`;
     try {
       const response = await apiService.postCall(endpoint, {
         email,
+        template,
+        subject,
       });
       return response.data;
     } catch (error: unknown) {

@@ -75,7 +75,13 @@ const Login: React.FC = () => {
 
     if (!isEmailRequired && !isFormatInvalid) {
       try {
-        const resultAction = await dispatch(sendEmail({ email })).unwrap();
+        const resultAction = await dispatch(
+          sendEmail({
+            email,
+            template: "forgotPasswordEmail",
+            subject: "Reset Password",
+          })
+        ).unwrap();
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
         setShowVerificationCode(true);

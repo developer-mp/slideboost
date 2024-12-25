@@ -143,20 +143,23 @@ export const verifyToken = createAsyncThunk<
 
 export const sendEmail = createAsyncThunk<
   { message: string; email: string },
-  { email: string },
+  { email: string; template: string; subject: string },
   { rejectValue: { message: string } }
->("auth/sendEmail", async ({ email }, { rejectWithValue }) => {
-  try {
-    const { message } = await userService.sendEmail(email);
-    return { message, email };
-  } catch (error) {
-    return handleError.actionError(
-      error,
-      rejectWithValue,
-      "sending the verification email"
-    );
+>(
+  "auth/sendEmail",
+  async ({ email, template, subject }, { rejectWithValue }) => {
+    try {
+      const { message } = await userService.sendEmail(email, template, subject);
+      return { message, email };
+    } catch (error) {
+      return handleError.actionError(
+        error,
+        rejectWithValue,
+        "sending the verification email"
+      );
+    }
   }
-});
+);
 
 export const updateUserName = createAsyncThunk<
   { name: string; message: string },
