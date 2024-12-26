@@ -43,7 +43,7 @@ const Verification: React.FC = () => {
         navigateToResetPassword();
       } else {
         dispatch(setIsRegister(false));
-        setTimeout(() => navigateToLogin(), 2000);
+        navigateToLogin();
       }
     } catch (error) {
       if ((error as { requestCode: boolean }).requestCode) {

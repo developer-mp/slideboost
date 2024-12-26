@@ -41,7 +41,7 @@ const GoogleAuth: React.FC<GoogleAuthProps> = ({ onLoginStart }) => {
       ).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
-      setTimeout(() => navigateToHome(), 2000);
+      navigateToHome();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);

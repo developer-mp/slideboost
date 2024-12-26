@@ -102,7 +102,7 @@ const Register: React.FC = () => {
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
         dispatch(setIsRegister(true));
-        setTimeout(() => navigateToVerify(), 2000);
+        navigateToVerify();
       } catch (error) {
         const errorMessage = handleErrorMessage(error);
         showErrorToast(errorMessage);

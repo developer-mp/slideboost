@@ -53,7 +53,7 @@ const NavigationBar: React.FC = () => {
       const resultAction = await dispatch(logoutUser()).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
-      setTimeout(() => navigateToHome(), 2000);
+      navigateToHome();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
