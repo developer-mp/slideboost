@@ -3,6 +3,7 @@ import pug from "pug";
 import { convert } from "html-to-text";
 import { config } from "../../../env.config";
 import handleError from "../../utils/handleError";
+import { convertImgToBase64 } from "./../../utils/convertImgToBase64";
 
 const smtp = {
   host: config.SMTP_HOST,
@@ -28,11 +29,17 @@ const userService = {
     subject: string
   ): Promise<void> {
     try {
+      const imageBase64String = convertImgToBase64(
+        "./public/images/logo_text.png"
+      );
+      const imageBase64 = "data:image/png;base64," + imageBase64String;
+
       const html = pug.renderFile(`./src/templates/${template}.pug`, {
         name,
         template,
         subject,
         verificationCode: verificationCode || null,
+        imageBase64,
       });
 
       const mailOptions = {
