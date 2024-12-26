@@ -7,6 +7,10 @@ export const useNavigation = () => {
     navigate("/");
   };
 
+  const navigateToVerify = () => {
+    navigate("/verify");
+  };
+
   const navigateToLogin = () => {
     navigate("/login");
   };
@@ -25,6 +29,7 @@ export const useNavigation = () => {
 
   return {
     navigateToHome,
+    navigateToVerify,
     navigateToLogin,
     navigateToCreateAccount,
     navigateToResetPassword,

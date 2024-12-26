@@ -126,7 +126,12 @@ export interface FileListDisplayProps {
 
 export interface PrivateRouteProps {
   element: JSX.Element;
-  flag: "isRegister" | "isReset";
+  flag: string | string[];
+}
+
+export interface PrivateRouteFlagState {
+  isRegister: boolean;
+  isReset: boolean;
 }
 
 export interface RegisterResponse {

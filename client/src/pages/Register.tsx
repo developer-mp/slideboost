@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { registerUser } from "../store/actions/userAction";
@@ -18,6 +17,7 @@ import {
   handleSuccessMessage,
 } from "../utils/common/handleActionMessage";
 import { setIsRegister } from "../store/slices/userSlice";
+import { useNavigation } from "../utils/login/useNavigation";
 
 const Register: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -25,12 +25,10 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [checked, setChecked] = useState<boolean>(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const navigateToVerification = () => {
-    navigate("/verify");
-  };
+  const { navigateToVerify } = useNavigation();
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(e.target.checked);
@@ -104,7 +102,7 @@ const Register: React.FC = () => {
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
         dispatch(setIsRegister(true));
-        setTimeout(() => navigateToVerification(), 2000);
+        setTimeout(() => navigateToVerify(), 2000);
       } catch (error) {
         const errorMessage = handleErrorMessage(error);
         showErrorToast(errorMessage);
@@ -198,7 +196,7 @@ const Register: React.FC = () => {
             <Button
               variant="secondary"
               className="button button-secondary tw-mb-16"
-              onClick={navigateToVerification}
+              onClick={navigateToVerify}
             >
               Login
             </Button>

@@ -19,11 +19,12 @@ const Verification: React.FC = () => {
   const [showRequestCodeModal, setShowRequestCodeModal] =
     useState<boolean>(false);
   const userEmail = useSelector((state: RootState) => state.user.userEmail);
+  const isReset = useSelector((state: RootState) => state.user.isReset);
 
   const [code, setCode] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
 
-  const { navigateToLogin } = useNavigation();
+  const { navigateToLogin, navigateToResetPassword } = useNavigation();
 
   const handleVerifyEmail = async (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -38,8 +39,12 @@ const Verification: React.FC = () => {
       ).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
-      dispatch(setIsRegister(false));
-      setTimeout(() => navigateToLogin(), 2000);
+      if (isReset) {
+        navigateToResetPassword();
+      } else {
+        dispatch(setIsRegister(false));
+        setTimeout(() => navigateToLogin(), 2000);
+      }
     } catch (error) {
       if ((error as { requestCode: boolean }).requestCode) {
         setShowRequestCodeModal(true);

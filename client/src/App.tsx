@@ -35,7 +35,10 @@ const App = () => {
             <Route
               path="/verify"
               element={
-                <PrivateRoute element={<Verification />} flag="isRegister" />
+                <PrivateRoute
+                  element={<Verification />}
+                  flag={["isRegister", "isReset"]}
+                />
               }
             />
             <Route

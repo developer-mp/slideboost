@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { loginUser, verifyEmail } from "../store/actions/userAction";
 import { setIsReset } from "../store/slices/userSlice";
+import { loginUser } from "../store/actions/userAction";
 import { useNavigation } from "../utils/login/useNavigation";
 import {
   showErrorToast,
@@ -13,7 +13,6 @@ import {
 import { validateEmail } from "../utils/login/validateEmail";
 import CustomModal from "../components/shared/CustomModal";
 import { sendEmail } from "../store/actions/userAction";
-import VerificationCodeInput from "../components/shared/VerificationCodeInput";
 import {
   handleErrorMessage,
   handleSuccessMessage,
@@ -23,11 +22,8 @@ const Login: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [showVerificationCode, setShowVerificationCode] =
-    useState<boolean>(false);
-  const [code, setCode] = useState<string>("");
 
-  const { navigateToHome, navigateToCreateAccount, navigateToResetPassword } =
+  const { navigateToHome, navigateToCreateAccount, navigateToVerify } =
     useNavigation();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -84,31 +80,13 @@ const Login: React.FC = () => {
         ).unwrap();
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
-        setShowVerificationCode(true);
+        navigateToVerify();
+        dispatch(setIsReset(true));
       } catch (error) {
         const errorMessage = handleErrorMessage(error);
         showErrorToast(errorMessage);
         console.error("Error occurred while sending the email: ", error);
       }
-    }
-  };
-
-  const handleVerifyEmail = async (email: string, code: string) => {
-    try {
-      const resultAction = await dispatch(
-        verifyEmail({ email, code })
-      ).unwrap();
-      const successMessage = handleSuccessMessage(resultAction);
-      showSuccessToast(successMessage);
-      dispatch(setIsReset(true));
-      navigateToResetPassword();
-    } catch (error) {
-      const errorMessage = handleErrorMessage(error);
-      showErrorToast(errorMessage);
-      console.error(
-        "Error occurred while sending the verification email: ",
-        error
-      );
     }
   };
 
@@ -170,12 +148,8 @@ const Login: React.FC = () => {
         show={showModal}
         handleClose={() => setShowModal(false)}
         title="Confirm Email To Reset Password"
-        actionLabel={showVerificationCode ? "Submit" : "Send"}
-        onAction={
-          showVerificationCode
-            ? () => handleVerifyEmail(email, code)
-            : () => handleSend(email)
-        }
+        actionLabel="Send"
+        onAction={() => handleSend(email)}
       >
         <Form>
           <Form.Group controlId="formBasicEmail" className="tw-mb-3">
@@ -190,17 +164,6 @@ const Login: React.FC = () => {
               className="input-field"
             />
           </Form.Group>
-          {showVerificationCode && (
-            <Form.Group
-              controlId="formBasicVerificationCode"
-              className="tw-mb-3"
-            >
-              <Form.Label className="tw-text-custom-color-blue tw-font-bold tw-text-sm tw-mt-3">
-                Verification Code
-              </Form.Label>
-              <VerificationCodeInput code={code} setCode={setCode} />
-            </Form.Group>
-          )}
         </Form>
       </CustomModal>
     </Container>
