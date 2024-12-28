@@ -4,12 +4,12 @@ import PricingPlan from "../elements/PricingPlan";
 const Pricing: React.FC = () => {
   return (
     <Container
-      className="tw-flex tw-items-center tw-text-center tw-mt-36"
+      className="tw-flex tw-items-center tw-justify-center tw-mt-16 lg:tw-mt-36"
       style={{ minHeight: "calc(100vh - var(--navbar-height))" }}
     >
-      <div className="tw-max-w-full tw-mx-auto">
+      <div className="tw-max-w-full tw-mx-auto tw-text-center">
         <Row className="align-items-center">
-          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-text-center tw-mb-8">
+          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-3xl md:tw-text-4xl tw-text-center tw-mb-8">
             CHOOSE THE PLAN THAT SUITS YOU BEST
           </h3>
           <div className="tw-text-gray-700 tw-text-xl tw-mb-8">
@@ -21,9 +21,11 @@ const Pricing: React.FC = () => {
         <Row className="tw-justify-center">
           <Col
             xs={12}
-            sm={6}
-            md={6}
-            lg={3}
+            sm={12}
+            md={12}
+            lg={4}
+            xl={4}
+            xxl={3}
             className="tw-mb-4 tw-flex tw-justify-center"
           >
             <PricingPlan
@@ -40,9 +42,11 @@ const Pricing: React.FC = () => {
           </Col>
           <Col
             xs={12}
-            sm={6}
-            md={6}
-            lg={3}
+            sm={12}
+            md={12}
+            lg={4}
+            xl={4}
+            xxl={3}
             className="tw-mb-4 tw-flex tw-justify-center"
           >
             <PricingPlan
@@ -59,9 +63,11 @@ const Pricing: React.FC = () => {
           </Col>
           <Col
             xs={12}
-            sm={6}
-            md={6}
-            lg={3}
+            sm={12}
+            md={12}
+            lg={4}
+            xl={4}
+            xxl={3}
             className="tw-mb-20 tw-flex tw-justify-center"
           >
             <PricingPlan

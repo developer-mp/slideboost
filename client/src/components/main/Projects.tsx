@@ -44,12 +44,12 @@ const Projects: React.FC = () => {
   ];
 
   return (
-    <Container className="tw-w-full">
+    <Container className="tw-w-full tw-overflow-hidden">
       <div className="tw-mx-6 tw-my-6">
         <h2 className="tw-text-lg tw-font-bold tw-mb-4 tw-text-gray-900">
           Project List
         </h2>
-        <div className="tw-bg-white tw-rounded-lg tw-p-5">
+        <div className="tw-bg-white tw-rounded-lg tw-p-5 tw-overflow-x-auto md:tw-overflow-x-visible">
           <Row>
             <Col>
               <FileTable

@@ -33,25 +33,27 @@ const Features: React.FC = () => {
 
   return (
     <Container
-      className="d-flex align-items-center"
+      className="tw-flex tw-items-center tw-justify-center tw-mt-16 lg:tw-mt-0"
       style={{ minHeight: "calc(100vh - var(--navbar-height))" }}
     >
       <Row className="w-100">
-        <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-text-center tw-mb-8">
-          CUSTOMIZABLE TEMPLATES
-        </h3>
-        <div className="tw-text-gray-700 tw-text-xl tw-mb-8">
-          Personalize templates to match your brand, style, and content needs.
-          Whether you're creating professional presentations or engaging
-          visuals, our templates provide the flexibility to bring your vision to
-          life.
-        </div>
+        <Col className="tw-text-center">
+          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-3xl md:tw-text-4xl tw-mb-4 lg:tw-mb-8 tw-mt-4">
+            CUSTOMIZABLE TEMPLATES
+          </h3>
+          <div className="tw-text-gray-700 tw-text-xl tw-mb-8">
+            Personalize templates to match your brand, style, and content needs.
+            Whether you're creating professional presentations or engaging
+            visuals, our templates provide the flexibility to bring your vision
+            to life.
+          </div>
+        </Col>
         <TemplateCarousel templates={templatesData} />
-        <Col xs={12} md={8} lg={6}>
-          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-mb-8 tw-mt-40">
+        <Col xs={12} md={12} lg={6} className="tw-text-center lg:tw-text-left">
+          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-3xl md:tw-text-4xl tw-mt-8 lg:tw-mt-40 tw-mb-4 lg:tw-mb-8 ">
             TAILORED SOLUTIONS
           </h3>
-          <div className="tw-text-gray-700 tw-text-xl tw-w-11/12">
+          <div className="tw-text-gray-700 tw-text-xl tw-mb-4 lg:tw-w-11/12">
             <p>
               Unlike traditional tools, our platform lets you customize content
               from video, text, images, and audio.
@@ -87,11 +89,11 @@ const Features: React.FC = () => {
             onEmailClick={navigateToCreateAccount}
           />
         </Col>
-        <Col xs={12} md={6}>
+        <Col xs={12} md={12} lg={6}>
           <img
             src={features_img}
             alt="image"
-            className="tw-w-screen tw-h-auto tw-rounded-lg tw-mt-40"
+            className="tw-w-screen tw-h-auto tw-rounded-lg tw-mt-4 lg:tw-mt-40 lg:tw-mb-0"
           />
         </Col>
       </Row>

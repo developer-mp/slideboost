@@ -31,15 +31,15 @@ const Home: React.FC = () => {
 
   return (
     <Container
-      className="tw-flex tw-items-center"
+      className="tw-flex tw-items-center tw-justify-center tw-mt-8 lg:tw-mt-0"
       style={{ minHeight: "calc(100vh - var(--navbar-height))" }}
     >
       <Row className="tw-w-full">
-        <Col xs={12} md={8} lg={6}>
-          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-mb-8">
+        <Col xs={12} md={12} lg={6} className="tw-text-center lg:tw-text-left">
+          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-3xl md:tw-text-4xl tw-mb-4 lg:tw-mb-8">
             BOOST YOUR SLIDES
           </h3>
-          <div className="tw-text-gray-700 tw-text-xl tw-mb-4 tw-w-11/12">
+          <div className="tw-text-gray-700 tw-text-xl tw-mb-4 lg:tw-w-11/12">
             <p>
               Transform your media into powerful, engaging presentations that
               captivate audiences and communicate your message effectively.
@@ -72,11 +72,11 @@ const Home: React.FC = () => {
             onEmailClick={navigateToCreateAccount}
           />
         </Col>
-        <Col xs={12} md={6}>
+        <Col xs={12} md={12} lg={6}>
           <img
             src={home_img}
             alt="image"
-            className="tw-w-screen tw-h-auto tw-rounded-lg"
+            className="tw-w-full tw-h-auto tw-rounded-lg tw-mt-4 lg:tw-mb-0"
           />
         </Col>
       </Row>

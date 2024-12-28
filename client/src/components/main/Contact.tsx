@@ -48,7 +48,7 @@ const Contact = () => {
 
   return (
     <Container
-      className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-gray-700"
+      className="tw-flex tw-flex-col tw-justify-center tw-items-center tw-text-gray-700 tw-mt-16 lg:tw-mt-0"
       style={{
         minHeight: "calc(100vh - var(--navbar-height) - var(--footer-height))",
       }}

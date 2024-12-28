@@ -711,167 +711,172 @@ const Privacy: React.FC = () => {
               We have collected the following categories of personal information
               in the past twelve (12) months:
             </p>
-            <table className="tw-table-auto tw-w-full tw-mb-4 tw-border tw-border-gray-700">
-              <thead>
-                <tr>
-                  <th className="tw-border tw-border-gray-700 tw-px-4 tw-py-2 tw-font-bold tw-text-center">
-                    Category
-                  </th>
-                  <th className=" tw-border tw-border-gray-700 tw-px-4 tw-py-2 tw-font-bold tw-text-center">
-                    Examples
-                  </th>
-                  <th className=" tw-border tw-border-gray-700 tw-px-4 tw-py-2 tw-font-bold tw-text-center">
-                    Collected
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="tw-border tw-px-4 tw-py-2  tw-text-left">
-                    A. Identifiers
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2">
-                    Contact details, such as real name, alias, postal address,
-                    telephone or mobile contact number, unique personal
-                    identifier, online identifier, Internet Protocol address,
-                    email address, and account name
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
-                    YES
-                  </td>
-                </tr>
-                <tr>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
-                    B. Personal information as defined in the California
-                    Customer Records statute
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2">
-                    Name, contact information, education, employment, employment
-                    history, and financial information
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
-                    YES
-                  </td>
-                </tr>
-                <tr>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
-                    C. Protected classification characteristics under state or
-                    federal law
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2">
-                    Gender, age, date of birth, race and ethnicity, national
-                    origin, marital status, and other demographic data
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
-                    NO
-                  </td>
-                </tr>
-                <tr>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
-                    D. Commercial information
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2">
-                    Transaction information, purchase history, financial
-                    details, and payment information
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
-                    NO
-                  </td>
-                </tr>
-                <tr>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
-                    E. Biometric information
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2">
-                    Fingerprints and voiceprints
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
-                    NO
-                  </td>
-                </tr>
-                <tr>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
-                    F. Internet or other similar network activity
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2">
-                    Browsing history, search history, online behavior, interest
-                    data, and interactions with our and other websites,
-                    applications, systems, and advertisements
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
-                    NO
-                  </td>
-                </tr>
-                <tr>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
-                    G. Geolocation data
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2">Device location</td>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
-                    NO
-                  </td>
-                </tr>
-                <tr>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
-                    H. Audio, electronic, sensory, or similar information
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2">
-                    Images and audio, video, or call recordings created in
-                    connection with our business activities
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
-                    NO
-                  </td>
-                </tr>
-                <tr>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
-                    I. Professional or employment-related information
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2">
-                    Business contact details in order to provide you our
-                    Services at a business level or job title, work history, and
-                    professional qualifications if you apply for a job with us
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
-                    NO
-                  </td>
-                </tr>
-                <tr>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
-                    J. Education Information
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2">
-                    Student records and directory information
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
-                    NO
-                  </td>
-                </tr>
-                <tr>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
-                    K. Inferences drawn from collected personal information
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2">
-                    Inferences drawn from any of the collected personal
-                    information listed above to create a profile or summary
-                    about, for example, an individual's preferences and
-                    characteristics
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
-                    NO
-                  </td>
-                </tr>
-                <tr>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
-                    L. Sensitive personal information
-                  </td>
-                  <td className="tw-border tw-px-4 tw-py-2"></td>
-                  <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
-                    NO
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="tw-overflow-x-auto">
+              <table className="tw-table-auto tw-w-full tw-mb-4 tw-border tw-border-gray-700">
+                <thead>
+                  <tr>
+                    <th className="tw-border tw-border-gray-700 tw-px-4 tw-py-2 tw-font-bold tw-text-center">
+                      Category
+                    </th>
+                    <th className=" tw-border tw-border-gray-700 tw-px-4 tw-py-2 tw-font-bold tw-text-center">
+                      Examples
+                    </th>
+                    <th className=" tw-border tw-border-gray-700 tw-px-4 tw-py-2 tw-font-bold tw-text-center">
+                      Collected
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="tw-border tw-px-4 tw-py-2  tw-text-left">
+                      A. Identifiers
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2">
+                      Contact details, such as real name, alias, postal address,
+                      telephone or mobile contact number, unique personal
+                      identifier, online identifier, Internet Protocol address,
+                      email address, and account name
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
+                      YES
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
+                      B. Personal information as defined in the California
+                      Customer Records statute
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2">
+                      Name, contact information, education, employment,
+                      employment history, and financial information
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
+                      YES
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
+                      C. Protected classification characteristics under state or
+                      federal law
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2">
+                      Gender, age, date of birth, race and ethnicity, national
+                      origin, marital status, and other demographic data
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
+                      NO
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
+                      D. Commercial information
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2">
+                      Transaction information, purchase history, financial
+                      details, and payment information
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
+                      NO
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
+                      E. Biometric information
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2">
+                      Fingerprints and voiceprints
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
+                      NO
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
+                      F. Internet or other similar network activity
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2">
+                      Browsing history, search history, online behavior,
+                      interest data, and interactions with our and other
+                      websites, applications, systems, and advertisements
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
+                      NO
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
+                      G. Geolocation data
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2">
+                      Device location
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
+                      NO
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
+                      H. Audio, electronic, sensory, or similar information
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2">
+                      Images and audio, video, or call recordings created in
+                      connection with our business activities
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
+                      NO
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
+                      I. Professional or employment-related information
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2">
+                      Business contact details in order to provide you our
+                      Services at a business level or job title, work history,
+                      and professional qualifications if you apply for a job
+                      with us
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
+                      NO
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
+                      J. Education Information
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2">
+                      Student records and directory information
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
+                      NO
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
+                      K. Inferences drawn from collected personal information
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2">
+                      Inferences drawn from any of the collected personal
+                      information listed above to create a profile or summary
+                      about, for example, an individual's preferences and
+                      characteristics
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
+                      NO
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-left">
+                      L. Sensitive personal information
+                    </td>
+                    <td className="tw-border tw-px-4 tw-py-2"></td>
+                    <td className="tw-border tw-px-4 tw-py-2 tw-text-center">
+                      NO
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <p className="tw-mb-4">
               We may also collect other personal information outside of these
               categories through instances where you interact with us in person,

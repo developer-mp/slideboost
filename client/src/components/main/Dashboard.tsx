@@ -135,7 +135,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   };
 
   return (
-    <Container className="tw-w-full">
+    <Container className="tw-w-full tw-overflow-hidden">
       <div className="tw-mx-6 tw-my-6">
         <h2 className="tw-text-lg tw-font-bold tw-mb-4 tw-text-gray-900">
           Create Presentation
@@ -154,7 +154,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
                   name="name"
                   value={presentationTitle}
                   onChange={(e) => setPresentationTitle(e.target.value)}
-                  className="input-focus input-title"
+                  className="input-focus input-title tw-min-w-24"
                 />
               </Form.Group>
             </Form>

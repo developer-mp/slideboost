@@ -49,7 +49,7 @@ const TemplatesMenu: React.FC = () => {
   );
 
   return (
-    <Container className="tw-w-full">
+    <Container className="tw-w-full tw-overflow-hidden">
       <div className="tw-mx-6 tw-my-6">
         <h2 className="tw-text-lg tw-font-bold tw-text-gray-900">
           Templates Collection

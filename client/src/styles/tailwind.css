@@ -135,11 +135,6 @@
   background-color: #f2f3f5 !important;
 }
 
-.modal-dialog {
-  width: 30rem !important;
-  margin: auto;
-}
-
 .icon-size {
   font-size: 2.2rem;
   color: #6b7280;
@@ -259,6 +254,8 @@
   background-color: #f2f3f5 !important;
 }
 
-/* h5 {
-  scroll-margin-top: 76px;
-} */
+.accordion {
+  --bs-accordion-active-bg: #d1d4d9 !important;
+  --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem #ccc !important;
+  --bs-accordion-active-color: black !important;
+}

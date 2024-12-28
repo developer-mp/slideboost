@@ -4,12 +4,12 @@ import { faqData } from "../../data/faqData";
 const Faq: React.FC = () => {
   return (
     <Container
-      className="tw-text-center align-items-center"
+      className="tw-flex tw-items-center tw-justify-center tw-mt-16 lg:tw-mt-0"
       style={{ minHeight: "calc(100vh - var(--navbar-height))" }}
     >
       <Row className="justify-content-center">
-        <Col xs={12} md={10} lg={8}>
-          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-4xl tw-text-center tw-mb-8">
+        <Col xs={12} md={12} lg={12}>
+          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-3xl md:tw-text-4xl tw-text-center tw-mb-8">
             FREQUENTLY ASKED QUESTIONS
           </h3>
           <Accordion className="tw-text-gray-700 tw-mx-auto tw-mb-8 tw-max-w-3xl tw-text-justify">

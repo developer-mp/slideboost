@@ -7,12 +7,7 @@ const GoogleLoginModal: React.FC<GoogleLoginModalProps> = ({
   handleClose,
 }) => {
   return (
-    <Modal
-      show={show}
-      onHide={handleClose}
-      dialogClassName="modal-dialog"
-      centered
-    >
+    <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
         <Modal.Title>Login with Google</Modal.Title>
       </Modal.Header>
