@@ -41,24 +41,21 @@ export interface ContentCardProps {
 }
 
 export interface FileDetailProps {
-  id: string;
   name: string;
   type: string;
   size: number;
-  date: string;
-  content: string | ArrayBuffer | null;
   thumbnail?: string;
   title?: string;
   category?: string;
-  path: string;
 }
 
 export interface FileUploaderProps {
-  onUpload: (files: FileDetailProps[]) => void;
+  onUpload: (files: File[]) => void;
 }
 
 export interface FileUploaderRef {
-  getFileDetails: () => FileDetailProps[];
+  getFileDetails: () => File[];
+  uploadFiles: () => void;
 }
 
 export interface TemplateProps {

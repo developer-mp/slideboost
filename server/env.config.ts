@@ -24,12 +24,19 @@ const DB_HOST = getEnvVar("DB_HOST");
 const DB_DATABASE = getEnvVar("DB_DATABASE");
 const DB_PASS = getEnvVar("DB_PASS");
 const DB_PORT = parseInt(getEnvVar("DB_PORT"), 10);
-const AI_API_URL = getEnvVar("AI_API_URL");
-const AI_API_KEY = getEnvVar("AI_API_KEY");
 const TOKEN_EXPIRATION = getEnvVar("TOKEN_EXPIRATION");
 const REFRESH_TOKEN_EXPIRATION = getEnvVar("REFRESH_TOKEN_EXPIRATION");
-const PROMPT_STRING = getEnvVar("PROMPT_STRING");
 const GOOGLE_CLIENT_ID = getEnvVar("GOOGLE_CLIENT_ID");
+const AI_API_URL = getEnvVar("AI_API_URL");
+const AI_API_KEY = getEnvVar("AI_API_KEY");
+const AI_MODEL = getEnvVar("AI_MODEL");
+const AI_MAX_TOKENS = getEnvVar("AI_MAX_TOKENS");
+const AI_TEMPERATURE = getEnvVar("AI_TEMPERATURE");
+const PROMPT_STRING = getEnvVar("PROMPT_STRING");
+const STORAGE_KEY_ID = getEnvVar("STORAGE_KEY_ID");
+const STORAGE_APP_KEY = getEnvVar("STORAGE_APP_KEY");
+const STORAGE_BUCKET_NAME = getEnvVar("STORAGE_BUCKET_NAME");
+const STORAGE_BUCKET_ID = getEnvVar("STORAGE_BUCKET_ID");
 
 export const config = {
   CLIENT_HOST,
@@ -47,10 +54,17 @@ export const config = {
   DB_DATABASE,
   DB_PASS,
   DB_PORT,
-  AI_API_URL,
-  AI_API_KEY,
   TOKEN_EXPIRATION,
   REFRESH_TOKEN_EXPIRATION,
-  PROMPT_STRING,
   GOOGLE_CLIENT_ID,
+  AI_API_URL,
+  AI_API_KEY,
+  AI_MODEL,
+  AI_MAX_TOKENS,
+  AI_TEMPERATURE,
+  PROMPT_STRING,
+  STORAGE_KEY_ID,
+  STORAGE_APP_KEY,
+  STORAGE_BUCKET_NAME,
+  STORAGE_BUCKET_ID,
 };

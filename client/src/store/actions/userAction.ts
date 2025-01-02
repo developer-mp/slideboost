@@ -43,6 +43,7 @@ export const verifyEmail = createAsyncThunk<
 
 export const loginUser = createAsyncThunk<
   {
+    id: string;
     name: string;
     email: string;
     createdAt: string;
@@ -66,6 +67,7 @@ export const loginUser = createAsyncThunk<
 
 export const loginUserWithGoogle = createAsyncThunk<
   {
+    id: string;
     name: string;
     email: string;
     createdAt: string;

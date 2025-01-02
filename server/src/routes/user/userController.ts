@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { pool } from "../../db/config/pool";
@@ -134,10 +134,18 @@ const userController = {
 
   loginUser: async (req: Request, res: Response): Promise<void> => {
     const { email, password }: { email: string; password: string } = req.body;
+
+    if (!email || !password) {
+      res.status(400).json({ message: "Email and password are required" });
+      return;
+    }
+
     try {
-      const result = await pool.query("SELECT * FROM users WHERE email = $1", [
-        email,
-      ]);
+      const result = (await pool.query(
+        "SELECT id, name, email, password, created_at, plan FROM users WHERE email = $1",
+        [email]
+      )) as DbQueryResultProps;
+
       const user = result.rows[0];
 
       if (user && (await bcrypt.compare(password, user.password))) {
@@ -166,6 +174,7 @@ const userController = {
         });
 
         res.status(200).json({
+          id: user.id,
           name: user.name,
           email: user.email,
           createdAt: user.created_at,
@@ -199,18 +208,18 @@ const userController = {
 
       const googleId = payload["sub"];
 
-      let result = await pool.query(
-        "SELECT * FROM users WHERE google_id = $1",
+      let result = (await pool.query(
+        "SELECT id, name, email, created_at, plan FROM users WHERE google_id = $1",
         [googleId]
-      );
+      )) as DbQueryResultProps;
 
       let user = result.rows[0];
 
       if (!user) {
-        result = await pool.query(
+        result = (await pool.query(
           "INSERT INTO users (google_id, name, email, is_verified) VALUES ($1, $2, $3, $4) RETURNING id, name, email, created_at, plan",
           [googleId, payload["name"], payload["email"], true]
-        );
+        )) as DbQueryResultProps;
 
         user = result.rows[0];
       }
@@ -241,6 +250,7 @@ const userController = {
       });
 
       res.status(200).json({
+        id: user.id,
         name: user.name,
         email: user.email,
         createdAt: user.created_at,
@@ -296,9 +306,10 @@ const userController = {
   refreshToken: async (req: Request, res: Response): Promise<void> => {
     const { email }: { email: string } = req.body;
     try {
-      const result = await pool.query("SELECT * FROM users WHERE email = $1", [
+      const result = (await pool.query("SELECT * FROM users WHERE email = $1", [
         email,
-      ]);
+      ])) as DbQueryResultProps;
+
       const user = result.rows[0];
 
       const refreshToken = req.cookies?.refreshToken;

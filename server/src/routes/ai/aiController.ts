@@ -1,51 +1,25 @@
 import { Request, Response } from "express";
-import { spawn } from "child_process";
-import path from "path";
-import fs from "fs";
 import { config } from "../../../env.config";
+import aiService from "../../services/ai/aiService";
 import handleError from "../../utils/handleError";
 
 const AiController = {
   formatTranscript: async (req: Request, res: Response): Promise<void> => {
     const { transcript } = req.body;
+
     try {
       if (!transcript) {
         res.status(400).json({ message: "No transcript provided" });
         return;
       }
 
-      const tempFilePath = path.join(__dirname, "temp_transcript.txt");
-      fs.writeFileSync(tempFilePath, transcript);
+      const prompt = config.PROMPT_STRING;
 
-      const scriptPath = path.join(__dirname, "huggingFaceApi.py");
+      const formattedText = await aiService.callAi(prompt, transcript);
 
-      const pythonProcess = spawn("python", [
-        scriptPath,
-        tempFilePath,
-        config.PROMPT_STRING,
-      ]);
-
-      let scriptOutput = "";
-
-      pythonProcess.stdout.on("data", (data) => {
-        scriptOutput += data.toString();
-      });
-
-      pythonProcess.stderr.on("data", (data) => {
-        console.error("Python script stderr:", data.toString());
-      });
-
-      pythonProcess.on("close", (code) => {
-        fs.unlinkSync(tempFilePath);
-        if (code !== 0) {
-          res.status(500).json({ message: "Python processing error" });
-        } else {
-          res.json({ text: scriptOutput.trim() });
-        }
-      });
+      res.status(200).json({ text: formattedText });
     } catch (error: unknown) {
       handleError.controllerError(res, error, "formatting the transcript");
-      return;
     }
   },
 };

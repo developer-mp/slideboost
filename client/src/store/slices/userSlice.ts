@@ -13,6 +13,7 @@ import {
 
 interface UserState {
   isAuthenticated: boolean;
+  userId: string;
   userEmail: string;
   userName: string;
   createdAt: string;
@@ -26,6 +27,7 @@ interface UserState {
 
 const initialState: UserState = {
   isAuthenticated: false,
+  userId: "",
   userEmail: "",
   userName: "",
   createdAt: "",
@@ -87,6 +89,7 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = "success";
         state.isAuthenticated = true;
+        state.userId = action.payload.id;
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
         state.createdAt = action.payload.createdAt;
@@ -104,6 +107,7 @@ const userSlice = createSlice({
       .addCase(loginUserWithGoogle.fulfilled, (state, action) => {
         state.status = "success";
         state.isAuthenticated = true;
+        state.userId = action.payload.id;
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
         state.createdAt = action.payload.createdAt;

@@ -1,17 +1,15 @@
 import { useState, useRef, forwardRef, useImperativeHandle } from "react";
 import { Button, Card, Container } from "react-bootstrap";
 import { IoCloudUploadOutline } from "react-icons/io5";
-import { FileUploaderProps } from "../../interfaces/interfaces";
+import {
+  FileUploaderProps,
+  FileUploaderRef,
+} from "../../interfaces/interfaces";
 import MediaFilesDisplay from "../widgets/MediaFilesDisplay";
-import { FileDetailProps } from "../../interfaces/interfaces";
-import { generateUniqueId } from "../../utils/common/generateUniqueId";
 
-const FileUploader = forwardRef(
-  (
-    { onUpload, isTemplate }: FileUploaderProps & { isTemplate?: boolean },
-    ref
-  ) => {
-    const [fileDetails, setFileDetails] = useState<FileDetailProps[]>([]);
+const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
+  ({ onUpload }, ref) => {
+    const [fileDetails, setFileDetails] = useState<File[]>([]);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     useImperativeHandle(ref, () => ({
@@ -43,45 +41,8 @@ const FileUploader = forwardRef(
     };
 
     const handleFiles = (files: FileList) => {
-      const newFileDetails: Promise<FileDetailProps>[] = [];
-
-      Array.from(files).forEach((file) => {
-        const reader = new FileReader();
-        const fileDetailPromise = new Promise<FileDetailProps>((resolve) => {
-          reader.onload = () => {
-            resolve({
-              id: generateUniqueId(),
-              name: file.name,
-              type: file.type,
-              size: file.size,
-              date: new Date().toLocaleDateString(),
-              content: reader.result,
-              thumbnail: isTemplate
-                ? "https://cdn.pixabay.com/photo/2020/11/06/18/53/flowers-5718624_1280.png"
-                : undefined,
-              title: isTemplate ? "Test Title" : undefined,
-              category: isTemplate ? "Test Category" : undefined,
-              path: "../../upload/testimage.png",
-              //path: "https://www.youtube.com/watch?v=UIDwl_kP2MU",
-            });
-          };
-          if (file.type.startsWith("image/")) {
-            reader.readAsDataURL(file);
-          } else if (
-            file.type.startsWith("audio/") ||
-            file.type.startsWith("video/")
-          ) {
-            reader.readAsArrayBuffer(file);
-          } else {
-            reader.readAsText(file);
-          }
-        });
-        newFileDetails.push(fileDetailPromise);
-      });
-
-      Promise.all(newFileDetails).then((details) => {
-        setFileDetails((prevDetails) => [...prevDetails, ...details]);
-      });
+      const newFiles = Array.from(files);
+      setFileDetails((prevDetails) => [...prevDetails, ...newFiles]);
     };
 
     return (
@@ -111,10 +72,12 @@ const FileUploader = forwardRef(
         </Card>
         {fileDetails.length > 0 && (
           <MediaFilesDisplay
-            mediaFiles={fileDetails}
+            mediaFiles={fileDetails.map((file) => ({
+              name: file.name,
+              size: file.size,
+              type: file.type,
+            }))}
             showSize={true}
-            showDate={true}
-            setMediaFiles={setFileDetails}
           />
         )}
       </Container>

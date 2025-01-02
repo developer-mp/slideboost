@@ -3,6 +3,6 @@ import AiController from "./aiController";
 
 const aiRouter = Express.Router();
 
-aiRouter.post("/transcript", AiController.formatTranscript);
+aiRouter.post("/format", AiController.formatTranscript);
 
 export default aiRouter;

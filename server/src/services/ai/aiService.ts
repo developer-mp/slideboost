@@ -1,33 +1,32 @@
-// import axios, { AxiosInstance, AxiosResponse } from "axios";
-// import { config } from "../../../env.config";
-// import { ApiRequestData } from "../../interfaces/interfaces";
+import axios from "axios";
+import { config } from "../../../env.config";
 
-// const AIApi: AxiosInstance = axios.create({
-//   baseURL: config.AI_API_BASE_URL,
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-// });
+const aiService = {
+  async callAi(prompt: string, transcript: string): Promise<string> {
+    const formattedPrompt = prompt.replace("[transcript]", transcript);
 
-// const aiService = {
-//   async callAI(prompt: string, data: string[]): Promise<AxiosResponse> {
-//     const postData: ApiRequestData = {
-//       contents: [
-//         {
-//           parts: [
-//             {
-//               text: `${prompt}: ${data.join(", ")}`,
-//             },
-//           ],
-//         },
-//       ],
-//     };
+    try {
+      const response = await axios.post(
+        config.AI_API_URL,
+        {
+          model: config.AI_MODEL,
+          prompt: formattedPrompt,
+          max_tokens: config.AI_MAX_TOKENS,
+          temperature: config.AI_TEMPERATURE,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${config.AI_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-//     return AIApi.post(
-//       `${config.AI_API_ENDPOINT}${config.AI_API_KEY}`,
-//       postData
-//     );
-//   },
-// };
+      return response.data.choices[0].text.trim();
+    } catch (error) {
+      throw new Error("Error processing AI request");
+    }
+  },
+};
 
-// export default aiService;
+export default aiService;
