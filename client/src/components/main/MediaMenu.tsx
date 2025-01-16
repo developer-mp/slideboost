@@ -5,8 +5,8 @@
 // import { truncateText } from "../../utils/common/truncateText";
 
 import { useState, useRef } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import CustomModal from "../shared/CustomModal";
 import FileUploader from "../shared/FileUploader";
@@ -15,46 +15,34 @@ import {
   showWarningToast,
   showSuccessToast,
 } from "../../utils/common/handleToast";
-import axios from "axios";
 import { FileUploaderRef } from "../../interfaces/interfaces";
+import {
+  handleErrorMessage,
+  handleSuccessMessage,
+} from "../../utils/common/handleActionMessage";
+import { uploadFile } from "../../store/actions/storageAction";
 
 const MediaMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const fileUploaderRef = useRef<FileUploaderRef>(null);
 
+  const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
 
   const handleUpload = async (file: File[]) => {
-    if (file && file.length > 0) {
-      const formData = new FormData();
-
-      let folder = "media";
-
-      file.forEach((f) => {
-        if (
-          f.type === "application/vnd.ms-powerpoint" ||
-          f.name.endsWith(".pptx") ||
-          f.name.endsWith(".ppt")
-        ) {
-          folder = "templates";
-        }
-        formData.append("file", file[0]);
-      });
-
-      try {
-        await axios.post(
-          "http://localhost:3000/api/v1/storage/upload",
-          formData,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-            params: { userId, folder },
-          }
-        );
-        showSuccessToast("File uploaded successfully");
-      } catch (error) {
-        console.log("Error uploading file: ", error);
-        showErrorToast("Error uploading file");
-      }
+    try {
+      const resultAction = await dispatch(
+        uploadFile({ file, userId })
+      ).unwrap();
+      const successMessage = handleSuccessMessage(resultAction);
+      showSuccessToast(successMessage);
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while uploading the file to the storage: ",
+        error
+      );
     }
   };
 

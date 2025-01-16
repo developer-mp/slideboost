@@ -17,7 +17,7 @@ const storageController = {
 
     try {
       const fileName = req.file.originalname;
-      const filePath = `${folder}/${fileName}`;
+      const filePath = `${userId}/${folder}/${fileName}`;
       const fileType = req.file.mimetype;
 
       const response = await storageService.uploadFile(

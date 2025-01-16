@@ -1,4 +1,6 @@
 import { useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
 import { Button, Col, Container, Dropdown, Row } from "react-bootstrap";
 import CustomModal from "../shared/CustomModal";
 import FileUploader from "../shared/FileUploader";
@@ -6,17 +8,20 @@ import { templatesData } from "../../data/templatesData";
 import {
   PPTTemplateProps,
   FileUploaderRef,
-  FileDetailProps,
   TemplateProps,
 } from "../../interfaces/interfaces";
 import { templatesCategories } from "../../data/templatesCategories";
-import { handleFileUpload } from "../../utils/ppt/handleFileUpload";
 import TemplatesDisplay from "../widgets/TemplatesDisplay";
 import {
   showErrorToast,
   showWarningToast,
   showSuccessToast,
 } from "../../utils/common/handleToast";
+import { uploadFile } from "../../store/actions/storageAction";
+import {
+  handleErrorMessage,
+  handleSuccessMessage,
+} from "../../utils/common/handleActionMessage";
 
 const TemplatesMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -32,15 +37,23 @@ const TemplatesMenu: React.FC = () => {
     })),
   ];
 
-  const handleUpload = (files: FileDetailProps[]) => {
-    if (files && files.length > 0) {
-      try {
-        handleFileUpload(files, "templateDetails");
-        showSuccessToast("File uploaded successfully");
-      } catch (error) {
-        console.log("Error uploading file: ", error);
-        showErrorToast("Error uploading file");
-      }
+  const dispatch = useDispatch<AppDispatch>();
+  const userId = useSelector((state: RootState) => state.user.userId);
+
+  const handleUpload = async (file: File[]) => {
+    try {
+      const resultAction = await dispatch(
+        uploadFile({ file, userId })
+      ).unwrap();
+      const successMessage = handleSuccessMessage(resultAction);
+      showSuccessToast(successMessage);
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while uploading the file to the storage: ",
+        error
+      );
     }
   };
 
@@ -116,17 +129,11 @@ const TemplatesMenu: React.FC = () => {
             showWarningToast("Please select files to upload");
             return;
           }
-          if (filesToUpload) {
-            handleUpload(filesToUpload);
-            setShowModal(false);
-          }
+          handleUpload(filesToUpload);
+          setShowModal(false);
         }}
       >
-        <FileUploader
-          ref={fileUploaderRef}
-          onUpload={handleUpload}
-          isTemplate={true}
-        />
+        <FileUploader ref={fileUploaderRef} onUpload={handleUpload} />
       </CustomModal>
     </Container>
   );
