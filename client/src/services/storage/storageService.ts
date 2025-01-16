@@ -31,6 +31,23 @@ const storageService = {
       throw error;
     }
   },
+  async getFileMetadata(userId: string): Promise<[]> {
+    const endpoint = `${config.STORAGE_ROUTER}${config.METADATA_ENDPOINT}`;
+
+    try {
+      const response = await apiService.getCall(endpoint, {
+        userId,
+      });
+
+      return response.data;
+    } catch (error) {
+      handleError.axiosError(
+        error,
+        "retrieving file metadata from the storage"
+      );
+      throw error;
+    }
+  },
 };
 
 export default storageService;

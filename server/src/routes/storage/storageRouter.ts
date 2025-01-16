@@ -9,5 +9,6 @@ storageRouter.post(
   upload.single("file"),
   storageController.uploadFileToStorage
 );
+storageRouter.get("/metadata", storageController.getFileMetadata);
 
 export default storageRouter;

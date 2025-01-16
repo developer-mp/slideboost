@@ -37,6 +37,7 @@ const STORAGE_KEY_ID = getEnvVar("STORAGE_KEY_ID");
 const STORAGE_APP_KEY = getEnvVar("STORAGE_APP_KEY");
 const STORAGE_BUCKET_NAME = getEnvVar("STORAGE_BUCKET_NAME");
 const STORAGE_BUCKET_ID = getEnvVar("STORAGE_BUCKET_ID");
+const STORAGE_ENDPOINT = getEnvVar("STORAGE_ENDPOINT");
 
 export const config = {
   CLIENT_HOST,
@@ -67,4 +68,5 @@ export const config = {
   STORAGE_APP_KEY,
   STORAGE_BUCKET_NAME,
   STORAGE_BUCKET_ID,
+  STORAGE_ENDPOINT,
 };

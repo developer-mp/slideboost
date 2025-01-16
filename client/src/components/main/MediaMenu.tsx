@@ -1,9 +1,3 @@
-// import { FileUploaderRef } from "../../interfaces/interfaces";
-// import { handleFileUpload } from "../../utils/ppt/handleFileUpload";
-// import { getFileSize } from "../../utils/ppt/getFileSize";
-// import FileTable from "../shared/FileTable";
-// import { truncateText } from "../../utils/common/truncateText";
-
 import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
@@ -12,15 +6,18 @@ import CustomModal from "../shared/CustomModal";
 import FileUploader from "../shared/FileUploader";
 import {
   showErrorToast,
-  showWarningToast,
   showSuccessToast,
+  showWarningToast,
 } from "../../utils/common/handleToast";
-import { FileUploaderRef } from "../../interfaces/interfaces";
+import { FileDetailProps, FileUploaderRef } from "../../interfaces/interfaces";
 import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../../utils/common/handleActionMessage";
 import { uploadFile } from "../../store/actions/storageAction";
+import FileTable from "../shared/FileTable";
+import { getFileSize } from "../../utils/ppt/getFileSize";
+import { truncateText } from "../../utils/common/truncateText";
 
 const MediaMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -28,6 +25,9 @@ const MediaMenu: React.FC = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
+  const fileMetadata = useSelector(
+    (state: RootState) => state.fileStorage.fileMetadata
+  );
 
   const handleUpload = async (file: File[]) => {
     try {
@@ -46,6 +46,40 @@ const MediaMenu: React.FC = () => {
     }
   };
 
+  const columns = [
+    {
+      key: "name",
+      label: "File Name",
+      render: (file: FileDetailProps) => file.name,
+    },
+    {
+      key: "size",
+      label: "Size",
+      render: (file: FileDetailProps) => getFileSize(file.size),
+    },
+    {
+      key: "type",
+      label: "Type",
+      render: (file: FileDetailProps) => truncateText(file.type),
+    },
+    {
+      key: "uploaded_at",
+      label: "Uploaded At",
+      render: (file: FileDetailProps) =>
+        new Date(file.uploaded_at).toLocaleString(),
+    },
+  ];
+
+  const removeFile = (index: number) => {
+    try {
+      const updatedFiles = fileMetadata.filter((_, i) => i !== index);
+      showSuccessToast("File deleted successfully");
+    } catch (error) {
+      console.log("Error deleting file: ", error);
+      showErrorToast("Error deleting file");
+    }
+  };
+
   return (
     <Container className="tw-w-full tw-overflow-hidden">
       <div className="tw-mx-6 tw-my-6">
@@ -61,11 +95,13 @@ const MediaMenu: React.FC = () => {
         <div className="tw-bg-white tw-rounded-lg tw-p-5 tw-overflow-x-auto md:tw-overflow-x-visible">
           <Row>
             <Col>
-              {/* <FileTable
+              <FileTable
                 columns={columns}
-                files={files}
+                files={fileMetadata}
                 removeFile={removeFile}
-              /> */}
+                downloadFile={() => {}}
+                selectedFolder="media"
+              />
             </Col>
           </Row>
         </div>
@@ -92,46 +128,3 @@ const MediaMenu: React.FC = () => {
 };
 
 export default MediaMenu;
-
-// useEffect(() => {
-//   const existingFilesString = localStorage.getItem("mediaDetails");
-//   const existingFiles = existingFilesString
-//     ? JSON.parse(existingFilesString)
-//     : [];
-//   setFiles(existingFiles);
-// }, []);
-
-// const removeFile = (index: number) => {
-//   try {
-//     const updatedFiles = files.filter((_, i) => i !== index);
-//     setFiles(updatedFiles);
-//     localStorage.setItem("mediaDetails", JSON.stringify(updatedFiles));
-//     showSuccessToast("File deleted successfully");
-//   } catch (error) {
-//     console.log("Error deleting file:", error);
-//     showErrorToast("Error deleting file");
-//   }
-// };
-
-// const columns = [
-//   {
-//     key: "filename",
-//     label: "File Name",
-//     render: (file: FileProps) => file.name,
-//   },
-//   {
-//     key: "size",
-//     label: "Size",
-//     render: (file: FileProps) => getFileSize(file.size),
-//   },
-//   {
-//     key: "type",
-//     label: "Type",
-//     render: (file: FileProps) => truncateText(file.type),
-//   },
-//   {
-//     key: "date",
-//     label: "Date Uploaded",
-//     render: (file: FileProps) => file.date,
-//   },
-// ];

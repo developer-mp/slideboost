@@ -1,29 +1,21 @@
 import { FC, useState } from "react";
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from "react-icons/io";
-import { FileDetailProps } from "../../interfaces/interfaces";
+import { FileDetailProps, FileTableProps } from "../../interfaces/interfaces";
 import { FiTrash2, FiDownload } from "react-icons/fi";
-
-interface FileTableProps {
-  columns: Array<{
-    key: string;
-    label: string;
-    render: (file: FileDetailProps) => JSX.Element | string;
-  }>;
-  files: FileDetailProps[];
-  removeFile: (index: number) => void;
-  downloadFile?: (file: FileDetailProps) => void;
-}
 
 const FileTable: FC<FileTableProps> = ({
   columns,
   files,
   removeFile,
   downloadFile,
+  selectedFolder,
 }) => {
   const [sortConfig, setSortConfig] = useState<{
     key: string;
     direction: "ascending" | "descending";
   } | null>(null);
+
+  const filteredFiles = files.filter((file) => file.folder === selectedFolder);
 
   const requestSort = (key: string) => {
     let direction: "ascending" | "descending" = "ascending";
@@ -48,7 +40,7 @@ const FileTable: FC<FileTableProps> = ({
     return <IoIosArrowRoundDown className="tw-ml-1" />;
   };
 
-  const sortedFiles = [...files].sort((a, b) => {
+  const sortedFiles = [...filteredFiles].sort((a, b) => {
     if (!sortConfig) return 0;
     const { key, direction } = sortConfig;
 

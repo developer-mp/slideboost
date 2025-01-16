@@ -18,3 +18,20 @@ export const uploadFile = createAsyncThunk<
     );
   }
 });
+
+export const getFileMetadata = createAsyncThunk<
+  { data: []; message: string },
+  { userId: string },
+  { rejectValue: { message: string } }
+>("storage/fileMetadata", async ({ userId }, { rejectWithValue }) => {
+  try {
+    const response = await storageService.getFileMetadata(userId);
+    return response;
+  } catch (error) {
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "retrieving file metadata from the storage"
+    );
+  }
+});

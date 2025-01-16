@@ -44,9 +44,24 @@ export interface FileDetailProps {
   name: string;
   type: string;
   size: number;
+  folder: string;
+  uploaded_at: string;
+  path?: string;
   thumbnail?: string;
   title?: string;
   category?: string;
+}
+
+export interface FileTableProps {
+  columns: Array<{
+    key: string;
+    label: string;
+    render: (file: FileDetailProps) => JSX.Element | string;
+  }>;
+  files: FileDetailProps[];
+  removeFile: (index: number) => void;
+  downloadFile?: (file: FileDetailProps) => void;
+  selectedFolder: string;
 }
 
 export interface FileUploaderProps {

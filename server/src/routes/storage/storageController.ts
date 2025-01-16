@@ -7,11 +7,16 @@ import { DbQueryResultProps } from "../../interfaces/interfaces";
 
 const storageController = {
   uploadFileToStorage: async (req: Request, res: Response): Promise<void> => {
-    const userId = req.query.userId;
-    const folder = req.query.folder;
+    const userId = req.query.userId as string;
+    const folder = req.query.folder as string;
 
     if (!req.file) {
       res.status(400).json({ message: "No file found" });
+      return;
+    }
+
+    if (!userId || !folder) {
+      res.status(400).json({ message: "User id and folder are required" });
       return;
     }
 
@@ -33,7 +38,7 @@ const storageController = {
         return;
       }
 
-      const fileUrl = `https://${config.STORAGE_BUCKET_NAME}.s3.us-east-005.backblazeb2.com/${filePath}`;
+      const fileUrl = `https://${config.STORAGE_BUCKET_NAME}.${config.STORAGE_ENDPOINT}/${filePath}`;
       const uploadedAt = new Date();
       const fileSize = req.file.size;
 
@@ -48,6 +53,41 @@ const storageController = {
         res,
         error,
         "uploading the file to the storage"
+      );
+      return;
+    }
+  },
+  getFileMetadata: async (req: Request, res: Response): Promise<void> => {
+    const userId = req.query.userId as string;
+
+    if (!userId) {
+      res.status(400).json({ message: "User id is required" });
+      return;
+    }
+
+    try {
+      const result = (await pool.query(
+        "SELECT name, type, size, folder, uploaded_at FROM files WHERE user_id = $1",
+        [userId]
+      )) as DbQueryResultProps;
+
+      if (result.rows.length === 0) {
+        res.status(404).json({
+          message: "No files found for the specified user",
+        });
+        return;
+      }
+
+      res.status(200).json({
+        message: "Metadata retrieved successfully",
+        data: result.rows,
+      });
+      return;
+    } catch (error: unknown) {
+      handleError.controllerError(
+        res,
+        error,
+        "Error retrieving file metadata from the storage"
       );
       return;
     }
