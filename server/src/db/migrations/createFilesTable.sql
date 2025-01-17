@@ -5,6 +5,7 @@ CREATE TABLE files (
   size INT NOT NULL,
   folder VARCHAR(10) NOT NULL,
   file_url TEXT NOT NULL,
+  png_url TEXT NULL,
   uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   user_id UUID NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

@@ -4,6 +4,8 @@ import handleError from "../../utils/handleError";
 import { config } from "../../../env.config";
 import { pool } from "../../db/config/pool";
 import { DbQueryResultProps } from "../../interfaces/interfaces";
+import { convertPptToPng } from "../../utils/convertPptToPng";
+import { changeFileExtension } from "../../utils/changeFileExtension";
 
 const storageController = {
   uploadFileToStorage: async (req: Request, res: Response): Promise<void> => {
@@ -42,9 +44,33 @@ const storageController = {
       const uploadedAt = new Date();
       const fileSize = req.file.size;
 
+      let pngUrl = null;
+      if (folder === "templates") {
+        const pngBuffer = await convertPptToPng(req.file.buffer);
+        const pngFileName = changeFileExtension(fileName, ".png");
+        const pngFilePath = `${userId}/${folder}/${pngFileName}`;
+
+        await storageService.uploadFile(
+          pngBuffer,
+          pngFilePath,
+          config.STORAGE_BUCKET_ID as string
+        );
+
+        pngUrl = `https://${config.STORAGE_BUCKET_NAME}.${config.STORAGE_ENDPOINT}/${pngFilePath}`;
+      }
+
       (await pool.query(
-        "INSERT INTO files(name, type, size, folder, file_url, uploaded_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7)",
-        [fileName, fileType, fileSize, folder, fileUrl, uploadedAt, userId]
+        "INSERT INTO files(name, type, size, folder, file_url, png_url, uploaded_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
+        [
+          fileName,
+          fileType,
+          fileSize,
+          folder,
+          fileUrl,
+          pngUrl,
+          uploadedAt,
+          userId,
+        ]
       )) as DbQueryResultProps;
 
       res.status(200).json({ message: "File uploaded successfully" });
