@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Response } from "express";
 
 const handleError = {
@@ -22,6 +23,26 @@ const handleError = {
       console.error(`An unknown error occurred while ${context}: `, error);
     }
     throw new Error(`An error occurred while ${context}`);
+  },
+
+  axiosError(
+    error: unknown,
+    context: string
+  ): { message: string; requestCode?: boolean } {
+    if (axios.isAxiosError(error)) {
+      const errorMessage = error.response?.data?.message || error.message;
+      const requestCode = error.response?.data?.requestCode || false;
+      console.error(`An error occurred while ${context}: `, errorMessage);
+      return { message: errorMessage, requestCode };
+    } else if (error instanceof Error) {
+      console.error(
+        `An unknown error occurred while ${context}: `,
+        error.message
+      );
+      return { message: error.message };
+    }
+    console.error("An unknown error occurred");
+    throw new Error("An unknown error occurred");
   },
 };
 

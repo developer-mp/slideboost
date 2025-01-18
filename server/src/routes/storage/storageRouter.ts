@@ -10,5 +10,6 @@ storageRouter.post(
   storageController.uploadFileToStorage
 );
 storageRouter.get("/metadata", storageController.getFileMetadata);
+storageRouter.post("/delete", storageController.deleteFileFromStorage);
 
 export default storageRouter;

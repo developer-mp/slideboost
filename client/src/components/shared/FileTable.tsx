@@ -71,8 +71,8 @@ const FileTable: FC<FileTableProps> = ({
         </tr>
       </thead>
       <tbody>
-        {sortedFiles.map((file, index) => (
-          <tr key={index}>
+        {sortedFiles.map((file) => (
+          <tr key={file.file_id}>
             {columns.map((column) => (
               <td key={column.key} className="tw-p-3">
                 {column.render(file)}
@@ -88,7 +88,7 @@ const FileTable: FC<FileTableProps> = ({
                 </button>
               )}
               <button
-                onClick={() => removeFile(index)}
+                onClick={() => removeFile(file.file_id, file.file_name)}
                 className="tw-text-[#FD4958] hover:tw-text-[#DB142B] tw-text-xl tw-flex tw-items-center tw-justify-center tw-ml-4"
               >
                 <FiTrash2 />

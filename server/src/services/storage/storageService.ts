@@ -1,5 +1,8 @@
+import axios from "axios";
+import { config } from "../../../env.config";
 import { b2 } from "../../storage/config/storage";
 import handleError from "../../utils/handleError";
+import apiService from "../api/apiService";
 
 const storageService = {
   async authorizeStorage() {
@@ -59,6 +62,28 @@ const storageService = {
     } catch (error: unknown) {
       handleError.serviceError(error, "uploading the file to the storage");
       return;
+    }
+  },
+  async deleteFile(fileId: string, fileName: string): Promise<string> {
+    const endpoint = `${config.STORAGE_API_URL}${config.STORAGE_DELETE_URL}`;
+
+    const authData = await this.authorizeStorage();
+
+    const data = { fileName, fileId };
+    const headers = {
+      Authorization: authData.authorizationToken,
+    };
+
+    try {
+      const response = await apiService.postCall<string>(
+        endpoint,
+        data,
+        headers
+      );
+      return response;
+    } catch (error) {
+      handleError.axiosError(error, "deleting the file from the storage");
+      throw error;
     }
   },
 };

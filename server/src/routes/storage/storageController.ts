@@ -18,7 +18,7 @@ const storageController = {
     }
 
     if (!userId || !folder) {
-      res.status(400).json({ message: "User id and folder are required" });
+      res.status(400).json({ message: "User ID and folder are required" });
       return;
     }
 
@@ -40,6 +40,8 @@ const storageController = {
         return;
       }
 
+      const fileId = response.data.fileId;
+      const storageFileName = response.data.fileName;
       const fileUrl = `https://${config.STORAGE_BUCKET_NAME}.${config.STORAGE_ENDPOINT}/${filePath}`;
       const uploadedAt = new Date();
       const fileSize = req.file.size;
@@ -60,12 +62,14 @@ const storageController = {
       }
 
       (await pool.query(
-        "INSERT INTO files(name, type, size, folder, file_url, png_url, uploaded_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
+        "INSERT INTO files(name, file_name, type, size, folder, file_id, file_url, png_url, uploaded_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
         [
           fileName,
+          storageFileName,
           fileType,
           fileSize,
           folder,
+          fileId,
           fileUrl,
           pngUrl,
           uploadedAt,
@@ -87,22 +91,15 @@ const storageController = {
     const userId = req.query.userId as string;
 
     if (!userId) {
-      res.status(400).json({ message: "User id is required" });
+      res.status(400).json({ message: "User ID is required" });
       return;
     }
 
     try {
       const result = (await pool.query(
-        "SELECT name, type, size, folder, uploaded_at FROM files WHERE user_id = $1",
+        "SELECT name, file_name, type, size, folder, file_id, uploaded_at FROM files WHERE user_id = $1",
         [userId]
       )) as DbQueryResultProps;
-
-      if (result.rows.length === 0) {
-        res.status(404).json({
-          message: "No files found for the specified user",
-        });
-        return;
-      }
 
       res.status(200).json({
         message: "Metadata retrieved successfully",
@@ -113,7 +110,39 @@ const storageController = {
       handleError.controllerError(
         res,
         error,
-        "Error retrieving file metadata from the storage"
+        "retrieving the file metadata from the storage"
+      );
+      return;
+    }
+  },
+  deleteFileFromStorage: async (req: Request, res: Response): Promise<void> => {
+    const fileId = req.query.fileId as string;
+    const fileName = req.query.fileName as string;
+
+    if (!fileId) {
+      res.status(400).json({ message: "File ID is required" });
+      return;
+    }
+
+    if (!fileName) {
+      res.status(400).json({ message: "File name is required" });
+      return;
+    }
+
+    try {
+      await storageService.deleteFile(fileId, fileName);
+
+      (await pool.query("DELETE FROM files WHERE file_id = $1", [
+        fileId,
+      ])) as DbQueryResultProps;
+
+      res.status(200).json({ message: "File deleted successfully" });
+      return;
+    } catch (error: unknown) {
+      handleError.controllerError(
+        res,
+        error,
+        "deleting the file from the storage"
       );
       return;
     }

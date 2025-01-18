@@ -48,6 +48,20 @@ const storageService = {
       throw error;
     }
   },
+  async deleteFile(fileId: string, fileName: string): Promise<string> {
+    const endpoint = `${config.STORAGE_ROUTER}${config.DELETE_ENDPOINT}`;
+
+    try {
+      const response = await apiService.postCall(endpoint, null, {
+        params: { fileId, fileName },
+      });
+
+      return response.data;
+    } catch (error) {
+      handleError.axiosError(error, "deleting the file from the storage");
+      throw error;
+    }
+  },
 };
 
 export default storageService;

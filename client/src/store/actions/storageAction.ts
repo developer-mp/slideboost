@@ -31,7 +31,24 @@ export const getFileMetadata = createAsyncThunk<
     return handleError.actionError(
       error,
       rejectWithValue,
-      "retrieving file metadata from the storage"
+      "retrieving the file metadata from the storage"
+    );
+  }
+});
+
+export const deleteFile = createAsyncThunk<
+  { message: string },
+  { fileId: string; fileName: string },
+  { rejectValue: { message: string } }
+>("storage/fileMetadata", async ({ fileId, fileName }, { rejectWithValue }) => {
+  try {
+    const response = await storageService.deleteFile(fileId, fileName);
+    return response;
+  } catch (error) {
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "deleting the file from the storage"
     );
   }
 });

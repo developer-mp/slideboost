@@ -14,7 +14,11 @@ import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../../utils/common/handleActionMessage";
-import { uploadFile } from "../../store/actions/storageAction";
+import {
+  deleteFile,
+  getFileMetadata,
+  uploadFile,
+} from "../../store/actions/storageAction";
 import FileTable from "../shared/FileTable";
 import { getFileSize } from "../../utils/ppt/getFileSize";
 import { truncateText } from "../../utils/common/truncateText";
@@ -36,6 +40,7 @@ const MediaMenu: React.FC = () => {
       ).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
+      await dispatch(getFileMetadata({ userId })).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
@@ -70,13 +75,21 @@ const MediaMenu: React.FC = () => {
     },
   ];
 
-  const removeFile = (index: number) => {
+  const removeFile = async (fileId: string, fileName: string) => {
     try {
-      const updatedFiles = fileMetadata.filter((_, i) => i !== index);
-      showSuccessToast("File deleted successfully");
+      const resultAction = await dispatch(
+        deleteFile({ fileId, fileName })
+      ).unwrap();
+      const successMessage = handleSuccessMessage(resultAction);
+      showSuccessToast(successMessage);
+      await dispatch(getFileMetadata({ userId })).unwrap();
     } catch (error) {
-      console.log("Error deleting file: ", error);
-      showErrorToast("Error deleting file");
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while deleting the file from the storage: ",
+        error
+      );
     }
   };
 
@@ -97,7 +110,7 @@ const MediaMenu: React.FC = () => {
             <Col>
               <FileTable
                 columns={columns}
-                files={fileMetadata}
+                files={fileMetadata || []}
                 removeFile={removeFile}
                 downloadFile={() => {}}
                 selectedFolder="media"

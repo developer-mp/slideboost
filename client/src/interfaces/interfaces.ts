@@ -45,6 +45,8 @@ export interface FileDetailProps {
   type: string;
   size: number;
   folder: string;
+  file_id: string;
+  file_name: string;
   uploaded_at: string;
   path?: string;
   thumbnail?: string;
@@ -59,7 +61,7 @@ export interface FileTableProps {
     render: (file: FileDetailProps) => JSX.Element | string;
   }>;
   files: FileDetailProps[];
-  removeFile: (index: number) => void;
+  removeFile: (id: string, name: string) => void;
   downloadFile?: (file: FileDetailProps) => void;
   selectedFolder: string;
 }
