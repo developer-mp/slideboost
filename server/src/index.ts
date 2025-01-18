@@ -3,7 +3,7 @@ import cors from "cors";
 import { ServerRouter } from "./routes/router";
 import { config } from "../env.config";
 import cookieParser from "cookie-parser";
-import handleError from "./utils/handleError";
+import handleError from "./utils/common/handleError";
 import path from "path";
 
 const app = express();

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import handleError from "../../utils/handleError";
+import handleError from "../../utils/common/handleError";
 
 const apiService = {
   postCall: async <T>(

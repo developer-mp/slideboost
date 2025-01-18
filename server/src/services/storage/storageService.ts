@@ -1,7 +1,7 @@
 import axios from "axios";
 import { config } from "../../../env.config";
 import { b2 } from "../../storage/config/storage";
-import handleError from "../../utils/handleError";
+import handleError from "../../utils/common/handleError";
 import apiService from "../api/apiService";
 
 const storageService = {

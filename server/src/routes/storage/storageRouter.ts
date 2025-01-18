@@ -1,6 +1,6 @@
 import Express from "express";
 import storageController from "./storageController";
-import upload from "../../utils/createMemoryStorage";
+import upload from "../../utils/storage/createMemoryStorage";
 
 const storageRouter = Express.Router();
 

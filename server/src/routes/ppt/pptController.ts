@@ -15,7 +15,7 @@ import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
 import PPTX from "nodejs-pptx";
-import handleError from "../../utils/handleError";
+import handleError from "../../utils/common/handleError";
 
 const PptController = {
   createPpt: async (req: Request, res: Response): Promise<void> => {

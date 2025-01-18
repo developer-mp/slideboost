@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { config } from "../../../env.config";
 import aiService from "../../services/ai/aiService";
-import handleError from "../../utils/handleError";
+import handleError from "../../utils/common/handleError";
 
 const AiController = {
   formatTranscript: async (req: Request, res: Response): Promise<void> => {

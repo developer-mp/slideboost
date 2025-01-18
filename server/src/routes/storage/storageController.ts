@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import storageService from "../../services/storage/storageService";
-import handleError from "../../utils/handleError";
+import handleError from "../../utils/common/handleError";
 import { config } from "../../../env.config";
 import { pool } from "../../db/config/pool";
 import { DbQueryResultProps } from "../../interfaces/interfaces";
-import { convertPptToPng } from "../../utils/convertPptToPng";
-import { changeFileExtension } from "../../utils/changeFileExtension";
+import { convertPptToPng } from "../../utils/conversion/convertPptToPng";
+import { changeFileExtension } from "../../utils/conversion/changeFileExtension";
 
 const storageController = {
   uploadFileToStorage: async (req: Request, res: Response): Promise<void> => {

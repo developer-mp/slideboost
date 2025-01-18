@@ -3,11 +3,11 @@ import Tesseract from "tesseract.js";
 import fs from "fs";
 import { spawn } from "child_process";
 import path from "path";
-import { convertMp3ToWav } from "../../utils/convertMp3ToWav";
-import { extractWavFromVideo } from "../../utils/extractWavFromVideo";
-import { downloadVideoFromYoutube } from "../../utils/downloadVideoFromYoutube";
-import { readTextFile } from "../../utils/readTextFile";
-import handleError from "../../utils/handleError";
+import { convertMp3ToWav } from "../../utils/transcript/convertMp3ToWav";
+import { extractWavFromVideo } from "../../utils/transcript/extractWavFromVideo";
+import { downloadVideoFromYoutube } from "../../utils/transcript/downloadVideoFromYoutube";
+import { readTextFile } from "../../utils/transcript/readTextFile";
+import handleError from "../../utils/common/handleError";
 
 const TranscriptController = {
   convertTextToText: async (req: Request, res: Response): Promise<void> => {

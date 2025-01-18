@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { pool } from "../../db/config/pool";
-import { generateVerificationCode } from "../../utils/generateVerificationCode";
+import { generateVerificationCode } from "../../utils/auth/generateVerificationCode";
 import userService from "../../services/user/userService";
 import { config } from "../../../env.config";
 import { DbQueryResultProps } from "../../interfaces/interfaces";
-import { client } from "../../utils/googleAuthClient";
-import handleError from "../../utils/handleError";
+import { client } from "../../utils/auth/googleAuthClient";
+import handleError from "../../utils/common/handleError";
 
 const userController = {
   registerUser: async (req: Request, res: Response): Promise<void> => {

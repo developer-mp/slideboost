@@ -2,8 +2,8 @@ import nodemailer from "nodemailer";
 import pug from "pug";
 import { convert } from "html-to-text";
 import { config } from "../../../env.config";
-import handleError from "../../utils/handleError";
-import { convertImgToBase64 } from "./../../utils/convertImgToBase64";
+import handleError from "../../utils/common/handleError";
+import { convertImgToBase64 } from "../../utils/conversion/convertImgToBase64";
 
 const smtp = {
   host: config.SMTP_HOST,
