@@ -9,7 +9,11 @@ import {
   showSuccessToast,
   showWarningToast,
 } from "../../utils/common/handleToast";
-import { FileDetailProps, FileUploaderRef } from "../../interfaces/interfaces";
+import {
+  FileDetailProps,
+  FileUploaderRef,
+  FileWithMetadata,
+} from "../../interfaces/interfaces";
 import {
   handleErrorMessage,
   handleSuccessMessage,
@@ -33,7 +37,7 @@ const MediaMenu: React.FC = () => {
     (state: RootState) => state.fileStorage.fileMetadata
   );
 
-  const handleUpload = async (file: File[]) => {
+  const handleUpload = async (file: FileWithMetadata[]) => {
     try {
       const resultAction = await dispatch(
         uploadFile({ file, userId })
@@ -71,7 +75,7 @@ const MediaMenu: React.FC = () => {
       key: "uploaded_at",
       label: "Uploaded At",
       render: (file: FileDetailProps) =>
-        new Date(file.uploaded_at).toLocaleString(),
+        file.uploaded_at ? new Date(file.uploaded_at).toLocaleString() : "N/A",
     },
   ];
 
@@ -134,7 +138,11 @@ const MediaMenu: React.FC = () => {
           setShowModal(false);
         }}
       >
-        <FileUploader ref={fileUploaderRef} onUpload={handleUpload} />
+        <FileUploader
+          ref={fileUploaderRef}
+          onUpload={handleUpload}
+          showCategory={false}
+        />
       </CustomModal>
     </Container>
   );

@@ -1,10 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import storageService from "../../services/storage/storageService";
 import handleError from "../../utils/common/handleError";
+import { FileWithMetadata } from "../../interfaces/interfaces";
 
 export const uploadFile = createAsyncThunk<
   { message: string },
-  { file: File[]; userId: string },
+  { file: FileWithMetadata[]; userId: string },
   { rejectValue: { message: string } }
 >("storage/uploadFile", async ({ file, userId }, { rejectWithValue }) => {
   try {

@@ -1,21 +1,25 @@
 import apiService from "../app/apiService";
 import { config } from "../../../env.config";
 import handleError from "../../utils/common/handleError";
+import { FileWithMetadata } from "../../interfaces/interfaces";
 
 const storageService = {
-  async uploadFile(file: File[], userId: string): Promise<string> {
+  async uploadFile(file: FileWithMetadata[], userId: string): Promise<string> {
     const formData = new FormData();
     let folder = "media";
 
     file.forEach((f) => {
       if (
-        f.type === "application/vnd.ms-powerpoint" ||
-        f.name.endsWith(".pptx") ||
-        f.name.endsWith(".ppt")
+        f.file.type === "application/vnd.ms-powerpoint" ||
+        f.file.name.endsWith(".pptx") ||
+        f.file.name.endsWith(".ppt")
       ) {
         folder = "templates";
       }
-      formData.append("file", f);
+      formData.append("file", f.file);
+      if (f.category !== null) {
+        formData.append("category", f.category);
+      }
     });
 
     const endpoint = `${config.STORAGE_ROUTER}${config.UPLOAD_ENDPOINT}`;

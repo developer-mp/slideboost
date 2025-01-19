@@ -10,30 +10,28 @@ import { FiTrash2 } from "react-icons/fi";
 import CustomDropdown from "../shared/CustomDropdown";
 import { templatesCategories } from "../../data/templatesCategories";
 
-const MediaFilesDisplay: React.FC<FileListDisplayProps> = ({
-  mediaFiles,
+const UploadFilesDisplay: React.FC<FileListDisplayProps> = ({
+  fileDetails,
   showSize = true,
-  showDate = true,
   showCategory = false,
   showCheckbox = false,
-  selectedMediaFiles = [],
+  selectedFiles = [],
   onSelect,
-  setMediaFiles,
+  setFileDetails,
   showRemoveButton = true,
   removeButtonPosition,
+  onCategoryChange,
 }) => {
   const handleFileSelection = (file: FileDetailProps) => {
-    const isSelected = selectedMediaFiles.some(
-      (f) => f.file_id === file.file_id
-    );
+    const isSelected = selectedFiles.some((f) => f.file_id === file.file_id);
     const newSelectedFiles = isSelected
-      ? selectedMediaFiles.filter((f) => f.file_id !== file.file_id)
-      : [...selectedMediaFiles, file];
+      ? selectedFiles.filter((f) => f.file_id !== file.file_id)
+      : [...selectedFiles, file];
 
     onSelect?.(newSelectedFiles);
   };
 
-  const [selectedCategory, setSelectedCategory] =
+  const [selectedTemplateCategory, setSelectedTemplateCategory] =
     useState<string>("Select Category");
 
   const options = [
@@ -44,16 +42,19 @@ const MediaFilesDisplay: React.FC<FileListDisplayProps> = ({
   ];
 
   const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
+    setSelectedTemplateCategory(category);
+    onCategoryChange?.(category);
   };
 
   const removeFile = (index: number) => {
-    setMediaFiles?.((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    console.log(index);
+    setFileDetails?.((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    console.log(fileDetails);
   };
 
   return (
     <div className="tw-mt-3">
-      {mediaFiles.map((file, index) => (
+      {fileDetails.map((file, index) => (
         <div
           key={index}
           className={`tw-flex tw-items-center ${
@@ -65,9 +66,7 @@ const MediaFilesDisplay: React.FC<FileListDisplayProps> = ({
               <input
                 type="checkbox"
                 className="tw-mr-2 tw-w-4 tw-h-4 tw-accent-[#8b3dff]"
-                checked={selectedMediaFiles.some(
-                  (f) => f.file_id === file.file_id
-                )}
+                checked={selectedFiles.some((f) => f.file_id === file.file_id)}
                 onChange={() => handleFileSelection(file)}
               />
             )}
@@ -79,18 +78,17 @@ const MediaFilesDisplay: React.FC<FileListDisplayProps> = ({
                 {showSize && (
                   <div className="tw-ml-3">{getFileSize(file.size)}</div>
                 )}
-                {showDate && <div className="tw-ml-3">{file.uploaded_at}</div>}
-                {showCategory && (
-                  <div className="tw-ml-3">
-                    <CustomDropdown
-                      options={options}
-                      selectedOption={selectedCategory}
-                      onOptionChange={handleCategoryChange}
-                    />
-                  </div>
-                )}
               </div>
             </div>
+            {showCategory && (
+              <div className="tw-ml-3">
+                <CustomDropdown
+                  options={options}
+                  selectedOption={selectedTemplateCategory}
+                  onOptionChange={handleCategoryChange}
+                />
+              </div>
+            )}
           </div>
           {showRemoveButton && (
             <div>
@@ -112,4 +110,4 @@ const MediaFilesDisplay: React.FC<FileListDisplayProps> = ({
   );
 };
 
-export default MediaFilesDisplay;
+export default UploadFilesDisplay;

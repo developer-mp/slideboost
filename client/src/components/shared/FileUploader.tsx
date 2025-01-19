@@ -1,15 +1,25 @@
-import { useState, useRef, forwardRef, useImperativeHandle } from "react";
+import {
+  useState,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+} from "react";
 import { Button, Card, Container } from "react-bootstrap";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import {
   FileUploaderProps,
   FileUploaderRef,
+  FileWithMetadata,
 } from "../../interfaces/interfaces";
-import MediaFilesDisplay from "../widgets/MediaFilesDisplay";
+import UploadFilesDisplay from "../widgets/UploadFilesDisplay";
 
 const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
-  ({ onUpload }, ref) => {
-    const [fileDetails, setFileDetails] = useState<File[]>([]);
+  ({ onUpload, showCategory }, ref) => {
+    const [fileDetails, setFileDetails] = useState<FileWithMetadata[]>([]);
+    const [templateCategory, setTemplateCategory] = useState<string | null>(
+      null
+    );
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     useImperativeHandle(ref, () => ({
@@ -40,9 +50,33 @@ const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
       }
     };
 
+    useEffect(() => {
+      if (templateCategory !== null) {
+        setFileDetails((prevDetails) =>
+          prevDetails.map((file) => ({
+            ...file,
+            category: templateCategory,
+          }))
+        );
+      }
+    }, [templateCategory]);
+
     const handleFiles = (files: FileList) => {
-      const newFiles = Array.from(files);
-      setFileDetails((prevDetails) => [...prevDetails, ...newFiles]);
+      const newFilesWithMetadata: FileWithMetadata[] = Array.from(files).map(
+        (file) => ({
+          file,
+          category: templateCategory,
+        })
+      );
+
+      setFileDetails((prevDetails) => [
+        ...prevDetails,
+        ...newFilesWithMetadata,
+      ]);
+    };
+
+    const handleCategoryChange = (category: string) => {
+      setTemplateCategory(category);
     };
 
     return (
@@ -71,13 +105,14 @@ const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
           </Card.Body>
         </Card>
         {fileDetails.length > 0 && (
-          <MediaFilesDisplay
-            mediaFiles={fileDetails.map((file) => ({
-              name: file.name,
-              size: file.size,
-              type: file.type,
+          <UploadFilesDisplay
+            fileDetails={fileDetails.map((file) => ({
+              name: file.file.name,
+              size: file.file.size,
+              type: file.file.type,
             }))}
-            showSize={true}
+            showCategory={showCategory}
+            onCategoryChange={handleCategoryChange}
           />
         )}
       </Container>

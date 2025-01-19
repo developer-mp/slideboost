@@ -7,7 +7,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   onOptionChange,
 }) => {
   return (
-    <Dropdown className="tw-mb-4 tw-w-40">
+    <Dropdown className="tw-w-40">
       <Dropdown.Toggle
         id="dropdown-basic"
         className="tw-w-full dropdown-toggle-menu"

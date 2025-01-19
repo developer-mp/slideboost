@@ -44,14 +44,29 @@ export interface FileDetailProps {
   name: string;
   type: string;
   size: number;
-  folder: string;
-  file_id: string;
-  file_name: string;
-  uploaded_at: string;
+  folder?: string;
+  file_id?: string;
+  file_name?: string;
+  uploaded_at?: string;
   path?: string;
   thumbnail?: string;
   title?: string;
   category?: string;
+}
+
+export interface FileWithMetadata {
+  file: File;
+  category: string | null;
+}
+
+export interface FileUploaderProps {
+  onUpload: (files: FileWithMetadata[]) => void;
+  showCategory: boolean;
+}
+
+export interface FileUploaderRef {
+  getFileDetails: () => FileWithMetadata[];
+  uploadFiles: () => void;
 }
 
 export interface FileTableProps {
@@ -64,15 +79,6 @@ export interface FileTableProps {
   removeFile: (id: string, name: string) => void;
   downloadFile?: (file: FileDetailProps) => void;
   selectedFolder: string;
-}
-
-export interface FileUploaderProps {
-  onUpload: (files: File[]) => void;
-}
-
-export interface FileUploaderRef {
-  getFileDetails: () => File[];
-  uploadFiles: () => void;
 }
 
 export interface TemplateProps {
@@ -132,13 +138,15 @@ export interface GoogleLoginModalProps {
 }
 
 export interface FileListDisplayProps {
-  mediaFiles: FileDetailProps[];
+  fileDetails: FileDetailProps[];
   showSize?: boolean;
   showDate?: boolean;
+  showCategory?: boolean;
+  onCategoryChange: (category: string) => void;
   showCheckbox?: boolean;
-  selectedMediaFiles?: FileDetailProps[];
+  selectedFiles?: FileDetailProps[];
   onSelect?: (selectedFiles: FileDetailProps[]) => void;
-  setMediaFiles?: React.Dispatch<React.SetStateAction<FileDetailProps[]>>;
+  setFileDetails?: React.Dispatch<React.SetStateAction<FileDetailProps[]>>;
   showRemoveButton?: boolean;
   removeButtonPosition?: "margin-left";
 }

@@ -8,10 +8,11 @@ import { templatesData } from "../../data/templatesData";
 import {
   PPTTemplateProps,
   FileUploaderRef,
-  TemplateProps,
+  // TemplateProps,
+  FileWithMetadata,
 } from "../../interfaces/interfaces";
 import { templatesCategories } from "../../data/templatesCategories";
-import TemplatesDisplay from "../widgets/TemplatesDisplay";
+// import TemplatesDisplay from "../widgets/TemplatesDisplay";
 import {
   showErrorToast,
   showWarningToast,
@@ -40,7 +41,7 @@ const TemplatesMenu: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
 
-  const handleUpload = async (file: File[]) => {
+  const handleUpload = async (file: FileWithMetadata[]) => {
     try {
       const resultAction = await dispatch(
         uploadFile({ file, userId })
@@ -56,10 +57,6 @@ const TemplatesMenu: React.FC = () => {
       );
     }
   };
-
-  const templates: TemplateProps[] = JSON.parse(
-    localStorage.getItem("templateDetails") || "[]"
-  );
 
   return (
     <Container className="tw-w-full tw-overflow-hidden">
@@ -114,7 +111,7 @@ const TemplatesMenu: React.FC = () => {
                   </div>
                 </Col>
               ))}
-            <TemplatesDisplay templates={templates} />
+            {/* <TemplatesDisplay templates={templates} /> */}
           </Row>
         </div>
       </div>
@@ -129,11 +126,23 @@ const TemplatesMenu: React.FC = () => {
             showWarningToast("Please select files to upload");
             return;
           }
+          const hasNullCategory = filesToUpload.some(
+            (file) => file.category === null
+          );
+
+          if (hasNullCategory) {
+            showWarningToast("Please select a category");
+            return;
+          }
           handleUpload(filesToUpload);
           setShowModal(false);
         }}
       >
-        <FileUploader ref={fileUploaderRef} onUpload={handleUpload} />
+        <FileUploader
+          ref={fileUploaderRef}
+          onUpload={handleUpload}
+          showCategory={true}
+        />
       </CustomModal>
     </Container>
   );

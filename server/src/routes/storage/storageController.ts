@@ -26,6 +26,7 @@ const storageController = {
       const fileName = req.file.originalname;
       const filePath = `${userId}/${folder}/${fileName}`;
       const fileType = req.file.mimetype;
+      const category = req.body.category;
 
       const response = await storageService.uploadFile(
         req.file.buffer,
@@ -62,13 +63,14 @@ const storageController = {
       }
 
       (await pool.query(
-        "INSERT INTO files(name, file_name, type, size, folder, file_id, file_url, png_url, uploaded_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
+        "INSERT INTO files(name, file_name, type, size, folder, template_category, file_id, file_url, png_url, uploaded_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
         [
           fileName,
           storageFileName,
           fileType,
           fileSize,
           folder,
+          category,
           fileId,
           fileUrl,
           pngUrl,
