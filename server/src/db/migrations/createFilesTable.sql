@@ -5,6 +5,7 @@ CREATE TABLE files (
   type VARCHAR(100) NOT NULL,
   size INT NOT NULL,
   folder VARCHAR(10) NOT NULL,
+  template_category VARCHAR(20) NULL,
   file_id VARCHAR(255) NOT NULL,
   file_url TEXT NOT NULL,
   png_url TEXT NULL,

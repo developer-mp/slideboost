@@ -92,10 +92,15 @@ export interface SideBarProps {
   onItemClick: (item: MenuItem) => void;
 }
 
+interface Option {
+  id: string;
+  label: string;
+}
+
 export interface CustomDropdownProps {
-  options: { id: string; label: string }[];
+  options: Option[];
   selectedOption: string;
-  onChange: (option: string) => void;
+  onOptionChange: (newOption: string) => void;
 }
 
 export interface CustomModalProps {
