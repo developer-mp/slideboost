@@ -137,18 +137,25 @@ export interface GoogleLoginModalProps {
   handleClose: () => void;
 }
 
+// export interface FileListDisplayProps {
+//   fileDetails: FileDetailProps[];
+//   showSize?: boolean;
+//   showDate?: boolean;
+//   showCategory?: boolean;
+//   onCategoryChange: (category: string) => void;
+//   showCheckbox?: boolean;
+//   selectedFiles?: FileDetailProps[];
+//   onSelect?: (selectedFiles: FileDetailProps[]) => void;
+//   setFileDetails?: React.Dispatch<React.SetStateAction<FileDetailProps[]>>;
+//   showRemoveButton?: boolean;
+//   removeButtonPosition?: "margin-left";
+// }
+
 export interface FileListDisplayProps {
-  fileDetails: FileDetailProps[];
-  showSize?: boolean;
-  showDate?: boolean;
+  files: FileWithMetadata[];
   showCategory?: boolean;
   onCategoryChange: (category: string) => void;
-  showCheckbox?: boolean;
-  selectedFiles?: FileDetailProps[];
-  onSelect?: (selectedFiles: FileDetailProps[]) => void;
-  setFileDetails?: React.Dispatch<React.SetStateAction<FileDetailProps[]>>;
-  showRemoveButton?: boolean;
-  removeButtonPosition?: "margin-left";
+  setFiles?: React.Dispatch<React.SetStateAction<FileWithMetadata[]>>;
 }
 
 export interface PrivateRouteProps {

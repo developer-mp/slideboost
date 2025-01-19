@@ -1,10 +1,4 @@
-import {
-  useState,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-  useEffect,
-} from "react";
+import { useState, useRef, forwardRef, useImperativeHandle } from "react";
 import { Button, Card, Container } from "react-bootstrap";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import {
@@ -50,17 +44,6 @@ const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
       }
     };
 
-    useEffect(() => {
-      if (templateCategory !== null) {
-        setFileDetails((prevDetails) =>
-          prevDetails.map((file) => ({
-            ...file,
-            category: templateCategory,
-          }))
-        );
-      }
-    }, [templateCategory]);
-
     const handleFiles = (files: FileList) => {
       const newFilesWithMetadata: FileWithMetadata[] = Array.from(files).map(
         (file) => ({
@@ -68,7 +51,6 @@ const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
           category: templateCategory,
         })
       );
-
       setFileDetails((prevDetails) => [
         ...prevDetails,
         ...newFilesWithMetadata,
@@ -77,6 +59,9 @@ const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
 
     const handleCategoryChange = (category: string) => {
       setTemplateCategory(category);
+      setFileDetails((prevDetails) =>
+        prevDetails.map((file) => ({ ...file, category }))
+      );
     };
 
     return (
@@ -106,11 +91,8 @@ const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
         </Card>
         {fileDetails.length > 0 && (
           <UploadFilesDisplay
-            fileDetails={fileDetails.map((file) => ({
-              name: file.file.name,
-              size: file.file.size,
-              type: file.file.type,
-            }))}
+            files={fileDetails}
+            setFiles={setFileDetails}
             showCategory={showCategory}
             onCategoryChange={handleCategoryChange}
           />
