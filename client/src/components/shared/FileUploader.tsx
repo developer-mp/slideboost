@@ -11,9 +11,6 @@ import UploadFilesDisplay from "../widgets/UploadFilesDisplay";
 const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
   ({ onUpload, showCategory }, ref) => {
     const [fileDetails, setFileDetails] = useState<FileWithMetadata[]>([]);
-    const [templateCategory, setTemplateCategory] = useState<string | null>(
-      null
-    );
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     useImperativeHandle(ref, () => ({
@@ -48,7 +45,7 @@ const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
       const newFilesWithMetadata: FileWithMetadata[] = Array.from(files).map(
         (file) => ({
           file,
-          category: templateCategory,
+          category: null,
         })
       );
       setFileDetails((prevDetails) => [
@@ -57,10 +54,11 @@ const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
       ]);
     };
 
-    const handleCategoryChange = (category: string) => {
-      setTemplateCategory(category);
+    const handleCategoryChange = (category: string, index: number) => {
       setFileDetails((prevDetails) =>
-        prevDetails.map((file) => ({ ...file, category }))
+        prevDetails.map((file, i) =>
+          i === index ? { ...file, category } : file
+        )
       );
     };
 

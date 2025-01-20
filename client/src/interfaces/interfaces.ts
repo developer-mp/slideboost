@@ -154,7 +154,7 @@ export interface GoogleLoginModalProps {
 export interface FileListDisplayProps {
   files: FileWithMetadata[];
   showCategory?: boolean;
-  onCategoryChange: (category: string) => void;
+  onCategoryChange: (category: string, index: number) => void;
   setFiles?: React.Dispatch<React.SetStateAction<FileWithMetadata[]>>;
 }
 

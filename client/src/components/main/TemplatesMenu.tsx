@@ -41,13 +41,16 @@ const TemplatesMenu: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
 
-  const handleUpload = async (file: FileWithMetadata[]) => {
+  const handleUpload = async (files: FileWithMetadata[]) => {
+    // console.log(files);
     try {
-      const resultAction = await dispatch(
-        uploadFile({ file, userId })
-      ).unwrap();
-      const successMessage = handleSuccessMessage(resultAction);
-      showSuccessToast(successMessage);
+      for (const { file, category } of files) {
+        const resultAction = await dispatch(
+          uploadFile({ file: [{ file, category }], userId })
+        ).unwrap();
+        const successMessage = handleSuccessMessage(resultAction);
+        showSuccessToast(successMessage);
+      }
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);

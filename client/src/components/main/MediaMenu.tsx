@@ -37,13 +37,15 @@ const MediaMenu: React.FC = () => {
     (state: RootState) => state.fileStorage.fileMetadata
   );
 
-  const handleUpload = async (file: FileWithMetadata[]) => {
+  const handleUpload = async (files: FileWithMetadata[]) => {
     try {
-      const resultAction = await dispatch(
-        uploadFile({ file, userId })
-      ).unwrap();
-      const successMessage = handleSuccessMessage(resultAction);
-      showSuccessToast(successMessage);
+      for (const { file, category } of files) {
+        const resultAction = await dispatch(
+          uploadFile({ file: [{ file, category }], userId })
+        ).unwrap();
+        const successMessage = handleSuccessMessage(resultAction);
+        showSuccessToast(successMessage);
+      }
       await dispatch(getFileMetadata({ userId })).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);

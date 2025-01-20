@@ -114,7 +114,7 @@
 
 // export default UploadFilesDisplay;
 
-import { useState } from "react";
+// import { useState } from "react";
 import { getFileIcon } from "../../utils/ppt/getFileIcon";
 import { truncateText } from "../../utils/common/truncateText";
 import { getFileSize } from "../../utils/ppt/getFileSize";
@@ -129,9 +129,6 @@ const UploadFilesDisplay: React.FC<FileListDisplayProps> = ({
   setFiles,
   onCategoryChange,
 }) => {
-  const [selectedTemplateCategory, setSelectedTemplateCategory] =
-    useState<string>("Select Category");
-
   const options = [
     ...templatesCategories.map((category) => ({
       id: category.id,
@@ -139,9 +136,8 @@ const UploadFilesDisplay: React.FC<FileListDisplayProps> = ({
     })),
   ];
 
-  const handleCategoryChange = (category: string) => {
-    setSelectedTemplateCategory(category);
-    onCategoryChange?.(category);
+  const handleCategoryChange = (category: string, index: number) => {
+    onCategoryChange?.(category, index);
   };
 
   const removeFile = (index: number) => {
@@ -166,8 +162,10 @@ const UploadFilesDisplay: React.FC<FileListDisplayProps> = ({
               <div className="tw-ml-3">
                 <CustomDropdown
                   options={options}
-                  selectedOption={selectedTemplateCategory}
-                  onOptionChange={handleCategoryChange}
+                  selectedOption={file.category || "Select Category"}
+                  onOptionChange={(category) =>
+                    handleCategoryChange(category, index)
+                  }
                 />
               </div>
             )}
