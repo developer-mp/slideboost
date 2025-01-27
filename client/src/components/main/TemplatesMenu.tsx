@@ -1,18 +1,10 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { Button, Col, Container, Dropdown, Row } from "react-bootstrap";
 import CustomModal from "../shared/CustomModal";
 import FileUploader from "../shared/FileUploader";
-// import { templatesData } from "../../data/templatesData";
-import {
-  // PPTTemplateProps,
-  FileUploaderRef,
-  // TemplateProps,
-  FileWithMetadata,
-} from "../../interfaces/interfaces";
-import { templatesCategories } from "../../data/templatesCategories";
-// import TemplatesDisplay from "../widgets/TemplatesDisplay";
+import { FileUploaderRef, FileWithMetadata } from "../../interfaces/interfaces";
 import {
   showErrorToast,
   showWarningToast,
@@ -26,6 +18,7 @@ import {
 import { replaceExtension } from "../../utils/storage/replaceExtension";
 import { config } from "../../../env.config";
 import { removeExtension } from "./../../utils/storage/removeExtension";
+import { getTemplateCategories } from "../../store/actions/dataAction";
 
 const TemplatesMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -33,16 +26,39 @@ const TemplatesMenu: React.FC = () => {
     useState<string>("All Categories");
   const fileUploaderRef = useRef<FileUploaderRef>(null);
 
-  const options = [
-    { id: "all", label: "All Categories" },
-    ...templatesCategories.map((category) => ({
-      id: category.id,
-      label: category.category,
-    })),
-  ];
-
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
+
+  const { templateCategories, isFetched } = useSelector(
+    (state: RootState) => state.dataStorage
+  );
+
+  const handleTemplateCategories = async () => {
+    try {
+      await dispatch(getTemplateCategories()).unwrap();
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while fetching the template categories: ",
+        error
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (!isFetched) {
+      handleTemplateCategories();
+    }
+  });
+
+  const options = [
+    { id: "all", label: "All Categories" },
+    ...templateCategories.map((category) => ({
+      id: category.id,
+      label: category.category_name,
+    })),
+  ];
 
   const fileMetadata = useSelector(
     (state: RootState) => state.fileStorage.fileMetadata

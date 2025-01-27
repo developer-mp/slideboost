@@ -203,3 +203,8 @@ export interface UpdateUserNameResponse {
   name: string;
   message: string;
 }
+
+export interface TemplateCategory {
+  id: string;
+  category_name: string;
+}

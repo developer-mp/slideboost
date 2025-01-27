@@ -23,7 +23,7 @@ interface GoogleAuthProps {
 
 const GoogleAuth: React.FC<GoogleAuthProps> = ({ onLoginStart }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { navigateToHome } = useNavigation();
+  const { navigateToWorkspace } = useNavigation();
 
   const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
     const { credential } = credentialResponse;
@@ -41,7 +41,7 @@ const GoogleAuth: React.FC<GoogleAuthProps> = ({ onLoginStart }) => {
       ).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
-      navigateToHome();
+      navigateToWorkspace();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);

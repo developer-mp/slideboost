@@ -3,10 +3,12 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "./slices/userSlice";
 import storageReducer from "./slices/storageSlice";
+import dataReducer from "./slices/dataSlice";
 
 const rootReducer = combineReducers({
   user: userReducer,
   fileStorage: storageReducer,
+  dataStorage: dataReducer,
 });
 
 const persistConfig = {

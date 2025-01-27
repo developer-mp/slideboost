@@ -23,7 +23,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { navigateToHome, navigateToCreateAccount, navigateToVerify } =
+  const { navigateToWorkspace, navigateToCreateAccount, navigateToVerify } =
     useNavigation();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -49,7 +49,7 @@ const Login: React.FC = () => {
       ).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
-      navigateToHome();
+      navigateToWorkspace();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
