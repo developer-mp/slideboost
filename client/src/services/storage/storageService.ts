@@ -35,6 +35,7 @@ const storageService = {
       throw error;
     }
   },
+
   async getFileMetadata(userId: string): Promise<[]> {
     const endpoint = `${config.STORAGE_ROUTER}${config.METADATA_ENDPOINT}`;
 
@@ -52,6 +53,7 @@ const storageService = {
       throw error;
     }
   },
+
   async deleteFile(fileId: string, fileName: string): Promise<string> {
     const endpoint = `${config.STORAGE_ROUTER}${config.DELETE_ENDPOINT}`;
 
@@ -63,6 +65,21 @@ const storageService = {
       return response.data;
     } catch (error) {
       handleError.axiosError(error, "deleting the file from the storage");
+      throw error;
+    }
+  },
+
+  async getFileUrl(fileName: string) {
+    const endpoint = `${config.STORAGE_ROUTER}${config.DOWNLOAD_ENDPOINT}`;
+
+    try {
+      const response = await apiService.postCall(endpoint, null, {
+        params: { fileName },
+      });
+
+      return response.data;
+    } catch (error) {
+      handleError.axiosError(error, "retrieving the file URL from the storage");
       throw error;
     }
   },

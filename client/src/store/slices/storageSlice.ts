@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getFileMetadata } from "../actions/storageAction";
+import { FileDetailProps } from "../../interfaces/interfaces";
 
 interface UserState {
-  fileMetadata: [];
+  fileMetadata: FileDetailProps[];
   status: "idle" | "loading" | "success" | "fail";
   error: string | null;
   message: string | null;

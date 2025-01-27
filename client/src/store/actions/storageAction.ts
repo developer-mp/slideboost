@@ -41,7 +41,7 @@ export const deleteFile = createAsyncThunk<
   { message: string },
   { fileId: string; fileName: string },
   { rejectValue: { message: string } }
->("storage/fileMetadata", async ({ fileId, fileName }, { rejectWithValue }) => {
+>("storage/deleteFile", async ({ fileId, fileName }, { rejectWithValue }) => {
   try {
     const response = await storageService.deleteFile(fileId, fileName);
     return response;
@@ -50,6 +50,23 @@ export const deleteFile = createAsyncThunk<
       error,
       rejectWithValue,
       "deleting the file from the storage"
+    );
+  }
+});
+
+export const getFileUrl = createAsyncThunk<
+  { message: string; downloadUrl: string },
+  { fileName: string },
+  { rejectValue: { message: string } }
+>("storage/getFileUrl", async ({ fileName }, { rejectWithValue }) => {
+  try {
+    const response = await storageService.getFileUrl(fileName);
+    return response;
+  } catch (error) {
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "retrieving the file URL from the storage"
     );
   }
 });

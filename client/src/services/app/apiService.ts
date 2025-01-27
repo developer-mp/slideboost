@@ -21,6 +21,7 @@ const apiService = {
       throw error;
     }
   },
+
   async getCall<T>(endpoint: string, data: T): Promise<AxiosResponse> {
     const url = `${config.API_BASE_URL}${config.API}${config.API_VERSION}${endpoint}`;
     const reqConfig: AxiosRequestConfig = {

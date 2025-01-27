@@ -20,6 +20,7 @@ const AiController = {
       res.status(200).json({ text: formattedText });
     } catch (error: unknown) {
       handleError.controllerError(res, error, "formatting the transcript");
+      return;
     }
   },
 };

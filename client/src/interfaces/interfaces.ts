@@ -42,15 +42,14 @@ export interface ContentCardProps {
 
 export interface FileDetailProps {
   name: string;
+  file_name?: string;
   type: string;
   size: number;
   folder?: string;
+  template_category: string;
   file_id?: string;
-  file_name?: string;
+  png_url: string;
   uploaded_at?: string;
-  path?: string;
-  thumbnail?: string;
-  title?: string;
   category?: string;
 }
 
@@ -77,8 +76,8 @@ export interface FileTableProps {
   }>;
   files: FileDetailProps[];
   removeFile: (id: string, name: string) => void;
-  downloadFile?: (file: FileDetailProps) => void;
-  selectedFolder: string;
+  // downloadFile?: (file: FileDetailProps) => void;
+  // selectedFolder: string;
 }
 
 export interface TemplateProps {

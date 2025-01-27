@@ -33,8 +33,28 @@ const MediaMenu: React.FC = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
+
+  // useEffect(() => {
+  //   if (userId) {
+  //     dispatch(getFileMetadata({ userId }))
+  //       .unwrap()
+  //       .catch((error) => {
+  //         const errorMessage = handleErrorMessage(error);
+  //         showErrorToast(errorMessage);
+  //         console.error(
+  //           "Error occurred while retrieving media files metadata: ",
+  //           error
+  //         );
+  //       });
+  //   }
+  // }, [dispatch, userId]);
+
   const fileMetadata = useSelector(
     (state: RootState) => state.fileStorage.fileMetadata
+  );
+
+  const mediafileMetadata = fileMetadata.filter(
+    (file) => file.folder === "media"
   );
 
   const handleUpload = async (files: FileWithMetadata[]) => {
@@ -116,10 +136,10 @@ const MediaMenu: React.FC = () => {
             <Col>
               <FileTable
                 columns={columns}
-                files={fileMetadata || []}
+                files={mediafileMetadata}
                 removeFile={removeFile}
-                downloadFile={() => {}}
-                selectedFolder="media"
+                // downloadFile={() => {}}
+                // selectedFolder="media"
               />
             </Col>
           </Row>

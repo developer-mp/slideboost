@@ -4,9 +4,9 @@ import { AppDispatch, RootState } from "../../store/store";
 import { Button, Col, Container, Dropdown, Row } from "react-bootstrap";
 import CustomModal from "../shared/CustomModal";
 import FileUploader from "../shared/FileUploader";
-import { templatesData } from "../../data/templatesData";
+// import { templatesData } from "../../data/templatesData";
 import {
-  PPTTemplateProps,
+  // PPTTemplateProps,
   FileUploaderRef,
   // TemplateProps,
   FileWithMetadata,
@@ -18,11 +18,14 @@ import {
   showWarningToast,
   showSuccessToast,
 } from "../../utils/common/handleToast";
-import { uploadFile } from "../../store/actions/storageAction";
+import { getFileMetadata, uploadFile } from "../../store/actions/storageAction";
 import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../../utils/common/handleActionMessage";
+import { replaceExtension } from "../../utils/storage/replaceExtension";
+import { config } from "../../../env.config";
+import { removeExtension } from "./../../utils/storage/removeExtension";
 
 const TemplatesMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -41,8 +44,14 @@ const TemplatesMenu: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
 
+  const fileMetadata = useSelector(
+    (state: RootState) => state.fileStorage.fileMetadata
+  );
+  const templatesfileMetadata = fileMetadata.filter(
+    (file) => file.folder === "templates"
+  );
+
   const handleUpload = async (files: FileWithMetadata[]) => {
-    // console.log(files);
     try {
       for (const { file, category } of files) {
         const resultAction = await dispatch(
@@ -51,6 +60,7 @@ const TemplatesMenu: React.FC = () => {
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
       }
+      await dispatch(getFileMetadata({ userId })).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
@@ -93,28 +103,33 @@ const TemplatesMenu: React.FC = () => {
         </Dropdown>
         <div className="tw-bg-white tw-rounded-lg tw-p-5">
           <Row>
-            {templatesData
+            {templatesfileMetadata
               .filter((template) =>
                 selectedCategory === "All Categories"
                   ? true
-                  : template.category === selectedCategory
+                  : template.template_category === selectedCategory
               )
-              .map((template: PPTTemplateProps) => (
-                <Col xs={12} md={4} key={template.id} className="tw-mb-6">
+              .map((template) => (
+                <Col xs={12} md={4} key={template.file_id} className="tw-mb-6">
                   <img
-                    src={template.imgPath}
-                    alt="Template"
+                    src={
+                      template.file_name
+                        ? `${config.DNS_ENDPOINT}/${replaceExtension(
+                            template.file_name
+                          )}`
+                        : ""
+                    }
+                    alt={template.name}
                     className="img-hover tw-rounded-lg tw-h-48 tw-object-cover"
                   />
                   <div className="tw-text-black tw-font-bold tw-mt-1">
-                    {template.title}
+                    {removeExtension(template.name)}
                   </div>
                   <div className="tw-text-gray-500 tw-mt-0">
-                    {template.category}
+                    {template.template_category}
                   </div>
                 </Col>
               ))}
-            {/* <TemplatesDisplay templates={templates} /> */}
           </Row>
         </div>
       </div>
@@ -152,3 +167,23 @@ const TemplatesMenu: React.FC = () => {
 };
 
 export default TemplatesMenu;
+
+// useEffect(() => {
+//   if (userId) {
+//     dispatch(getFileMetadata({ userId }))
+//       .unwrap()
+//       .then(() => {
+//         handleFileUrl(templatesfileMetadata);
+//       })
+//       .catch((error) => {
+//         const errorMessage = handleErrorMessage(error);
+//         showErrorToast(errorMessage);
+//         console.error(
+//           "Error occurred while retrieving templates metadata: ",
+//           error
+//         );
+//       });
+//   }
+// }, [dispatch, userId]);
+
+// await dispatch(getFileUrl({ fileName: file_name })).unwrap();

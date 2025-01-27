@@ -1,21 +1,22 @@
 import { FC, useState } from "react";
 import { IoIosArrowRoundDown, IoIosArrowRoundUp } from "react-icons/io";
 import { FileDetailProps, FileTableProps } from "../../interfaces/interfaces";
-import { FiTrash2, FiDownload } from "react-icons/fi";
+import {
+  FiTrash2,
+  // FiDownload
+} from "react-icons/fi";
 
 const FileTable: FC<FileTableProps> = ({
   columns,
   files,
   removeFile,
-  downloadFile,
-  selectedFolder,
+  // downloadFile,
+  // selectedFolder,
 }) => {
   const [sortConfig, setSortConfig] = useState<{
     key: string;
     direction: "ascending" | "descending";
   } | null>(null);
-
-  const filteredFiles = files.filter((file) => file.folder === selectedFolder);
 
   const requestSort = (key: string) => {
     let direction: "ascending" | "descending" = "ascending";
@@ -40,7 +41,7 @@ const FileTable: FC<FileTableProps> = ({
     return <IoIosArrowRoundDown className="tw-ml-1" />;
   };
 
-  const sortedFiles = [...filteredFiles].sort((a, b) => {
+  const sortedFiles = [...files].sort((a, b) => {
     if (!sortConfig) return 0;
     const { key, direction } = sortConfig;
 
@@ -79,16 +80,16 @@ const FileTable: FC<FileTableProps> = ({
               </td>
             ))}
             <td className="tw-p-2 tw-text-center tw-flex tw-justify-center tw-items-center">
-              {downloadFile && file.path && (
+              {/* {downloadFile && file.path && (
                 <button
                   onClick={() => downloadFile(file)}
                   className="tw-text-[#4CAF50] hover:tw-text-[#388E3C] tw-text-xl tw-flex tw-items-center tw-justify-center tw-h-full"
                 >
                   <FiDownload />
                 </button>
-              )}
+              )} */}
               <button
-                onClick={() => removeFile(file.file_id, file.file_name)}
+                onClick={() => removeFile(file.file_id!, file.file_name!)}
                 className="tw-text-[#FD4958] hover:tw-text-[#DB142B] tw-text-xl tw-flex tw-items-center tw-justify-center tw-ml-4"
               >
                 <FiTrash2 />

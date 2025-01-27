@@ -15,6 +15,7 @@ const transcriptService = {
       throw error;
     }
   },
+
   fetchTranscriptFromImage: async (filePath: string) => {
     const endpoint = `${config.TRANSCRIPT_ROUTER}${config.IMGTOTXT_ENDPOINT}`;
     try {
@@ -27,6 +28,7 @@ const transcriptService = {
       throw error;
     }
   },
+
   fetchTranscriptFromAudio: async (filePath: string) => {
     const endpoint = `${config.TRANSCRIPT_ROUTER}${config.AUDIOTOTXT_ENDPOINT}`;
     try {
@@ -39,6 +41,7 @@ const transcriptService = {
       throw error;
     }
   },
+
   fetchTranscriptFromVideo: async (filePath: string) => {
     const endpoint = `${config.TRANSCRIPT_ROUTER}${config.VIDEOTOTXT_ENDPOINT}`;
     try {
@@ -51,6 +54,7 @@ const transcriptService = {
       throw error;
     }
   },
+
   fetchTranscriptFromYoutube: async (filePath: string) => {
     const endpoint = `${config.TRANSCRIPT_ROUTER}${config.YOUTUBETOTXT_ENDPOINT}`;
     try {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { config } from "../../../env.config";
+import handleError from "../../utils/common/handleError";
 
 const aiService = {
   async callAi(prompt: string, transcript: string): Promise<string> {
@@ -24,7 +25,8 @@ const aiService = {
 
       return response.data.choices[0].text.trim();
     } catch (error) {
-      throw new Error("Error processing AI request");
+      handleError.serviceError(error, "processing AI request");
+      throw error;
     }
   },
 };
