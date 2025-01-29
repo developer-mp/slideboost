@@ -29,7 +29,7 @@ const TemplatesMenu: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
 
-  const { templateCategories, isFetched } = useSelector(
+  const { templateCategories, isFetchedCategories } = useSelector(
     (state: RootState) => state.dataStorage
   );
 
@@ -47,7 +47,7 @@ const TemplatesMenu: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!isFetched) {
+    if (!isFetchedCategories) {
       handleTemplateCategories();
     }
   });

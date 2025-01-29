@@ -3,12 +3,12 @@ import TranscriptController from "./transcriptController";
 
 const transcriptRouter = Express.Router();
 
-transcriptRouter.post("/texttotxt", TranscriptController.convertTextToText);
-transcriptRouter.post("/imgtotxt", TranscriptController.convertImageToText);
-transcriptRouter.post("/audiototxt", TranscriptController.convertAudioToText);
-transcriptRouter.post("/videototxt", TranscriptController.convertVideoToText);
+transcriptRouter.post("/text-to-txt", TranscriptController.convertTextToText);
+transcriptRouter.post("/img-to-txt", TranscriptController.convertImageToText);
+transcriptRouter.post("/audio-to-txt", TranscriptController.convertAudioToText);
+transcriptRouter.post("/video-to-txt", TranscriptController.convertVideoToText);
 transcriptRouter.post(
-  "/youtubetotxt",
+  "/youtube-to-txt",
   TranscriptController.convertYoutubeToText
 );
 

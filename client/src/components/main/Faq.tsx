@@ -1,7 +1,34 @@
 import { Accordion, Card, Col, Container, Row } from "react-bootstrap";
-import { faqData } from "../../data/faqData";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { handleErrorMessage } from "../../utils/common/handleActionMessage";
+import { showErrorToast } from "../../utils/common/handleToast";
+import { getFaq } from "../../store/actions/dataAction";
+import { useEffect } from "react";
 
 const Faq: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { faq, isFetchedFaq } = useSelector(
+    (state: RootState) => state.dataStorage
+  );
+
+  const handleFaq = async () => {
+    try {
+      await dispatch(getFaq()).unwrap();
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error("Error occurred while fetching the FAQ: ", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!isFetchedFaq) {
+      handleFaq();
+    }
+  });
+
   return (
     <Container
       className="tw-flex tw-items-center tw-justify-center tw-mt-16 lg:tw-mt-0"
@@ -13,7 +40,7 @@ const Faq: React.FC = () => {
             FREQUENTLY ASKED QUESTIONS
           </h3>
           <Accordion className="tw-text-gray-700 tw-mx-auto tw-mb-8 tw-max-w-3xl tw-text-justify">
-            {faqData.map((item, index) => (
+            {faq?.map((item, index) => (
               <Card key={index} className="tw-mb-3">
                 <Accordion.Item eventKey={String(index)}>
                   <Accordion.Header>{item.question}</Accordion.Header>

@@ -3,6 +3,9 @@ import DataController from "./dataController";
 
 const dataRouter = Express.Router();
 
-dataRouter.get("/templates", DataController.getTemplateCategories);
+dataRouter.get("/template-categories", DataController.getTemplateCategories);
+dataRouter.get("/deactivation-reasons", DataController.getDeactivationReasons);
+dataRouter.get("/faq", DataController.getFaq);
+dataRouter.get("/news", DataController.getNews);
 
 export default dataRouter;

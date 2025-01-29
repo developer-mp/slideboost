@@ -4,7 +4,7 @@ import handleError from "../../utils/common/handleError";
 
 const transcriptService = {
   fetchTranscriptFromText: async (filePath: string) => {
-    const endpoint = `${config.TRANSCRIPT_ROUTER}${config.TEXTTOTXT_ENDPOINT}`;
+    const endpoint = `${config.TRANSCRIPT_ROUTER}${config.TEXT_TO_TXT_ENDPOINT}`;
     try {
       const response = await apiService.postCall(endpoint, {
         filePath,
@@ -17,7 +17,7 @@ const transcriptService = {
   },
 
   fetchTranscriptFromImage: async (filePath: string) => {
-    const endpoint = `${config.TRANSCRIPT_ROUTER}${config.IMGTOTXT_ENDPOINT}`;
+    const endpoint = `${config.TRANSCRIPT_ROUTER}${config.IMG_TO_TXT_ENDPOINT}`;
     try {
       const response = await apiService.postCall(endpoint, {
         filePath,
@@ -30,7 +30,7 @@ const transcriptService = {
   },
 
   fetchTranscriptFromAudio: async (filePath: string) => {
-    const endpoint = `${config.TRANSCRIPT_ROUTER}${config.AUDIOTOTXT_ENDPOINT}`;
+    const endpoint = `${config.TRANSCRIPT_ROUTER}${config.AUDIO_TO_TXT_ENDPOINT}`;
     try {
       const response = await apiService.postCall(endpoint, {
         filePath,
@@ -43,7 +43,7 @@ const transcriptService = {
   },
 
   fetchTranscriptFromVideo: async (filePath: string) => {
-    const endpoint = `${config.TRANSCRIPT_ROUTER}${config.VIDEOTOTXT_ENDPOINT}`;
+    const endpoint = `${config.TRANSCRIPT_ROUTER}${config.VIDEO_TO_TXT_ENDPOINT}`;
     try {
       const response = await apiService.postCall(endpoint, {
         filePath,
@@ -56,7 +56,7 @@ const transcriptService = {
   },
 
   fetchTranscriptFromYoutube: async (filePath: string) => {
-    const endpoint = `${config.TRANSCRIPT_ROUTER}${config.YOUTUBETOTXT_ENDPOINT}`;
+    const endpoint = `${config.TRANSCRIPT_ROUTER}${config.YOUTUBE_TO_TXT_ENDPOINT}`;
     try {
       const response = await apiService.postCall(endpoint, {
         filePath,

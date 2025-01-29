@@ -208,3 +208,20 @@ export interface TemplateCategory {
   id: string;
   category_name: string;
 }
+
+export interface DeactivationReason {
+  id: string;
+  reason: string;
+}
+
+export interface Faq {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+export interface News {
+  id: string;
+  date: Date;
+  text: string;
+}

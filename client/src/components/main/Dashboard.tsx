@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import CustomModal from "../shared/CustomModal";
 import TemplatesDisplay from "../widgets/TemplatesDisplay";
-import MediaFilesDisplay from "../widgets/MediaFilesDisplay";
+// import MediaFilesDisplay from "../widgets/MediaFilesDisplay";
 import { FileDetailProps, TemplateProps } from "../../interfaces/interfaces";
 import transcriptService from "../../services/transcript/transcriptService";
 import aiService from "../../services/ai/aiService";
@@ -177,7 +177,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
               actionLabel="Select"
               onAction={confirmMediaSelection}
             >
-              <MediaFilesDisplay
+              {/* <MediaFilesDisplay
                 mediaFiles={mediaFiles}
                 showSize={false}
                 showDate={false}
@@ -185,16 +185,16 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
                 selectedMediaFiles={tempSelectedMediaFiles}
                 onSelect={setTempSelectedMediaFiles}
                 showRemoveButton={false}
-              />
+              /> */}
             </CustomModal>
-            <MediaFilesDisplay
+            {/* <MediaFilesDisplay
               mediaFiles={selectedMediaFiles}
               showSize={false}
               showDate={false}
               showCheckbox={false}
               setMediaFiles={setSelectedMediaFiles}
               removeButtonPosition="margin-left"
-            />
+            /> */}
           </div>
           <div className="tw-mb-2 tw-font-bold tw-text-gray-500">Template</div>
           <Button

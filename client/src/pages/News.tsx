@@ -1,8 +1,35 @@
+import { useDispatch, useSelector } from "react-redux";
 import NewsItem from "../components/elements/NewsItem";
 import { Col, Container, Row } from "react-bootstrap";
-import { newsData } from "../data/newsData";
+import { AppDispatch, RootState } from "../store/store";
+import { handleErrorMessage } from "../utils/common/handleActionMessage";
+import { showErrorToast } from "../utils/common/handleToast";
+import { getNews } from "../store/actions/dataAction";
+import { useEffect } from "react";
 
 const News: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { news, isFetchedNews } = useSelector(
+    (state: RootState) => state.dataStorage
+  );
+
+  const handleNews = async () => {
+    try {
+      await dispatch(getNews()).unwrap();
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error("Error occurred while fetching the news: ", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!isFetchedNews) {
+      handleNews();
+    }
+  });
+
   return (
     <Container className="tw-text-center tw-mt-12 tw-mb-12">
       <Row className="justify-content-center">
@@ -13,8 +40,12 @@ const News: React.FC = () => {
           <hr className="tw-mb-4 tw-text-gray-900 tw-mx-auto tw-max-w-3xl" />
           <div className="tw-text-gray-700 tw-mx-auto tw-max-w-3xl tw-text-justify">
             <p></p>
-            {newsData.map((news, index) => (
-              <NewsItem key={index} date={news.date} text={news.text} />
+            {news?.map((news, index) => (
+              <NewsItem
+                key={index}
+                date={new Date(news.date).toISOString().split("T")[0]}
+                text={news.text}
+              />
             ))}
           </div>
         </Col>

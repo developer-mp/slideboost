@@ -60,7 +60,7 @@ const userService = {
   },
 
   async loginUserWithGoogle(idToken: string): Promise<LoginResponse> {
-    const endpoint = `${config.USER_ROUTER}${config.GOOGLE_ENDPOINT}`;
+    const endpoint = `${config.USER_ROUTER}${config.LOGIN_GOOGLE_ENDPOINT}`;
     try {
       const response = await apiService.postCall(endpoint, {
         idToken,
@@ -84,7 +84,7 @@ const userService = {
   },
 
   async verifyToken(): Promise<TokenResponse> {
-    const endpoint = `${config.USER_ROUTER}${config.TOKEN_ENDPOINT}`;
+    const endpoint = `${config.USER_ROUTER}${config.VERIFY_TOKEN_ENDPOINT}`;
     try {
       const response = await apiService.getCall(endpoint, {});
       return response.data;

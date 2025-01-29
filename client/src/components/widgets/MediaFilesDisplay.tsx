@@ -8,7 +8,7 @@ import {
 } from "../../interfaces/interfaces";
 import { FiTrash2 } from "react-icons/fi";
 import CustomDropdown from "../shared/CustomDropdown";
-import { templatesCategories } from "../../data/templatesCategories";
+// import { templatesCategories } from "../../data/templatesCategories";
 
 const MediaFilesDisplay: React.FC<FileListDisplayProps> = ({
   mediaFiles,
@@ -36,12 +36,12 @@ const MediaFilesDisplay: React.FC<FileListDisplayProps> = ({
   const [selectedCategory, setSelectedCategory] =
     useState<string>("Select Category");
 
-  const options = [
-    ...templatesCategories.map((category) => ({
-      id: category.id,
-      label: category.category,
-    })),
-  ];
+  // const options = [
+  //   ...templatesCategories.map((category) => ({
+  //     id: category.id,
+  //     label: category.category,
+  //   })),
+  // ];
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);

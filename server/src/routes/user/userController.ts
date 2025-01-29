@@ -499,7 +499,7 @@ const userController = {
       }
 
       (await pool.query(
-        "INSERT INTO deactivation_reasons (reason) VALUES ($1)",
+        "INSERT INTO user_deactivation_reasons (reason) VALUES ($1)",
         [reason]
       )) as DbQueryResultProps;
       res.status(200).json({ message: "Account deactivated successfully" });

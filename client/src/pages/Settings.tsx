@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RootState } from "../store/store";
 import { useSelector } from "react-redux";
 import {
@@ -21,12 +21,12 @@ import { formatEmail } from "../utils/login/formatEmail";
 import { validateName } from "../utils/login/validateName";
 import { validatePassword } from "../utils/login/validatePassword";
 import PasswordInput from "../components/widgets/PasswordInput";
-import { deactivationReasons } from "../data/deactivationReasons";
 import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../utils/common/handleActionMessage";
+import { getDeactivationReasons } from "../store/actions/dataAction";
 
 const Settings: React.FC = () => {
   const userEmail = useSelector((state: RootState) => state.user.userEmail);
@@ -42,10 +42,33 @@ const Settings: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [selectedReason, setSelectedReason] = useState<string>("");
 
+  const { deactivationReasons, isFetchedReasons } = useSelector(
+    (state: RootState) => state.dataStorage
+  );
+
+  const handleDeactivationReasons = async () => {
+    try {
+      await dispatch(getDeactivationReasons()).unwrap();
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while fetching the deactivation reasons: ",
+        error
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (!isFetchedReasons) {
+      handleDeactivationReasons();
+    }
+  });
+
   const options = [
     ...deactivationReasons.map((reason) => ({
       id: reason.id,
-      label: reason.text,
+      label: reason.reason,
     })),
   ];
 
