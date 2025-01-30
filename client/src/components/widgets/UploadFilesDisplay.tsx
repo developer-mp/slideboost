@@ -18,7 +18,7 @@ const UploadFilesDisplay: React.FC<FileListDisplayProps> = ({
   onCategoryChange,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { templateCategories, isFetchedCategories } = useSelector(
+  const { templateCategories, isCategoriesFetched } = useSelector(
     (state: RootState) => state.dataStorage
   );
 
@@ -36,7 +36,7 @@ const UploadFilesDisplay: React.FC<FileListDisplayProps> = ({
   };
 
   useEffect(() => {
-    if (!isFetchedCategories) {
+    if (!isCategoriesFetched) {
       handleTemplateCategories();
     }
   });

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { Button, Col, Container, Row } from "react-bootstrap";
@@ -34,28 +34,29 @@ const MediaMenu: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
 
-  // useEffect(() => {
-  //   if (userId) {
-  //     dispatch(getFileMetadata({ userId }))
-  //       .unwrap()
-  //       .catch((error) => {
-  //         const errorMessage = handleErrorMessage(error);
-  //         showErrorToast(errorMessage);
-  //         console.error(
-  //           "Error occurred while retrieving media files metadata: ",
-  //           error
-  //         );
-  //       });
-  //   }
-  // }, [dispatch, userId]);
-
-  const fileMetadata = useSelector(
-    (state: RootState) => state.fileStorage.fileMetadata
+  const { fileMetadata, isFileMetadataFetched } = useSelector(
+    (state: RootState) => state.fileStorage
   );
 
   const mediafileMetadata = fileMetadata.filter(
     (file) => file.folder === "media"
   );
+
+  const handleFileMetadata = async () => {
+    try {
+      await dispatch(getFileMetadata({ userId })).unwrap();
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error("Error occurred while fetching the file metadata: ", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!isFileMetadataFetched) {
+      handleFileMetadata();
+    }
+  });
 
   const handleUpload = async (files: FileWithMetadata[]) => {
     try {

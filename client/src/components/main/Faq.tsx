@@ -9,7 +9,7 @@ import { useEffect } from "react";
 const Faq: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { faq, isFetchedFaq } = useSelector(
+  const { faq, isFaqFetched } = useSelector(
     (state: RootState) => state.dataStorage
   );
 
@@ -24,7 +24,7 @@ const Faq: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!isFetchedFaq) {
+    if (!isFaqFetched) {
       handleFaq();
     }
   });

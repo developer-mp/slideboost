@@ -7,7 +7,12 @@ const GoogleLoginModal: React.FC<GoogleLoginModalProps> = ({
   handleClose,
 }) => {
   return (
-    <Modal show={show} onHide={handleClose} centered>
+    <Modal
+      show={show}
+      onHide={handleClose}
+      centered
+      className="custom-modal-width"
+    >
       <Modal.Header closeButton>
         <Modal.Title>Login with Google</Modal.Title>
       </Modal.Header>

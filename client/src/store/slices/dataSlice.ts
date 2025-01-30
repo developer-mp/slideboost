@@ -17,10 +17,10 @@ interface DataState {
   deactivationReasons: DeactivationReason[];
   faq: Faq[];
   news: News[];
-  isFetchedCategories: boolean;
-  isFetchedReasons: boolean;
-  isFetchedFaq: boolean;
-  isFetchedNews: boolean;
+  isCategoriesFetched: boolean;
+  isReasonsFetched: boolean;
+  isFaqFetched: boolean;
+  isNewsFetched: boolean;
   status: "idle" | "loading" | "success" | "fail";
   error: string | null;
   message: string | null;
@@ -31,10 +31,10 @@ const initialState: DataState = {
   deactivationReasons: [],
   faq: [],
   news: [],
-  isFetchedCategories: false,
-  isFetchedReasons: false,
-  isFetchedFaq: false,
-  isFetchedNews: false,
+  isCategoriesFetched: false,
+  isReasonsFetched: false,
+  isFaqFetched: false,
+  isNewsFetched: false,
   status: "idle",
   message: null,
   error: null,
@@ -54,7 +54,7 @@ const dataSlice = createSlice({
       .addCase(getTemplateCategories.fulfilled, (state, action) => {
         state.status = "success";
         state.templateCategories = action.payload.data;
-        state.isFetchedCategories = true;
+        state.isCategoriesFetched = true;
         state.message = action.payload.message;
       })
       .addCase(getTemplateCategories.rejected, (state, action) => {
@@ -70,7 +70,7 @@ const dataSlice = createSlice({
       .addCase(getDeactivationReasons.fulfilled, (state, action) => {
         state.status = "success";
         state.deactivationReasons = action.payload.data;
-        state.isFetchedReasons = true;
+        state.isReasonsFetched = true;
         state.message = action.payload.message;
       })
       .addCase(getDeactivationReasons.rejected, (state, action) => {
@@ -86,7 +86,7 @@ const dataSlice = createSlice({
       .addCase(getFaq.fulfilled, (state, action) => {
         state.status = "success";
         state.faq = action.payload.data;
-        state.isFetchedFaq = true;
+        state.isFaqFetched = true;
         state.message = action.payload.message;
       })
       .addCase(getFaq.rejected, (state, action) => {
@@ -102,7 +102,7 @@ const dataSlice = createSlice({
       .addCase(getNews.fulfilled, (state, action) => {
         state.status = "success";
         state.news = action.payload.data;
-        state.isFetchedNews = true;
+        state.isNewsFetched = true;
         state.message = action.payload.message;
       })
       .addCase(getNews.rejected, (state, action) => {

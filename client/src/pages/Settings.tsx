@@ -42,7 +42,7 @@ const Settings: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [selectedReason, setSelectedReason] = useState<string>("");
 
-  const { deactivationReasons, isFetchedReasons } = useSelector(
+  const { deactivationReasons, isReasonsFetched } = useSelector(
     (state: RootState) => state.dataStorage
   );
 
@@ -60,7 +60,7 @@ const Settings: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!isFetchedReasons) {
+    if (!isReasonsFetched) {
       handleDeactivationReasons();
     }
   });

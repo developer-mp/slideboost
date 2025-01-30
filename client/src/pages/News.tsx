@@ -10,7 +10,7 @@ import { useEffect } from "react";
 const News: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { news, isFetchedNews } = useSelector(
+  const { news, isNewsFetched } = useSelector(
     (state: RootState) => state.dataStorage
   );
 
@@ -25,7 +25,7 @@ const News: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!isFetchedNews) {
+    if (!isNewsFetched) {
       handleNews();
     }
   });
