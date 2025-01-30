@@ -157,6 +157,13 @@ export interface FileListDisplayProps {
   setFiles?: React.Dispatch<React.SetStateAction<FileWithMetadata[]>>;
 }
 
+export interface MediaFileDisplayProps {
+  mediaFiles: FileDetailProps[];
+  selectedMediaFiles?: FileDetailProps[];
+  onSelect?: (selectedFiles: FileDetailProps[]) => void;
+  setMediaFiles?: (files: FileDetailProps[]) => void;
+}
+
 export interface PrivateRouteProps {
   element: JSX.Element;
   flag: string | string[];

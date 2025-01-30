@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import { Button, Container, Form } from "react-bootstrap";
 import CustomModal from "../shared/CustomModal";
 import TemplatesDisplay from "../widgets/TemplatesDisplay";
-// import MediaFilesDisplay from "../widgets/MediaFilesDisplay";
+import MediaFilesDisplay from "../widgets/MediaFilesDisplay";
 import { FileDetailProps, TemplateProps } from "../../interfaces/interfaces";
 import transcriptService from "../../services/transcript/transcriptService";
 import aiService from "../../services/ai/aiService";
@@ -35,9 +37,14 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [presentationTitle, setPresentationTitle] = useState<string>("");
 
-  const mediaFiles: FileDetailProps[] = JSON.parse(
-    localStorage.getItem("mediaDetails") || "[]"
+  const fileMetadata = useSelector(
+    (state: RootState) => state.fileStorage.fileMetadata
   );
+
+  const mediafileMetadata = fileMetadata.filter(
+    (file) => file.folder === "media"
+  );
+
   const templates: TemplateProps[] = JSON.parse(
     localStorage.getItem("templateDetails") || "[]"
   );
@@ -53,7 +60,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   };
 
   const processMediaFile = async (file: FileDetailProps) => {
-    const filePath = file.path;
+    const filePath = "";
 
     try {
       let transcript = [];
@@ -121,7 +128,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
 
       const transcript = await aiService.processTranscript(allExtractedText);
       const filePath = "../../upload/beehive.pptx";
-      const ppt = await pptService.processPpt(filePath, transcript.text);
+      const ppt = await pptService.processPpt(filePath, transcript);
 
       localStorage.setItem("ppt", JSON.stringify(ppt));
       setSelectedItem("projects");
@@ -133,6 +140,8 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
       setLoading(false);
     }
   };
+
+  console.log(selectedMediaFiles);
 
   return (
     <Container className="tw-w-full tw-overflow-hidden">
@@ -177,24 +186,13 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
               actionLabel="Select"
               onAction={confirmMediaSelection}
             >
-              {/* <MediaFilesDisplay
-                mediaFiles={mediaFiles}
-                showSize={false}
-                showDate={false}
-                showCheckbox={true}
+              <MediaFilesDisplay
+                mediaFiles={mediafileMetadata}
                 selectedMediaFiles={tempSelectedMediaFiles}
                 onSelect={setTempSelectedMediaFiles}
-                showRemoveButton={false}
-              /> */}
+                setMediaFiles={setSelectedMediaFiles}
+              />
             </CustomModal>
-            {/* <MediaFilesDisplay
-              mediaFiles={selectedMediaFiles}
-              showSize={false}
-              showDate={false}
-              showCheckbox={false}
-              setMediaFiles={setSelectedMediaFiles}
-              removeButtonPosition="margin-left"
-            /> */}
           </div>
           <div className="tw-mb-2 tw-font-bold tw-text-gray-500">Template</div>
           <Button
