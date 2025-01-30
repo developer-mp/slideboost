@@ -81,10 +81,12 @@ export interface FileTableProps {
 }
 
 export interface TemplateProps {
-  id: string;
-  thumbnail?: string;
+  file_id: string;
   title?: string;
+  file_name: string;
+  name: string;
   category?: string;
+  template_category: string;
 }
 
 export interface TemplatesDisplayProps {

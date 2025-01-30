@@ -5,7 +5,7 @@ import { Button, Container, Form } from "react-bootstrap";
 import CustomModal from "../shared/CustomModal";
 import TemplatesDisplay from "../widgets/TemplatesDisplay";
 import MediaFilesDisplay from "../widgets/MediaFilesDisplay";
-import { FileDetailProps, TemplateProps } from "../../interfaces/interfaces";
+import { FileDetailProps } from "../../interfaces/interfaces";
 import transcriptService from "../../services/transcript/transcriptService";
 import aiService from "../../services/ai/aiService";
 import pptService from "../../services/ppt/pptService";
@@ -31,9 +31,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
 
   const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
   const [selectedTemplate, setSelectedTemplate] =
-    useState<TemplateProps | null>(null);
-  const [tempSelectedTemplate, setTempSelectedTemplate] =
-    useState<TemplateProps | null>(null);
+    useState<FileDetailProps | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [presentationTitle, setPresentationTitle] = useState<string>("");
 
@@ -45,9 +43,11 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     (file) => file.folder === "media"
   );
 
-  const templates: TemplateProps[] = JSON.parse(
-    localStorage.getItem("templateDetails") || "[]"
+  const templatesfileMetadata = fileMetadata.filter(
+    (file) => file.folder === "templates"
   );
+
+  console.log(selectedTemplate);
 
   const confirmMediaSelection = () => {
     setSelectedMediaFiles(tempSelectedMediaFiles);
@@ -55,7 +55,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   };
 
   const confirmTemplateSelection = () => {
-    setSelectedTemplate(tempSelectedTemplate);
+    setSelectedTemplate(selectedTemplate);
     setShowTemplateModal(false);
   };
 
@@ -141,8 +141,6 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     }
   };
 
-  console.log(selectedMediaFiles);
-
   return (
     <Container className="tw-w-full tw-overflow-hidden">
       <div className="tw-mx-6 tw-my-6">
@@ -193,12 +191,21 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
                 setMediaFiles={setSelectedMediaFiles}
               />
             </CustomModal>
+            {selectedMediaFiles && selectedMediaFiles.length > 0 && (
+              <div className="tw-mt-3">
+                {selectedMediaFiles.map((file, index) => (
+                  <div key={index} className="tw-mb-2">
+                    {file.name}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div className="tw-mb-2 tw-font-bold tw-text-gray-500">Template</div>
           <Button
             className="button button-tertiary"
             onClick={() => {
-              setTempSelectedTemplate(selectedTemplate);
+              setSelectedTemplate(selectedTemplate);
               setShowTemplateModal(true);
             }}
           >
@@ -212,18 +219,13 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
             onAction={confirmTemplateSelection}
           >
             <TemplatesDisplay
-              templates={templates}
-              selectedTemplate={tempSelectedTemplate}
-              onSelect={setTempSelectedTemplate}
+              templates={templatesfileMetadata}
+              selectedTemplate={selectedTemplate}
+              onSelect={setSelectedTemplate}
             />
           </CustomModal>
           {selectedTemplate && (
-            <div className="tw-mt-3">
-              <TemplatesDisplay
-                templates={[selectedTemplate]}
-                showTemplateDetails={false}
-              />
-            </div>
+            <div className="tw-mt-3">{selectedTemplate.name}</div>
           )}
           <div className="tw-mt-5">
             <Button
