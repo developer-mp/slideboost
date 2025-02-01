@@ -181,7 +181,7 @@ const Register: React.FC = () => {
               checked={checked}
               onChange={handleCheckboxChange}
               required
-              className="tw-text-xs"
+              className="custom-checkbox tw-text-xs"
             />
             <Button
               type="submit"

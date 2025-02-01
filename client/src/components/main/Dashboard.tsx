@@ -5,7 +5,7 @@ import { Button, Container, Form } from "react-bootstrap";
 import CustomModal from "../shared/CustomModal";
 import TemplatesDisplay from "../widgets/TemplatesDisplay";
 import MediaFilesDisplay from "../widgets/MediaFilesDisplay";
-import { FileDetailProps } from "../../interfaces/interfaces";
+import { DashboardProps, FileDetailProps } from "../../interfaces/interfaces";
 import transcriptService from "../../services/transcript/transcriptService";
 import aiService from "../../services/ai/aiService";
 import pptService from "../../services/ppt/pptService";
@@ -13,19 +13,11 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "../../utils/common/handleToast";
-
-interface DashboardProps {
-  setSelectedItem: (
-    item: "dashboard" | "media" | "projects" | "templates"
-  ) => void;
-}
+import { getFileIcon } from "../../utils/ppt/getFileIcon";
 
 const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const [showMediaModal, setShowMediaModal] = useState<boolean>(false);
   const [selectedMediaFiles, setSelectedMediaFiles] = useState<
-    FileDetailProps[]
-  >([]);
-  const [tempSelectedMediaFiles, setTempSelectedMediaFiles] = useState<
     FileDetailProps[]
   >([]);
 
@@ -50,7 +42,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   console.log(selectedTemplate);
 
   const confirmMediaSelection = () => {
-    setSelectedMediaFiles(tempSelectedMediaFiles);
+    setSelectedMediaFiles(selectedMediaFiles);
     setShowMediaModal(false);
   };
 
@@ -141,6 +133,8 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     }
   };
 
+  console.log(selectedMediaFiles);
+
   return (
     <Container className="tw-w-full tw-overflow-hidden">
       <div className="tw-mx-6 tw-my-6">
@@ -171,7 +165,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
             <Button
               className="button button-tertiary"
               onClick={() => {
-                setTempSelectedMediaFiles([...selectedMediaFiles]);
+                setSelectedMediaFiles([...selectedMediaFiles]);
                 setShowMediaModal(true);
               }}
             >
@@ -186,16 +180,19 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
             >
               <MediaFilesDisplay
                 mediaFiles={mediafileMetadata}
-                selectedMediaFiles={tempSelectedMediaFiles}
-                onSelect={setTempSelectedMediaFiles}
+                selectedMediaFiles={selectedMediaFiles}
+                onSelect={setSelectedMediaFiles}
                 setMediaFiles={setSelectedMediaFiles}
               />
             </CustomModal>
             {selectedMediaFiles && selectedMediaFiles.length > 0 && (
               <div className="tw-mt-3">
                 {selectedMediaFiles.map((file, index) => (
-                  <div key={index} className="tw-mb-2">
-                    {file.name}
+                  <div key={index} className="tw-flex tw-items-center tw-mb-2">
+                    {getFileIcon(file.type)}
+                    <div className="tw-font-bold tw-text-gray-500 tw-ml-2">
+                      {file.name}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -225,7 +222,12 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
             />
           </CustomModal>
           {selectedTemplate && (
-            <div className="tw-mt-3">{selectedTemplate.name}</div>
+            <div className="tw-flex tw-items-center tw-mt-3">
+              {getFileIcon(selectedTemplate.type)}
+              <div className="tw-font-bold tw-text-gray-500 tw-ml-2">
+                {selectedTemplate.name}
+              </div>
+            </div>
           )}
           <div className="tw-mt-5">
             <Button

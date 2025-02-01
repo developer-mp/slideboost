@@ -16,10 +16,7 @@ import {
 } from "../../utils/common/handleToast";
 import { useNavigation } from "../../utils/login/useNavigation";
 import { config } from "../../../env.config";
-
-interface GoogleAuthProps {
-  onLoginStart: () => void;
-}
+import { GoogleAuthProps } from "../../interfaces/interfaces";
 
 const GoogleAuth: React.FC<GoogleAuthProps> = ({ onLoginStart }) => {
   const dispatch = useDispatch<AppDispatch>();

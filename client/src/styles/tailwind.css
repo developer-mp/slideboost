@@ -265,3 +265,13 @@
   width: 100%;
   margin: 0 auto;
 }
+
+.custom-checkbox .form-check-input:checked {
+  background-color: #5b4bad;
+  border-color: #5b4bad;
+}
+
+.custom-checkbox .form-check-input {
+  background-color: #fff;
+  border-color: #5b4bad;
+}

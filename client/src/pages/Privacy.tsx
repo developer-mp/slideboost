@@ -31,6 +31,17 @@ const Privacy: React.FC = () => {
                 marketing, or events
               </li>
             </ul>
+            <p className="tw-mb-4">
+              <strong>
+                While we take the privacy of your personal data seriously, we
+                are not responsible for the content or privacy practices of any
+                third-party websites that may be linked to or from our website.
+                Additionally, we are not responsible for any damage, loss,
+                theft, or misuse of data that may occur, including but not
+                limited to incidents arising from malicious activities or any
+                unauthorized access.
+              </strong>
+            </p>
             <p className="tw-mb-12">
               <strong>
                 By using SlideBoost Services, you are consenting to the

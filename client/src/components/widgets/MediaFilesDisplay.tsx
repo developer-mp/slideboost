@@ -31,7 +31,7 @@ const MediaFilesDisplay: React.FC<MediaFileDisplayProps> = ({
           <div className="tw-flex tw-items-center">
             <input
               type="checkbox"
-              className="tw-mr-2 tw-w-4 tw-h-4 tw-accent-[#8b3dff]"
+              className="tw-mr-2 tw-w-4 tw-h-4 tw-accent-[#5b4bad]"
               checked={selectedMediaFiles.some(
                 (f) => f.file_id === file.file_id
               )}

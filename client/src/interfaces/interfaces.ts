@@ -5,6 +5,7 @@ export interface FormDataProps {
   email: string;
   message: string;
 }
+
 export interface NewsItemProps {
   date: string;
   text: string;
@@ -50,7 +51,6 @@ export interface FileDetailProps {
   file_id?: string;
   png_url: string;
   uploaded_at?: string;
-  category?: string;
 }
 
 export interface FileWithMetadata {
@@ -77,7 +77,6 @@ export interface FileTableProps {
   files: FileDetailProps[];
   removeFile: (id: string, name: string) => void;
   // downloadFile?: (file: FileDetailProps) => void;
-  // selectedFolder: string;
 }
 
 export interface TemplateProps {
@@ -137,20 +136,6 @@ export interface GoogleLoginModalProps {
   show: boolean;
   handleClose: () => void;
 }
-
-// export interface FileListDisplayProps {
-//   fileDetails: FileDetailProps[];
-//   showSize?: boolean;
-//   showDate?: boolean;
-//   showCategory?: boolean;
-//   onCategoryChange: (category: string) => void;
-//   showCheckbox?: boolean;
-//   selectedFiles?: FileDetailProps[];
-//   onSelect?: (selectedFiles: FileDetailProps[]) => void;
-//   setFileDetails?: React.Dispatch<React.SetStateAction<FileDetailProps[]>>;
-//   showRemoveButton?: boolean;
-//   removeButtonPosition?: "margin-left";
-// }
 
 export interface FileListDisplayProps {
   files: FileWithMetadata[];
@@ -233,4 +218,12 @@ export interface News {
   id: string;
   date: Date;
   text: string;
+}
+
+export interface DashboardProps {
+  setSelectedItem: (item: MenuItem) => void;
+}
+
+export interface GoogleAuthProps {
+  onLoginStart: () => void;
 }

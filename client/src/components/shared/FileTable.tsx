@@ -11,7 +11,6 @@ const FileTable: FC<FileTableProps> = ({
   files,
   removeFile,
   // downloadFile,
-  // selectedFolder,
 }) => {
   const [sortConfig, setSortConfig] = useState<{
     key: string;
