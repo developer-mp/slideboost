@@ -183,23 +183,3 @@ const TemplatesMenu: React.FC = () => {
 };
 
 export default TemplatesMenu;
-
-// useEffect(() => {
-//   if (userId) {
-//     dispatch(getFileMetadata({ userId }))
-//       .unwrap()
-//       .then(() => {
-//         handleFileUrl(templatesfileMetadata);
-//       })
-//       .catch((error) => {
-//         const errorMessage = handleErrorMessage(error);
-//         showErrorToast(errorMessage);
-//         console.error(
-//           "Error occurred while retrieving templates metadata: ",
-//           error
-//         );
-//       });
-//   }
-// }, [dispatch, userId]);
-
-// await dispatch(getFileUrl({ fileName: file_name })).unwrap();

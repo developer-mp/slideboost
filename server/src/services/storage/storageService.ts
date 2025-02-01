@@ -1,3 +1,4 @@
+import axios from "axios";
 import { config } from "../../../env.config";
 import {
   AuthorizeResponse,
@@ -7,6 +8,11 @@ import {
 import { b2 } from "../../storage/config/storage";
 import handleError from "../../utils/common/handleError";
 import apiService from "../api/apiService";
+
+type FileDownloadResponse = {
+  fileData: Blob; // Or an array buffer, depending on your response type
+  fileName: string;
+};
 
 const storageService = {
   async authorizeStorage(): Promise<AuthorizeResponse | undefined> {
@@ -79,6 +85,30 @@ const storageService = {
     }
   },
 
+  async downloadFile(fileId: string): Promise<string> {
+    const endpoint = `${config.STORAGE_API_URL}${config.STORAGE_DOWNLOAD_FILE_BY_ID}`;
+    try {
+      const authData = await this.authorizeStorage();
+      if (!authData) return "";
+
+      const headers = {
+        Authorization: authData.authorizationToken,
+      };
+
+      const data = { fileId };
+      const response = await apiService.getCall<string>(
+        endpoint,
+        data,
+        headers
+        // "text"
+      );
+      return response;
+    } catch (error) {
+      handleError.serviceError(error, "downloading the file from the storage");
+      return "";
+    }
+  },
+
   async deleteFile(fileId: string, fileName: string): Promise<void> {
     const endpoint = `${config.STORAGE_API_URL}${config.STORAGE_DELETE_URL}`;
     try {
@@ -100,54 +130,3 @@ const storageService = {
 };
 
 export default storageService;
-
-// async generateDownloadUrl(
-//   bucketId: string,
-//   fileNamePrefix: string,
-//   validDurationInSeconds: number
-// ): Promise<string> {
-//   const endpoint = `${config.STORAGE_API_URL}${config.STORAGE_DOWNLOAD_AUTH_TOKEN}`;
-
-//   const authData = await this.authorizeStorage();
-
-//   const data = { bucketId, fileNamePrefix, validDurationInSeconds };
-//   const headers = {
-//     Authorization: authData.authorizationToken,
-//   };
-
-//   try {
-//     const response = await apiService.postCall<DownloadAuthorizationResponse>(
-//       endpoint,
-//       data,
-//       headers
-//     );
-//     return response.authorizationToken;
-//   } catch (error) {
-//     handleError.axiosError(error, "generating the download auth token");
-//     throw error;
-//   }
-// },
-
-// async downloadFileById(fileId: string): Promise<void> {
-//   const endpoint = `${config.STORAGE_API_URL}/b2api/v3/b2_download_file_by_id`;
-
-//   const authData = await this.authorizeStorage();
-
-//   const headers = {
-//     Authorization: authData.authorizationToken,
-//   };
-
-//   const params = { fileId };
-
-//   try {
-//     const response = await axios.get(endpoint, {
-//       headers,
-//       params,
-//       responseType: "arraybuffer",
-//     });
-//     return response.data;
-//   } catch (error) {
-//     handleError.axiosError(error, "getting by id");
-//     throw error;
-//   }
-// },

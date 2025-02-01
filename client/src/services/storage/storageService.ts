@@ -54,6 +54,21 @@ const storageService = {
     }
   },
 
+  async downloadFile(fileId: string): Promise<string> {
+    const endpoint = `${config.STORAGE_ROUTER}${config.DOWNLOAD_ENDPOINT}`;
+
+    try {
+      const response = await apiService.getCall(endpoint, {
+        fileId,
+      });
+
+      return response.data;
+    } catch (error) {
+      handleError.axiosError(error, "downloading the file from the storage");
+      throw error;
+    }
+  },
+
   async deleteFile(fileId: string, fileName: string): Promise<string> {
     const endpoint = `${config.STORAGE_ROUTER}${config.DELETE_ENDPOINT}`;
 
@@ -65,21 +80,6 @@ const storageService = {
       return response.data;
     } catch (error) {
       handleError.axiosError(error, "deleting the file from the storage");
-      throw error;
-    }
-  },
-
-  async getFileUrl(fileName: string) {
-    const endpoint = `${config.STORAGE_ROUTER}${config.DOWNLOAD_ENDPOINT}`;
-
-    try {
-      const response = await apiService.postCall(endpoint, null, {
-        params: { fileName },
-      });
-
-      return response.data;
-    } catch (error) {
-      handleError.axiosError(error, "retrieving the file URL from the storage");
       throw error;
     }
   },

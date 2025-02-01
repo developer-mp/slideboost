@@ -30,8 +30,8 @@ const GOOGLE_CLIENT_ID = getEnvVar("GOOGLE_CLIENT_ID");
 const AI_API_URL = getEnvVar("AI_API_URL");
 const AI_API_KEY = getEnvVar("AI_API_KEY");
 const AI_MODEL = getEnvVar("AI_MODEL");
-const AI_MAX_TOKENS = getEnvVar("AI_MAX_TOKENS");
-const AI_TEMPERATURE = getEnvVar("AI_TEMPERATURE");
+const AI_MAX_TOKENS = parseInt(getEnvVar("AI_MAX_TOKENS"), 10);
+const AI_TEMPERATURE = parseInt(getEnvVar("AI_TEMPERATURE"), 10);
 const PROMPT_STRING = getEnvVar("PROMPT_STRING");
 const STORAGE_API_URL = getEnvVar("STORAGE_API_URL");
 const STORAGE_KEY_ID = getEnvVar("STORAGE_KEY_ID");
@@ -43,6 +43,7 @@ const STORAGE_AUTH_TOKEN_DURATION = parseInt(
   getEnvVar("STORAGE_AUTH_TOKEN_DURATION"),
   10
 );
+const STORAGE_DOWNLOAD_FILE_BY_ID = getEnvVar("STORAGE_DOWNLOAD_FILE_BY_ID");
 const STORAGE_DELETE_URL = getEnvVar("STORAGE_DELETE_URL");
 
 export const config = {
@@ -77,5 +78,6 @@ export const config = {
   STORAGE_BUCKET_ID,
   STORAGE_ENDPOINT,
   STORAGE_AUTH_TOKEN_DURATION,
+  STORAGE_DOWNLOAD_FILE_BY_ID,
   STORAGE_DELETE_URL,
 };

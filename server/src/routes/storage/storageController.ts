@@ -6,7 +6,7 @@ import { pool } from "../../db/config/pool";
 import { DbQueryResultProps } from "../../interfaces/interfaces";
 import { convertPptToPng } from "../../utils/conversion/convertPptToPng";
 import { changeFileExtension } from "../../utils/conversion/changeFileExtension";
-// import axios from "axios";
+import aiService from "./../../services/ai/aiService";
 
 const storageController = {
   uploadFileToStorage: async (req: Request, res: Response): Promise<void> => {
@@ -124,6 +124,41 @@ const storageController = {
     }
   },
 
+  downloadFileFromStorage: async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    const fileId = req.query.fileId as string;
+
+    if (!fileId) {
+      res.status(400).json({ message: "File ID is required" });
+      return;
+    }
+
+    try {
+      const fileContent = await storageService.downloadFile(fileId);
+
+      const transcript = await aiService.callAi(
+        config.PROMPT_STRING,
+        fileContent
+      );
+
+      console.log(transcript);
+
+      res
+        .status(200)
+        .json({ data: fileContent, message: "File downloaded successfully" });
+      return;
+    } catch (error: unknown) {
+      handleError.controllerError(
+        res,
+        error,
+        "downloading the file from the storage"
+      );
+      return;
+    }
+  },
+
   deleteFileFromStorage: async (req: Request, res: Response): Promise<void> => {
     const fileId = req.query.fileId as string;
     const fileName = req.query.fileName as string;
@@ -159,66 +194,3 @@ const storageController = {
 };
 
 export default storageController;
-
-// getDownloadUrl: async (req: Request, res: Response): Promise<void> => {
-//   const fileName = req.query.fileName as string;
-
-//   if (!fileName) {
-//     res.status(400).json({ message: "File name is required" });
-//     return;
-//   }
-
-//   const bucketId = config.STORAGE_BUCKET_ID;
-//   const templatesPrefix = config.STORAGE_TEMPLATES_PREFIX;
-//   const validDurationInSeconds = config.STORAGE_AUTH_TOKEN_DURATION;
-
-//   try {
-//     const authToken = await storageService.generateDownloadUrl(
-//       bucketId,
-//       templatesPrefix,
-//       validDurationInSeconds
-//     );
-
-//     const bucketName = config.STORAGE_BUCKET_NAME;
-
-//     const downloadUrl = `https://f005.backblazeb2.com/file/${bucketName}/${fileName}?Authorization=${authToken}`;
-
-//     res.status(200).json({
-//       message: "Download URL generated successfully",
-//       downloadUrl,
-//     });
-//     return;
-//   } catch (error: unknown) {
-//     handleError.controllerError(
-//       res,
-//       error,
-//       "generating the download URL for the file"
-//     );
-//     return;
-//   }
-// },
-
-// getDownloadUrl: async (req: Request, res: Response): Promise<void> => {
-//   const fileName = req.query.fileName as string;
-
-//   if (!fileName) {
-//     res.status(400).json({ message: "File name is required" });
-//     return;
-//   }
-
-//   const fileId =
-//     "4_z478dd0c147fd18b0904f0b17_f1176fd7ada145fa8_d20250121_m011102_c005_v0521006_t0031_u01737421862930";
-
-//   try {
-//     const response = await storageService.downloadFileById(fileId);
-//     res.status(200).json({ data: response, message: " successfully" });
-//     return;
-//   } catch (error: unknown) {
-//     handleError.controllerError(
-//       res,
-//       error,
-//       "generating the download URL for the file"
-//     );
-//     return;
-//   }
-// },

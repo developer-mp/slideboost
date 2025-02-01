@@ -1,29 +1,30 @@
-import axios from "axios";
 import { config } from "../../../env.config";
 import handleError from "../../utils/common/handleError";
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: config.AI_API_KEY,
+});
 
 const aiService = {
   async callAi(prompt: string, transcript: string): Promise<string> {
     const formattedPrompt = prompt.replace("[transcript]", transcript);
 
     try {
-      const response = await axios.post(
-        config.AI_API_URL,
-        {
-          model: config.AI_MODEL,
-          prompt: formattedPrompt,
-          max_tokens: config.AI_MAX_TOKENS,
-          temperature: config.AI_TEMPERATURE,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${config.AI_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const completion = await openai.chat.completions.create({
+        model: config.AI_MODEL,
+        messages: [{ role: "user", content: formattedPrompt }],
+        temperature: config.AI_TEMPERATURE,
+        max_tokens: config.AI_MAX_TOKENS,
+      });
 
-      return response.data.choices[0].text.trim();
+      const response = completion.choices[0].message.content;
+
+      if (!response) {
+        throw new Error("Received empty response from AI");
+      }
+
+      return response;
     } catch (error) {
       handleError.serviceError(error, "processing AI request");
       throw error;

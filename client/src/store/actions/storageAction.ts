@@ -37,6 +37,23 @@ export const getFileMetadata = createAsyncThunk<
   }
 });
 
+export const downloadFile = createAsyncThunk<
+  { data: []; message: string },
+  { fileId: string },
+  { rejectValue: { message: string } }
+>("storage/downloadFile", async ({ fileId }, { rejectWithValue }) => {
+  try {
+    const response = await storageService.downloadFile(fileId);
+    return response;
+  } catch (error) {
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "downloading the file from the storage"
+    );
+  }
+});
+
 export const deleteFile = createAsyncThunk<
   { message: string },
   { fileId: string; fileName: string },
@@ -50,23 +67,6 @@ export const deleteFile = createAsyncThunk<
       error,
       rejectWithValue,
       "deleting the file from the storage"
-    );
-  }
-});
-
-export const getFileUrl = createAsyncThunk<
-  { message: string; downloadUrl: string },
-  { fileName: string },
-  { rejectValue: { message: string } }
->("storage/getFileUrl", async ({ fileName }, { rejectWithValue }) => {
-  try {
-    const response = await storageService.getFileUrl(fileName);
-    return response;
-  } catch (error) {
-    return handleError.actionError(
-      error,
-      rejectWithValue,
-      "retrieving the file URL from the storage"
     );
   }
 });
