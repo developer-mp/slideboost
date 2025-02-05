@@ -27,7 +27,6 @@ const DB_PORT = parseInt(getEnvVar("DB_PORT"), 10);
 const TOKEN_EXPIRATION = getEnvVar("TOKEN_EXPIRATION");
 const REFRESH_TOKEN_EXPIRATION = getEnvVar("REFRESH_TOKEN_EXPIRATION");
 const GOOGLE_CLIENT_ID = getEnvVar("GOOGLE_CLIENT_ID");
-const AI_API_URL = getEnvVar("AI_API_URL");
 const AI_API_KEY = getEnvVar("AI_API_KEY");
 const AI_MODEL = getEnvVar("AI_MODEL");
 const AI_MAX_TOKENS = parseInt(getEnvVar("AI_MAX_TOKENS"), 10);
@@ -65,7 +64,6 @@ export const config = {
   TOKEN_EXPIRATION,
   REFRESH_TOKEN_EXPIRATION,
   GOOGLE_CLIENT_ID,
-  AI_API_URL,
   AI_API_KEY,
   AI_MODEL,
   AI_MAX_TOKENS,

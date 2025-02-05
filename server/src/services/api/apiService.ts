@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import handleError from "../../utils/common/handleError";
+import { FileResponseType } from "../../interfaces/types";
 
 const apiService = {
   postCall: async <T>(
@@ -21,14 +22,14 @@ const apiService = {
   getCall: async <T>(
     endpoint: string,
     data: object,
-    headers: object
-    // responseType: "json" | "text" | "arraybuffer" = "json"
+    headers: object,
+    responseType: FileResponseType
   ): Promise<T> => {
     try {
       const response: AxiosResponse<T> = await axios.get(endpoint, {
         params: data,
         headers,
-        // responseType,
+        responseType,
       });
       return response.data;
     } catch (error: unknown) {

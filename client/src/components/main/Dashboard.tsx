@@ -162,16 +162,26 @@ const Dashboard: React.FC<DashboardProps> = () =>
       }
 
       try {
-        for (const file of selectedMediaFiles) {
+        const fileIdArr: string[] = [];
+
+        selectedMediaFiles.forEach((file) => {
           if (file.file_id) {
-            const resultAction = await dispatch(
-              downloadFile({ fileId: file.file_id })
-            ).unwrap();
-            console.log(resultAction);
-            // const successMessage = handleSuccessMessage(resultAction);
-            // showSuccessToast(successMessage);
+            fileIdArr.push(file.file_id);
           }
+        });
+        const templateId = selectedTemplate.file_id;
+        if (fileIdArr && templateId) {
+          const resultAction = await dispatch(
+            downloadFile({
+              fileId: fileIdArr,
+              templateId: templateId,
+              title: presentationTitle,
+            })
+          ).unwrap();
+          console.log(resultAction);
         }
+        // const successMessage = handleSuccessMessage(resultAction);
+        // showSuccessToast(successMessage);
       } catch (error) {
         const errorMessage = handleErrorMessage(error);
         showErrorToast(errorMessage);

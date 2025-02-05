@@ -54,12 +54,18 @@ const storageService = {
     }
   },
 
-  async downloadFile(fileId: string): Promise<string> {
+  async downloadFile(
+    fileId: string[],
+    templateId: string,
+    title: string
+  ): Promise<string> {
     const endpoint = `${config.STORAGE_ROUTER}${config.DOWNLOAD_ENDPOINT}`;
 
     try {
       const response = await apiService.getCall(endpoint, {
         fileId,
+        templateId,
+        title,
       });
 
       return response.data;

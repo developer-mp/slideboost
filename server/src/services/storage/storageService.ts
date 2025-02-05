@@ -8,6 +8,7 @@ import {
 import { b2 } from "../../storage/config/storage";
 import handleError from "../../utils/common/handleError";
 import apiService from "../api/apiService";
+import { FileResponseType } from "../../interfaces/types";
 
 type FileDownloadResponse = {
   fileData: Blob; // Or an array buffer, depending on your response type
@@ -85,27 +86,30 @@ const storageService = {
     }
   },
 
-  async downloadFile(fileId: string): Promise<string> {
+  async downloadFile<T>(
+    fileId: string,
+    responseType: FileResponseType
+  ): Promise<T> {
     const endpoint = `${config.STORAGE_API_URL}${config.STORAGE_DOWNLOAD_FILE_BY_ID}`;
     try {
       const authData = await this.authorizeStorage();
-      if (!authData) return "";
+      if (!authData) return {} as T;
 
       const headers = {
         Authorization: authData.authorizationToken,
       };
 
       const data = { fileId };
-      const response = await apiService.getCall<string>(
+      const response = await apiService.getCall<T>(
         endpoint,
         data,
-        headers
-        // "text"
+        headers,
+        responseType
       );
       return response;
     } catch (error) {
       handleError.serviceError(error, "downloading the file from the storage");
-      return "";
+      return {} as T;
     }
   },
 

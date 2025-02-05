@@ -27,6 +27,7 @@
     "nodemailer": "^6.9.15",
     "openai": "^4.77.0",
     "pg": "^8.13.0",
+    "pptx-automizer": "^0.6.6",
     "pug": "^3.0.3",
     "server": "file:",
     "tesseract.js": "^5.1.1",
