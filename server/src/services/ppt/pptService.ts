@@ -32,12 +32,14 @@ const pptService = {
         slide.addText((text: any) => {
           text
             .value(title)
-            .x(1)
-            .y(1.5)
-            .fontSize(36)
+            .x(220)
+            .y(150)
+            .fontSize(28)
             .fontFace("Arial")
             .textColor("000000")
-            .textWrap("none");
+            .textWrap("none")
+            .margin(0)
+            .textAlign("center");
         });
       });
 
@@ -59,27 +61,30 @@ const pptService = {
       await pptx.load(filePath);
 
       await pptx.compose(async (pres: any) => {
+        pres.layout("LAYOUT_WIDE");
         let slide = await pres.getSlide("slide1");
         slide.addText((text: any) => {
           text
             .value(entry.header)
-            .x(10)
-            .y(80)
-            .fontSize(36)
+            .x(20)
+            .y(30)
+            .fontSize(24)
             .fontFace("Arial")
             .textColor("000000")
+            .margin(0)
             .textWrap("none");
         });
 
         entry.text.forEach((item: SlideText, index: number) => {
           slide.addText((text: any) => {
             text
-              .value(item.statement)
-              .x(10)
-              .y(200 + index * 100)
-              .fontSize(18)
+              .value(`• ${item.statement}`)
+              .x(20)
+              .y(130 + index * 60)
+              .fontSize(16)
               .fontFace("Arial")
               .textColor("000000")
+              .margin(0)
               .textWrap("none");
           });
         });
