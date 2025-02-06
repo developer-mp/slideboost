@@ -8,6 +8,7 @@ import { convertPptToPng } from "../../utils/conversion/convertPptToPng";
 import { changeFileExtension } from "../../utils/conversion/changeFileExtension";
 import aiService from "./../../services/ai/aiService";
 import pptService from "../../services/ppt/pptService";
+import fs from "fs";
 
 const storageController = {
   uploadFileToStorage: async (req: Request, res: Response): Promise<void> => {
@@ -129,6 +130,7 @@ const storageController = {
     req: Request,
     res: Response
   ): Promise<void> => {
+    const userId = req.query.userId as string;
     const fileId = req.query.fileId as string[];
     const templateId = req.query.templateId as string;
     const title = req.query.title as string;
@@ -170,11 +172,11 @@ const storageController = {
 
       const content: Content = JSON.parse(contentString);
 
-      const ppt = await pptService.createPpt(typedTemplate, content, title);
+      const pptPath = await pptService.createPpt(typedTemplate, content, title);
+      await pptService.uploadPptToStorage(userId, pptPath);
 
       res.status(200).json({
-        message: "Content created successfully",
-        data: ppt,
+        message: "Presentation created successfully",
       });
     } catch (error: unknown) {
       handleError.controllerError(

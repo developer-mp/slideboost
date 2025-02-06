@@ -39,13 +39,14 @@ export const getFileMetadata = createAsyncThunk<
 
 export const downloadFile = createAsyncThunk<
   { data: []; message: string },
-  { fileId: string[]; templateId: string; title: string },
+  { userId: string; fileId: string[]; templateId: string; title: string },
   { rejectValue: { message: string } }
 >(
   "storage/downloadFile",
-  async ({ fileId, templateId, title }, { rejectWithValue }) => {
+  async ({ userId, fileId, templateId, title }, { rejectWithValue }) => {
     try {
       const response = await storageService.downloadFile(
+        userId,
         fileId,
         templateId,
         title

@@ -11,13 +11,13 @@ import { DashboardProps, FileDetailProps } from "../../interfaces/interfaces";
 // import pptService from "../../services/ppt/pptService";
 import {
   showErrorToast,
-  // showSuccessToast,
+  showSuccessToast,
 } from "../../utils/common/handleToast";
 import { getFileIcon } from "../../utils/ppt/getFileIcon";
 import { downloadFile } from "../../store/actions/storageAction";
 import {
   handleErrorMessage,
-  // handleSuccessMessage,
+  handleSuccessMessage,
 } from "../../utils/common/handleActionMessage";
 
 const Dashboard: React.FC<DashboardProps> = () =>
@@ -35,6 +35,7 @@ const Dashboard: React.FC<DashboardProps> = () =>
     const [presentationTitle, setPresentationTitle] = useState<string>("");
 
     const dispatch = useDispatch<AppDispatch>();
+    const userId = useSelector((state: RootState) => state.user.userId);
 
     const fileMetadata = useSelector(
       (state: RootState) => state.fileStorage.fileMetadata
@@ -161,6 +162,8 @@ const Dashboard: React.FC<DashboardProps> = () =>
         return;
       }
 
+      let resultAction;
+
       try {
         const fileIdArr: string[] = [];
 
@@ -171,17 +174,17 @@ const Dashboard: React.FC<DashboardProps> = () =>
         });
         const templateId = selectedTemplate.file_id;
         if (fileIdArr && templateId) {
-          const resultAction = await dispatch(
+          resultAction = await dispatch(
             downloadFile({
+              userId: userId,
               fileId: fileIdArr,
               templateId: templateId,
               title: presentationTitle,
             })
           ).unwrap();
-          console.log(resultAction);
         }
-        // const successMessage = handleSuccessMessage(resultAction);
-        // showSuccessToast(successMessage);
+        const successMessage = handleSuccessMessage(resultAction);
+        showSuccessToast(successMessage);
       } catch (error) {
         const errorMessage = handleErrorMessage(error);
         showErrorToast(errorMessage);

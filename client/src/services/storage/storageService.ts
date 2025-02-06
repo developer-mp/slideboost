@@ -55,6 +55,7 @@ const storageService = {
   },
 
   async downloadFile(
+    userId: string,
     fileId: string[],
     templateId: string,
     title: string
@@ -63,6 +64,7 @@ const storageService = {
 
     try {
       const response = await apiService.getCall(endpoint, {
+        userId,
         fileId,
         templateId,
         title,
