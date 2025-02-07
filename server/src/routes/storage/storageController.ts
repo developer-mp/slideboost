@@ -8,7 +8,7 @@ import { convertPptToPng } from "../../utils/conversion/convertPptToPng";
 import { changeFileExtension } from "../../utils/conversion/changeFileExtension";
 import aiService from "./../../services/ai/aiService";
 import pptService from "../../services/ppt/pptService";
-import fs from "fs";
+import { clearUploadFolder } from "../../utils/storage/clearUploadFolder";
 
 const storageController = {
   uploadFileToStorage: async (req: Request, res: Response): Promise<void> => {
@@ -174,6 +174,8 @@ const storageController = {
 
       const pptPath = await pptService.createPpt(typedTemplate, content, title);
       await pptService.uploadPptToStorage(userId, pptPath);
+
+      await clearUploadFolder();
 
       res.status(200).json({
         message: "Presentation created successfully",
