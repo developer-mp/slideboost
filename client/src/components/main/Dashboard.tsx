@@ -6,9 +6,6 @@ import CustomModal from "../shared/CustomModal";
 import TemplatesDisplay from "../widgets/TemplatesDisplay";
 import MediaFilesDisplay from "../widgets/MediaFilesDisplay";
 import { DashboardProps, FileDetailProps } from "../../interfaces/interfaces";
-// import transcriptService from "../../services/transcript/transcriptService";
-// import aiService from "../../services/ai/aiService";
-// import pptService from "../../services/ppt/pptService";
 import {
   showErrorToast,
   showSuccessToast,
@@ -304,10 +301,18 @@ const Dashboard: React.FC<DashboardProps> = () =>
               >
                 Create
               </Button>
-              {loading ? "Creating..." : ""}
             </div>
           </div>
         </div>
+        {loading && (
+          <div className="loading-overlay">
+            <div className="loading-spinner">
+              <div className="spinner-border text-light" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </div>
+        )}
       </Container>
     );
   };
