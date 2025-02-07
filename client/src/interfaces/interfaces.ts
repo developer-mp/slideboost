@@ -76,7 +76,7 @@ export interface FileTableProps {
   }>;
   files: FileDetailProps[];
   removeFile: (id: string, name: string) => void;
-  // downloadFile?: (file: FileDetailProps) => void;
+  downloadFile: (id: string, name: string) => void;
 }
 
 export interface TemplateProps {

@@ -60,11 +60,7 @@ const pptController = {
         message: "Presentation created successfully",
       });
     } catch (error: unknown) {
-      handleError.controllerError(
-        res,
-        error,
-        "downloading the file from the storage"
-      );
+      handleError.controllerError(res, error, "creating the presentation");
       return;
     }
   },

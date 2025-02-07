@@ -20,12 +20,14 @@ import {
 } from "../../utils/common/handleActionMessage";
 import {
   deleteFile,
+  downloadFile,
   getFileMetadata,
   uploadFile,
 } from "../../store/actions/storageAction";
 import FileTable from "../shared/FileTable";
 import { getFileSize } from "../../utils/ppt/getFileSize";
 import { truncateText } from "../../utils/common/truncateText";
+import { downloadFileBlob } from "../../utils/storage/downloadFileBlob";
 
 const MediaMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -120,6 +122,28 @@ const MediaMenu: React.FC = () => {
     }
   };
 
+  const downloadMediaFile = async (fileId: string, fileName: string) => {
+    try {
+      const resultAction = await dispatch(downloadFile({ fileId })).unwrap();
+      const successMessage = handleSuccessMessage(resultAction);
+
+      const { data } = resultAction;
+      const fileData = data.data;
+      const fileType = data.type;
+      const extractedFileName = fileName.split("/").pop();
+      downloadFileBlob(
+        fileData,
+        fileType,
+        extractedFileName || "downloaded-file"
+      );
+      showSuccessToast(successMessage);
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error("Error occurred while downloading the media file: ", error);
+    }
+  };
+
   return (
     <Container className="tw-w-full tw-overflow-hidden">
       <div className="tw-mx-6 tw-my-6">
@@ -139,7 +163,7 @@ const MediaMenu: React.FC = () => {
                 columns={columns}
                 files={mediafileMetadata}
                 removeFile={removeFile}
-                // downloadFile={() => {}}
+                downloadFile={downloadMediaFile}
               />
             </Col>
           </Row>

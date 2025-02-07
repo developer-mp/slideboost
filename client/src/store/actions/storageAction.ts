@@ -53,3 +53,20 @@ export const deleteFile = createAsyncThunk<
     );
   }
 });
+
+export const downloadFile = createAsyncThunk<
+  { data: { data: number[]; type: string }; message: string },
+  { fileId: string },
+  { rejectValue: { message: string } }
+>("storage/downloadFile", async ({ fileId }, { rejectWithValue }) => {
+  try {
+    const response = await storageService.downloadFile(fileId);
+    return response;
+  } catch (error) {
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "downloading the file"
+    );
+  }
+});

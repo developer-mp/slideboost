@@ -68,6 +68,21 @@ const storageService = {
       throw error;
     }
   },
+
+  async downloadFile(fileId: string): Promise<void> {
+    const endpoint = `${config.STORAGE_ROUTER}${config.DOWNLOAD_ENDPOINT}`;
+
+    try {
+      const response = await apiService.getCall(endpoint, {
+        fileId,
+      });
+
+      return response.data;
+    } catch (error) {
+      handleError.axiosError(error, "downloading the file");
+      throw error;
+    }
+  },
 };
 
 export default storageService;

@@ -155,6 +155,34 @@ const storageController = {
       return;
     }
   },
+
+  downloadFileFromStorage: async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    const fileId = req.query.fileId as string;
+
+    if (!fileId) {
+      res.status(400).json({ message: "File ID is required" });
+      return;
+    }
+
+    try {
+      const file = await storageService.downloadFile(fileId, "arraybuffer");
+
+      res.status(200).json({
+        data: file,
+        message: "File downloaded successfully",
+      });
+    } catch (error: unknown) {
+      handleError.controllerError(
+        res,
+        error,
+        "downloading the file from the storage"
+      );
+      return;
+    }
+  },
 };
 
 export default storageController;

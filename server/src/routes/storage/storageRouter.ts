@@ -11,5 +11,6 @@ storageRouter.post(
 );
 storageRouter.get("/metadata", storageController.getFileMetadata);
 storageRouter.post("/delete", storageController.deleteFileFromStorage);
+storageRouter.get("/download", storageController.downloadFileFromStorage);
 
 export default storageRouter;

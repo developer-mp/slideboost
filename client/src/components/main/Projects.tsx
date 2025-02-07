@@ -1,11 +1,14 @@
-// import { useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import FileTable from "../shared/FileTable";
 import { FileDetailProps } from "../../interfaces/interfaces";
 import { getFileSize } from "../../utils/ppt/getFileSize";
-import { deleteFile, getFileMetadata } from "../../store/actions/storageAction";
+import {
+  deleteFile,
+  getFileMetadata,
+  downloadFile,
+} from "../../store/actions/storageAction";
 import {
   handleErrorMessage,
   handleSuccessMessage,
@@ -14,6 +17,7 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "../../utils/common/handleToast";
+import { downloadFileBlob } from "../../utils/storage/downloadFileBlob";
 
 const Projects: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -62,6 +66,28 @@ const Projects: React.FC = () => {
     }
   };
 
+  const downloadProject = async (fileId: string, fileName: string) => {
+    try {
+      const resultAction = await dispatch(downloadFile({ fileId })).unwrap();
+      const successMessage = handleSuccessMessage(resultAction);
+
+      const { data } = resultAction;
+      const fileData = data.data;
+      const fileType = data.type;
+      const extractedFileName = fileName.split("/").pop();
+      downloadFileBlob(
+        fileData,
+        fileType,
+        extractedFileName || "downloaded-file"
+      );
+      showSuccessToast(successMessage);
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error("Error occurred while downloading the project: ", error);
+    }
+  };
+
   return (
     <Container className="tw-w-full tw-overflow-hidden">
       <div className="tw-mx-6 tw-my-6">
@@ -75,7 +101,7 @@ const Projects: React.FC = () => {
                 columns={columns}
                 files={projectsFileMetadata}
                 removeFile={removeFile}
-                // downloadFile={() => {}}
+                downloadFile={downloadProject}
               />
             </Col>
           </Row>
