@@ -11,10 +11,8 @@ import {
   showSuccessToast,
 } from "../../utils/common/handleToast";
 import { getFileIcon } from "../../utils/ppt/getFileIcon";
-import {
-  downloadFile,
-  getFileMetadata,
-} from "../../store/actions/storageAction";
+import { getFileMetadata } from "../../store/actions/storageAction";
+import { generatePpt } from "../../store/actions/pptAction";
 import {
   handleErrorMessage,
   handleSuccessMessage,
@@ -57,7 +55,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     setShowTemplateModal(false);
   };
 
-  const handleCreateClick = async () => {
+  const handleCreate = async () => {
     setLoading(true);
 
     if (!presentationTitle.trim()) {
@@ -91,7 +89,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
       const templateId = selectedTemplate.file_id;
       if (fileIdArr && templateId) {
         resultAction = await dispatch(
-          downloadFile({
+          generatePpt({
             userId: userId,
             fileId: fileIdArr,
             templateId: templateId,
@@ -209,7 +207,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
           <div className="tw-mt-5">
             <Button
               className="button button-primary-auto tw-my-4"
-              onClick={handleCreateClick}
+              onClick={handleCreate}
               disabled={loading}
             >
               Create

@@ -37,31 +37,6 @@ export const getFileMetadata = createAsyncThunk<
   }
 });
 
-export const downloadFile = createAsyncThunk<
-  { data: []; message: string },
-  { userId: string; fileId: string[]; templateId: string; title: string },
-  { rejectValue: { message: string } }
->(
-  "storage/downloadFile",
-  async ({ userId, fileId, templateId, title }, { rejectWithValue }) => {
-    try {
-      const response = await storageService.downloadFile(
-        userId,
-        fileId,
-        templateId,
-        title
-      );
-      return response;
-    } catch (error) {
-      return handleError.actionError(
-        error,
-        rejectWithValue,
-        "downloading the file from the storage"
-      );
-    }
-  }
-);
-
 export const deleteFile = createAsyncThunk<
   { message: string },
   { fileId: string; fileName: string },

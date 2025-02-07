@@ -3,16 +3,25 @@ import { config } from "../../../env.config";
 import handleError from "../../utils/common/handleError";
 
 const pptService = {
-  processPpt: async (filePath: string, transcript: string) => {
+  async generatePpt(
+    userId: string,
+    fileId: string[],
+    templateId: string,
+    title: string
+  ): Promise<string> {
     const endpoint = `${config.PPT_ROUTER}${config.PPT_ENDPOINT}`;
+
     try {
-      const response = await apiService.postCall(endpoint, {
-        filePath,
-        transcript,
+      const response = await apiService.getCall(endpoint, {
+        userId,
+        fileId,
+        templateId,
+        title,
       });
+
       return response.data;
     } catch (error) {
-      handleError.axiosError(error, "processing the presentation");
+      handleError.axiosError(error, "creating the presentation");
       throw error;
     }
   },

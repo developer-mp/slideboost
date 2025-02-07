@@ -54,29 +54,6 @@ const storageService = {
     }
   },
 
-  async downloadFile(
-    userId: string,
-    fileId: string[],
-    templateId: string,
-    title: string
-  ): Promise<string> {
-    const endpoint = `${config.STORAGE_ROUTER}${config.DOWNLOAD_ENDPOINT}`;
-
-    try {
-      const response = await apiService.getCall(endpoint, {
-        userId,
-        fileId,
-        templateId,
-        title,
-      });
-
-      return response.data;
-    } catch (error) {
-      handleError.axiosError(error, "downloading the file from the storage");
-      throw error;
-    }
-  },
-
   async deleteFile(fileId: string, fileName: string): Promise<string> {
     const endpoint = `${config.STORAGE_ROUTER}${config.DELETE_ENDPOINT}`;
 
