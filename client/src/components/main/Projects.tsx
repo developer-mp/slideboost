@@ -1,34 +1,34 @@
-import { useState, useEffect } from "react";
+// import { useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
 import FileTable from "../shared/FileTable";
 import { FileDetailProps } from "../../interfaces/interfaces";
 import { getFileSize } from "../../utils/ppt/getFileSize";
+import { deleteFile, getFileMetadata } from "../../store/actions/storageAction";
+import {
+  handleErrorMessage,
+  handleSuccessMessage,
+} from "../../utils/common/handleActionMessage";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "../../utils/common/handleToast";
 
 const Projects: React.FC = () => {
-  const [files, setFiles] = useState<FileDetailProps[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const userId = useSelector((state: RootState) => state.user.userId);
 
-  useEffect(() => {
-    const existingFilesString = localStorage.getItem("ppt");
-    const existingFiles = existingFilesString
-      ? JSON.parse(existingFilesString)
-      : [];
-    setFiles(existingFiles);
-  }, []);
+  const { fileMetadata } = useSelector((state: RootState) => state.fileStorage);
 
-  const removeFile = (index: number) => {
-    const updatedFiles = files.filter((_, i) => i !== index);
-    setFiles(updatedFiles);
-    localStorage.setItem("ppt", JSON.stringify(updatedFiles));
-  };
-
-  const downloadFile = (file: FileDetailProps) => {
-    console.log("Download clicked: " + file.path);
-  };
+  const projectsFileMetadata = fileMetadata.filter(
+    (file) => file.folder === "projects"
+  );
 
   const columns = [
     {
-      key: "filename",
-      label: "Filename",
+      key: "name",
+      label: "File Name",
       render: (file: FileDetailProps) => file.name,
     },
     {
@@ -37,16 +37,35 @@ const Projects: React.FC = () => {
       render: (file: FileDetailProps) => getFileSize(file.size),
     },
     {
-      key: "date",
-      label: "Date Uploaded",
-      render: (file: FileDetailProps) => file.date,
+      key: "uploaded_at",
+      label: "Created At",
+      render: (file: FileDetailProps) =>
+        file.uploaded_at ? new Date(file.uploaded_at).toLocaleString() : "N/A",
     },
   ];
+
+  const removeFile = async (fileId: string, fileName: string) => {
+    try {
+      const resultAction = await dispatch(
+        deleteFile({ fileId, fileName })
+      ).unwrap();
+      const successMessage = handleSuccessMessage(resultAction);
+      showSuccessToast(successMessage);
+      await dispatch(getFileMetadata({ userId })).unwrap();
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while deleting the project from the storage: ",
+        error
+      );
+    }
+  };
 
   return (
     <Container className="tw-w-full tw-overflow-hidden">
       <div className="tw-mx-6 tw-my-6">
-        <h2 className="tw-text-lg tw-font-bold tw-mb-4 tw-text-gray-900">
+        <h2 className="tw-text-lg tw-font-bold tw-text-gray-900">
           Project List
         </h2>
         <div className="tw-bg-white tw-rounded-lg tw-p-5 tw-overflow-x-auto md:tw-overflow-x-visible">
@@ -54,9 +73,9 @@ const Projects: React.FC = () => {
             <Col>
               <FileTable
                 columns={columns}
-                files={files}
+                files={projectsFileMetadata}
                 removeFile={removeFile}
-                downloadFile={downloadFile}
+                // downloadFile={() => {}}
               />
             </Col>
           </Row>

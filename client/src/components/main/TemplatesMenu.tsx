@@ -177,6 +177,9 @@ const TemplatesMenu: React.FC = () => {
           onUpload={handleUpload}
           showCategory={true}
         />
+        <div className="tw-mt-4 tw-text-sm tw-text-gray-500 tw-text-center">
+          Supported file types: .ppt, .pptx
+        </div>
       </CustomModal>
     </Container>
   );

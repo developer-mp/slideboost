@@ -140,7 +140,6 @@ const MediaMenu: React.FC = () => {
                 files={mediafileMetadata}
                 removeFile={removeFile}
                 // downloadFile={() => {}}
-                // selectedFolder="media"
               />
             </Col>
           </Row>
@@ -166,6 +165,10 @@ const MediaMenu: React.FC = () => {
           onUpload={handleUpload}
           showCategory={false}
         />
+        <div className="tw-mt-4 tw-text-sm tw-text-gray-500 tw-text-center">
+          Supported file types: .txt, .doc, .docs, .rtf, .wav, .mp3, .png, .jpg,
+          .jpeg, .mp4
+        </div>
       </CustomModal>
     </Container>
   );
