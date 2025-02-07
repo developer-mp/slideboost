@@ -307,9 +307,8 @@ const Dashboard: React.FC<DashboardProps> = () =>
         {loading && (
           <div className="loading-overlay">
             <div className="loading-spinner">
-              <div className="spinner-border text-light" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
+              <div className="spinner-border text-light" role="status"></div>
+              <span className="loading-text">Creating...</span>
             </div>
           </div>
         )}

@@ -290,9 +290,24 @@
   z-index: 9999;
 }
 
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .loading-spinner .spinner-border {
   border-color: #5c636a transparent transparent transparent;
   width: 3rem;
   height: 3rem;
   border-width: 0.3em;
+}
+
+.loading-text {
+  color: #5c636a;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  font-weight: bold;
+  text-align: center;
 }
