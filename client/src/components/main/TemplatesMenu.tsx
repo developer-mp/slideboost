@@ -10,7 +10,12 @@ import {
   showWarningToast,
   showSuccessToast,
 } from "../../utils/common/handleToast";
-import { getFileMetadata, uploadFile } from "../../store/actions/storageAction";
+import {
+  deleteFile,
+  downloadFile,
+  getFileMetadata,
+  uploadFile,
+} from "../../store/actions/storageAction";
 import {
   handleErrorMessage,
   handleSuccessMessage,
@@ -19,6 +24,8 @@ import { replaceExtension } from "../../utils/storage/replaceExtension";
 import { config } from "../../../env.config";
 import { removeExtension } from "./../../utils/storage/removeExtension";
 import { getTemplateCategories } from "../../store/actions/dataAction";
+import { downloadFileBlob } from "../../utils/storage/downloadFileBlob";
+import { FiDownload, FiTrash2 } from "react-icons/fi";
 
 const TemplatesMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -67,6 +74,8 @@ const TemplatesMenu: React.FC = () => {
     (file) => file.folder === "templates"
   );
 
+  console.log(templatesfileMetadata);
+
   const handleUpload = async (files: FileWithMetadata[]) => {
     try {
       for (const { file, category } of files) {
@@ -84,6 +93,46 @@ const TemplatesMenu: React.FC = () => {
         "Error occurred while uploading the file to the storage: ",
         error
       );
+    }
+  };
+
+  const removeFile = async (fileId: string, fileName: string) => {
+    try {
+      const resultAction = await dispatch(
+        deleteFile({ fileId, fileName })
+      ).unwrap();
+      const successMessage = handleSuccessMessage(resultAction);
+      showSuccessToast(successMessage);
+      await dispatch(getFileMetadata({ userId })).unwrap();
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while deleting the template from the storage: ",
+        error
+      );
+    }
+  };
+
+  const downloadTemplate = async (fileId: string, fileName: string) => {
+    try {
+      const resultAction = await dispatch(downloadFile({ fileId })).unwrap();
+      const successMessage = handleSuccessMessage(resultAction);
+
+      const { data } = resultAction;
+      const fileData = data.data;
+      const fileType = data.type;
+      const extractedFileName = fileName.split("/").pop();
+      downloadFileBlob(
+        fileData,
+        fileType,
+        extractedFileName || "downloaded-file"
+      );
+      showSuccessToast(successMessage);
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error("Error occurred while downloading the template: ", error);
     }
   };
 
@@ -127,22 +176,51 @@ const TemplatesMenu: React.FC = () => {
               )
               .map((template) => (
                 <Col xs={12} md={4} key={template.file_id} className="tw-mb-6">
-                  <img
-                    src={
-                      template.file_name
-                        ? `${config.DNS_ENDPOINT}/${replaceExtension(
-                            template.file_name
-                          )}`
-                        : ""
-                    }
-                    alt={template.name}
-                    className="img-hover tw-rounded-lg tw-h-48 tw-object-cover"
-                  />
-                  <div className="tw-text-black tw-font-bold tw-mt-1">
-                    {removeExtension(template.name)}
-                  </div>
-                  <div className="tw-text-gray-500 tw-mt-0">
-                    {template.template_category}
+                  <div className="tw-flex tw-flex-col">
+                    <img
+                      src={
+                        template.file_name
+                          ? `${config.DNS_ENDPOINT}/${replaceExtension(
+                              template.file_name
+                            )}`
+                          : ""
+                      }
+                      alt={template.name}
+                      className="img-hover tw-rounded-lg tw-h-48 tw-object-cover"
+                    />
+                    <div className="tw-flex tw-justify-between tw-items-center">
+                      <div>
+                        <div className="tw-text-black tw-font-bold tw-mt-1">
+                          {removeExtension(template.name)}
+                        </div>
+                        <div className="tw-text-gray-500 tw-mt-0">
+                          {template.template_category}
+                        </div>
+                      </div>
+                      <div className="tw-flex tw-space-x-4">
+                        <button
+                          onClick={() =>
+                            downloadTemplate(
+                              template.file_id!,
+                              template.file_name!
+                            )
+                          }
+                          className="tw-text-[#4CAF50] hover:tw-text-[#388E3C] tw-text-xl"
+                        >
+                          <FiDownload />
+                        </button>
+                        {template.source !== "system" && (
+                          <button
+                            onClick={() =>
+                              removeFile(template.file_id!, template.file_name!)
+                            }
+                            className="tw-text-[#FD4958] hover:tw-text-[#DB142B] tw-text-xl"
+                          >
+                            <FiTrash2 />
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </Col>
               ))}

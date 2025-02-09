@@ -116,7 +116,7 @@ const MediaMenu: React.FC = () => {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error(
-        "Error occurred while deleting the file from the storage: ",
+        "Error occurred while deleting the media file from the storage: ",
         error
       );
     }

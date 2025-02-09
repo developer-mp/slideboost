@@ -51,6 +51,7 @@ export interface FileDetailProps {
   file_id?: string;
   png_url: string;
   uploaded_at?: string;
+  source?: string;
 }
 
 export interface FileWithMetadata {
