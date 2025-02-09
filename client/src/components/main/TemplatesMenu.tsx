@@ -67,14 +67,32 @@ const TemplatesMenu: React.FC = () => {
     })),
   ];
 
-  const fileMetadata = useSelector(
-    (state: RootState) => state.fileStorage.fileMetadata
+  const { fileMetadata, isFileMetadataFetched } = useSelector(
+    (state: RootState) => state.fileStorage
   );
+
   const templatesfileMetadata = fileMetadata.filter(
     (file) => file.folder === "templates"
   );
 
-  console.log(templatesfileMetadata);
+  const handleFileMetadata = async () => {
+    try {
+      await dispatch(getFileMetadata({ userId })).unwrap();
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while fetching the templates metadata: ",
+        error
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (!isFileMetadataFetched) {
+      handleFileMetadata();
+    }
+  });
 
   const handleUpload = async (files: FileWithMetadata[]) => {
     try {

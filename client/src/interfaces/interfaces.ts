@@ -23,15 +23,8 @@ export interface ProtectedRouteProps {
   element: React.ReactElement;
 }
 
-export interface PPTTemplateProps {
-  id: string;
-  imgPath: string;
-  title: string;
-  category: string;
-}
-
 export interface TemplateCarouselProps {
-  templates: PPTTemplateProps[];
+  templates: FileDetailProps[];
 }
 
 export interface ContentCardProps {
