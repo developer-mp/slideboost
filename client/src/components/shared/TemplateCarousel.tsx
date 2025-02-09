@@ -8,6 +8,10 @@ import { replaceExtension } from "../../utils/storage/replaceExtension";
 import { config } from "../../../env.config";
 
 const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ templates }) => {
+  const filteredTemplates = templates.filter(
+    (template: FileDetailProps) => template.source === "system"
+  );
+
   const getCarouselItems = (templates: FileDetailProps[]) => {
     const items = [];
     const itemsPerScreen = getItemsPerScreen();
@@ -46,7 +50,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ templates }) => {
       indicators={false}
       interval={2000}
     >
-      {getCarouselItems(templates)}
+      {getCarouselItems(filteredTemplates)}
     </Carousel>
   );
 };
