@@ -94,7 +94,7 @@ const MediaMenu: React.FC = () => {
     {
       key: "type",
       label: "Type",
-      render: (file: FileDetailProps) => truncateText(file.type),
+      render: (file: FileDetailProps) => truncateText(file.type, 10),
     },
     {
       key: "uploaded_at",

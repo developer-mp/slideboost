@@ -66,7 +66,7 @@ const UploadFilesDisplay: React.FC<FileListDisplayProps> = ({
             <div className="tw-ml-2 tw-flex tw-flex-col">
               <div className="tw-font-bold">{file.file.name}</div>
               <div className="tw-flex tw-justify-between tw-text-gray-500">
-                <div>{truncateText(file.file.type)}</div>
+                <div>{truncateText(file.file.type, 30)}</div>
 
                 <div className="tw-ml-3">{getFileSize(file.file.size)}</div>
               </div>

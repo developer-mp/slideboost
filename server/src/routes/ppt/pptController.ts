@@ -6,16 +6,17 @@ import { Content } from "../../interfaces/interfaces";
 import aiService from "../../services/ai/aiService";
 import pptService from "../../services/ppt/pptService";
 import { clearUploadFolder } from "../../utils/storage/clearUploadFolder";
+import transcriptService from "../../services/transcript/transcriptService";
 
 const pptController = {
   createPresentation: async (req: Request, res: Response): Promise<void> => {
     const userId = req.query.userId as string;
-    const fileId = req.query.fileId as string[];
     const templateId = req.query.templateId as string;
     const title = req.query.title as string;
+    const files = req.query.files as { file_id: string; file_type: string }[];
 
-    if (!fileId) {
-      res.status(400).json({ message: "File ID is required" });
+    if (!files) {
+      res.status(400).json({ message: "File is required" });
       return;
     }
 
@@ -31,9 +32,31 @@ const pptController = {
 
     try {
       let allExtractedText = "";
+      const textFormats = [
+        "text",
+        // "vnd.openxmlformats-officedocument.wordprocessingml.document",
+        // "msword",
+      ];
 
-      for (const id of fileId) {
-        const transcript = await storageService.downloadFile(id, "text");
+      for (const file of files) {
+        const { file_id, file_type } = file;
+        const fileType = file_type.split("/")[0].toLowerCase();
+        const format = textFormats.includes(fileType) ? "text" : "arraybuffer";
+        let transcript = "";
+
+        if (format === "text") {
+          transcript = await storageService.downloadFile(file_id, format);
+        } else {
+          const buffer = (await storageService.downloadFile(
+            file_id,
+            format
+          )) as Buffer;
+          if (fileType == "image") {
+            transcript = await transcriptService.convertImageToText(buffer);
+          } else if (fileType == "audio") {
+            transcript = await transcriptService.convertAudioToText(buffer);
+          }
+        }
         allExtractedText += transcript;
       }
 

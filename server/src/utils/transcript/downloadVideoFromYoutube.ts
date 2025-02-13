@@ -1,7 +1,8 @@
 import path from "path";
 import youtubedl from "youtube-dl-exec";
+import { getUploadDir } from "../common/getUploadDir";
 
-const uploadDir = path.join(__dirname, "..", "upload");
+const uploadDir = getUploadDir();
 
 export const downloadVideoFromYoutube = async (
   filePath: string

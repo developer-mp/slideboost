@@ -79,19 +79,19 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     let resultAction;
 
     try {
-      const fileIdArr: string[] = [];
+      const filesArr: { file_id: string; file_type: string }[] = [];
 
       selectedMediaFiles.forEach((file) => {
-        if (file.file_id) {
-          fileIdArr.push(file.file_id);
+        if (file.file_id && file.type) {
+          filesArr.push({ file_id: file.file_id, file_type: file.type });
         }
       });
       const templateId = selectedTemplate.file_id;
-      if (fileIdArr && templateId) {
+      if (filesArr && templateId) {
         resultAction = await dispatch(
           generatePpt({
             userId: userId,
-            fileId: fileIdArr,
+            files: filesArr,
             templateId: templateId,
             title: presentationTitle,
           })

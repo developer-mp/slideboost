@@ -1,4 +1,3 @@
-import axios from "axios";
 import { config } from "../../../env.config";
 import {
   AuthorizeResponse,
@@ -9,11 +8,6 @@ import { b2 } from "../../storage/config/storage";
 import handleError from "../../utils/common/handleError";
 import apiService from "../api/apiService";
 import { FileResponseType } from "../../interfaces/types";
-
-type FileDownloadResponse = {
-  fileData: Blob; // Or an array buffer, depending on your response type
-  fileName: string;
-};
 
 const storageService = {
   async authorizeStorage(): Promise<AuthorizeResponse | undefined> {

@@ -4,15 +4,20 @@ import handleError from "../../utils/common/handleError";
 
 export const generatePpt = createAsyncThunk<
   { data: []; message: string },
-  { userId: string; fileId: string[]; templateId: string; title: string },
+  {
+    userId: string;
+    files: { file_id: string; file_type: string }[];
+    templateId: string;
+    title: string;
+  },
   { rejectValue: { message: string } }
 >(
   "storage/generatePpt",
-  async ({ userId, fileId, templateId, title }, { rejectWithValue }) => {
+  async ({ userId, files, templateId, title }, { rejectWithValue }) => {
     try {
       const response = await pptService.generatePpt(
         userId,
-        fileId,
+        files,
         templateId,
         title
       );

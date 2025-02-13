@@ -1,13 +1,16 @@
 import fs from "fs";
 import path from "path";
 import { spawn } from "child_process";
+import { getUploadDir } from "../common/getUploadDir";
+
+const uploadDir = getUploadDir();
 
 export const convertPptToPng = (pptBuffer: Buffer): Promise<Buffer> => {
   return new Promise((resolve, reject) => {
-    const tempPptFilePath = path.join(__dirname, "temp.pptx");
+    const tempPptFilePath = path.join(uploadDir, "temp.pptx");
     fs.writeFileSync(tempPptFilePath, pptBuffer);
 
-    const tempOutputDir = path.join(__dirname, "tempOutput");
+    const tempOutputDir = path.join(uploadDir, "tempOutput");
     if (!fs.existsSync(tempOutputDir)) {
       fs.mkdirSync(tempOutputDir);
     }

@@ -6,73 +6,50 @@ import path from "path";
 import { convertMp3ToWav } from "../../utils/transcript/convertMp3ToWav";
 import { extractWavFromVideo } from "../../utils/transcript/extractWavFromVideo";
 import { downloadVideoFromYoutube } from "../../utils/transcript/downloadVideoFromYoutube";
-import { readTextFile } from "../../utils/transcript/readTextFile";
+// import { readTextFile } from "../../utils/transcript/readTextFile";
 import handleError from "../../utils/common/handleError";
+import { getUploadDir } from "../../utils/common/getUploadDir";
 
-const TranscriptController = {
-  convertTextToText: async (req: Request, res: Response): Promise<void> => {
-    const { filePath } = req.body;
+const uploadDir = getUploadDir();
+
+const transcriptService = {
+  convertImageToText: async (buffer: Buffer): Promise<string> => {
     try {
-      const absoluteFilePath = path.join(__dirname, filePath);
-
-      if (!filePath) {
-        res.status(400).json({ message: "File path is required" });
-        return;
-      }
-
-      if (!fs.existsSync(absoluteFilePath)) {
-        res.status(404).json({ message: "File not found" });
-        return;
-      }
-
-      const result = readTextFile(absoluteFilePath);
-      res.json({ text: result });
-    } catch (error: unknown) {
-      handleError.controllerError(res, error, "processing the text");
-      return;
-    }
-  },
-  convertImageToText: async (req: Request, res: Response): Promise<void> => {
-    const { filePath } = req.body;
-    try {
-      const absoluteFilePath = path.join(__dirname, filePath);
-
-      if (!filePath) {
-        res.status(400).json({ message: "File path is required" });
-        return;
-      }
-
-      if (!fs.existsSync(absoluteFilePath)) {
-        res.status(404).json({ message: "File not found" });
-        return;
-      }
-
-      const buffer = fs.readFileSync(absoluteFilePath);
-
       const result = await Tesseract.recognize(buffer, "eng");
-      res.json({ text: result.data.text });
+      return result.data.text;
     } catch (error: unknown) {
-      handleError.controllerError(res, error, "processing the image");
-      return;
+      handleError.serviceError(error, "processing the image");
+      return "";
     }
   },
-  convertAudioToText: async (req: Request, res: Response): Promise<void> => {
-    const { filePath } = req.body;
+
+  convertAudioToText: async (buffer: Buffer): Promise<string> => {
+    const isMp3 = (buffer: Buffer): boolean => {
+      const id3Tag = buffer.subarray(0, 3).toString("utf8");
+      if (id3Tag === "ID3") {
+        return true;
+      }
+
+      return buffer[0] === 0xff && (buffer[1] & 0xe0) === 0xe0;
+    };
+
+    const isWav = (buffer: Buffer): boolean => {
+      return buffer.subarray(0, 4).toString("utf8") === "RIFF";
+    };
+
     try {
-      const absoluteFilePath = path.join(__dirname, filePath);
+      let wavBuffer = buffer;
 
-      if (!filePath) {
-        res.status(400).json({ message: "File path is required" });
-        return;
+      if (isMp3(buffer)) {
+        wavBuffer = await convertMp3ToWav(buffer);
+      } else if (isWav(buffer)) {
+        wavBuffer = buffer;
+      } else {
+        throw new Error("Unsupported audio format");
       }
 
-      if (!fs.existsSync(absoluteFilePath)) {
-        res.status(404).json({ message: "File not found" });
-        return;
-      }
-
-      const wavFilePath = absoluteFilePath.replace(".mp3", ".wav");
-      await convertMp3ToWav(absoluteFilePath, wavFilePath);
+      const wavFilePath = path.join(uploadDir, "temp_audio.wav");
+      fs.writeFileSync(wavFilePath, wavBuffer);
 
       const scriptPath = path.join(__dirname, "audioToText.py");
 
@@ -88,23 +65,27 @@ const TranscriptController = {
         console.error("Python script stderr:", data.toString());
       });
 
-      pythonProcess.on("close", (code) => {
-        fs.unlinkSync(wavFilePath);
-        if (code !== 0) {
-          res.status(500).json({ message: "Python processing error" });
-        } else {
-          res.json({ text: scriptOutput.trim() });
-        }
+      return new Promise((resolve, reject) => {
+        pythonProcess.on("close", (code) => {
+          fs.unlinkSync(wavFilePath);
+
+          if (code !== 0) {
+            reject(new Error("Python processing error"));
+          } else {
+            resolve(scriptOutput.trim());
+          }
+        });
       });
     } catch (error: unknown) {
-      handleError.controllerError(res, error, "processing the audio");
-      return;
+      handleError.serviceError(error, "processing the audio");
+      return "";
     }
   },
+
   convertVideoToText: async (req: Request, res: Response): Promise<void> => {
     const { filePath } = req.body;
     try {
-      const absoluteFilePath = path.join(__dirname, filePath);
+      const absoluteFilePath = path.join(uploadDir, filePath);
 
       if (!filePath) {
         res.status(400).json({ message: "File path is required" });
@@ -122,7 +103,7 @@ const TranscriptController = {
       );
       await extractWavFromVideo(absoluteFilePath, wavFilePath);
 
-      const scriptPath = path.join(__dirname, "audioToText.py");
+      const scriptPath = path.join(uploadDir, "audioToText.py");
 
       const pythonProcess = spawn("python", [scriptPath, wavFilePath]);
 
@@ -145,10 +126,11 @@ const TranscriptController = {
         }
       });
     } catch (error: unknown) {
-      handleError.controllerError(res, error, "processing the video");
+      handleError.serviceError(error, "processing the video");
       return;
     }
   },
+
   convertYoutubeToText: async (req: Request, res: Response): Promise<void> => {
     const { filePath } = req.body;
     try {
@@ -166,7 +148,7 @@ const TranscriptController = {
 
       await extractWavFromVideo(videoFilePath, wavFilePath);
 
-      const scriptPath = path.join(__dirname, "audioToText.py");
+      const scriptPath = path.join(uploadDir, "audioToText.py");
 
       const pythonProcess = spawn("python", [scriptPath, wavFilePath]);
 
@@ -189,10 +171,10 @@ const TranscriptController = {
         }
       });
     } catch (error: unknown) {
-      handleError.controllerError(res, error, "processing the Youtube video");
+      handleError.serviceError(error, "processing the Youtube video");
       return;
     }
   },
 };
 
-export default TranscriptController;
+export default transcriptService;

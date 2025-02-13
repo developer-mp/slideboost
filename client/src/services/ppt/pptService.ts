@@ -5,7 +5,7 @@ import handleError from "../../utils/common/handleError";
 const pptService = {
   async generatePpt(
     userId: string,
-    fileId: string[],
+    files: { file_id: string; file_type: string }[],
     templateId: string,
     title: string
   ): Promise<string> {
@@ -14,7 +14,7 @@ const pptService = {
     try {
       const response = await apiService.getCall(endpoint, {
         userId,
-        fileId,
+        files,
         templateId,
         title,
       });

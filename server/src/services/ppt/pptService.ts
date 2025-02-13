@@ -12,8 +12,9 @@ import Automizer from "pptx-automizer";
 import { pool } from "../../db/config/pool";
 import storageService from "../storage/storageService";
 import { config } from "../../../env.config";
+import { getUploadDir } from "../../utils/common/getUploadDir";
 
-const uploadDir = path.join(__dirname, "..", "..", "upload");
+const uploadDir = getUploadDir();
 
 const pptService = {
   createUploadFolder: async (template: ArrayBuffer): Promise<string> => {

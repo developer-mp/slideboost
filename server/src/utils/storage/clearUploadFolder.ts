@@ -1,8 +1,9 @@
 import fs from "fs";
 import path from "path";
 import handleError from "../common/handleError";
+import { getUploadDir } from "../common/getUploadDir";
 
-const uploadDir = path.join(__dirname, "..", "..", "upload");
+const uploadDir = getUploadDir();
 
 export const clearUploadFolder = async () => {
   try {
