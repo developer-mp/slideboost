@@ -4,11 +4,11 @@ import fs from "fs";
 import { spawn } from "child_process";
 import path from "path";
 import { convertMp3ToWav } from "../../utils/transcript/convertMp3ToWav";
-import { extractWavFromVideo } from "../../utils/transcript/extractWavFromVideo";
+import { extractAudioFromVideo } from "../../utils/transcript/extractAudioFromVideo";
 import { downloadVideoFromYoutube } from "../../utils/transcript/downloadVideoFromYoutube";
-// import { readTextFile } from "../../utils/transcript/readTextFile";
 import handleError from "../../utils/common/handleError";
 import { getUploadDir } from "../../utils/common/getUploadDir";
+import mammoth from "mammoth";
 
 const uploadDir = getUploadDir();
 
@@ -82,28 +82,16 @@ const transcriptService = {
     }
   },
 
-  convertVideoToText: async (req: Request, res: Response): Promise<void> => {
-    const { filePath } = req.body;
+  convertVideoToText: async (buffer: Buffer): Promise<string> => {
     try {
-      const absoluteFilePath = path.join(uploadDir, filePath);
+      const audioBuffer = await extractAudioFromVideo(buffer);
 
-      if (!filePath) {
-        res.status(400).json({ message: "File path is required" });
-        return;
-      }
+      const wavBuffer = audioBuffer;
 
-      if (!fs.existsSync(absoluteFilePath)) {
-        res.status(404).json({ message: "File not found" });
-        return;
-      }
+      const wavFilePath = path.join(uploadDir, "temp_audio.wav");
+      fs.writeFileSync(wavFilePath, wavBuffer);
 
-      const wavFilePath = absoluteFilePath.replace(
-        path.extname(absoluteFilePath),
-        ".wav"
-      );
-      await extractWavFromVideo(absoluteFilePath, wavFilePath);
-
-      const scriptPath = path.join(uploadDir, "audioToText.py");
+      const scriptPath = path.join(__dirname, "audioToText.py");
 
       const pythonProcess = spawn("python", [scriptPath, wavFilePath]);
 
@@ -117,64 +105,77 @@ const transcriptService = {
         console.error("Python script stderr:", data.toString());
       });
 
-      pythonProcess.on("close", (code) => {
-        fs.unlinkSync(wavFilePath);
-        if (code !== 0) {
-          res.status(500).json({ message: "Python processing error" });
-        } else {
-          res.json({ text: scriptOutput.trim() });
-        }
+      return new Promise((resolve, reject) => {
+        pythonProcess.on("close", (code) => {
+          fs.unlinkSync(wavFilePath);
+
+          if (code !== 0) {
+            reject(new Error("Python processing error"));
+          } else {
+            resolve(scriptOutput.trim());
+          }
+        });
       });
     } catch (error: unknown) {
       handleError.serviceError(error, "processing the video");
-      return;
+      return "";
     }
   },
 
-  convertYoutubeToText: async (req: Request, res: Response): Promise<void> => {
-    const { filePath } = req.body;
+  convertDocsToText: async (buffer: Buffer): Promise<string> => {
     try {
-      if (!filePath) {
-        res.status(400).json({ message: "YouTube URL is required" });
-        return;
-      }
-
-      const videoFilePath = await downloadVideoFromYoutube(filePath);
-
-      const wavFilePath = videoFilePath.replace(
-        path.extname(videoFilePath),
-        ".wav"
-      );
-
-      await extractWavFromVideo(videoFilePath, wavFilePath);
-
-      const scriptPath = path.join(uploadDir, "audioToText.py");
-
-      const pythonProcess = spawn("python", [scriptPath, wavFilePath]);
-
-      let scriptOutput = "";
-
-      pythonProcess.stdout.on("data", (data) => {
-        scriptOutput += data.toString();
-      });
-
-      pythonProcess.stderr.on("data", (data) => {
-        console.error("Python script stderr:", data.toString());
-      });
-
-      pythonProcess.on("close", (code) => {
-        fs.unlinkSync(wavFilePath);
-        if (code !== 0) {
-          res.status(500).json({ message: "Python processing error" });
-        } else {
-          res.json({ text: scriptOutput.trim() });
-        }
-      });
+      const result = await mammoth.extractRawText({ buffer });
+      return result.value;
     } catch (error: unknown) {
-      handleError.serviceError(error, "processing the Youtube video");
-      return;
+      handleError.serviceError(error, "processing the file");
+      return "";
     }
   },
+
+  // convertYoutubeToText: async (req: Request, res: Response): Promise<void> => {
+  //   const { filePath } = req.body;
+  //   try {
+  //     if (!filePath) {
+  //       res.status(400).json({ message: "YouTube URL is required" });
+  //       return;
+  //     }
+
+  //     const videoFilePath = await downloadVideoFromYoutube(filePath);
+
+  //     const wavFilePath = videoFilePath.replace(
+  //       path.extname(videoFilePath),
+  //       ".wav"
+  //     );
+
+  //     await extractWavFromVideo(videoFilePath, wavFilePath);
+
+  //     const scriptPath = path.join(uploadDir, "audioToText.py");
+
+  //     const pythonProcess = spawn("python", [scriptPath, wavFilePath]);
+
+  //     let scriptOutput = "";
+
+  //     pythonProcess.stdout.on("data", (data) => {
+  //       scriptOutput += data.toString();
+  //     });
+
+  //     pythonProcess.stderr.on("data", (data) => {
+  //       console.error("Python script stderr:", data.toString());
+  //     });
+
+  //     pythonProcess.on("close", (code) => {
+  //       fs.unlinkSync(wavFilePath);
+  //       if (code !== 0) {
+  //         res.status(500).json({ message: "Python processing error" });
+  //       } else {
+  //         res.json({ text: scriptOutput.trim() });
+  //       }
+  //     });
+  //   } catch (error: unknown) {
+  //     handleError.serviceError(error, "processing the Youtube video");
+  //     return;
+  //   }
+  // },
 };
 
 export default transcriptService;

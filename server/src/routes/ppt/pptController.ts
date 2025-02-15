@@ -32,15 +32,12 @@ const pptController = {
 
     try {
       let allExtractedText = "";
-      const textFormats = [
-        "text",
-        // "vnd.openxmlformats-officedocument.wordprocessingml.document",
-        // "msword",
-      ];
+      const textFormats = ["text"];
 
       for (const file of files) {
         const { file_id, file_type } = file;
         const fileType = file_type.split("/")[0].toLowerCase();
+        const fileFormat = file_type.split("/")[1].toLowerCase();
         const format = textFormats.includes(fileType) ? "text" : "arraybuffer";
         let transcript = "";
 
@@ -55,6 +52,15 @@ const pptController = {
             transcript = await transcriptService.convertImageToText(buffer);
           } else if (fileType == "audio") {
             transcript = await transcriptService.convertAudioToText(buffer);
+          } else if (fileType == "video") {
+            transcript = await transcriptService.convertVideoToText(buffer);
+          } else if (fileType == "application") {
+            if (
+              fileFormat ==
+              "vnd.openxmlformats-officedocument.wordprocessingml.document"
+            ) {
+              transcript = await transcriptService.convertDocsToText(buffer);
+            }
           }
         }
         allExtractedText += transcript;
