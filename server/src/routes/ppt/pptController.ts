@@ -60,6 +60,8 @@ const pptController = {
               "vnd.openxmlformats-officedocument.wordprocessingml.document"
             ) {
               transcript = await transcriptService.convertDocsToText(buffer);
+            } else if (fileFormat == "pdf") {
+              transcript = await transcriptService.convertPdfToText(buffer);
             }
           }
         }

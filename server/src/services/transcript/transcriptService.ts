@@ -9,6 +9,7 @@ import { downloadVideoFromYoutube } from "../../utils/transcript/downloadVideoFr
 import handleError from "../../utils/common/handleError";
 import { getUploadDir } from "../../utils/common/getUploadDir";
 import mammoth from "mammoth";
+import pdf from "pdf-parse";
 
 const uploadDir = getUploadDir();
 
@@ -18,7 +19,7 @@ const transcriptService = {
       const result = await Tesseract.recognize(buffer, "eng");
       return result.data.text;
     } catch (error: unknown) {
-      handleError.serviceError(error, "processing the image");
+      handleError.serviceError(error, "processing the image file");
       return "";
     }
   },
@@ -77,7 +78,7 @@ const transcriptService = {
         });
       });
     } catch (error: unknown) {
-      handleError.serviceError(error, "processing the audio");
+      handleError.serviceError(error, "processing the audio file");
       return "";
     }
   },
@@ -117,17 +118,27 @@ const transcriptService = {
         });
       });
     } catch (error: unknown) {
-      handleError.serviceError(error, "processing the video");
+      handleError.serviceError(error, "processing the video file");
       return "";
     }
   },
 
   convertDocsToText: async (buffer: Buffer): Promise<string> => {
     try {
-      const result = await mammoth.extractRawText({ buffer });
-      return result.value;
+      const data = await mammoth.extractRawText({ buffer });
+      return data.value;
     } catch (error: unknown) {
-      handleError.serviceError(error, "processing the file");
+      handleError.serviceError(error, "processing the DOCX file");
+      return "";
+    }
+  },
+
+  convertPdfToText: async (buffer: Buffer): Promise<string> => {
+    try {
+      const data = await pdf(buffer);
+      return data.text;
+    } catch (error: unknown) {
+      handleError.serviceError(error, "processing the PDF file");
       return "";
     }
   },
