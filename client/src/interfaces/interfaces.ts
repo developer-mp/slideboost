@@ -207,6 +207,7 @@ export interface SupportedFiles {
   id: string;
   extension: string;
   type: string;
+  category: string;
 }
 
 export interface Faq {

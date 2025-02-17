@@ -29,6 +29,7 @@ import { getFileSize } from "../../utils/ppt/getFileSize";
 import { truncateText } from "../../utils/common/truncateText";
 import { downloadFileBlob } from "../../utils/storage/downloadFileBlob";
 import { getSupportedFiles } from "../../store/actions/dataAction";
+import { SupportedFileType } from "../../interfaces/types";
 
 const MediaMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -50,8 +51,18 @@ const MediaMenu: React.FC = () => {
   );
 
   const supportedMediaExtensions = supportedFiles
-    .filter((file) => file.type === "media")
+    .filter((file) => file.category === "media")
     .map((file) => file.extension);
+
+  const supportedMediaFileTypes: SupportedFileType = supportedFiles
+    .filter((file) => file.category === "media")
+    .reduce((acc: SupportedFileType, file) => {
+      if (!acc[file.type]) {
+        acc[file.type] = [];
+      }
+      acc[file.type].push(file.extension);
+      return acc;
+    }, {});
 
   const handleMediaSupportedFiles = async () => {
     try {
@@ -217,20 +228,21 @@ const MediaMenu: React.FC = () => {
         />
         <div className="tw-mt-2 tw-text-sm tw-text-gray-500 tw-text-left tw-ml-3">
           <div className="tw-mb-1">Supported file types:</div>
-          <div>
-            <strong>Text:</strong> .txt, .docs, .pdf
-          </div>
-          <div>
-            <strong>Image:</strong> .png, .jpg/.jpeg, .tiff, .gif, .bmp, .webp
-            and others
-          </div>
-          <div>
-            <strong>Video:</strong> .mp4, .mpg/.mpeg, .avi, .mov, .wmv, .mkv,
-            .webm, .3gp and others
-          </div>
-          <div>
-            <strong>Audio:</strong> .mp3, .wav
-          </div>
+          {Object.keys(supportedMediaFileTypes).map((type) => {
+            const extensions =
+              supportedMediaFileTypes[type as keyof SupportedFileType];
+            let displayExtensions = extensions.join(", ");
+
+            if (type === "Image" || type === "Video") {
+              displayExtensions += " and others";
+            }
+
+            return (
+              <div key={type}>
+                <strong>{type}:</strong> {displayExtensions}
+              </div>
+            );
+          })}
         </div>
       </CustomModal>
     </Container>

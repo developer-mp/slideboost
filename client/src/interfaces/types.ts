@@ -8,3 +8,7 @@ export type PasswordInputProps = Omit<
   FormControlProps;
 
 export type MenuItem = "dashboard" | "media" | "templates" | "projects";
+
+export type SupportedFileType = {
+  [key: string]: string[];
+};

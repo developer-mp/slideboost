@@ -29,6 +29,7 @@ import {
 } from "../../store/actions/dataAction";
 import { downloadFileBlob } from "../../utils/storage/downloadFileBlob";
 import { FiDownload, FiTrash2 } from "react-icons/fi";
+import { SupportedFileType } from "../../interfaces/types";
 
 const TemplatesMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -83,8 +84,18 @@ const TemplatesMenu: React.FC = () => {
   );
 
   const supportedTemplatesExtensions = supportedFiles
-    .filter((file) => file.type === "templates")
+    .filter((file) => file.category === "templates")
     .map((file) => file.extension);
+
+  const supportedTemplatesFileTypes: SupportedFileType = supportedFiles
+    .filter((file) => file.category === "templates")
+    .reduce((acc: SupportedFileType, file) => {
+      if (!acc[file.type]) {
+        acc[file.type] = [];
+      }
+      acc[file.type].push(file.extension);
+      return acc;
+    }, {});
 
   const handleTemplatesSupportedFiles = async () => {
     try {
@@ -303,7 +314,14 @@ const TemplatesMenu: React.FC = () => {
         />
         <div className="tw-mt-2 tw-text-sm tw-text-gray-500 tw-text-left tw-ml-3">
           <div className="tw-mb-1">Supported file types:</div>
-          <strong>PowerPoint:</strong> .ppt, .pptx
+          {Object.keys(supportedTemplatesFileTypes).map((type) => (
+            <div key={type}>
+              <strong>{type}:</strong>{" "}
+              {supportedTemplatesFileTypes[
+                type as keyof SupportedFileType
+              ].join(", ")}
+            </div>
+          ))}
         </div>
       </CustomModal>
     </Container>
