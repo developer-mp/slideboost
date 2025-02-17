@@ -24,8 +24,11 @@ const DB_HOST = getEnvVar("DB_HOST");
 const DB_DATABASE = getEnvVar("DB_DATABASE");
 const DB_PASS = getEnvVar("DB_PASS");
 const DB_PORT = parseInt(getEnvVar("DB_PORT"), 10);
-const TOKEN_EXPIRATION = getEnvVar("TOKEN_EXPIRATION");
-const REFRESH_TOKEN_EXPIRATION = getEnvVar("REFRESH_TOKEN_EXPIRATION")!;
+const TOKEN_EXPIRATION = parseInt(getEnvVar("TOKEN_EXPIRATION"), 10);
+const REFRESH_TOKEN_EXPIRATION = parseInt(
+  getEnvVar("REFRESH_TOKEN_EXPIRATION"),
+  10
+);
 const GOOGLE_CLIENT_ID = getEnvVar("GOOGLE_CLIENT_ID");
 const AI_API_KEY = getEnvVar("AI_API_KEY");
 const AI_MODEL = getEnvVar("AI_MODEL");

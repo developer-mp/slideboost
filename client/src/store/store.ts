@@ -33,6 +33,7 @@ const store = configureStore({
         ],
         ignoredActionPaths: ["meta.arg", "payload.timestamp"],
         ignoredPaths: ["persist"],
+        warningThreshold: 100,
       },
     }),
 });

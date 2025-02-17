@@ -150,13 +150,13 @@ const userController = {
 
       if (user && (await bcrypt.compare(password, user.password))) {
         const accessToken = jwt.sign({ userId: user.id }, config.JWT_SECRET, {
-          expiresIn: "1h",
+          expiresIn: config.TOKEN_EXPIRATION,
         });
 
         const refreshToken = jwt.sign(
           { userId: user.id },
           config.JWT_REFRESH_SECRET,
-          { expiresIn: "7d" }
+          { expiresIn: config.REFRESH_TOKEN_EXPIRATION }
         );
 
         res.cookie("accessToken", accessToken, {
@@ -225,13 +225,13 @@ const userController = {
       }
 
       const accessToken = jwt.sign({ userId: user.id }, config.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: config.TOKEN_EXPIRATION,
       });
       const refreshToken = jwt.sign(
         { userId: user.id },
         config.JWT_REFRESH_SECRET,
         {
-          expiresIn: "7d",
+          expiresIn: config.REFRESH_TOKEN_EXPIRATION,
         }
       );
 
@@ -332,14 +332,14 @@ const userController = {
             { userId: user.id },
             config.JWT_SECRET,
             {
-              expiresIn: "1h",
+              expiresIn: config.TOKEN_EXPIRATION,
             }
           );
 
           const newRefreshToken = jwt.sign(
             { userId: user.id },
             config.JWT_REFRESH_SECRET,
-            { expiresIn: "7d" }
+            { expiresIn: config.REFRESH_TOKEN_EXPIRATION }
           );
 
           res.cookie("accessToken", newAccessToken, {
