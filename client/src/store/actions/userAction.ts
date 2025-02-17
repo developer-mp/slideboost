@@ -5,7 +5,7 @@ import handleError from "../../utils/common/handleError";
 import axios from "axios";
 
 export const registerUser = createAsyncThunk<
-  { name: string; email: string; message: string },
+  { name: string; email: string; balance: number; message: string },
   { name: string; email: string; password: string },
   { rejectValue: { message: string } }
 >(
@@ -47,7 +47,6 @@ export const loginUser = createAsyncThunk<
     name: string;
     email: string;
     createdAt: string;
-    plan: string;
     message: string;
   },
   { email: string; password: string },
@@ -71,7 +70,6 @@ export const loginUserWithGoogle = createAsyncThunk<
     name: string;
     email: string;
     createdAt: string;
-    plan: string;
     message: string;
   },
   { idToken: string },

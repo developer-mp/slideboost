@@ -159,6 +159,7 @@ export interface PrivateRouteFlagState {
 export interface RegisterResponse {
   name: string;
   email: string;
+  balance: number;
   message: string;
 }
 

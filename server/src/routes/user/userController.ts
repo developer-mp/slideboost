@@ -38,12 +38,19 @@ const userController = {
       const verificationCode = generateVerificationCode();
       const expiresAt = new Date();
       expiresAt.setMinutes(expiresAt.getMinutes() + 15);
-      const result = (await pool.query(
-        "INSERT INTO users (name, email, password, verification_code, expires_at) VALUES ($1, $2, $3, $4, $5) RETURNING name, email",
+      const userResult = (await pool.query(
+        "INSERT INTO users (name, email, password, verification_code, expires_at) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email",
         [name, email, hashedPassword, verificationCode, expiresAt]
       )) as DbQueryResultProps;
 
-      const user = result.rows[0];
+      const user = userResult.rows[0];
+
+      const creditResult = (await pool.query(
+        "INSERT INTO credits (user_id) VALUES ($1) RETURNING balance",
+        [user.id]
+      )) as DbQueryResultProps;
+
+      const credit = creditResult.rows[0];
 
       try {
         if (verificationCode) {
@@ -67,6 +74,7 @@ const userController = {
       res.status(201).json({
         name: user.name,
         email: user.email,
+        balance: credit.balance,
         message: "Check your email box for verification code",
       });
     } catch (error: unknown) {
@@ -142,7 +150,7 @@ const userController = {
 
     try {
       const result = (await pool.query(
-        "SELECT id, name, email, password, created_at, plan FROM users WHERE email = $1",
+        "SELECT id, name, email, password, created_at FROM users WHERE email = $1",
         [email]
       )) as DbQueryResultProps;
 
@@ -178,7 +186,6 @@ const userController = {
           name: user.name,
           email: user.email,
           createdAt: user.created_at,
-          plan: user.plan,
           message: "Logged in successfully",
         });
       } else {
@@ -209,7 +216,7 @@ const userController = {
       const googleId = payload["sub"];
 
       let result = (await pool.query(
-        "SELECT id, name, email, created_at, plan FROM users WHERE google_id = $1",
+        "SELECT id, name, email, created_at FROM users WHERE google_id = $1",
         [googleId]
       )) as DbQueryResultProps;
 
@@ -217,7 +224,7 @@ const userController = {
 
       if (!user) {
         result = (await pool.query(
-          "INSERT INTO users (google_id, name, email, is_verified) VALUES ($1, $2, $3, $4) RETURNING id, name, email, created_at, plan",
+          "INSERT INTO users (google_id, name, email, is_verified) VALUES ($1, $2, $3, $4) RETURNING id, name, email, created_at",
           [googleId, payload["name"], payload["email"], true]
         )) as DbQueryResultProps;
 
@@ -254,7 +261,6 @@ const userController = {
         name: user.name,
         email: user.email,
         createdAt: user.created_at,
-        plan: user.plan,
         message: "Logged in successfully",
       });
     } catch (error: unknown) {

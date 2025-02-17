@@ -16,10 +16,10 @@ interface UserState {
   userId: string;
   userEmail: string;
   userName: string;
+  creditBalance: number;
   createdAt: string;
   isRegister: boolean;
   isReset: boolean;
-  plan: string;
   status: "idle" | "loading" | "success" | "fail";
   error: string | null;
   message: string | null;
@@ -30,10 +30,10 @@ const initialState: UserState = {
   userId: "",
   userEmail: "",
   userName: "",
+  creditBalance: 0,
   createdAt: "",
   isRegister: false,
   isReset: false,
-  plan: "",
   status: "idle",
   message: null,
   error: null,
@@ -61,6 +61,7 @@ const userSlice = createSlice({
         state.status = "success";
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
+        state.creditBalance = action.payload.balance;
         state.message = action.payload.message;
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -93,7 +94,6 @@ const userSlice = createSlice({
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
         state.createdAt = action.payload.createdAt;
-        state.plan = action.payload.plan;
         state.message = action.payload.message;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -111,7 +111,6 @@ const userSlice = createSlice({
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
         state.createdAt = action.payload.createdAt;
-        state.plan = action.payload.plan;
         state.message = action.payload.message;
       })
       .addCase(loginUserWithGoogle.rejected, (state, action) => {
@@ -128,7 +127,6 @@ const userSlice = createSlice({
         state.userEmail = "";
         state.userName = "";
         state.createdAt = "";
-        state.plan = "";
         state.message = action.payload.message;
       })
       .addCase(logoutUser.rejected, (state, action) => {

@@ -3,12 +3,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { getFirstChar } from "../utils/login/getFirstChar";
 import { formatDate } from "./../utils/common/formatDate";
-import { MdPersonOutline, MdOutlineSubscriptions } from "react-icons/md";
+import { MdPersonOutline, MdOutlineCreditScore } from "react-icons/md";
 
 const Profile: React.FC = () => {
   const userName = useSelector((state: RootState) => state.user.userName);
   const createdAt = useSelector((state: RootState) => state.user.createdAt);
-  const plan = useSelector((state: RootState) => state.user.plan);
+  const creditBalance = useSelector(
+    (state: RootState) => state.user.creditBalance
+  );
   const formattedCreatedAt = formatDate(createdAt, "MMM d, yyyy");
 
   const firstInitial = getFirstChar(userName);
@@ -29,11 +31,11 @@ const Profile: React.FC = () => {
               </div>
               <div className="tw-flex tw-items-center tw-space-x-2 tw-text-gray-700 tw-text-base tw-text-center tw-mt-3">
                 <MdPersonOutline className="tw-text-2xl" />
-                <div>Joined in {formattedCreatedAt}</div>
+                <div>Joined on {formattedCreatedAt}</div>
               </div>
               <div className="tw-flex tw-items-center tw-space-x-2 tw-text-gray-700 tw-text-base tw-text-center tw-mt-3">
-                <MdOutlineSubscriptions className="tw-text-2xl" />
-                <div>Subscription plan: {plan}</div>
+                <MdOutlineCreditScore className="tw-text-2xl" />
+                <div>Credits: {creditBalance}</div>
               </div>
             </Card.Body>
           </Card>
