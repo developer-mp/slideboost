@@ -74,7 +74,7 @@ const Features: React.FC = () => {
           <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-3xl md:tw-text-4xl tw-mb-4 lg:tw-mb-8 tw-mt-4">
             CUSTOMIZABLE TEMPLATES
           </h3>
-          <div className="tw-text-gray-700 tw-text-xl tw-mb-8">
+          <div className="tw-text-gray-700 tw-text-xl tw-text-pretty tw-mb-8">
             Personalize templates to match your brand, style, and content needs.
             Whether you're creating professional presentations or engaging
             visuals, our templates provide the flexibility to bring your vision

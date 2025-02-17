@@ -1,4 +1,4 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import PricingPlan from "../elements/PricingPlan";
 
 const Pricing: React.FC = () => {
@@ -10,79 +10,30 @@ const Pricing: React.FC = () => {
       <div className="tw-max-w-full tw-mx-auto tw-text-center">
         <Row className="align-items-center">
           <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-3xl md:tw-text-4xl tw-text-center tw-mb-8">
-            CHOOSE THE PLAN THAT SUITS YOU BEST
+            PURCHASE CREDITS TO BUILD YOUR PRESENTATION
           </h3>
-          <div className="tw-text-gray-700 tw-text-xl tw-mb-8">
-            Choose the plan that works best for you, tailored to your needs and
-            goals. Whether you're looking for flexibility, advanced features, or
-            cost-effective solutions, our plans offer something for everyone.
+          <div className="tw-text-gray-700 tw-text-xl tw-text-pretty tw-mb-8">
+            Get started by purchasing credits to unlock the power of creating
+            presentations effortlessly. By default, all registered users receive
+            100 credits. Each credit equals 1,000 tokens, which you can use to
+            create your presentations. You can top up your balance at any time
+            to ensure smooth and uninterrupted creation. Before proceeding,
+            you'll receive an estimate of how many credits your presentation
+            requires, so you can make informed decisions.
           </div>
         </Row>
         <Row className="tw-justify-center">
-          <Col
-            xs={12}
-            sm={12}
-            md={12}
-            lg={4}
-            xl={4}
-            xxl={3}
-            className="tw-mb-4 tw-flex tw-justify-center"
-          >
-            <PricingPlan
-              title="Free"
-              titleColor="#5670A1"
-              price="$0 /mo"
-              description="Good to get the feeling of the application"
-              features={[
-                "1 presentation creation per day",
-                "Only text and video supported",
-                "Watermark included",
-              ]}
-            />
-          </Col>
-          <Col
-            xs={12}
-            sm={12}
-            md={12}
-            lg={4}
-            xl={4}
-            xxl={3}
-            className="tw-mb-4 tw-flex tw-justify-center"
-          >
-            <PricingPlan
-              title="Creator"
-              titleColor="#90618f"
-              price="$4.99 /mo"
-              description="Perfect for growing businesses and educators"
-              features={[
-                "Unlimited presentations creation per day",
-                "All media are supported",
-                "No watermark",
-              ]}
-            />
-          </Col>
-          <Col
-            xs={12}
-            sm={12}
-            md={12}
-            lg={4}
-            xl={4}
-            xxl={3}
-            className="tw-mb-20 tw-flex tw-justify-center"
-          >
-            <PricingPlan
-              title="Pro"
-              titleColor="#cc6b7c"
-              price="$9.99 /mo"
-              description="For high-demand users and content creators"
-              features={[
-                "Unlimited presentations creation",
-                "All media are supported",
-                "Advanced options (translations, sharing, etc.)",
-                "No watermark",
-              ]}
-            />
-          </Col>
+          <PricingPlan
+            title="Credits"
+            titleColor="#5670A1"
+            price="$0.09 /credit"
+            description=""
+            features={[
+              "Unlimited presentation creations based on token usage",
+              "Supports all media formats: text, images, videos, and audio",
+              "No watermark included; enjoy default templates or upload your own",
+            ]}
+          />
         </Row>
       </div>
     </Container>
