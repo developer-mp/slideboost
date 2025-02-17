@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   DeactivationReason,
+  SupportedFiles,
   Faq,
   News,
   TemplateCategory,
@@ -8,6 +9,7 @@ import {
 import {
   getTemplateCategories,
   getDeactivationReasons,
+  getSupportedFiles,
   getFaq,
   getNews,
 } from "../actions/dataAction";
@@ -15,10 +17,12 @@ import {
 interface DataState {
   templateCategories: TemplateCategory[];
   deactivationReasons: DeactivationReason[];
+  supportedFiles: SupportedFiles[];
   faq: Faq[];
   news: News[];
   isCategoriesFetched: boolean;
   isReasonsFetched: boolean;
+  isSupportedFilesFetched: boolean;
   isFaqFetched: boolean;
   isNewsFetched: boolean;
   status: "idle" | "loading" | "success" | "fail";
@@ -29,10 +33,12 @@ interface DataState {
 const initialState: DataState = {
   templateCategories: [],
   deactivationReasons: [],
+  supportedFiles: [],
   faq: [],
   news: [],
   isCategoriesFetched: false,
   isReasonsFetched: false,
+  isSupportedFilesFetched: false,
   isFaqFetched: false,
   isNewsFetched: false,
   status: "idle",
@@ -74,6 +80,22 @@ const dataSlice = createSlice({
         state.message = action.payload.message;
       })
       .addCase(getDeactivationReasons.rejected, (state, action) => {
+        state.status = "fail";
+        state.message = null;
+        state.error = action.error.message || null;
+      })
+      .addCase(getSupportedFiles.pending, (state) => {
+        state.status = "loading";
+        state.message = null;
+        state.error = null;
+      })
+      .addCase(getSupportedFiles.fulfilled, (state, action) => {
+        state.status = "success";
+        state.supportedFiles = action.payload.data;
+        state.isSupportedFilesFetched = true;
+        state.message = action.payload.message;
+      })
+      .addCase(getSupportedFiles.rejected, (state, action) => {
         state.status = "fail";
         state.message = null;
         state.error = action.error.message || null;

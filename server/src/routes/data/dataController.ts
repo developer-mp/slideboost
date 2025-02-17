@@ -47,6 +47,22 @@ const dataController = {
     }
   },
 
+  getSupportedFiles: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const files = (await pool.query(
+        "SELECT * FROM supported_files"
+      )) as DbQueryResultProps;
+
+      res.status(200).json({
+        data: files.rows,
+        message: "Supported files fetched successfully",
+      });
+    } catch (error: unknown) {
+      handleError.controllerError(res, error, "getting the supported files");
+      return;
+    }
+  },
+
   getFaq: async (req: Request, res: Response): Promise<void> => {
     try {
       const faq = (await pool.query("SELECT * FROM faq")) as DbQueryResultProps;

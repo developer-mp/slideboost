@@ -7,9 +7,10 @@ import {
   FileWithMetadata,
 } from "../../interfaces/interfaces";
 import UploadFilesDisplay from "../widgets/UploadFilesDisplay";
+import { showWarningToast } from "../../utils/common/handleToast";
 
 const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
-  ({ onUpload, showCategory }, ref) => {
+  ({ onUpload, showCategory, supportedExtensions }, ref) => {
     const [fileDetails, setFileDetails] = useState<FileWithMetadata[]>([]);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -42,16 +43,30 @@ const FileUploader = forwardRef<FileUploaderRef, FileUploaderProps>(
     };
 
     const handleFiles = (files: FileList) => {
-      const newFilesWithMetadata: FileWithMetadata[] = Array.from(files).map(
-        (file) => ({
+      const newFilesWithMetadata: FileWithMetadata[] = Array.from(files)
+        .filter((file) => {
+          const fileExtension = file.name.split(".").pop()?.toLowerCase();
+          if (!supportedExtensions.includes(`${fileExtension}`)) {
+            showWarningToast("File type is not supported");
+            return false;
+          }
+          return true;
+        })
+        .map((file) => ({
           file,
           category: null,
-        })
-      );
-      setFileDetails((prevDetails) => [
-        ...prevDetails,
-        ...newFilesWithMetadata,
-      ]);
+        }));
+
+      if (newFilesWithMetadata.length > 0) {
+        setFileDetails((prevDetails) => [
+          ...prevDetails,
+          ...newFilesWithMetadata,
+        ]);
+      }
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     };
 
     const handleCategoryChange = (category: string, index: number) => {

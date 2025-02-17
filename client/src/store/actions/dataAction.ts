@@ -42,6 +42,26 @@ export const getDeactivationReasons = createAsyncThunk<
   }
 });
 
+export const getSupportedFiles = createAsyncThunk<
+  {
+    data: [];
+    message: string;
+  },
+  void,
+  { rejectValue: { message: string } }
+>("data/getSupportedFiles", async (_, { rejectWithValue }) => {
+  try {
+    const response = await dataService.getSupportedFiles();
+    return response;
+  } catch (error) {
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "getting the supported files"
+    );
+  }
+});
+
 export const getFaq = createAsyncThunk<
   {
     data: [];

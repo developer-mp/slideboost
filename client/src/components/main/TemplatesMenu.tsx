@@ -23,7 +23,10 @@ import {
 import { replaceExtension } from "../../utils/storage/replaceExtension";
 import { config } from "../../../env.config";
 import { removeExtension } from "./../../utils/storage/removeExtension";
-import { getTemplateCategories } from "../../store/actions/dataAction";
+import {
+  getSupportedFiles,
+  getTemplateCategories,
+} from "../../store/actions/dataAction";
 import { downloadFileBlob } from "../../utils/storage/downloadFileBlob";
 import { FiDownload, FiTrash2 } from "react-icons/fi";
 
@@ -75,6 +78,27 @@ const TemplatesMenu: React.FC = () => {
     (file) => file.folder === "templates"
   );
 
+  const { supportedFiles, isSupportedFilesFetched } = useSelector(
+    (state: RootState) => state.dataStorage
+  );
+
+  const supportedTemplatesExtensions = supportedFiles
+    .filter((file) => file.type === "templates")
+    .map((file) => file.extension);
+
+  const handleTemplatesSupportedFiles = async () => {
+    try {
+      await dispatch(getSupportedFiles()).unwrap();
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while fetching the supported files: ",
+        error
+      );
+    }
+  };
+
   const handleFileMetadata = async () => {
     try {
       await dispatch(getFileMetadata({ userId })).unwrap();
@@ -91,6 +115,9 @@ const TemplatesMenu: React.FC = () => {
   useEffect(() => {
     if (!isFileMetadataFetched) {
       handleFileMetadata();
+    }
+    if (!isSupportedFilesFetched) {
+      handleTemplatesSupportedFiles();
     }
   });
 
@@ -272,9 +299,10 @@ const TemplatesMenu: React.FC = () => {
           ref={fileUploaderRef}
           onUpload={handleUpload}
           showCategory={true}
+          supportedExtensions={supportedTemplatesExtensions}
         />
         <div className="tw-mt-2 tw-text-sm tw-text-gray-500 tw-text-left tw-ml-3">
-          <div className="tw-mb-1">Supported formats:</div>
+          <div className="tw-mb-1">Supported file types:</div>
           <strong>PowerPoint:</strong> .ppt, .pptx
         </div>
       </CustomModal>

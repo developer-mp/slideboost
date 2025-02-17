@@ -27,6 +27,18 @@ const dataService = {
     }
   },
 
+  async getSupportedFiles(): Promise<void> {
+    const endpoint = `${config.DATA_ROUTER}${config.SUPPORTED_FILES_ENDPOINT}`;
+    try {
+      const response = await apiService.getCall(endpoint, {});
+
+      return response.data;
+    } catch (error) {
+      handleError.axiosError(error, "getting the supported files");
+      throw error;
+    }
+  },
+
   async getFaq(): Promise<void> {
     const endpoint = `${config.DATA_ROUTER}${config.FAQ_ENDPOINT}`;
     try {

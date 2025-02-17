@@ -28,6 +28,7 @@ import FileTable from "../shared/FileTable";
 import { getFileSize } from "../../utils/ppt/getFileSize";
 import { truncateText } from "../../utils/common/truncateText";
 import { downloadFileBlob } from "../../utils/storage/downloadFileBlob";
+import { getSupportedFiles } from "../../store/actions/dataAction";
 
 const MediaMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -44,6 +45,27 @@ const MediaMenu: React.FC = () => {
     (file) => file.folder === "media"
   );
 
+  const { supportedFiles, isSupportedFilesFetched } = useSelector(
+    (state: RootState) => state.dataStorage
+  );
+
+  const supportedMediaExtensions = supportedFiles
+    .filter((file) => file.type === "media")
+    .map((file) => file.extension);
+
+  const handleMediaSupportedFiles = async () => {
+    try {
+      await dispatch(getSupportedFiles()).unwrap();
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while fetching the supported files: ",
+        error
+      );
+    }
+  };
+
   const handleFileMetadata = async () => {
     try {
       await dispatch(getFileMetadata({ userId })).unwrap();
@@ -57,6 +79,9 @@ const MediaMenu: React.FC = () => {
   useEffect(() => {
     if (!isFileMetadataFetched) {
       handleFileMetadata();
+    }
+    if (!isSupportedFilesFetched) {
+      handleMediaSupportedFiles();
     }
   });
 
@@ -188,9 +213,10 @@ const MediaMenu: React.FC = () => {
           ref={fileUploaderRef}
           onUpload={handleUpload}
           showCategory={false}
+          supportedExtensions={supportedMediaExtensions}
         />
         <div className="tw-mt-2 tw-text-sm tw-text-gray-500 tw-text-left tw-ml-3">
-          <div className="tw-mb-1">Supported formats:</div>
+          <div className="tw-mb-1">Supported file types:</div>
           <div>
             <strong>Text:</strong> .txt, .docs, .pdf
           </div>

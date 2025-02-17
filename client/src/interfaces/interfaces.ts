@@ -55,6 +55,7 @@ export interface FileWithMetadata {
 export interface FileUploaderProps {
   onUpload: (files: FileWithMetadata[]) => void;
   showCategory: boolean;
+  supportedExtensions: string[];
 }
 
 export interface FileUploaderRef {
@@ -200,6 +201,12 @@ export interface TemplateCategory {
 export interface DeactivationReason {
   id: string;
   reason: string;
+}
+
+export interface SupportedFiles {
+  id: string;
+  extension: string;
+  type: string;
 }
 
 export interface Faq {
