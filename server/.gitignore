@@ -28,7 +28,4 @@ dist-ssr
 .env.local
 .env.*.local
 .env.development
-
-# deepspeech models
-models
 src/upload

@@ -94,7 +94,7 @@ const MediaMenu: React.FC = () => {
     {
       key: "type",
       label: "Type",
-      render: (file: FileDetailProps) => truncateText(file.type, 10),
+      render: (file: FileDetailProps) => truncateText(file.type, 20),
     },
     {
       key: "uploaded_at",
@@ -189,9 +189,22 @@ const MediaMenu: React.FC = () => {
           onUpload={handleUpload}
           showCategory={false}
         />
-        <div className="tw-mt-4 tw-text-sm tw-text-gray-500 tw-text-center">
-          Supported file types: .txt, .doc, .docs, .rtf, .wav, .mp3, .png, .jpg,
-          .jpeg, .mp4
+        <div className="tw-mt-2 tw-text-sm tw-text-gray-500 tw-text-left tw-ml-3">
+          <div className="tw-mb-1">Supported formats:</div>
+          <div>
+            <strong>Text:</strong> .txt, .docs, .pdf
+          </div>
+          <div>
+            <strong>Image:</strong> .png, .jpg/.jpeg, .tiff, .gif, .bmp, .webp
+            and others
+          </div>
+          <div>
+            <strong>Video:</strong> .mp4, .mpg/.mpeg, .avi, .mov, .wmv, .mkv,
+            .webm, .3gp and others
+          </div>
+          <div>
+            <strong>Audio:</strong> .mp3, .wav
+          </div>
         </div>
       </CustomModal>
     </Container>

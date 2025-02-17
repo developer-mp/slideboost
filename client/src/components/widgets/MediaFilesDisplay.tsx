@@ -40,7 +40,7 @@ const MediaFilesDisplay: React.FC<MediaFileDisplayProps> = ({
             {getFileIcon(file.type)}
             <div className="tw-font-bold tw-ml-2">{file.name}</div>
             <div className="tw-flex tw-justify-between tw-text-gray-500 tw-ml-8">
-              <div>{truncateText(file.type, 30)}</div>
+              <div>{truncateText(file.type, 20)}</div>
             </div>
           </div>
         </div>

@@ -68,29 +68,40 @@ const FileTable: FC<FileTableProps> = ({
         </tr>
       </thead>
       <tbody>
-        {sortedFiles.map((file) => (
-          <tr key={file.file_id}>
-            {columns.map((column) => (
-              <td key={column.key} className="tw-p-3">
-                {column.render(file)}
-              </td>
-            ))}
-            <td className="tw-p-2 tw-text-center tw-flex tw-justify-center tw-items-center">
-              <button
-                onClick={() => downloadFile(file.file_id!, file.file_name!)}
-                className="tw-text-[#4CAF50] hover:tw-text-[#388E3C] tw-text-xl tw-flex tw-items-center tw-justify-center tw-h-full"
-              >
-                <FiDownload />
-              </button>
-              <button
-                onClick={() => removeFile(file.file_id!, file.file_name!)}
-                className="tw-text-[#FD4958] hover:tw-text-[#DB142B] tw-text-xl tw-flex tw-items-center tw-justify-center tw-ml-4"
-              >
-                <FiTrash2 />
-              </button>
+        {sortedFiles.length === 0 ? (
+          <tr>
+            <td
+              colSpan={columns.length}
+              className="tw-p-2 tw-text-center tw-justify-center tw-items-center tw-text-gray-500"
+            >
+              No files to display
             </td>
           </tr>
-        ))}
+        ) : (
+          sortedFiles.map((file) => (
+            <tr key={file.file_id}>
+              {columns.map((column) => (
+                <td key={column.key} className="tw-p-3">
+                  {column.render(file)}
+                </td>
+              ))}
+              <td className="tw-p-2 tw-text-center tw-flex tw-justify-center tw-items-center">
+                <button
+                  onClick={() => downloadFile(file.file_id!, file.file_name!)}
+                  className="tw-text-[#4CAF50] hover:tw-text-[#388E3C] tw-text-xl tw-flex tw-items-center tw-justify-center tw-h-full"
+                >
+                  <FiDownload />
+                </button>
+                <button
+                  onClick={() => removeFile(file.file_id!, file.file_name!)}
+                  className="tw-text-[#FD4958] hover:tw-text-[#DB142B] tw-text-xl tw-flex tw-items-center tw-justify-center tw-ml-4"
+                >
+                  <FiTrash2 />
+                </button>
+              </td>
+            </tr>
+          ))
+        )}
       </tbody>
     </table>
   );
