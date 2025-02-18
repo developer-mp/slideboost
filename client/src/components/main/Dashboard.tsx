@@ -12,7 +12,7 @@ import {
 } from "../../utils/common/handleToast";
 import { getFileIcon } from "../../utils/ppt/getFileIcon";
 import { getFileMetadata } from "../../store/actions/storageAction";
-import { generatePpt } from "../../store/actions/pptAction";
+import { calculateTokens, generatePpt } from "../../store/actions/pptAction";
 import {
   handleErrorMessage,
   handleSuccessMessage,
@@ -29,6 +29,9 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     useState<FileDetailProps | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [presentationTitle, setPresentationTitle] = useState<string>("");
+
+  const [tokenCount, setTokenCount] = useState<number>(0);
+  const [showTokenModal, setShowTokenModal] = useState<boolean>(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
@@ -55,6 +58,19 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     setShowTemplateModal(false);
   };
 
+  const buildFilesArr = (): { file_id: string; file_type: string }[] => {
+    return selectedMediaFiles
+      .map((file) => {
+        if (file.file_id && file.type) {
+          return { file_id: file.file_id, file_type: file.type };
+        }
+        return null;
+      })
+      .filter(
+        (file): file is { file_id: string; file_type: string } => file !== null
+      );
+  };
+
   const handleCreate = async () => {
     setLoading(true);
 
@@ -79,14 +95,39 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     let resultAction;
 
     try {
-      const filesArr: { file_id: string; file_type: string }[] = [];
+      const filesArr = buildFilesArr();
 
-      selectedMediaFiles.forEach((file) => {
-        if (file.file_id && file.type) {
-          filesArr.push({ file_id: file.file_id, file_type: file.type });
-        }
-      });
-      const templateId = selectedTemplate.file_id;
+      if (filesArr) {
+        resultAction = await dispatch(
+          calculateTokens({
+            userId: userId,
+            files: filesArr,
+          })
+        ).unwrap();
+      }
+      const tokenCount = resultAction?.tokenCount ?? 0;
+      setTokenCount(tokenCount);
+      setShowTokenModal(true);
+      const successMessage = handleSuccessMessage(resultAction);
+      showSuccessToast(successMessage);
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error("Error occurred while calculating the tokens: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleProceed = async () => {
+    setShowTokenModal(false);
+    setLoading(true);
+    try {
+      const filesArr = buildFilesArr();
+
+      let resultAction;
+
+      const templateId = selectedTemplate?.file_id;
       if (filesArr && templateId) {
         resultAction = await dispatch(
           generatePpt({
@@ -108,6 +149,10 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCancel = () => {
+    setShowTokenModal(false);
   };
 
   return (
@@ -212,6 +257,14 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
             >
               Create
             </Button>
+            <CustomModal
+              show={showTokenModal}
+              handleClose={handleCancel}
+              title="Credit Estimate"
+              actionLabel="Proceed"
+              onAction={handleProceed}
+              children={`Your presentation will cost ${tokenCount} tokens. Do you wish to proceed?`}
+            />
           </div>
         </div>
       </div>

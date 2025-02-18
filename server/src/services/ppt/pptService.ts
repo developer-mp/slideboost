@@ -13,6 +13,8 @@ import { pool } from "../../db/config/pool";
 import storageService from "../storage/storageService";
 import { config } from "../../../env.config";
 import { getUploadDir } from "../../utils/common/getUploadDir";
+import transcriptService from "../transcript/transcriptService";
+import { clearUploadFolder } from "../../utils/storage/clearUploadFolder";
 
 const uploadDir = getUploadDir();
 
@@ -258,6 +260,60 @@ const pptService = {
         "uploading the presentation to the storage"
       );
       return;
+    }
+  },
+
+  generateTranscript: async (
+    files: { file_id: string; file_type: string }[]
+  ): Promise<string> => {
+    if (!files) {
+      throw new Error("File is required");
+    }
+
+    try {
+      let extractedText = "";
+      const textFormats = ["text"];
+
+      for (const file of files) {
+        const { file_id, file_type } = file;
+        const fileType = file_type.split("/")[0].toLowerCase();
+        const fileFormat = file_type.split("/")[1].toLowerCase();
+        const format = textFormats.includes(fileType) ? "text" : "arraybuffer";
+        let transcript = "";
+
+        if (format === "text") {
+          transcript = await storageService.downloadFile(file_id, format);
+        } else {
+          const buffer = (await storageService.downloadFile(
+            file_id,
+            format
+          )) as Buffer;
+          if (fileType == "image") {
+            transcript = await transcriptService.convertImageToText(buffer);
+          } else if (fileType == "audio") {
+            transcript = await transcriptService.convertAudioToText(buffer);
+          } else if (fileType == "video") {
+            transcript = await transcriptService.convertVideoToText(buffer);
+          } else if (fileType == "application") {
+            if (
+              fileFormat ==
+              "vnd.openxmlformats-officedocument.wordprocessingml.document"
+            ) {
+              transcript = await transcriptService.convertDocsToText(buffer);
+            } else if (fileFormat == "pdf") {
+              transcript = await transcriptService.convertPdfToText(buffer);
+            }
+          }
+        }
+        extractedText += transcript;
+      }
+
+      await clearUploadFolder();
+
+      return extractedText;
+    } catch (error: unknown) {
+      handleError.serviceError(error, "generating the transcript");
+      return "";
     }
   },
 };

@@ -6,19 +6,34 @@ import { Content } from "../../interfaces/interfaces";
 import aiService from "../../services/ai/aiService";
 import pptService from "../../services/ppt/pptService";
 import { clearUploadFolder } from "../../utils/storage/clearUploadFolder";
-import transcriptService from "../../services/transcript/transcriptService";
+
+const tokenDataStore: Record<string, string> = {};
 
 const pptController = {
-  createPresentation: async (req: Request, res: Response): Promise<void> => {
+  calculateTokens: async (req: Request, res: Response): Promise<void> => {
     const userId = req.query.userId as string;
-    const templateId = req.query.templateId as string;
-    const title = req.query.title as string;
     const files = req.query.files as { file_id: string; file_type: string }[];
 
     if (!files) {
       res.status(400).json({ message: "File is required" });
       return;
     }
+
+    const transcript = await pptService.generateTranscript(files);
+    const tokenCount = Math.ceil(transcript.length / 4);
+
+    tokenDataStore[userId] = transcript;
+
+    res.status(200).json({
+      message: "Token count calculated successfully",
+      tokenCount,
+    });
+  },
+
+  createPresentation: async (req: Request, res: Response): Promise<void> => {
+    const userId = req.query.userId as string;
+    const templateId = req.query.templateId as string;
+    const title = req.query.title as string;
 
     if (!templateId) {
       res.status(400).json({ message: "Template ID is required" });
@@ -31,41 +46,12 @@ const pptController = {
     }
 
     try {
-      let allExtractedText = "";
-      const textFormats = ["text"];
-
-      for (const file of files) {
-        const { file_id, file_type } = file;
-        const fileType = file_type.split("/")[0].toLowerCase();
-        const fileFormat = file_type.split("/")[1].toLowerCase();
-        const format = textFormats.includes(fileType) ? "text" : "arraybuffer";
-        let transcript = "";
-
-        if (format === "text") {
-          transcript = await storageService.downloadFile(file_id, format);
-        } else {
-          const buffer = (await storageService.downloadFile(
-            file_id,
-            format
-          )) as Buffer;
-          if (fileType == "image") {
-            transcript = await transcriptService.convertImageToText(buffer);
-          } else if (fileType == "audio") {
-            transcript = await transcriptService.convertAudioToText(buffer);
-          } else if (fileType == "video") {
-            transcript = await transcriptService.convertVideoToText(buffer);
-          } else if (fileType == "application") {
-            if (
-              fileFormat ==
-              "vnd.openxmlformats-officedocument.wordprocessingml.document"
-            ) {
-              transcript = await transcriptService.convertDocsToText(buffer);
-            } else if (fileFormat == "pdf") {
-              transcript = await transcriptService.convertPdfToText(buffer);
-            }
-          }
-        }
-        allExtractedText += transcript;
+      const transcript = tokenDataStore[userId];
+      if (!transcript) {
+        res.status(400).json({
+          message: "Transcript not found",
+        });
+        return;
       }
 
       const template = await storageService.downloadFile(
@@ -77,7 +63,7 @@ const pptController = {
 
       const contentString = await aiService.callAi(
         config.PROMPT_STRING,
-        allExtractedText
+        transcript
       );
 
       const content: Content = JSON.parse(contentString);

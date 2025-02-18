@@ -184,7 +184,7 @@ const MediaMenu: React.FC = () => {
     <Container className="tw-w-full tw-overflow-hidden">
       <div className="tw-mx-6 tw-my-6">
         <h2 className="tw-text-lg tw-font-bold tw-text-gray-900">
-          Media Content
+          Media Library
         </h2>
         <Button
           className="button button-primary-auto tw-my-4"

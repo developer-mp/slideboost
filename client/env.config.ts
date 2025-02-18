@@ -44,6 +44,7 @@ const VIDEO_TO_TXT_ENDPOINT = getEnvVar("VIDEO_TO_TXT_ENDPOINT");
 const AI_ROUTER = getEnvVar("AI_ROUTER");
 const TRANSCRIPT_ENDPOINT = getEnvVar("TRANSCRIPT_ENDPOINT");
 const PPT_ROUTER = getEnvVar("PPT_ROUTER");
+const COUNT_TOKENS_ENDPOINT = getEnvVar("COUNT_TOKENS_ENDPOINT");
 const PPT_ENDPOINT = getEnvVar("PPT_ENDPOINT");
 
 export const config = {
@@ -83,5 +84,6 @@ export const config = {
   AI_ROUTER,
   TRANSCRIPT_ROUTER,
   PPT_ROUTER,
+  COUNT_TOKENS_ENDPOINT,
   PPT_ENDPOINT,
 };
