@@ -34,6 +34,7 @@ const AI_API_KEY = getEnvVar("AI_API_KEY");
 const AI_MODEL = getEnvVar("AI_MODEL");
 const AI_MAX_TOKENS = parseInt(getEnvVar("AI_MAX_TOKENS"), 10);
 const AI_TEMPERATURE = parseInt(getEnvVar("AI_TEMPERATURE"), 10);
+const AI_COST_PER_TOKEN = parseInt(getEnvVar("AI_COST_PER_TOKEN"), 10);
 const PROMPT_STRING = getEnvVar("PROMPT_STRING");
 const STORAGE_API_URL = getEnvVar("STORAGE_API_URL");
 const STORAGE_KEY_ID = getEnvVar("STORAGE_KEY_ID");
@@ -65,6 +66,7 @@ export const config = {
   DB_PASS,
   DB_PORT,
   TOKEN_EXPIRATION,
+  AI_COST_PER_TOKEN,
   REFRESH_TOKEN_EXPIRATION,
   GOOGLE_CLIENT_ID,
   AI_API_KEY,

@@ -3,7 +3,12 @@ import pptService from "../../services/ppt/pptService";
 import handleError from "../../utils/common/handleError";
 
 export const calculateTokens = createAsyncThunk<
-  { tokenCount: number; message: string },
+  {
+    tokenCount: number;
+    tokenCost: number;
+    tokenLimit: number;
+    message: string;
+  },
   {
     userId: string;
     files: { file_id: string; file_type: string }[];

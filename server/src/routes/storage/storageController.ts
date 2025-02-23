@@ -105,10 +105,19 @@ const storageController = {
     }
 
     try {
-      const result = (await pool.query(
-        "SELECT name, file_name, type, size, folder, template_category, file_id, file_url, png_url, uploaded_at, source FROM files WHERE user_id = $1",
-        [userId]
-      )) as DbQueryResultProps;
+      let result;
+
+      if (userId === "system") {
+        result = (await pool.query(
+          "SELECT name, file_name, type, size, folder, template_category, file_id, file_url, png_url, uploaded_at, source FROM files WHERE source = $1",
+          [userId]
+        )) as DbQueryResultProps;
+      } else {
+        result = (await pool.query(
+          "SELECT name, file_name, type, size, folder, template_category, file_id, file_url, png_url, uploaded_at, source FROM files WHERE user_id = $1",
+          [userId]
+        )) as DbQueryResultProps;
+      }
 
       res.status(200).json({
         message: "Metadata retrieved successfully",

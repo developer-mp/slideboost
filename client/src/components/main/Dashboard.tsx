@@ -31,6 +31,8 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const [presentationTitle, setPresentationTitle] = useState<string>("");
 
   const [tokenCount, setTokenCount] = useState<number>(0);
+  const [tokenPrice, setTokenPrice] = useState<number>(0);
+  // const [tokenLimit, setTokenLimit] = useState<number>(0);
   const [showTokenModal, setShowTokenModal] = useState<boolean>(false);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -106,7 +108,15 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
         ).unwrap();
       }
       const tokenCount = resultAction?.tokenCount ?? 0;
+      const tokenPrice = resultAction?.tokenCost ?? 0;
+      const tokenLimit = resultAction?.tokenLimit ?? 0;
       setTokenCount(tokenCount);
+      setTokenPrice(tokenPrice);
+      // setTokenLimit(tokenLimit);
+      if (tokenCount > tokenLimit) {
+        const tokenLimitMessage = `Your presentation exceedes token limit of ${tokenLimit}`;
+        showErrorToast(tokenLimitMessage);
+      }
       setShowTokenModal(true);
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
@@ -263,7 +273,9 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
               title="Credit Estimate"
               actionLabel="Proceed"
               onAction={handleProceed}
-              children={`Your presentation will cost ${tokenCount} tokens. Do you wish to proceed?`}
+              children={`Your presentation will cost $${
+                tokenCount * tokenPrice
+              }. Do you wish to proceed?`}
             />
           </div>
         </div>

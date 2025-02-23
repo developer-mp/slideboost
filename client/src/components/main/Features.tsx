@@ -35,7 +35,7 @@ const Features: React.FC = () => {
   };
 
   const dispatch = useDispatch<AppDispatch>();
-  const userId = useSelector((state: RootState) => state.user.userId);
+  const userId = "system";
 
   const { fileMetadata, isFileMetadataFetched } = useSelector(
     (state: RootState) => state.fileStorage
