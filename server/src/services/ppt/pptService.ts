@@ -33,6 +33,7 @@ const pptService = {
       return "";
     }
   },
+
   createTitleSlide: async (title: string, filePath: string): Promise<void> => {
     try {
       let pptx = new PPTX.Composer();
@@ -62,6 +63,7 @@ const pptService = {
       return;
     }
   },
+
   createContentSlide: async (
     entry: Slide,
     filePath: string,
@@ -109,6 +111,7 @@ const pptService = {
       return;
     }
   },
+
   mergeSlides: async (slides: string[]): Promise<string> => {
     const automizer = new Automizer({
       templateDir: uploadDir,
@@ -150,6 +153,7 @@ const pptService = {
     }
     return await execute();
   },
+
   createPpt: async (
     template: ArrayBuffer,
     content: Content,

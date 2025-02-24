@@ -1,5 +1,6 @@
 import { Container, Row } from "react-bootstrap";
 import PricingPlan from "../elements/PricingPlan";
+import { config } from "../../../env.config";
 
 const Pricing: React.FC = () => {
   return (
@@ -26,7 +27,7 @@ const Pricing: React.FC = () => {
           <PricingPlan
             title="Credits"
             titleColor="#5670A1"
-            price="$0.09 /credit"
+            price={`$${config.PRICE_PER_CREDIT} /credit`}
             description=""
             features={[
               "Unlimited presentation creations based on token usage",

@@ -1,5 +1,10 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { PricingPlanProps } from "../../interfaces/interfaces";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { createCheckout } from "../../store/actions/paymentAction";
+import { handleErrorMessage } from "../../utils/common/handleActionMessage";
+import { showErrorToast } from "../../utils/common/handleToast";
 
 const PricingPlan: React.FC<PricingPlanProps> = ({
   title,
@@ -8,6 +13,34 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
   features,
   titleColor,
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handlePurchase = async () => {
+    const credits = 100;
+
+    try {
+      const resultAction = await dispatch(
+        createCheckout({
+          title,
+          credits,
+        })
+      ).unwrap();
+
+      const { url } = resultAction;
+
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while creating the checkout session: ",
+        error
+      );
+    }
+  };
+
   return (
     <Container>
       <Row>
@@ -27,7 +60,12 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
                   <li key={index}>{feature}</li>
                 ))}
               </ul>
-              <Button className="button button-tertiary-auto">Purchase</Button>
+              <Button
+                className="button button-tertiary-auto"
+                onClick={handlePurchase}
+              >
+                Purchase
+              </Button>
             </Card.Body>
           </Card>
         </Col>
