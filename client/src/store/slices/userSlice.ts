@@ -110,6 +110,7 @@ const userSlice = createSlice({
         state.userId = action.payload.id;
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
+        state.creditBalance = action.payload.balance;
         state.createdAt = action.payload.createdAt;
         state.message = action.payload.message;
       })

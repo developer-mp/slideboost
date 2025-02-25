@@ -49,7 +49,6 @@ const PPT_ENDPOINT = getEnvVar("PPT_ENDPOINT");
 const PAYMENT_ROUTER = getEnvVar("PAYMENT_ROUTER");
 const PAYMENT_ENDPOINT = getEnvVar("PAYMENT_ENDPOINT");
 const PRICE_PER_CREDIT = getEnvVar("PRICE_PER_CREDIT");
-const TOKENS_PER_CREDIT = getEnvVar("TOKENS_PER_CREDIT");
 
 export const config = {
   API_BASE_URL,
@@ -93,5 +92,4 @@ export const config = {
   PAYMENT_ROUTER,
   PAYMENT_ENDPOINT,
   PRICE_PER_CREDIT,
-  TOKENS_PER_CREDIT,
 };

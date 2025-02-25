@@ -69,6 +69,7 @@ export const loginUserWithGoogle = createAsyncThunk<
     id: string;
     name: string;
     email: string;
+    balance: number;
     createdAt: string;
     message: string;
   },

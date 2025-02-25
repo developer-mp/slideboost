@@ -27,7 +27,7 @@ const pptController = {
     res.status(200).json({
       message: "Token count calculated successfully",
       tokenCount,
-      tokenCost: config.AI_COST_PER_TOKEN,
+      tokenPerCredit: config.TOKENS_PER_CREDIT,
       tokenLimit: config.AI_MAX_TOKENS,
     });
   },

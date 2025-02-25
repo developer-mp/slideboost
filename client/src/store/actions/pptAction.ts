@@ -5,7 +5,7 @@ import handleError from "../../utils/common/handleError";
 export const calculateTokens = createAsyncThunk<
   {
     tokenCount: number;
-    tokenCost: number;
+    tokenPerCredit: number;
     tokenLimit: number;
     message: string;
   },

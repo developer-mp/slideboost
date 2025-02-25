@@ -34,7 +34,6 @@ const AI_API_KEY = getEnvVar("AI_API_KEY");
 const AI_MODEL = getEnvVar("AI_MODEL");
 const AI_MAX_TOKENS = parseInt(getEnvVar("AI_MAX_TOKENS"), 10);
 const AI_TEMPERATURE = parseInt(getEnvVar("AI_TEMPERATURE"), 10);
-const AI_COST_PER_TOKEN = parseInt(getEnvVar("AI_COST_PER_TOKEN"), 10);
 const PROMPT_STRING = getEnvVar("PROMPT_STRING");
 const STORAGE_API_URL = getEnvVar("STORAGE_API_URL");
 const STORAGE_KEY_ID = getEnvVar("STORAGE_KEY_ID");
@@ -49,6 +48,7 @@ const STORAGE_AUTH_TOKEN_DURATION = parseInt(
 const STORAGE_DOWNLOAD_FILE_BY_ID = getEnvVar("STORAGE_DOWNLOAD_FILE_BY_ID");
 const STORAGE_DELETE_URL = getEnvVar("STORAGE_DELETE_URL");
 const PAYMENT_SECRET_KEY = getEnvVar("PAYMENT_SECRET_KEY");
+const TOKENS_PER_CREDIT = parseInt(getEnvVar("TOKENS_PER_CREDIT"), 10);
 
 export const config = {
   CLIENT_HOST,
@@ -67,7 +67,6 @@ export const config = {
   DB_PASS,
   DB_PORT,
   TOKEN_EXPIRATION,
-  AI_COST_PER_TOKEN,
   REFRESH_TOKEN_EXPIRATION,
   GOOGLE_CLIENT_ID,
   AI_API_KEY,
@@ -85,4 +84,5 @@ export const config = {
   STORAGE_DOWNLOAD_FILE_BY_ID,
   STORAGE_DELETE_URL,
   PAYMENT_SECRET_KEY,
+  TOKENS_PER_CREDIT,
 };

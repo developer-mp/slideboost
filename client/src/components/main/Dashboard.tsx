@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { Button, Container, Form } from "react-bootstrap";
@@ -17,6 +17,9 @@ import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../../utils/common/handleActionMessage";
+import CreditsModal from "../widgets/CreditsModal";
+import { createCheckout } from "../../store/actions/paymentAction";
+import { config } from "../../../env.config";
 
 const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const [showMediaModal, setShowMediaModal] = useState<boolean>(false);
@@ -30,12 +33,18 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [presentationTitle, setPresentationTitle] = useState<string>("");
 
-  const [tokenCount, setTokenCount] = useState<number>(0);
-  const [tokenPrice, setTokenPrice] = useState<number>(0);
+  const [creditCost, setCreditCost] = useState<number>(0);
   const [showTokenModal, setShowTokenModal] = useState<boolean>(false);
+  const [showCreditsModal, setShowCreditsModal] = useState<boolean>(false);
+  const [credits, setCredits] = useState<number>(10);
+  const [amount, setAmount] = useState<number>(0);
 
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
+
+  const creditBalance = useSelector(
+    (state: RootState) => state.user.creditBalance
+  );
 
   const fileMetadata = useSelector(
     (state: RootState) => state.fileStorage.fileMetadata
@@ -107,17 +116,15 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
         ).unwrap();
       }
       const tokenCount = resultAction?.tokenCount ?? 0;
-      const tokenPrice = resultAction?.tokenCost ?? 0;
       const tokenLimit = resultAction?.tokenLimit ?? 0;
-      setTokenCount(tokenCount);
-      setTokenPrice(tokenPrice);
+      const tokenPerCredit = resultAction?.tokenPerCredit ?? 0;
+      const calculatedCreditsCost = (tokenCount / tokenPerCredit).toFixed(2);
+      setCreditCost(Number(calculatedCreditsCost));
       if (tokenCount > tokenLimit) {
         const tokenLimitMessage = `Your presentation exceedes token limit of ${tokenLimit}`;
         showErrorToast(tokenLimitMessage);
       }
       setShowTokenModal(true);
-      const successMessage = handleSuccessMessage(resultAction);
-      showSuccessToast(successMessage);
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
@@ -162,6 +169,49 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const handleCancel = () => {
     setShowTokenModal(false);
   };
+
+  const handlePurchase = async () => {
+    setShowCreditsModal(true);
+    setShowTokenModal(false);
+  };
+
+  const handleConfirmPurchase = async () => {
+    try {
+      const resultAction = await dispatch(
+        createCheckout({
+          amount,
+        })
+      ).unwrap();
+
+      const { url } = resultAction;
+
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while creating the checkout session: ",
+        error
+      );
+    }
+    setShowCreditsModal(false);
+  };
+
+  const closeCreditsModal = () => {
+    setShowCreditsModal(false);
+    setCredits(10);
+  };
+
+  const updateAmount = useCallback(() => {
+    const newAmount = Math.max(credits * Number(config.PRICE_PER_CREDIT), 0);
+    setAmount(parseFloat(newAmount.toFixed(2)));
+  }, [credits]);
+
+  useEffect(() => {
+    updateAmount();
+  }, [updateAmount]);
 
   return (
     <Container className="tw-w-full tw-overflow-hidden">
@@ -265,15 +315,33 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
             >
               Create
             </Button>
-            <CustomModal
-              show={showTokenModal}
-              handleClose={handleCancel}
-              title="Credit Estimate"
-              actionLabel="Proceed"
-              onAction={handleProceed}
-              children={`Your presentation will cost $${
-                tokenCount * tokenPrice
-              }. Do you wish to proceed?`}
+            {creditBalance < creditCost ? (
+              <CustomModal
+                show={showTokenModal}
+                handleClose={handleCancel}
+                title="Credit Shortage"
+                actionLabel="Purchase"
+                onAction={handlePurchase}
+                children="You don't have enough credits. Please purchase more credits"
+              />
+            ) : (
+              <CustomModal
+                show={showTokenModal}
+                handleClose={handleCancel}
+                title="Credit Estimate"
+                actionLabel="Proceed"
+                onAction={handleProceed}
+                children={`Your presentation will cost ${creditCost} credits. Do you wish to proceed?`}
+              />
+            )}
+
+            <CreditsModal
+              showModal={showCreditsModal}
+              closeModal={closeCreditsModal}
+              onConfirmPurchase={handleConfirmPurchase}
+              credits={credits}
+              setCredits={setCredits}
+              amount={amount}
             />
           </div>
         </div>

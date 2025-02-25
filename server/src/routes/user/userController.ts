@@ -231,6 +231,13 @@ const userController = {
         user = result.rows[0];
       }
 
+      const creditResult = (await pool.query(
+        "INSERT INTO credits (user_id) VALUES ($1) RETURNING balance",
+        [user.id]
+      )) as DbQueryResultProps;
+
+      const credit = creditResult.rows[0];
+
       const accessToken = jwt.sign({ userId: user.id }, config.JWT_SECRET, {
         expiresIn: config.TOKEN_EXPIRATION,
       });
@@ -260,6 +267,7 @@ const userController = {
         id: user.id,
         name: user.name,
         email: user.email,
+        balance: credit.balance,
         createdAt: user.created_at,
         message: "Logged in successfully",
       });
