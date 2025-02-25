@@ -3,13 +3,12 @@ import { config } from "../../../env.config";
 import handleError from "../../utils/common/handleError";
 
 const paymentService = {
-  async createCheckout(title: string, credits: number): Promise<string> {
+  async createCheckout(amount: number): Promise<string> {
     const endpoint = `${config.PAYMENT_ROUTER}${config.PAYMENT_ENDPOINT}`;
 
     try {
       const response = await apiService.postCall(endpoint, {
-        title,
-        credits,
+        amount,
       });
       return response.data;
     } catch (error: unknown) {

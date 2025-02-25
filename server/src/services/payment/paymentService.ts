@@ -7,11 +7,9 @@ const clientUrl = config.CLIENT_HOST;
 +":" + config.CLIENT_PORT;
 
 const paymentService = {
-  createCheckoutSession: async (
-    title: string,
-    amount: number
-  ): Promise<string> => {
+  createCheckoutSession: async (amount: number): Promise<string> => {
     try {
+      const amountInCents = Math.round(amount * 100);
       const session = await payment.checkout.sessions.create({
         payment_method_types: ["card"],
         line_items: [
@@ -19,9 +17,9 @@ const paymentService = {
             price_data: {
               currency: "usd",
               product_data: {
-                name: title,
+                name: "Credits",
               },
-              unit_amount: amount,
+              unit_amount: amountInCents,
             },
             quantity: 1,
           },

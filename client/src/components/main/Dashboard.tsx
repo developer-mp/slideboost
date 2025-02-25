@@ -32,7 +32,6 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
 
   const [tokenCount, setTokenCount] = useState<number>(0);
   const [tokenPrice, setTokenPrice] = useState<number>(0);
-  // const [tokenLimit, setTokenLimit] = useState<number>(0);
   const [showTokenModal, setShowTokenModal] = useState<boolean>(false);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -112,7 +111,6 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
       const tokenLimit = resultAction?.tokenLimit ?? 0;
       setTokenCount(tokenCount);
       setTokenPrice(tokenPrice);
-      // setTokenLimit(tokenLimit);
       if (tokenCount > tokenLimit) {
         const tokenLimitMessage = `Your presentation exceedes token limit of ${tokenLimit}`;
         showErrorToast(tokenLimitMessage);

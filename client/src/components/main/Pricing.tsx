@@ -30,6 +30,7 @@ const Pricing: React.FC = () => {
             price={`$${config.PRICE_PER_CREDIT} /credit`}
             description=""
             features={[
+              "Free 10 credits for all first-time users (approximately one A4 page of text)",
               "Unlimited presentation creations based on token usage",
               "Supports all media formats: text, images, videos, and audio",
               "No watermark included; enjoy default templates or upload your own",

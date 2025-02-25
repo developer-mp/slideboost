@@ -5,13 +5,12 @@ import handleError from "../../utils/common/handleError";
 export const createCheckout = createAsyncThunk<
   { url: string },
   {
-    title: string;
-    credits: number;
+    amount: number;
   },
   { rejectValue: { message: string } }
->("storage/createCheckout", async ({ title, credits }, { rejectWithValue }) => {
+>("storage/createCheckout", async ({ amount }, { rejectWithValue }) => {
   try {
-    const response = await paymentService.createCheckout(title, credits);
+    const response = await paymentService.createCheckout(amount);
     return response;
   } catch (error) {
     return handleError.actionError(
