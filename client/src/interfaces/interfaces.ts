@@ -230,3 +230,16 @@ export interface DashboardProps {
 export interface GoogleAuthProps {
   onLoginStart: () => void;
 }
+
+export interface CreditsModalProps {
+  showModal: boolean;
+  closeModal: () => void;
+  onConfirmPurchase: () => void;
+  credits: number;
+  setCredits: React.Dispatch<React.SetStateAction<number>>;
+  amount: number;
+}
+
+export interface CheckoutResponse {
+  url: string;
+}

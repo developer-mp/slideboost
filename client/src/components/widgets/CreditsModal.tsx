@@ -1,14 +1,6 @@
 import { Form } from "react-bootstrap";
 import CustomModal from "../shared/CustomModal";
-
-interface CreditsModalProps {
-  showModal: boolean;
-  closeModal: () => void;
-  onConfirmPurchase: () => void;
-  credits: number;
-  setCredits: React.Dispatch<React.SetStateAction<number>>;
-  amount: number;
-}
+import { CreditsModalProps } from "../../interfaces/interfaces";
 
 const CreditsModal: React.FC<CreditsModalProps> = ({
   showModal,

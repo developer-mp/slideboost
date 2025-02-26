@@ -1,13 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { PricingPlanProps } from "../../interfaces/interfaces";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { createCheckout } from "../../store/actions/paymentAction";
-import { handleErrorMessage } from "../../utils/common/handleActionMessage";
-import { showErrorToast } from "../../utils/common/handleToast";
 import { config } from "../../../env.config";
 import CreditsModal from "../widgets/CreditsModal";
+import useCredits from "../../utils/payment/useCredits";
 
 const PricingPlan: React.FC<PricingPlanProps> = ({
   title,
@@ -16,51 +14,24 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
   features,
   titleColor,
 }) => {
-  const [showCreditsModal, setShowCreditsModal] = useState<boolean>(false);
-  const [credits, setCredits] = useState<number>(10);
-  const [amount, setAmount] = useState<number>(0);
+  const {
+    credits,
+    setCredits,
+    amount,
+    showCreditsModal,
+    handlePurchase,
+    handleConfirmPurchase,
+    closeCreditsModal,
+  } = useCredits(10, Number(config.PRICE_PER_CREDIT));
+
   const dispatch = useDispatch<AppDispatch>();
 
-  const handlePurchase = async () => {
-    setShowCreditsModal(true);
+  const onCheckout = async (amount: number) => {
+    return await dispatch(createCheckout({ amount })).unwrap();
   };
 
-  const handleConfirmPurchase = async () => {
-    try {
-      const resultAction = await dispatch(
-        createCheckout({
-          amount,
-        })
-      ).unwrap();
-
-      const { url } = resultAction;
-
-      if (url) {
-        window.location.href = url;
-      }
-    } catch (error) {
-      const errorMessage = handleErrorMessage(error);
-      showErrorToast(errorMessage);
-      console.error(
-        "Error occurred while creating the checkout session: ",
-        error
-      );
-    }
-    setShowCreditsModal(false);
-  };
-
-  const updateAmount = useCallback(() => {
-    const newAmount = Math.max(credits * Number(config.PRICE_PER_CREDIT), 0);
-    setAmount(parseFloat(newAmount.toFixed(2)));
-  }, [credits]);
-
-  useEffect(() => {
-    updateAmount();
-  }, [updateAmount]);
-
-  const closeCreditsModal = () => {
-    setShowCreditsModal(false);
-    setCredits(10);
+  const handleConfirm = () => {
+    handleConfirmPurchase(onCheckout);
   };
 
   return (
@@ -91,7 +62,7 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
               <CreditsModal
                 showModal={showCreditsModal}
                 closeModal={closeCreditsModal}
-                onConfirmPurchase={handleConfirmPurchase}
+                onConfirmPurchase={handleConfirm}
                 credits={credits}
                 setCredits={setCredits}
                 amount={amount}

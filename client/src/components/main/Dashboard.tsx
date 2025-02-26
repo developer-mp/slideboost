@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { Button, Container, Form } from "react-bootstrap";
@@ -20,8 +20,19 @@ import {
 import CreditsModal from "../widgets/CreditsModal";
 import { createCheckout } from "../../store/actions/paymentAction";
 import { config } from "../../../env.config";
+import useCredits from "../../utils/payment/useCredits";
 
 const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
+  const {
+    credits,
+    setCredits,
+    amount,
+    showCreditsModal,
+    handlePurchase,
+    handleConfirmPurchase,
+    closeCreditsModal,
+  } = useCredits(10, Number(config.PRICE_PER_CREDIT));
+
   const [showMediaModal, setShowMediaModal] = useState<boolean>(false);
   const [selectedMediaFiles, setSelectedMediaFiles] = useState<
     FileDetailProps[]
@@ -35,9 +46,6 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
 
   const [creditCost, setCreditCost] = useState<number>(0);
   const [showTokenModal, setShowTokenModal] = useState<boolean>(false);
-  const [showCreditsModal, setShowCreditsModal] = useState<boolean>(false);
-  const [credits, setCredits] = useState<number>(10);
-  const [amount, setAmount] = useState<number>(0);
 
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
@@ -170,48 +178,13 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     setShowTokenModal(false);
   };
 
-  const handlePurchase = async () => {
-    setShowCreditsModal(true);
-    setShowTokenModal(false);
+  const onCheckout = async (amount: number) => {
+    return await dispatch(createCheckout({ amount })).unwrap();
   };
 
-  const handleConfirmPurchase = async () => {
-    try {
-      const resultAction = await dispatch(
-        createCheckout({
-          amount,
-        })
-      ).unwrap();
-
-      const { url } = resultAction;
-
-      if (url) {
-        window.location.href = url;
-      }
-    } catch (error) {
-      const errorMessage = handleErrorMessage(error);
-      showErrorToast(errorMessage);
-      console.error(
-        "Error occurred while creating the checkout session: ",
-        error
-      );
-    }
-    setShowCreditsModal(false);
+  const handleConfirm = () => {
+    handleConfirmPurchase(onCheckout);
   };
-
-  const closeCreditsModal = () => {
-    setShowCreditsModal(false);
-    setCredits(10);
-  };
-
-  const updateAmount = useCallback(() => {
-    const newAmount = Math.max(credits * Number(config.PRICE_PER_CREDIT), 0);
-    setAmount(parseFloat(newAmount.toFixed(2)));
-  }, [credits]);
-
-  useEffect(() => {
-    updateAmount();
-  }, [updateAmount]);
 
   return (
     <Container className="tw-w-full tw-overflow-hidden">
@@ -338,7 +311,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
             <CreditsModal
               showModal={showCreditsModal}
               closeModal={closeCreditsModal}
-              onConfirmPurchase={handleConfirmPurchase}
+              onConfirmPurchase={handleConfirm}
               credits={credits}
               setCredits={setCredits}
               amount={amount}
