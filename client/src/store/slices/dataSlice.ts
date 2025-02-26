@@ -22,7 +22,6 @@ interface DataState {
   news: News[];
   isCategoriesFetched: boolean;
   isReasonsFetched: boolean;
-  isSupportedFilesFetched: boolean;
   isFaqFetched: boolean;
   isNewsFetched: boolean;
   status: "idle" | "loading" | "success" | "fail";
@@ -38,7 +37,6 @@ const initialState: DataState = {
   news: [],
   isCategoriesFetched: false,
   isReasonsFetched: false,
-  isSupportedFilesFetched: false,
   isFaqFetched: false,
   isNewsFetched: false,
   status: "idle",
@@ -92,7 +90,6 @@ const dataSlice = createSlice({
       .addCase(getSupportedFiles.fulfilled, (state, action) => {
         state.status = "success";
         state.supportedFiles = action.payload.data;
-        state.isSupportedFilesFetched = true;
         state.message = action.payload.message;
       })
       .addCase(getSupportedFiles.rejected, (state, action) => {

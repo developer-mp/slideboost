@@ -4,7 +4,6 @@ import { FileDetailProps } from "../../interfaces/interfaces";
 
 interface UserState {
   fileMetadata: FileDetailProps[];
-  isFileMetadataFetched: boolean;
   status: "idle" | "loading" | "success" | "fail";
   error: string | null;
   message: string | null;
@@ -12,7 +11,6 @@ interface UserState {
 
 const initialState: UserState = {
   fileMetadata: [],
-  isFileMetadataFetched: false,
   status: "idle",
   message: null,
   error: null,
@@ -32,7 +30,6 @@ const storageSlice = createSlice({
       .addCase(getFileMetadata.fulfilled, (state, action) => {
         state.status = "success";
         state.fileMetadata = action.payload.data;
-        state.isFileMetadataFetched = true;
         state.message = action.payload.message;
       })
       .addCase(getFileMetadata.rejected, (state, action) => {

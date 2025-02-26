@@ -23,13 +23,11 @@ import {
 import { replaceExtension } from "../../utils/storage/replaceExtension";
 import { config } from "../../../env.config";
 import { removeExtension } from "./../../utils/storage/removeExtension";
-import {
-  getSupportedFiles,
-  getTemplateCategories,
-} from "../../store/actions/dataAction";
+import { getTemplateCategories } from "../../store/actions/dataAction";
 import { downloadFileBlob } from "../../utils/storage/downloadFileBlob";
 import { FiDownload, FiTrash2 } from "react-icons/fi";
 import { SupportedFileType } from "../../interfaces/types";
+import useFetchFileData from "../../utils/storage/useFetchFileData";
 
 const TemplatesMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -71,15 +69,13 @@ const TemplatesMenu: React.FC = () => {
     })),
   ];
 
-  const { fileMetadata, isFileMetadataFetched } = useSelector(
-    (state: RootState) => state.fileStorage
-  );
+  const { fileMetadata } = useSelector((state: RootState) => state.fileStorage);
 
   const templatesfileMetadata = fileMetadata.filter(
     (file) => file.folder === "templates"
   );
 
-  const { supportedFiles, isSupportedFilesFetched } = useSelector(
+  const { supportedFiles } = useSelector(
     (state: RootState) => state.dataStorage
   );
 
@@ -97,40 +93,11 @@ const TemplatesMenu: React.FC = () => {
       return acc;
     }, {});
 
-  const handleTemplatesSupportedFiles = async () => {
-    try {
-      await dispatch(getSupportedFiles()).unwrap();
-    } catch (error) {
-      const errorMessage = handleErrorMessage(error);
-      showErrorToast(errorMessage);
-      console.error(
-        "Error occurred while fetching the supported files: ",
-        error
-      );
-    }
-  };
-
-  const handleFileMetadata = async () => {
-    try {
-      await dispatch(getFileMetadata({ userId })).unwrap();
-    } catch (error) {
-      const errorMessage = handleErrorMessage(error);
-      showErrorToast(errorMessage);
-      console.error(
-        "Error occurred while fetching the templates metadata: ",
-        error
-      );
-    }
-  };
+  const fetchData = useFetchFileData(userId);
 
   useEffect(() => {
-    if (!isFileMetadataFetched) {
-      handleFileMetadata();
-    }
-    if (!isSupportedFilesFetched) {
-      handleTemplatesSupportedFiles();
-    }
-  });
+    fetchData();
+  }, [userId, fetchData]);
 
   const handleUpload = async (files: FileWithMetadata[]) => {
     try {

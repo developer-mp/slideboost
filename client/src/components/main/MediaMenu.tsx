@@ -28,8 +28,8 @@ import FileTable from "../shared/FileTable";
 import { getFileSize } from "../../utils/ppt/getFileSize";
 import { truncateText } from "../../utils/common/truncateText";
 import { downloadFileBlob } from "../../utils/storage/downloadFileBlob";
-import { getSupportedFiles } from "../../store/actions/dataAction";
 import { SupportedFileType } from "../../interfaces/types";
+import useFetchFileData from "../../utils/storage/useFetchFileData";
 
 const MediaMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -38,15 +38,13 @@ const MediaMenu: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userId = useSelector((state: RootState) => state.user.userId);
 
-  const { fileMetadata, isFileMetadataFetched } = useSelector(
-    (state: RootState) => state.fileStorage
-  );
+  const { fileMetadata } = useSelector((state: RootState) => state.fileStorage);
 
   const mediafileMetadata = fileMetadata.filter(
     (file) => file.folder === "media"
   );
 
-  const { supportedFiles, isSupportedFilesFetched } = useSelector(
+  const { supportedFiles } = useSelector(
     (state: RootState) => state.dataStorage
   );
 
@@ -64,37 +62,11 @@ const MediaMenu: React.FC = () => {
       return acc;
     }, {});
 
-  const handleMediaSupportedFiles = async () => {
-    try {
-      await dispatch(getSupportedFiles()).unwrap();
-    } catch (error) {
-      const errorMessage = handleErrorMessage(error);
-      showErrorToast(errorMessage);
-      console.error(
-        "Error occurred while fetching the supported files: ",
-        error
-      );
-    }
-  };
-
-  const handleFileMetadata = async () => {
-    try {
-      await dispatch(getFileMetadata({ userId })).unwrap();
-    } catch (error) {
-      const errorMessage = handleErrorMessage(error);
-      showErrorToast(errorMessage);
-      console.error("Error occurred while fetching the file metadata: ", error);
-    }
-  };
+  const fetchData = useFetchFileData(userId);
 
   useEffect(() => {
-    if (!isFileMetadataFetched) {
-      handleFileMetadata();
-    }
-    if (!isSupportedFilesFetched) {
-      handleMediaSupportedFiles();
-    }
-  });
+    fetchData();
+  }, [userId, fetchData]);
 
   const handleUpload = async (files: FileWithMetadata[]) => {
     try {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useNavigation } from "../../utils/login/useNavigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,6 @@ import features_img from "../../assets/main/features_img.png";
 import { getFileMetadata } from "../../store/actions/storageAction";
 import { handleErrorMessage } from "../../utils/common/handleActionMessage";
 import { showErrorToast } from "../../utils/common/handleToast";
-// import { templatesData } from "../../data/templatesData";
 
 const Features: React.FC = () => {
   const { navigateToCreateAccount, navigateToWorkspace } = useNavigation();
@@ -37,32 +36,25 @@ const Features: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userId = "system";
 
-  const { fileMetadata, isFileMetadataFetched } = useSelector(
-    (state: RootState) => state.fileStorage
-  );
+  const { fileMetadata } = useSelector((state: RootState) => state.fileStorage);
 
   const templatesfileMetadata = fileMetadata.filter(
     (file) => file.folder === "templates"
   );
 
-  const handleFileMetadata = async () => {
+  const handleFileMetadata = useCallback(async () => {
     try {
       await dispatch(getFileMetadata({ userId })).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
-      console.error(
-        "Error occurred while fetching the templates metadata: ",
-        error
-      );
+      console.error("Error occurred while fetching the file metadata: ", error);
     }
-  };
+  }, [dispatch, userId]);
 
   useEffect(() => {
-    if (!isFileMetadataFetched) {
-      handleFileMetadata();
-    }
-  });
+    handleFileMetadata();
+  }, [userId, handleFileMetadata]);
 
   return (
     <Container
