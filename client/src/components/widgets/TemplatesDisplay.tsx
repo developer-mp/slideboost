@@ -37,9 +37,9 @@ const TemplatesDisplay: React.FC<TemplatesDisplayProps> = ({
             >
               <img
                 src={
-                  template.file_name
+                  template.file_path
                     ? `${config.DNS_ENDPOINT}/${replaceExtension(
-                        template.file_name
+                        template.file_path
                       )}`
                     : ""
                 }

@@ -42,7 +42,6 @@ const UploadFilesDisplay: React.FC<FileListDisplayProps> = ({
   });
 
   const options = [
-    { id: "all", label: "All Categories" },
     ...templateCategories.map((category) => ({
       id: category.id,
       label: category.category_name,

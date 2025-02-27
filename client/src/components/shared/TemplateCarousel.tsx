@@ -25,9 +25,9 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({ templates }) => {
                 <Col key={template.file_id}>
                   <img
                     src={
-                      template.file_name
+                      template.file_path
                         ? `${config.DNS_ENDPOINT}/${replaceExtension(
-                            template.file_name
+                            template.file_path
                           )}`
                         : ""
                     }

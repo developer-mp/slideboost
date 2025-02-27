@@ -216,7 +216,6 @@ const pptService = {
     }
 
     const folder = "projects";
-    const pngUrl = null;
     const fileBuffer = fs.readFileSync(pptFilePath);
 
     try {
@@ -243,7 +242,7 @@ const pptService = {
       const fileSize = fileBuffer.length;
 
       (await pool.query(
-        "INSERT INTO files(name, file_name, type, size, folder, template_category, file_id, file_url, png_url, uploaded_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
+        "INSERT INTO files(name, file_path, type, size, folder, template_category, file_id, file_url, uploaded_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
         [
           fileName,
           storageFileName,
@@ -253,7 +252,6 @@ const pptService = {
           category,
           fileId,
           fileUrl,
-          pngUrl,
           uploadedAt,
           userId,
         ]

@@ -36,13 +36,12 @@ export interface ContentCardProps {
 
 export interface FileDetailProps {
   name: string;
-  file_name?: string;
+  file_path?: string;
   type: string;
   size: number;
   folder?: string;
   template_category: string;
   file_id?: string;
-  png_url: string;
   uploaded_at?: string;
   source?: string;
 }
@@ -77,7 +76,7 @@ export interface FileTableProps {
 export interface TemplateProps {
   file_id: string;
   title?: string;
-  file_name: string;
+  file_path: string;
   name: string;
   category?: string;
   template_category: string;

@@ -48,7 +48,6 @@ const storageController = {
       const uploadedAt = new Date();
       const fileSize = req.file.size;
 
-      let pngUrl = null;
       if (folder === "templates") {
         const pngBuffer = await convertPptToPng(req.file.buffer);
         // const buffer =
@@ -64,12 +63,10 @@ const storageController = {
           pngFilePath,
           config.STORAGE_BUCKET_ID as string
         );
-
-        pngUrl = `https://${config.STORAGE_BUCKET_NAME}.${config.STORAGE_ENDPOINT}/${pngFilePath}`;
       }
 
       (await pool.query(
-        "INSERT INTO files(name, file_name, type, size, folder, template_category, file_id, file_url, png_url, uploaded_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
+        "INSERT INTO files(name, file_path, type, size, folder, template_category, file_id, file_url, uploaded_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
         [
           fileName,
           storageFileName,
@@ -79,7 +76,6 @@ const storageController = {
           category,
           fileId,
           fileUrl,
-          pngUrl,
           uploadedAt,
           userId,
         ]
@@ -109,12 +105,12 @@ const storageController = {
 
       if (userId === "system") {
         result = (await pool.query(
-          "SELECT name, file_name, type, size, folder, template_category, file_id, file_url, png_url, uploaded_at, source FROM files WHERE source = $1",
+          "SELECT name, file_path, type, size, folder, template_category, file_id, file_url, uploaded_at, source FROM files WHERE source = $1",
           [userId]
         )) as DbQueryResultProps;
       } else {
         result = (await pool.query(
-          "SELECT name, file_name, type, size, folder, template_category, file_id, file_url, png_url, uploaded_at, source FROM files WHERE user_id = $1",
+          "SELECT name, file_path, type, size, folder, template_category, file_id, file_url, uploaded_at, source FROM files WHERE user_id = $1",
           [userId]
         )) as DbQueryResultProps;
       }

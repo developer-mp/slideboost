@@ -87,13 +87,13 @@ const FileTable: FC<FileTableProps> = ({
               ))}
               <td className="tw-p-2 tw-text-center tw-flex tw-justify-center tw-items-center">
                 <button
-                  onClick={() => downloadFile(file.file_id!, file.file_name!)}
+                  onClick={() => downloadFile(file.file_id!, file.file_path!)}
                   className="tw-text-[#4CAF50] hover:tw-text-[#388E3C] tw-text-xl tw-flex tw-items-center tw-justify-center tw-h-full"
                 >
                   <FiDownload />
                 </button>
                 <button
-                  onClick={() => removeFile(file.file_id!, file.file_name!)}
+                  onClick={() => removeFile(file.file_id!, file.file_path!)}
                   className="tw-text-[#FD4958] hover:tw-text-[#DB142B] tw-text-xl tw-flex tw-items-center tw-justify-center tw-ml-4"
                 >
                   <FiTrash2 />

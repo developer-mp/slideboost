@@ -202,9 +202,9 @@ const TemplatesMenu: React.FC = () => {
                   <div className="tw-flex tw-flex-col">
                     <img
                       src={
-                        template.file_name
+                        template.file_path
                           ? `${config.DNS_ENDPOINT}/${replaceExtension(
-                              template.file_name
+                              template.file_path
                             )}`
                           : ""
                       }
@@ -225,7 +225,7 @@ const TemplatesMenu: React.FC = () => {
                           onClick={() =>
                             downloadTemplate(
                               template.file_id!,
-                              template.file_name!
+                              template.file_path!
                             )
                           }
                           className="tw-text-[#4CAF50] hover:tw-text-[#388E3C] tw-text-xl"
@@ -235,7 +235,7 @@ const TemplatesMenu: React.FC = () => {
                         {template.source !== "system" && (
                           <button
                             onClick={() =>
-                              removeFile(template.file_id!, template.file_name!)
+                              removeFile(template.file_id!, template.file_path!)
                             }
                             className="tw-text-[#FD4958] hover:tw-text-[#DB142B] tw-text-xl"
                           >
