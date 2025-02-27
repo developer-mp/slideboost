@@ -8,5 +8,5 @@ CREATE TABLE users (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   verification_code VARCHAR(6) NULL,
   is_verified BOOLEAN DEFAULT FALSE,
-  expires_at TIMESTAMP WITH TIME ZONE
+  code_expires_at TIMESTAMP WITH TIME ZONE
 );

@@ -39,7 +39,7 @@ const userController = {
       const expiresAt = new Date();
       expiresAt.setMinutes(expiresAt.getMinutes() + 15);
       const userResult = (await pool.query(
-        "INSERT INTO users (name, email, password, verification_code, expires_at) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email",
+        "INSERT INTO users (name, email, password, verification_code, code_expires_at) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email",
         [name, email, hashedPassword, verificationCode, expiresAt]
       )) as DbQueryResultProps;
 
@@ -87,7 +87,7 @@ const userController = {
     const { email, code }: { email: string; code: string } = req.body;
     try {
       const result = (await pool.query(
-        "SELECT name, verification_code, expires_at, is_verified FROM users WHERE email = $1",
+        "SELECT name, verification_code, code_expires_at, is_verified FROM users WHERE email = $1",
         [email]
       )) as DbQueryResultProps;
 
@@ -103,7 +103,7 @@ const userController = {
       }
 
       const now = new Date();
-      if (now > new Date(user.expires_at)) {
+      if (now > new Date(user.code_expires_at)) {
         res.status(400).json({
           message: "Verification code has expired",
           requestCode: true,
@@ -467,7 +467,7 @@ const userController = {
       const expiresAt = new Date();
       expiresAt.setMinutes(expiresAt.getMinutes() + 15);
       (await pool.query(
-        "UPDATE users SET verification_code = $1, expires_at = $2 WHERE email = $3",
+        "UPDATE users SET verification_code = $1, code_expires_at = $2 WHERE email = $3",
         [verificationCode, expiresAt, email]
       )) as DbQueryResultProps;
 
