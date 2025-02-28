@@ -5,6 +5,7 @@ import { config } from "../env.config";
 import cookieParser from "cookie-parser";
 import handleError from "./utils/common/handleError";
 import path from "path";
+import "./services/cron/clearExpiredVerificationCode";
 
 const app = express();
 const serverPort = config.SERVER_PORT;
