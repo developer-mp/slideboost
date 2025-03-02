@@ -24,6 +24,10 @@ import useCredits from "../../utils/payment/useCredits";
 import { getCreditBalance } from "../../store/actions/userAction";
 
 const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
+  const userId = useSelector((state: RootState) => state.user.userId);
+  const initialCredits = 10;
+  const pricePerCredit = Number(config.PRICE_PER_CREDIT);
+
   const {
     credits,
     setCredits,
@@ -32,7 +36,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     handlePurchase,
     handleConfirmPurchase,
     closeCreditsModal,
-  } = useCredits(10, Number(config.PRICE_PER_CREDIT));
+  } = useCredits(initialCredits, pricePerCredit, userId);
 
   const [showMediaModal, setShowMediaModal] = useState<boolean>(false);
   const [selectedMediaFiles, setSelectedMediaFiles] = useState<
@@ -49,7 +53,6 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const [showTokenModal, setShowTokenModal] = useState<boolean>(false);
 
   const dispatch = useDispatch<AppDispatch>();
-  const userId = useSelector((state: RootState) => state.user.userId);
 
   const creditBalance = useSelector(
     (state: RootState) => state.user.creditBalance
@@ -181,8 +184,8 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
     setShowTokenModal(false);
   };
 
-  const onCheckout = async (amount: number) => {
-    return await dispatch(createCheckout({ amount })).unwrap();
+  const onCheckout = async (amount: number, userId: string) => {
+    return await dispatch(createCheckout({ amount, userId })).unwrap();
   };
 
   const handleConfirm = () => {

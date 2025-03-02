@@ -7,7 +7,10 @@ const clientUrl = config.CLIENT_HOST;
 +":" + config.CLIENT_PORT;
 
 const paymentService = {
-  createCheckoutSession: async (amount: number): Promise<string> => {
+  createCheckoutSession: async (
+    amount: number,
+    userId: string
+  ): Promise<string> => {
     try {
       const amountInCents = Math.round(amount * 100);
       const session = await payment.checkout.sessions.create({
@@ -27,6 +30,11 @@ const paymentService = {
         mode: "payment",
         success_url: `${clientUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${clientUrl}/cancel`,
+        payment_intent_data: {
+          metadata: {
+            userId: userId,
+          },
+        },
       });
 
       return session.url ?? "";

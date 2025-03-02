@@ -1,7 +1,7 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { PricingPlanProps } from "../../interfaces/interfaces";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
 import { createCheckout } from "../../store/actions/paymentAction";
 import { config } from "../../../env.config";
 import CreditsModal from "../widgets/CreditsModal";
@@ -14,6 +14,9 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
   features,
   titleColor,
 }) => {
+  const userId = useSelector((state: RootState) => state.user.userId);
+  const initialCredits = 10;
+  const pricePerCredit = Number(config.PRICE_PER_CREDIT);
   const {
     credits,
     setCredits,
@@ -22,12 +25,12 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
     handlePurchase,
     handleConfirmPurchase,
     closeCreditsModal,
-  } = useCredits(10, Number(config.PRICE_PER_CREDIT));
+  } = useCredits(initialCredits, pricePerCredit, userId);
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const onCheckout = async (amount: number) => {
-    return await dispatch(createCheckout({ amount })).unwrap();
+  const onCheckout = async (amount: number, userId: string) => {
+    return await dispatch(createCheckout({ amount, userId })).unwrap();
   };
 
   const handleConfirm = () => {

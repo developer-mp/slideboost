@@ -3,7 +3,11 @@ import { handleErrorMessage } from "../common/handleActionMessage";
 import { showErrorToast } from "../common/handleToast";
 import { CheckoutResponse } from "../../interfaces/interfaces";
 
-const useCredits = (initialCredits: number, pricePerCredit: number) => {
+const useCredits = (
+  initialCredits: number,
+  pricePerCredit: number,
+  userId: string
+) => {
   const [credits, setCredits] = useState<number>(10);
   const [amount, setAmount] = useState<number>(0);
   const [showCreditsModal, setShowCreditsModal] = useState<boolean>(false);
@@ -22,10 +26,10 @@ const useCredits = (initialCredits: number, pricePerCredit: number) => {
   };
 
   const handleConfirmPurchase = async (
-    onCheckout: (amount: number) => Promise<CheckoutResponse>
+    onCheckout: (amount: number, userId: string) => Promise<CheckoutResponse>
   ) => {
     try {
-      const resultAction = await onCheckout(amount);
+      const resultAction = await onCheckout(amount, userId);
       const { url } = resultAction;
 
       if (url) {

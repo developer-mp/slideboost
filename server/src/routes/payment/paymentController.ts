@@ -1,14 +1,16 @@
 import { Request, Response } from "express";
 import handleError from "../../utils/common/handleError";
 import paymentService from "../../services/payment/paymentService";
-import { pool } from "../../db/config/pool";
 
 const paymentController = {
   createPaymentLink: async (req: Request, res: Response): Promise<void> => {
     try {
-      const { amount } = req.body;
+      const { amount, userId } = req.body;
 
-      const sessionUrl = await paymentService.createCheckoutSession(amount);
+      const sessionUrl = await paymentService.createCheckoutSession(
+        amount,
+        userId
+      );
 
       if (sessionUrl) {
         res.status(200).json({ url: sessionUrl });

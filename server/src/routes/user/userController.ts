@@ -538,7 +538,7 @@ const userController = {
 
     try {
       const userResult = (await pool.query(
-        "SELECT balance FROM credits WHERE user_id = $1 ORDER BY last_updated DESC LIMIT 1",
+        "SELECT balance FROM credits WHERE user_id = $1 ORDER BY transaction_date DESC LIMIT 1",
         [userId]
       )) as DbQueryResultProps;
 

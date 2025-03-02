@@ -6,11 +6,12 @@ export const createCheckout = createAsyncThunk<
   { url: string },
   {
     amount: number;
+    userId: string;
   },
   { rejectValue: { message: string } }
->("payment/createCheckout", async ({ amount }, { rejectWithValue }) => {
+>("payment/createCheckout", async ({ amount, userId }, { rejectWithValue }) => {
   try {
-    const response = await paymentService.createCheckout(amount);
+    const response = await paymentService.createCheckout(amount, userId);
     return response;
   } catch (error) {
     return handleError.actionError(

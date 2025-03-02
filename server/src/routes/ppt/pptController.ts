@@ -78,7 +78,7 @@ const pptController = {
       await clearUploadFolder();
 
       (await pool.query(
-        "INSERT INTO credits (balance, user_id) SELECT balance - $1, $2 FROM credits WHERE user_id = $2 ORDER BY last_updated DESC LIMIT 1",
+        "INSERT INTO credits (balance, user_id) SELECT balance - $1, $2 FROM credits WHERE user_id = $2 ORDER BY transaction_date DESC LIMIT 1",
         [credits, userId]
       )) as DbQueryResultProps;
 

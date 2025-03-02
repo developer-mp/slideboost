@@ -18,6 +18,9 @@ const Profile: React.FC = () => {
     (state: RootState) => state.user
   );
 
+  const initialCredits = 10;
+  const pricePerCredit = Number(config.PRICE_PER_CREDIT);
+
   const {
     credits,
     setCredits,
@@ -26,15 +29,15 @@ const Profile: React.FC = () => {
     handlePurchase,
     handleConfirmPurchase,
     closeCreditsModal,
-  } = useCredits(10, Number(config.PRICE_PER_CREDIT));
+  } = useCredits(initialCredits, pricePerCredit, userId);
   const dispatch = useDispatch<AppDispatch>();
 
   const formattedCreatedAt = formatDate(createdAt, "MMM d, yyyy");
 
   const firstInitial = getFirstChar(userName);
 
-  const onCheckout = async (amount: number) => {
-    return await dispatch(createCheckout({ amount })).unwrap();
+  const onCheckout = async (amount: number, userId: string) => {
+    return await dispatch(createCheckout({ amount, userId })).unwrap();
   };
 
   const handleConfirm = () => {
