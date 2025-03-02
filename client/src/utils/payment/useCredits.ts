@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { handleErrorMessage } from "../common/handleActionMessage";
 import { showErrorToast, showSuccessToast } from "../common/handleToast";
 import { CheckoutResponse } from "../../interfaces/interfaces";
@@ -14,7 +14,7 @@ const useCredits = (
   const [credits, setCredits] = useState<number>(10);
   const [amount, setAmount] = useState<number>(0);
   const [showCreditsModal, setShowCreditsModal] = useState<boolean>(false);
-  const [paymentVerified, setPaymentVerified] = useState(false);
+  const paymentVerifiedRef = useRef<boolean>(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -60,22 +60,22 @@ const useCredits = (
 
   const verifyPaymentStatus = useCallback(
     async (sessionId: string) => {
-      if (paymentVerified) return;
+      if (paymentVerifiedRef.current) return;
 
       try {
         const resultAction = await dispatch(
           verifyPayment({ sessionId })
         ).unwrap();
 
-        if (resultAction.paid) {
-          showSuccessToast("Payment Successful. Credits have been added");
-          setPaymentVerified(true);
-          setTimeout(() => {
-            window.location.href = "/profile";
-          }, 2000);
-        } else {
-          showErrorToast("Payment failed. Please try again");
-          setPaymentVerified(true);
+        if (!paymentVerifiedRef.current) {
+          if (resultAction.paid === true) {
+            showSuccessToast("Payment Successful. Credits have been added");
+            setTimeout(() => {
+              window.location.href = "/profile";
+            }, 3000);
+          } else {
+            showErrorToast("Payment failed. Please try again");
+          }
         }
       } catch (error) {
         const errorMessage = handleErrorMessage(error);
@@ -85,8 +85,9 @@ const useCredits = (
           error
         );
       }
+      paymentVerifiedRef.current = true;
     },
-    [paymentVerified, dispatch]
+    [dispatch]
   );
 
   useEffect(() => {
@@ -94,10 +95,10 @@ const useCredits = (
       "session_id"
     );
 
-    if (sessionId && !paymentVerified) {
+    if (sessionId && !paymentVerifiedRef.current) {
       verifyPaymentStatus(sessionId);
     }
-  }, [paymentVerified, verifyPaymentStatus]);
+  }, [verifyPaymentStatus]);
 
   return {
     credits,
