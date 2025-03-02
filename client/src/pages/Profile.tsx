@@ -1,20 +1,23 @@
+import { useCallback, useEffect } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-import { getFirstChar } from "../utils/login/getFirstChar";
+import { getFirstChar } from "../utils/user/getFirstChar";
 import { formatDate } from "./../utils/common/formatDate";
 import { MdPersonOutline, MdOutlineCreditScore } from "react-icons/md";
 import { createCheckout } from "../store/actions/paymentAction";
 import { config } from "../../env.config";
 import CreditsModal from "../components/widgets/CreditsModal";
 import useCredits from "../utils/payment/useCredits";
+import { getCreditBalance } from "../store/actions/userAction";
+import { handleErrorMessage } from "../utils/common/handleActionMessage";
+import { showErrorToast } from "../utils/common/handleToast";
 
 const Profile: React.FC = () => {
-  const userName = useSelector((state: RootState) => state.user.userName);
-  const createdAt = useSelector((state: RootState) => state.user.createdAt);
-  const creditBalance = useSelector(
-    (state: RootState) => state.user.creditBalance
+  const { userName, userId, createdAt, creditBalance } = useSelector(
+    (state: RootState) => state.user
   );
+
   const {
     credits,
     setCredits,
@@ -37,6 +40,23 @@ const Profile: React.FC = () => {
   const handleConfirm = () => {
     handleConfirmPurchase(onCheckout);
   };
+
+  const handleCreditBalance = useCallback(async () => {
+    try {
+      await dispatch(getCreditBalance({ userId })).unwrap();
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error(
+        "Error occurred while retrieving the credit balance: ",
+        error
+      );
+    }
+  }, [dispatch, userId]);
+
+  useEffect(() => {
+    handleCreditBalance();
+  }, [handleCreditBalance]);
 
   return (
     <Container className="tw-text-center tw-mt-12">

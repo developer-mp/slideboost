@@ -2,10 +2,11 @@ import { Request, Response } from "express";
 import storageService from "../../services/storage/storageService";
 import handleError from "../../utils/common/handleError";
 import { config } from "../../../env.config";
-import { Content } from "../../interfaces/interfaces";
+import { Content, DbQueryResultProps } from "../../interfaces/interfaces";
 import aiService from "../../services/ai/aiService";
 import pptService from "../../services/ppt/pptService";
 import { clearUploadFolder } from "../../utils/storage/clearUploadFolder";
+import { pool } from "../../db/config/pool";
 
 const tokenDataStore: Record<string, string> = {};
 
@@ -36,6 +37,7 @@ const pptController = {
     const userId = req.query.userId as string;
     const templateId = req.query.templateId as string;
     const title = req.query.title as string;
+    const credits = parseFloat(req.query.credits as string);
 
     if (!templateId) {
       res.status(400).json({ message: "Template ID is required" });
@@ -74,6 +76,11 @@ const pptController = {
       await pptService.uploadPptToStorage(userId, pptPath);
 
       await clearUploadFolder();
+
+      (await pool.query(
+        "INSERT INTO credits (balance, user_id) SELECT balance - $1, $2 FROM credits WHERE user_id = $2 ORDER BY last_updated DESC LIMIT 1",
+        [credits, userId]
+      )) as DbQueryResultProps;
 
       res.status(200).json({
         message: "Presentation created successfully",

@@ -26,7 +26,8 @@ const pptService = {
     userId: string,
     files: { file_id: string; file_type: string }[],
     templateId: string,
-    title: string
+    title: string,
+    credits: number
   ): Promise<string> {
     const endpoint = `${config.PPT_ROUTER}${config.PPT_ENDPOINT}`;
 
@@ -36,6 +37,7 @@ const pptService = {
         files,
         templateId,
         title,
+        credits,
       });
 
       return response.data;

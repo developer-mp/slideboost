@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { useNavigation } from "../../utils/login/useNavigation";
+import { useNavigation } from "../../utils/user/useNavigation";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import LoginModal from "../widgets/LoginModal";

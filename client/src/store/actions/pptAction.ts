@@ -14,7 +14,7 @@ export const calculateTokens = createAsyncThunk<
     files: { file_id: string; file_type: string }[];
   },
   { rejectValue: { message: string } }
->("storage/calculateTokens", async ({ userId, files }, { rejectWithValue }) => {
+>("ppt/calculateTokens", async ({ userId, files }, { rejectWithValue }) => {
   try {
     const response = await pptService.calculateTokens(userId, files);
     return response;
@@ -34,17 +34,22 @@ export const generatePpt = createAsyncThunk<
     files: { file_id: string; file_type: string }[];
     templateId: string;
     title: string;
+    credits: number;
   },
   { rejectValue: { message: string } }
 >(
-  "storage/generatePpt",
-  async ({ userId, files, templateId, title }, { rejectWithValue }) => {
+  "ppt/generatePpt",
+  async (
+    { userId, files, templateId, title, credits },
+    { rejectWithValue }
+  ) => {
     try {
       const response = await pptService.generatePpt(
         userId,
         files,
         templateId,
-        title
+        title,
+        credits
       );
       return response;
     } catch (error) {

@@ -4,13 +4,13 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { setIsReset } from "../store/slices/userSlice";
 import { loginUser } from "../store/actions/userAction";
-import { useNavigation } from "../utils/login/useNavigation";
+import { useNavigation } from "../utils/user/useNavigation";
 import {
   showErrorToast,
   showSuccessToast,
   showWarningToast,
 } from "../utils/common/handleToast";
-import { validateEmail } from "../utils/login/validateEmail";
+import { validateEmail } from "../utils/user/validateEmail";
 import CustomModal from "../components/shared/CustomModal";
 import { sendEmail } from "../store/actions/userAction";
 import {

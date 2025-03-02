@@ -176,6 +176,18 @@ const userService = {
       throw error;
     }
   },
+
+  async getCreditBalance(userId: string): Promise<void> {
+    const endpoint = `${config.USER_ROUTER}${config.BALANCE_ENDPOINT}`;
+
+    try {
+      const response = await apiService.getCall(endpoint, { userId });
+      return response.data;
+    } catch (error: unknown) {
+      handleError.axiosError(error, "retrieving the credit balance");
+      throw error;
+    }
+  },
 };
 
 export default userService;

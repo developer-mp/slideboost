@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Button, Container, Dropdown, Nav, Navbar } from "react-bootstrap";
-import { useNavigation } from "../../utils/login/useNavigation";
+import { useNavigation } from "../../utils/user/useNavigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import { HashLink as Link } from "react-router-hash-link";
-import { getFirstChar } from "../../utils/login/getFirstChar";
+import { getFirstChar } from "../../utils/user/getFirstChar";
 import { adjustScrollForNavbar } from "../../utils/common/adjustScrollForNavbar";
 import { logoutUser } from "../../store/actions/userAction";
 import LoginModal from "../widgets/LoginModal";

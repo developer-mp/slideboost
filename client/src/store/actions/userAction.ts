@@ -5,11 +5,11 @@ import handleError from "../../utils/common/handleError";
 import axios from "axios";
 
 export const registerUser = createAsyncThunk<
-  { name: string; email: string; balance: number; message: string },
+  { name: string; email: string; message: string },
   { name: string; email: string; password: string },
   { rejectValue: { message: string } }
 >(
-  "auth/registerUser",
+  "user/registerUser",
   async ({ name, email, password }, { rejectWithValue }) => {
     try {
       const response = await userService.registerUser(name, email, password);
@@ -28,7 +28,7 @@ export const verifyEmail = createAsyncThunk<
   { message: string },
   { email: string; code: string },
   { rejectValue: { message: string; requestCode: boolean } }
->("auth/verifyEmail", async ({ email, code }, { rejectWithValue }) => {
+>("user/verifyEmail", async ({ email, code }, { rejectWithValue }) => {
   try {
     const { message } = await userService.verifyEmail(email, code);
     return { message };
@@ -51,7 +51,7 @@ export const loginUser = createAsyncThunk<
   },
   { email: string; password: string },
   { rejectValue: { message: string } }
->("auth/loginUser", async ({ email, password }, { rejectWithValue }) => {
+>("user/loginUser", async ({ email, password }, { rejectWithValue }) => {
   try {
     const response = await userService.loginUser(email, password);
     return response;
@@ -69,13 +69,12 @@ export const loginUserWithGoogle = createAsyncThunk<
     id: string;
     name: string;
     email: string;
-    balance: number;
     createdAt: string;
     message: string;
   },
   { idToken: string },
   { rejectValue: { message: string } }
->("auth/loginUserWithGoogle", async ({ idToken }, { rejectWithValue }) => {
+>("user/loginUserWithGoogle", async ({ idToken }, { rejectWithValue }) => {
   try {
     const response = await userService.loginUserWithGoogle(idToken);
     return response;
@@ -94,7 +93,7 @@ export const logoutUser = createAsyncThunk<
   },
   void,
   { rejectValue: { message: string } }
->("auth/logoutUser", async (_, { rejectWithValue }) => {
+>("user/logoutUser", async (_, { rejectWithValue }) => {
   try {
     const response = await userService.logoutUser();
     return response;
@@ -111,7 +110,7 @@ export const verifyToken = createAsyncThunk<
   { userId: string },
   void,
   { rejectValue: { message: string } }
->("auth/verifyToken", async (_, { rejectWithValue, getState }) => {
+>("user/verifyToken", async (_, { rejectWithValue, getState }) => {
   const state = getState() as RootState;
   const email = state.user.userEmail;
 
@@ -147,7 +146,7 @@ export const sendEmail = createAsyncThunk<
   { email: string; template: string; subject: string },
   { rejectValue: { message: string } }
 >(
-  "auth/sendEmail",
+  "user/sendEmail",
   async ({ email, template, subject }, { rejectWithValue }) => {
     try {
       const { message } = await userService.sendEmail(email, template, subject);
@@ -200,7 +199,7 @@ export const deactivateAccount = createAsyncThunk<
   { message: string },
   { email: string; reason: string },
   { rejectValue: { message: string } }
->("auth/deactivateAccount", async ({ email, reason }, { rejectWithValue }) => {
+>("user/deactivateAccount", async ({ email, reason }, { rejectWithValue }) => {
   try {
     const { message } = await userService.deactivateAccount(email, reason);
     return { message };
@@ -209,6 +208,23 @@ export const deactivateAccount = createAsyncThunk<
       error,
       rejectWithValue,
       "deactivating the account"
+    );
+  }
+});
+
+export const getCreditBalance = createAsyncThunk<
+  { creditBalance: number },
+  { userId: string },
+  { rejectValue: { message: string } }
+>("payment/getCreditBalance", async ({ userId }, { rejectWithValue }) => {
+  try {
+    const response = await userService.getCreditBalance(userId);
+    return response;
+  } catch (error) {
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "retrieving the credit balance"
     );
   }
 });

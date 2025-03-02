@@ -47,12 +47,9 @@ const userController = {
 
       const user = userResult.rows[0];
 
-      const creditResult = (await pool.query(
-        "INSERT INTO credits (user_id) VALUES ($1) RETURNING balance",
-        [user.id]
-      )) as DbQueryResultProps;
-
-      const credit = creditResult.rows[0];
+      (await pool.query("INSERT INTO credits (user_id) VALUES ($1)", [
+        user.id,
+      ])) as DbQueryResultProps;
 
       try {
         if (verificationCode) {
@@ -77,7 +74,6 @@ const userController = {
       res.status(201).json({
         name: user.name,
         email: user.email,
-        balance: credit.balance,
         message: "Check your email box for verification code",
       });
     } catch (error: unknown) {
@@ -235,12 +231,20 @@ const userController = {
         user = result.rows[0];
       }
 
-      const creditResult = (await pool.query(
-        "INSERT INTO credits (user_id) VALUES ($1) RETURNING balance",
+      const existingCredits = (await pool.query(
+        "SELECT balance FROM credits WHERE user_id = $1 LIMIT 1",
         [user.id]
       )) as DbQueryResultProps;
 
-      const credit = creditResult.rows[0];
+      let creditResult;
+
+      if (existingCredits.rows.length === 0) {
+        (await pool.query("INSERT INTO credits (user_id) VALUES ($1)", [
+          user.id,
+        ])) as DbQueryResultProps;
+      } else {
+        creditResult = existingCredits;
+      }
 
       const accessToken = jwt.sign({ userId: user.id }, config.JWT_SECRET, {
         expiresIn: config.TOKEN_EXPIRATION,
@@ -271,7 +275,6 @@ const userController = {
         id: user.id,
         name: user.name,
         email: user.email,
-        balance: credit.balance,
         createdAt: user.created_at,
         message: "Logged in successfully",
       });
@@ -526,6 +529,26 @@ const userController = {
       res.status(200).json({ message: "Account deactivated successfully" });
     } catch (error: unknown) {
       handleError.controllerError(res, error, "deactivating the account");
+      return;
+    }
+  },
+
+  getCreditBalance: async (req: Request, res: Response): Promise<void> => {
+    const userId = req.query.userId as string;
+
+    try {
+      const userResult = (await pool.query(
+        "SELECT balance FROM credits WHERE user_id = $1 ORDER BY last_updated DESC LIMIT 1",
+        [userId]
+      )) as DbQueryResultProps;
+
+      const user = userResult.rows[0];
+
+      res.status(200).json({
+        creditBalance: user.balance,
+      });
+    } catch (error: unknown) {
+      handleError.controllerError(res, error, "retrieving the credit balance");
       return;
     }
   },

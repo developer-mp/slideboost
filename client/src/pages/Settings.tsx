@@ -14,12 +14,12 @@ import {
 } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { useNavigation } from "../utils/login/useNavigation";
+import { useNavigation } from "../utils/user/useNavigation";
 import { deactivateAccount, logoutUser } from "../store/actions/userAction";
 import { updateUserName, updatePassword } from "../store/actions/userAction";
-import { formatEmail } from "../utils/login/formatEmail";
-import { validateName } from "../utils/login/validateName";
-import { validatePassword } from "../utils/login/validatePassword";
+import { formatEmail } from "../utils/user/formatEmail";
+import { validateName } from "../utils/user/validateName";
+import { validatePassword } from "../utils/user/validatePassword";
 import PasswordInput from "../components/widgets/PasswordInput";
 import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 import {

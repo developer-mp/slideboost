@@ -14,7 +14,7 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "../../utils/common/handleToast";
-import { useNavigation } from "../../utils/login/useNavigation";
+import { useNavigation } from "../../utils/user/useNavigation";
 import { config } from "../../../env.config";
 import { GoogleAuthProps } from "../../interfaces/interfaces";
 

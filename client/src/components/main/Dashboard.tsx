@@ -21,6 +21,7 @@ import CreditsModal from "../widgets/CreditsModal";
 import { createCheckout } from "../../store/actions/paymentAction";
 import { config } from "../../../env.config";
 import useCredits from "../../utils/payment/useCredits";
+import { getCreditBalance } from "../../store/actions/userAction";
 
 const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const {
@@ -158,11 +159,13 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
             files: filesArr,
             templateId: templateId,
             title: presentationTitle,
+            credits: creditCost,
           })
         ).unwrap();
       }
       const successMessage = handleSuccessMessage(resultAction);
       await dispatch(getFileMetadata({ userId })).unwrap();
+      await dispatch(getCreditBalance({ userId })).unwrap();
       showSuccessToast(successMessage);
       setSelectedItem("projects");
     } catch (error) {

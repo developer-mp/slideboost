@@ -9,6 +9,7 @@ import {
   updateUserName,
   deactivateAccount,
   sendEmail,
+  getCreditBalance,
 } from "../actions/userAction";
 
 interface UserState {
@@ -61,7 +62,6 @@ const userSlice = createSlice({
         state.status = "success";
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
-        state.creditBalance = action.payload.balance;
         state.message = action.payload.message;
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -110,7 +110,6 @@ const userSlice = createSlice({
         state.userId = action.payload.id;
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
-        state.creditBalance = action.payload.balance;
         state.createdAt = action.payload.createdAt;
         state.message = action.payload.message;
       })
@@ -182,6 +181,18 @@ const userSlice = createSlice({
         state.message = action.payload.message;
       })
       .addCase(deactivateAccount.rejected, (state, action) => {
+        state.status = "fail";
+        state.error = action.error.message || null;
+      })
+      .addCase(getCreditBalance.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(getCreditBalance.fulfilled, (state, action) => {
+        state.status = "success";
+        state.creditBalance = action.payload.creditBalance;
+      })
+      .addCase(getCreditBalance.rejected, (state, action) => {
         state.status = "fail";
         state.error = action.error.message || null;
       });

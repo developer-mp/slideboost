@@ -14,5 +14,6 @@ userRouter.post("/username", userController.updateUserName);
 userRouter.post("/password", userController.updatePassword);
 userRouter.post("/email", userController.sendEmail);
 userRouter.post("/deactivation", userController.deactivateAccount);
+userRouter.get("/balance", userController.getCreditBalance);
 
 export default userRouter;

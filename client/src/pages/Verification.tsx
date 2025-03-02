@@ -13,7 +13,7 @@ import {
 } from "../utils/common/handleActionMessage";
 import { setIsRegister } from "../store/slices/userSlice";
 import CustomModal from "../components/shared/CustomModal";
-import { useNavigation } from "../utils/login/useNavigation";
+import { useNavigation } from "../utils/user/useNavigation";
 
 const Verification: React.FC = () => {
   const [showRequestCodeModal, setShowRequestCodeModal] =

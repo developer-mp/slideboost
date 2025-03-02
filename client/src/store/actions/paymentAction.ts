@@ -8,7 +8,7 @@ export const createCheckout = createAsyncThunk<
     amount: number;
   },
   { rejectValue: { message: string } }
->("storage/createCheckout", async ({ amount }, { rejectWithValue }) => {
+>("payment/createCheckout", async ({ amount }, { rejectWithValue }) => {
   try {
     const response = await paymentService.createCheckout(amount);
     return response;

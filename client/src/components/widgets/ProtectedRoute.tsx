@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { ProtectedRouteProps } from "../../interfaces/interfaces";
-import { useNavigation } from "../../utils/login/useNavigation";
+import { useNavigation } from "../../utils/user/useNavigation";
 import { AppDispatch } from "../../store/store";
 import { useDispatch } from "react-redux";
 import { verifyToken } from "../../store/actions/userAction";

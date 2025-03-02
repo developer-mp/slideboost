@@ -3,9 +3,9 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { registerUser } from "../store/actions/userAction";
-import { validateName } from "../utils/login/validateName";
-import { validatePassword } from "../utils/login/validatePassword";
-import { validateEmail } from "../utils/login/validateEmail";
+import { validateName } from "../utils/user/validateName";
+import { validatePassword } from "../utils/user/validatePassword";
+import { validateEmail } from "../utils/user/validateEmail";
 import {
   showErrorToast,
   showSuccessToast,
@@ -17,7 +17,7 @@ import {
   handleSuccessMessage,
 } from "../utils/common/handleActionMessage";
 import { setIsRegister } from "../store/slices/userSlice";
-import { useNavigation } from "../utils/login/useNavigation";
+import { useNavigation } from "../utils/user/useNavigation";
 
 const Register: React.FC = () => {
   const [name, setName] = useState<string>("");
