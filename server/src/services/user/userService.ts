@@ -24,6 +24,7 @@ const userService = {
   async createEmail(
     email: string,
     name: string,
+    expirationTime: number | undefined,
     verificationCode: string | undefined,
     template: string,
     subject: string
@@ -36,6 +37,7 @@ const userService = {
 
       const html = pug.renderFile(`./src/templates/${template}.pug`, {
         name,
+        expirationTime: expirationTime || null,
         template,
         subject,
         verificationCode: verificationCode || null,
@@ -59,11 +61,19 @@ const userService = {
   sendEmail(
     email: string,
     name: string,
+    expirationTime: number | undefined,
     verificationCode: string | undefined,
     template: string,
     subject: string
   ) {
-    this.createEmail(email, name, verificationCode, template, subject);
+    this.createEmail(
+      email,
+      name,
+      expirationTime,
+      verificationCode,
+      template,
+      subject
+    );
   },
 };
 

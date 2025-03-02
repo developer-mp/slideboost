@@ -37,7 +37,9 @@ const userController = {
       const hashedPassword = await bcrypt.hash(password, 10);
       const verificationCode = generateVerificationCode();
       const expiresAt = new Date();
-      expiresAt.setMinutes(expiresAt.getMinutes() + 15);
+      expiresAt.setMinutes(
+        expiresAt.getMinutes() + config.VERIFICATION_CODE_EXPIRATION
+      );
       const userResult = (await pool.query(
         "INSERT INTO users (name, email, password, verification_code, code_expires_at) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email",
         [name, email, hashedPassword, verificationCode, expiresAt]
@@ -57,6 +59,7 @@ const userController = {
           userService.sendEmail(
             email,
             user.name,
+            config.VERIFICATION_CODE_EXPIRATION,
             verificationCode,
             "verificationEmail",
             "Account Verification"
@@ -116,6 +119,7 @@ const userController = {
           userService.sendEmail(
             email,
             user.name,
+            undefined,
             undefined,
             "greetingEmail",
             "Welcome to SlideBoost"
@@ -465,7 +469,9 @@ const userController = {
 
       const verificationCode = generateVerificationCode();
       const expiresAt = new Date();
-      expiresAt.setMinutes(expiresAt.getMinutes() + 15);
+      expiresAt.setMinutes(
+        expiresAt.getMinutes() + config.VERIFICATION_CODE_EXPIRATION
+      );
       (await pool.query(
         "UPDATE users SET verification_code = $1, code_expires_at = $2 WHERE email = $3",
         [verificationCode, expiresAt, email]
@@ -476,6 +482,7 @@ const userController = {
           userService.sendEmail(
             email,
             user.name,
+            config.VERIFICATION_CODE_EXPIRATION,
             verificationCode,
             template,
             subject
