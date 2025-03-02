@@ -4,7 +4,7 @@ import handleError from "../../utils/common/handleError";
 
 const paymentService = {
   async createCheckout(amount: number, userId: string): Promise<string> {
-    const endpoint = `${config.PAYMENT_ROUTER}${config.PAYMENT_ENDPOINT}`;
+    const endpoint = `${config.PAYMENT_ROUTER}${config.CHECKOUT_ENDPOINT}`;
 
     try {
       const response = await apiService.postCall(endpoint, {
@@ -14,6 +14,20 @@ const paymentService = {
       return response.data;
     } catch (error: unknown) {
       handleError.axiosError(error, "creating the checkout session");
+      throw error;
+    }
+  },
+
+  async verifyPayment(sessionId: string): Promise<void> {
+    const endpoint = `${config.PAYMENT_ROUTER}${config.VERIFY_PAYMENT_ENDPOINT}`;
+
+    try {
+      const response = await apiService.postCall(endpoint, {
+        sessionId,
+      });
+      return response.data;
+    } catch (error: unknown) {
+      handleError.axiosError(error, "verifying the payment");
       throw error;
     }
   },

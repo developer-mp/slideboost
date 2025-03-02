@@ -21,3 +21,22 @@ export const createCheckout = createAsyncThunk<
     );
   }
 });
+
+export const verifyPayment = createAsyncThunk<
+  { paid: boolean; message: string },
+  {
+    sessionId: string;
+  },
+  { rejectValue: { message: string } }
+>("payment/verifyPayment", async ({ sessionId }, { rejectWithValue }) => {
+  try {
+    const response = await paymentService.verifyPayment(sessionId);
+    return response;
+  } catch (error) {
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "verifying the payment"
+    );
+  }
+});

@@ -3,8 +3,7 @@ import { config } from "../../../env.config";
 import handleError from "../../utils/common/handleError";
 
 const payment = new Stripe(config.PAYMENT_SECRET_KEY);
-const clientUrl = config.CLIENT_HOST;
-+":" + config.CLIENT_PORT;
+const clientUrl = config.CLIENT_HOST + ":" + config.CLIENT_PORT;
 
 const paymentService = {
   createCheckoutSession: async (
@@ -43,6 +42,22 @@ const paymentService = {
       return "";
     }
   },
+
+  // createPaymentEvent: async (
+  //   req:Request,
+  //   sig: string,
+  //   webhookSecret: string
+  // ) => {
+  //   try {
+  //     const event = payment.webhooks.constructEvent(req.body, sig, webhookSecret);
+  //       }
+
+  //     return event;
+  //   } catch (error) {
+  //     handleError.serviceError(error, "creating the payment event");
+  //     return "";
+  //   }
+  // },
 };
 
 export default paymentService;

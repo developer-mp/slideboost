@@ -1,7 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { handleErrorMessage } from "../common/handleActionMessage";
-import { showErrorToast } from "../common/handleToast";
+import { showErrorToast, showSuccessToast } from "../common/handleToast";
 import { CheckoutResponse } from "../../interfaces/interfaces";
+import { verifyPayment } from "../../store/actions/paymentAction";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
 
 const useCredits = (
   initialCredits: number,
@@ -11,6 +14,9 @@ const useCredits = (
   const [credits, setCredits] = useState<number>(10);
   const [amount, setAmount] = useState<number>(0);
   const [showCreditsModal, setShowCreditsModal] = useState<boolean>(false);
+  const [paymentVerified, setPaymentVerified] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const updateAmount = useCallback(() => {
     const newAmount = Math.max(credits * pricePerCredit, 0);
@@ -51,6 +57,47 @@ const useCredits = (
     setShowCreditsModal(false);
     setCredits(initialCredits);
   };
+
+  const verifyPaymentStatus = useCallback(
+    async (sessionId: string) => {
+      if (paymentVerified) return;
+
+      try {
+        const resultAction = await dispatch(
+          verifyPayment({ sessionId })
+        ).unwrap();
+
+        if (resultAction.paid) {
+          showSuccessToast("Payment Successful. Credits have been added");
+          setPaymentVerified(true);
+          setTimeout(() => {
+            window.location.href = "/profile";
+          }, 2000);
+        } else {
+          showErrorToast("Payment failed. Please try again");
+          setPaymentVerified(true);
+        }
+      } catch (error) {
+        const errorMessage = handleErrorMessage(error);
+        showErrorToast(errorMessage);
+        console.error(
+          "Error occurred while verifying the payment status: ",
+          error
+        );
+      }
+    },
+    [paymentVerified, dispatch]
+  );
+
+  useEffect(() => {
+    const sessionId = new URLSearchParams(window.location.search).get(
+      "session_id"
+    );
+
+    if (sessionId && !paymentVerified) {
+      verifyPaymentStatus(sessionId);
+    }
+  }, [paymentVerified, verifyPaymentStatus]);
 
   return {
     credits,
