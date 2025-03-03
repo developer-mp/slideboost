@@ -43,21 +43,18 @@ const paymentService = {
     }
   },
 
-  // createPaymentEvent: async (
-  //   req:Request,
-  //   sig: string,
-  //   webhookSecret: string
-  // ) => {
-  //   try {
-  //     const event = payment.webhooks.constructEvent(req.body, sig, webhookSecret);
-  //       }
+  retrieveCheckoutSession: async (
+    sessionId: string
+  ): Promise<Stripe.Checkout.Session | null> => {
+    try {
+      const session = await payment.checkout.sessions.retrieve(sessionId);
 
-  //     return event;
-  //   } catch (error) {
-  //     handleError.serviceError(error, "creating the payment event");
-  //     return "";
-  //   }
-  // },
+      return session;
+    } catch (error) {
+      handleError.serviceError(error, "retrieving the payment session");
+      return null;
+    }
+  },
 };
 
 export default paymentService;

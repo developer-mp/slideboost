@@ -57,6 +57,7 @@ const userController = {
             email,
             user.name,
             config.VERIFICATION_CODE_EXPIRATION,
+            undefined,
             verificationCode,
             "verificationEmail",
             "Account Verification"
@@ -115,6 +116,7 @@ const userController = {
           userService.sendEmail(
             email,
             user.name,
+            undefined,
             undefined,
             undefined,
             "greetingEmail",
@@ -486,6 +488,7 @@ const userController = {
             email,
             user.name,
             config.VERIFICATION_CODE_EXPIRATION,
+            undefined,
             verificationCode,
             template,
             subject

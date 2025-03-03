@@ -18,12 +18,18 @@ const paymentService = {
     }
   },
 
-  async verifyPayment(sessionId: string): Promise<void> {
+  async verifyPayment(
+    sessionId: string,
+    credits: number,
+    userId: string
+  ): Promise<void> {
     const endpoint = `${config.PAYMENT_ROUTER}${config.VERIFY_PAYMENT_ENDPOINT}`;
 
     try {
       const response = await apiService.postCall(endpoint, {
         sessionId,
+        credits,
+        userId,
       });
       return response.data;
     } catch (error: unknown) {

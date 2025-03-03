@@ -26,17 +26,26 @@ export const verifyPayment = createAsyncThunk<
   { paid: boolean; message: string },
   {
     sessionId: string;
+    credits: number;
+    userId: string;
   },
   { rejectValue: { message: string } }
->("payment/verifyPayment", async ({ sessionId }, { rejectWithValue }) => {
-  try {
-    const response = await paymentService.verifyPayment(sessionId);
-    return response;
-  } catch (error) {
-    return handleError.actionError(
-      error,
-      rejectWithValue,
-      "verifying the payment"
-    );
+>(
+  "payment/verifyPayment",
+  async ({ sessionId, credits, userId }, { rejectWithValue }) => {
+    try {
+      const response = await paymentService.verifyPayment(
+        sessionId,
+        credits,
+        userId
+      );
+      return response;
+    } catch (error) {
+      return handleError.actionError(
+        error,
+        rejectWithValue,
+        "verifying the payment"
+      );
+    }
   }
-});
+);

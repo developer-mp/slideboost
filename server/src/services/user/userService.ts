@@ -25,6 +25,7 @@ const userService = {
     email: string,
     name: string,
     expirationTime: number | undefined,
+    credits: number | undefined,
     verificationCode: string | undefined,
     template: string,
     subject: string
@@ -38,6 +39,7 @@ const userService = {
       const html = pug.renderFile(`./src/templates/${template}.pug`, {
         name,
         expirationTime: expirationTime || null,
+        credits: credits || null,
         template,
         subject,
         verificationCode: verificationCode || null,
@@ -62,6 +64,7 @@ const userService = {
     email: string,
     name: string,
     expirationTime: number | undefined,
+    credits: number | undefined,
     verificationCode: string | undefined,
     template: string,
     subject: string
@@ -70,6 +73,7 @@ const userService = {
       email,
       name,
       expirationTime,
+      credits,
       verificationCode,
       template,
       subject

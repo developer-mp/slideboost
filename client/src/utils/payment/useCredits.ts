@@ -59,23 +59,22 @@ const useCredits = (
   };
 
   const verifyPaymentStatus = useCallback(
-    async (sessionId: string) => {
+    async (sessionId: string, credits: number, userId: string) => {
       if (paymentVerifiedRef.current) return;
+      paymentVerifiedRef.current = true;
 
       try {
         const resultAction = await dispatch(
-          verifyPayment({ sessionId })
+          verifyPayment({ sessionId, credits, userId })
         ).unwrap();
 
-        if (!paymentVerifiedRef.current) {
-          if (resultAction.paid === true) {
-            showSuccessToast("Payment Successful. Credits have been added");
-            setTimeout(() => {
-              window.location.href = "/profile";
-            }, 3000);
-          } else {
-            showErrorToast("Payment failed. Please try again");
-          }
+        if (resultAction.paid === true) {
+          showSuccessToast("Payment Successful. Credits have been added");
+          setTimeout(() => {
+            window.location.href = "/profile";
+          }, 3000);
+        } else {
+          showErrorToast("Payment failed. Please try again");
         }
       } catch (error) {
         const errorMessage = handleErrorMessage(error);
@@ -85,7 +84,6 @@ const useCredits = (
           error
         );
       }
-      paymentVerifiedRef.current = true;
     },
     [dispatch]
   );
@@ -96,9 +94,9 @@ const useCredits = (
     );
 
     if (sessionId && !paymentVerifiedRef.current) {
-      verifyPaymentStatus(sessionId);
+      verifyPaymentStatus(sessionId, credits, userId);
     }
-  }, [verifyPaymentStatus]);
+  }, [credits, userId, verifyPaymentStatus]);
 
   return {
     credits,

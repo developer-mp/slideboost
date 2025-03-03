@@ -30,7 +30,7 @@ const CreditsModal: React.FC<CreditsModalProps> = ({
                 name="credits"
                 value={credits}
                 onChange={(e) =>
-                  setCredits(Math.max(Number(e.target.value), 0))
+                  setCredits(Math.max(Number(e.target.value), 10))
                 }
                 className="input-focus input-field tw-max-w-24"
               />
