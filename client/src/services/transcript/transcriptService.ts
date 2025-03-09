@@ -55,21 +55,21 @@ const transcriptService = {
     }
   },
 
-  fetchTranscriptFromYoutube: async (filePath: string) => {
-    const endpoint = `${config.TRANSCRIPT_ROUTER}${config.YOUTUBE_TO_TXT_ENDPOINT}`;
-    try {
-      const response = await apiService.postCall(endpoint, {
-        filePath,
-      });
-      return response.data;
-    } catch (error: unknown) {
-      handleError.axiosError(
-        error,
-        "retrieving the transcript from the Youtube"
-      );
-      throw error;
-    }
-  },
+  // fetchTranscriptFromYoutube: async (filePath: string) => {
+  //   const endpoint = `${config.TRANSCRIPT_ROUTER}${config.YOUTUBE_TO_TXT_ENDPOINT}`;
+  //   try {
+  //     const response = await apiService.postCall(endpoint, {
+  //       filePath,
+  //     });
+  //     return response.data;
+  //   } catch (error: unknown) {
+  //     handleError.axiosError(
+  //       error,
+  //       "retrieving the transcript from the Youtube"
+  //     );
+  //     throw error;
+  //   }
+  // },
 };
 
 export default transcriptService;
