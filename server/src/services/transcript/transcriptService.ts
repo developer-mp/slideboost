@@ -1,11 +1,10 @@
-import { Request, Response } from "express";
 import Tesseract from "tesseract.js";
 import fs from "fs";
 import { spawn } from "child_process";
 import path from "path";
 import { convertMp3ToWav } from "../../utils/transcript/convertMp3ToWav";
 import { extractAudioFromVideo } from "../../utils/transcript/extractAudioFromVideo";
-import { downloadVideoFromYoutube } from "../../utils/transcript/downloadVideoFromYoutube";
+// import { downloadVideoFromYoutube } from "../../utils/transcript/downloadVideoFromYoutube";
 import handleError from "../../utils/common/handleError";
 import { getUploadDir } from "../../utils/common/getUploadDir";
 import mammoth from "mammoth";

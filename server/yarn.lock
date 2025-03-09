@@ -2959,7 +2959,6 @@ serve-static@1.16.2:
   version "1.0.0"
   resolved "file:"
   dependencies:
-    "@types/stripe" "^8.0.417"
     axios "^1.7.7"
     backblaze-b2 "^1.7.0"
     bcryptjs "^2.4.3"
