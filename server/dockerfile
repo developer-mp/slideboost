@@ -1,15 +1,33 @@
-FROM node:20-slim
+# FROM node:20.9.0
+
+# WORKDIR /app
+
+# COPY package.json yarn.lock ./
+
+# RUN yarn install
+
+# COPY . .
+
+# RUN yarn build
+
+# EXPOSE 3000
+
+# CMD ["yarn", "start"]
+
+FROM node:20.9.0-alpine
+
+RUN apk update && \
+    apk add --no-cache libreoffice
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    libreoffice \
-    && npm install -g yarn \
-    && rm -rf /var/lib/apt/lists/*
+COPY package.json yarn.lock ./
+
+RUN yarn install
 
 COPY . .
 
-RUN yarn install
+RUN yarn build
 
 EXPOSE 3000
 
