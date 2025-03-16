@@ -1,15 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useNavigation } from "../../utils/user/useNavigation";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import LoginModal from "../widgets/LoginModal";
 import GoogleLoginModal from "../widgets/GoogleLoginModal";
 import TemplateCarousel from "../shared/TemplateCarousel";
 import features_img from "../../assets/main/features_img.png";
-import { getFileMetadata } from "../../store/actions/storageAction";
-import { handleErrorMessage } from "../../utils/common/handleActionMessage";
-import { showErrorToast } from "../../utils/common/handleToast";
+import useFetchFileData from "../../utils/storage/useFetchFileData";
 
 const Features: React.FC = () => {
   const { navigateToCreateAccount, navigateToWorkspace } = useNavigation();
@@ -20,8 +18,8 @@ const Features: React.FC = () => {
     setModalShow(true);
   };
 
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.user.isAuthenticated
+  const { userId, isAuthenticated } = useSelector(
+    (state: RootState) => state.user
   );
 
   const navigateToGoogleLogin = () => {
@@ -33,28 +31,17 @@ const Features: React.FC = () => {
     setModalGoogleShow(false);
   };
 
-  const dispatch = useDispatch<AppDispatch>();
-  const userId = "system";
-
   const { fileMetadata } = useSelector((state: RootState) => state.fileStorage);
 
   const templatesfileMetadata = fileMetadata.filter(
     (file) => file.folder === "templates"
   );
 
-  const handleFileMetadata = useCallback(async () => {
-    try {
-      await dispatch(getFileMetadata({ userId })).unwrap();
-    } catch (error) {
-      const errorMessage = handleErrorMessage(error);
-      showErrorToast(errorMessage);
-      console.error("Error occurred while fetching the file metadata: ", error);
-    }
-  }, [dispatch, userId]);
+  const fetchTemplates = useFetchFileData(userId);
 
   useEffect(() => {
-    handleFileMetadata();
-  }, [userId, handleFileMetadata]);
+    fetchTemplates();
+  }, [fetchTemplates]);
 
   return (
     <Container
