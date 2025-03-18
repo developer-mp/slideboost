@@ -9,6 +9,8 @@ services:
       - .env
     depends_on:
       - db
+    volumes:
+      - ./audioToText.py:/app/dist/src/services/transcript/audioToText.py
 
   db:
     image: postgres:latest
