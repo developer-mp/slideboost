@@ -3,7 +3,7 @@ import { config } from "../../../env.config";
 import handleError from "../../utils/common/handleError";
 
 const payment = new Stripe(config.PAYMENT_SECRET_KEY);
-const clientUrl = config.CLIENT_HOST + ":" + config.CLIENT_PORT;
+const clientUrl = config.CLIENT_HOST;
 
 const paymentService = {
   createCheckoutSession: async (
