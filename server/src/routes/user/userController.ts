@@ -173,6 +173,7 @@ const userController = {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
+          domain: config.DOMAIN,
           maxAge: 3600000,
         });
 
@@ -180,6 +181,7 @@ const userController = {
           httpOnly: true,
           secure: true,
           sameSite: "strict",
+          domain: config.DOMAIN,
           maxAge: 604800000,
         });
 
@@ -263,6 +265,7 @@ const userController = {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
+        domain: config.DOMAIN,
         maxAge: 3600000,
       });
 
@@ -270,6 +273,7 @@ const userController = {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
+        domain: config.DOMAIN,
         maxAge: 604800000,
       });
 
@@ -369,6 +373,7 @@ const userController = {
             httpOnly: true,
             secure: true,
             sameSite: "strict",
+            domain: config.DOMAIN,
             maxAge: 3600000,
           });
 
@@ -376,6 +381,7 @@ const userController = {
             httpOnly: true,
             secure: true,
             sameSite: "strict",
+            domain: config.DOMAIN,
             maxAge: 604800000,
           });
 
