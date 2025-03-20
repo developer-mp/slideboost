@@ -8,7 +8,7 @@ import path from "path";
 import "./services/cron/clearExpiredVerificationCode";
 
 const app = express();
-const serverPort = process.env.PORT || config.SERVER_PORT;
+const serverPort = config.SERVER_PORT;
 const clientHost = config.CLIENT_HOST;
 app.use(express.json());
 
