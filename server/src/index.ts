@@ -8,13 +8,12 @@ import path from "path";
 import "./services/cron/clearExpiredVerificationCode";
 
 const app = express();
-const serverPort = config.SERVER_PORT;
-const clientPort = config.CLIENT_PORT;
-const host = config.CLIENT_HOST;
+const serverPort = process.env.PORT || config.SERVER_PORT;
+const clientHost = config.CLIENT_HOST;
 app.use(express.json());
 
 const corsOptions = {
-  origin: host + ":" + clientPort,
+  origin: clientHost,
   credentials: true,
 };
 app.use(cors(corsOptions));
