@@ -172,16 +172,14 @@ const userController = {
         res.cookie("accessToken", accessToken, {
           httpOnly: true,
           secure: true,
-          sameSite: "strict",
-          domain: config.DOMAIN,
+          sameSite: "none",
           maxAge: 3600000,
         });
 
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
           secure: true,
-          sameSite: "strict",
-          domain: config.DOMAIN,
+          sameSite: "none",
           maxAge: 604800000,
         });
 
@@ -264,16 +262,14 @@ const userController = {
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
-        domain: config.DOMAIN,
+        sameSite: "none",
         maxAge: 3600000,
       });
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: "strict",
-        domain: config.DOMAIN,
+        sameSite: "none",
         maxAge: 604800000,
       });
 
@@ -372,16 +368,14 @@ const userController = {
           res.cookie("accessToken", newAccessToken, {
             httpOnly: true,
             secure: true,
-            sameSite: "strict",
-            domain: config.DOMAIN,
+            sameSite: "none",
             maxAge: 3600000,
           });
 
           res.cookie("refreshToken", newRefreshToken, {
             httpOnly: true,
             secure: true,
-            sameSite: "strict",
-            domain: config.DOMAIN,
+            sameSite: "none",
             maxAge: 604800000,
           });
 
