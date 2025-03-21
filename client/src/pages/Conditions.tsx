@@ -1,4 +1,5 @@
 import { Col, Container, Row } from "react-bootstrap";
+import { config } from "../../env.config";
 
 const Conditions: React.FC = () => {
   return (
@@ -28,7 +29,7 @@ const Conditions: React.FC = () => {
             </p>
             <p className="tw-mb-4">
               You can contact us by email at{" "}
-              <a href="mailto:support@slideboost.io">support@slideboost.io</a>
+              <a href={`mailto:${config.EMAIL}`}>config.EMAIL</a>
             </p>
             <p className="tw-mb-4">
               These Legal Terms constitute a legally binding agreement made
@@ -785,8 +786,7 @@ const Conditions: React.FC = () => {
             <p className="tw-mb-12">
               In order to resolve a complaint regarding the Services or to
               receive further information regarding use of the Services, please
-              contact us at{" "}
-              <a href="mailto:support@slideboost.io">support@slideboost.io</a>
+              contact us at <a href={`mailto:${config.EMAIL}`}>config.EMAIL</a>
             </p>
           </div>
         </Col>

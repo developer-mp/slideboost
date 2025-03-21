@@ -18,9 +18,7 @@ const Features: React.FC = () => {
     setModalShow(true);
   };
 
-  const { userId, isAuthenticated } = useSelector(
-    (state: RootState) => state.user
-  );
+  const isAuthenticated = useSelector((state: RootState) => state.user);
 
   const navigateToGoogleLogin = () => {
     setModalGoogleShow(true);
@@ -37,7 +35,7 @@ const Features: React.FC = () => {
     (file) => file.folder === "templates"
   );
 
-  const fetchTemplates = useFetchFileData(userId);
+  const fetchTemplates = useFetchFileData("system");
 
   useEffect(() => {
     fetchTemplates();

@@ -1,4 +1,5 @@
 import { Col, Container, Row } from "react-bootstrap";
+import { config } from "../../env.config";
 
 const Privacy: React.FC = () => {
   return (
@@ -1164,8 +1165,7 @@ const Privacy: React.FC = () => {
             </h5>
             <p className="tw-mb-12">
               If you have questions or comments about this notice, you may email
-              us at{" "}
-              <a href="mailto:support@slideboost.io">support@slideboost.io</a>
+              us at <a href={`mailto:${config.EMAIL}`}>config.EMAIL</a>
             </p>
             <h5 id="#update-data" className="tw-mb-8 tw-font-bold">
               15. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM
@@ -1180,8 +1180,7 @@ const Privacy: React.FC = () => {
               to our processing of your personal information. These rights may
               be limited in some circumstances by applicable law. To request to
               review, update, or delete your personal information, please
-              contact us at{" "}
-              <a href="mailto:support@slideboost.io">support@slideboost.io</a>
+              contact us at <a href={`mailto:${config.EMAIL}`}>config.EMAIL</a>
             </p>
           </div>
         </Col>
