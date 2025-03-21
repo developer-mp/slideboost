@@ -11,7 +11,6 @@ const getEnvVar = (name: string): string => {
 
 const CLIENT_HOST = getEnvVar("CLIENT_HOST");
 const SERVER_PORT = getEnvVar("SERVER_PORT");
-const DOMAIN = getEnvVar("DOMAIN");
 const JWT_SECRET = getEnvVar("JWT_SECRET");
 const JWT_REFRESH_SECRET = getEnvVar("JWT_REFRESH_SECRET");
 const SMTP_HOST = getEnvVar("SMTP_HOST");
@@ -57,7 +56,6 @@ const TOKENS_PER_CREDIT = parseInt(getEnvVar("TOKENS_PER_CREDIT"), 10);
 export const config = {
   CLIENT_HOST,
   SERVER_PORT,
-  DOMAIN,
   JWT_SECRET,
   JWT_REFRESH_SECRET,
   SMTP_HOST,
