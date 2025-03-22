@@ -4,6 +4,7 @@ import paymentService from "../../services/payment/paymentService";
 import { pool } from "../../db/config/pool";
 import { DbQueryResultProps } from "../../interfaces/interfaces";
 import userService from "../../services/user/userService";
+import { config } from "../../../env.config";
 
 const paymentController = {
   createPaymentLink: async (req: Request, res: Response): Promise<void> => {
@@ -59,13 +60,15 @@ const paymentController = {
         const user = result.rows[0];
 
         userService.sendEmail(
+          config.EMAIL,
           user.email,
           user.name,
           undefined,
           credits,
           undefined,
           "creditsEmail",
-          "Credits added to balance"
+          "Credits added to balance",
+          undefined
         );
 
         res.status(200).json({ paid: true, message: "Payment successful" });
