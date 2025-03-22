@@ -99,8 +99,8 @@ VALUES
 
 INSERT INTO news (date, text)
 VALUES 
-('2025-02-01', 'SlideBoost has been launched! This new platform promises to improve presentation generation from the most popular formats like text, audio, video, and more.'),
-('2024-02-02', 'The sale is now live! Enjoy discounts on all premium features until the end of the month.');
+('2025-03-20', 'SlideBoost has been launched! This new platform promises to revolutionize the way presentations are created by allowing users to seamlessly integrate and customize content from a variety of popular formats such as text, audio, video, and more. Get ready for a whole new level of presentation creation!'),
+('2024-03-21', 'Stay tuned for upcoming features! In the next releases, we are working on adding support for even more formats, customized templates to suit your unique needs, YouTube link integration for easy video embedding, and enhanced sharing options to make your presentations even more interactive and collaborative!');
 
 INSERT INTO supported_files (extension, type, category)
 VALUES 

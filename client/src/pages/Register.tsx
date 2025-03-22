@@ -25,10 +25,9 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [checked, setChecked] = useState<boolean>(false);
-  // const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { navigateToVerify } = useNavigation();
+  const { navigateToLogin, navigateToVerify } = useNavigation();
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(e.target.checked);
@@ -190,13 +189,13 @@ const Register: React.FC = () => {
             >
               Create Account
             </Button>
-            <div className="text-center mt-5">
+            <div className="text-center tw-mt-10 tw-mb-3">
               <span>Already have an account? </span>
             </div>
             <Button
               variant="secondary"
               className="button button-secondary tw-mb-16"
-              onClick={navigateToVerify}
+              onClick={navigateToLogin}
             >
               Login
             </Button>

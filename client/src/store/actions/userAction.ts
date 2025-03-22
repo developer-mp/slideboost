@@ -228,3 +228,20 @@ export const getCreditBalance = createAsyncThunk<
     );
   }
 });
+
+export const sendContactForm = createAsyncThunk<
+  { message: string },
+  { formData: { name: string; email: string; message: string } },
+  { rejectValue: { message: string } }
+>("user/sendContactForm", async ({ formData }, { rejectWithValue }) => {
+  try {
+    const { message } = await userService.sendContactForm(formData);
+    return { message };
+  } catch (error) {
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "sending the contact form"
+    );
+  }
+});

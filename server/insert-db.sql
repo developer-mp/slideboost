@@ -1,7 +1,7 @@
 WITH inserted_user AS (
   INSERT INTO users (google_id, name, email, password, created_at, updated_at, verification_code, is_verified, code_expires_at)
   VALUES
-  (NULL, 'admin', 'admin@slideboost.com', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, true, NULL)
+  (NULL, 'admin', 'support@slideboost.org', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, true, NULL)
 RETURNING id
 )
 

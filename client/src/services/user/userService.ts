@@ -188,6 +188,23 @@ const userService = {
       throw error;
     }
   },
+
+  async sendContactForm(formData: {
+    name: string;
+    email: string;
+    message: string;
+  }): Promise<SendEmailResponse> {
+    const endpoint = `${config.USER_ROUTER}${config.CONTACT_FORM_ENDPOINT}`;
+    try {
+      const response = await apiService.postCall(endpoint, {
+        formData,
+      });
+      return response.data;
+    } catch (error: unknown) {
+      handleError.axiosError(error, "sending the contact form");
+      throw error;
+    }
+  },
 };
 
 export default userService;

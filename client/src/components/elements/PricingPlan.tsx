@@ -41,7 +41,7 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
     <Container>
       <Row>
         <Col className="tw-justify-items-center">
-          <Card className="tw-w-96 tw-shadow-md card-hover tw-cursor-pointer">
+          <Card className="tw-w-80 tw-shadow-md card-hover tw-cursor-pointer">
             <Card.Body>
               <div
                 className="tw-text-white tw-p-2 tw-rounded-md tw-mb-2"

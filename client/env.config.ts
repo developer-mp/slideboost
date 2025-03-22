@@ -10,6 +10,7 @@ const API_BASE_URL = getEnvVar("API_BASE_URL");
 const API = getEnvVar("API");
 const API_VERSION = getEnvVar("API_VERSION");
 const EMAIL = getEnvVar("EMAIL");
+const CONTACT_FORM_ENDPOINT = getEnvVar("CONTACT_FORM_ENDPOINT");
 const USER_ROUTER = getEnvVar("USER_ROUTER");
 const USER_ENDPOINT = getEnvVar("USER_ENDPOINT");
 const PASSWORD_ENDPOINT = getEnvVar("PASSWORD_ENDPOINT");
@@ -58,6 +59,7 @@ export const config = {
   API,
   API_VERSION,
   EMAIL,
+  CONTACT_FORM_ENDPOINT,
   USER_ROUTER,
   USER_ENDPOINT,
   PASSWORD_ENDPOINT,

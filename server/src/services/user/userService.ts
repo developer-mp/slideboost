@@ -22,13 +22,15 @@ const transporter = nodemailer.createTransport(smtp);
 
 const userService = {
   async createEmail(
-    email: string,
+    emailFrom: string,
+    emailTo: string,
     name: string,
     expirationTime: number | undefined,
     credits: number | undefined,
     verificationCode: string | undefined,
     template: string,
-    subject: string
+    subject: string,
+    message: string | undefined
   ): Promise<void> {
     try {
       const imageBase64String = convertImgToBase64(
@@ -37,18 +39,20 @@ const userService = {
       const imageBase64 = "data:image/png;base64," + imageBase64String;
 
       const html = pug.renderFile(`./src/templates/${template}.pug`, {
+        emailFrom,
         name,
         expirationTime: expirationTime || null,
         credits: credits || null,
         template,
         subject,
         verificationCode: verificationCode || null,
+        message: message || null,
         imageBase64,
       });
 
       const mailOptions = {
-        from: config.SMTP_EMAIL_FROM,
-        to: email,
+        from: emailFrom,
+        to: emailTo,
         subject,
         text: convert(html),
         html,
@@ -61,22 +65,26 @@ const userService = {
     }
   },
   sendEmail(
-    email: string,
+    emailFrom: string,
+    emailTo: string,
     name: string,
     expirationTime: number | undefined,
     credits: number | undefined,
     verificationCode: string | undefined,
     template: string,
-    subject: string
+    subject: string,
+    message: string | undefined
   ) {
     this.createEmail(
-      email,
+      emailFrom,
+      emailTo,
       name,
       expirationTime,
       credits,
       verificationCode,
       template,
-      subject
+      subject,
+      message
     );
   },
 };

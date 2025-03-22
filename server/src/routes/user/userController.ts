@@ -54,13 +54,15 @@ const userController = {
       try {
         if (verificationCode) {
           userService.sendEmail(
+            config.EMAIL,
             email,
             user.name,
             config.VERIFICATION_CODE_EXPIRATION,
             undefined,
             verificationCode,
             "verificationEmail",
-            "Account Verification"
+            "Account Verification",
+            undefined
           );
         }
       } catch (error: unknown) {
@@ -114,13 +116,15 @@ const userController = {
       if (!user.is_verified) {
         try {
           userService.sendEmail(
+            config.EMAIL,
             email,
             user.name,
             undefined,
             undefined,
             undefined,
             "greetingEmail",
-            "Welcome to SlideBoost"
+            "Welcome to SlideBoost",
+            undefined
           );
         } catch (error: unknown) {
           handleError.controllerError(res, error, "sending the greeting email");
@@ -157,6 +161,14 @@ const userController = {
       )) as DbQueryResultProps;
 
       const user = result.rows[0];
+
+      if (!user.password) {
+        res.status(401).json({
+          message:
+            "Please use Google login and set up a password in your profile",
+        });
+        return;
+      }
 
       if (user && (await bcrypt.compare(password, user.password))) {
         const accessToken = jwt.sign({ userId: user.id }, config.JWT_SECRET, {
@@ -485,13 +497,15 @@ const userController = {
       try {
         if (verificationCode) {
           userService.sendEmail(
+            config.EMAIL,
             email,
             user.name,
             config.VERIFICATION_CODE_EXPIRATION,
             undefined,
             verificationCode,
             template,
-            subject
+            subject,
+            undefined
           );
         }
       } catch (error: unknown) {
@@ -509,6 +523,33 @@ const userController = {
       });
     } catch (error: unknown) {
       handleError.controllerError(res, error, "sending the verification code");
+      return;
+    }
+  },
+
+  sendContactForm: async (req: Request, res: Response): Promise<void> => {
+    const formData: {
+      name: string;
+      email: string;
+      message: string;
+    } = req.body;
+    try {
+      userService.sendEmail(
+        formData.email,
+        config.EMAIL,
+        formData.name,
+        undefined,
+        undefined,
+        undefined,
+        "contactForm",
+        "Contact Form Submission",
+        formData.message
+      );
+      res.status(201).json({
+        message: "Your message has been sent successfully",
+      });
+    } catch (error: unknown) {
+      handleError.controllerError(res, error, "sending the contact form");
       return;
     }
   },
