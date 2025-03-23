@@ -8,6 +8,7 @@ import { config } from "../../../env.config";
 import { DbQueryResultProps } from "../../interfaces/interfaces";
 import { client } from "../../utils/auth/googleAuthClient";
 import handleError from "../../utils/common/handleError";
+import storageService from "../../services/storage/storageService";
 
 const userController = {
   registerUser: async (req: Request, res: Response): Promise<void> => {
@@ -230,34 +231,41 @@ const userController = {
       const googleId = payload["sub"];
 
       let result = (await pool.query(
-        "SELECT id, name, email, created_at FROM users WHERE google_id = $1",
-        [googleId]
+        "SELECT email, google_id FROM users WHERE email = $1",
+        [payload["email"]]
       )) as DbQueryResultProps;
 
       let user = result.rows[0];
 
-      if (!user) {
+      if (user) {
+        result = (await pool.query(
+          "UPDATE users SET google_id = $1 WHERE email = $2 RETURNING id, name, email, created_at",
+          [googleId, payload["email"]]
+        )) as DbQueryResultProps;
+
+        user = result.rows[0];
+      } else if (!user) {
         result = (await pool.query(
           "INSERT INTO users (google_id, name, email, is_verified) VALUES ($1, $2, $3, $4) RETURNING id, name, email, created_at",
           [googleId, payload["name"], payload["email"], true]
         )) as DbQueryResultProps;
 
         user = result.rows[0];
-      }
 
-      const existingCredits = (await pool.query(
-        "SELECT balance FROM credits WHERE user_id = $1 LIMIT 1",
-        [user.id]
-      )) as DbQueryResultProps;
+        const existingCredits = (await pool.query(
+          "SELECT balance FROM credits WHERE user_id = $1 LIMIT 1",
+          [user.id]
+        )) as DbQueryResultProps;
 
-      let creditResult;
+        let creditResult;
 
-      if (existingCredits.rows.length === 0) {
-        (await pool.query("INSERT INTO credits (user_id) VALUES ($1)", [
-          user.id,
-        ])) as DbQueryResultProps;
-      } else {
-        creditResult = existingCredits;
+        if (existingCredits.rows.length === 0) {
+          (await pool.query("INSERT INTO credits (user_id) VALUES ($1)", [
+            user.id,
+          ])) as DbQueryResultProps;
+        } else {
+          creditResult = existingCredits;
+        }
       }
 
       const accessToken = jwt.sign({ userId: user.id }, config.JWT_SECRET, {
@@ -528,22 +536,18 @@ const userController = {
   },
 
   sendContactForm: async (req: Request, res: Response): Promise<void> => {
-    const formData: {
-      name: string;
-      email: string;
-      message: string;
-    } = req.body;
+    const user = req.body.formData;
     try {
       userService.sendEmail(
-        formData.email,
         config.EMAIL,
-        formData.name,
+        config.EMAIL,
+        user.name + ", " + user.email,
         undefined,
         undefined,
         undefined,
         "contactForm",
         "Contact Form Submission",
-        formData.message
+        user.message
       );
       res.status(201).json({
         message: "Your message has been sent successfully",
@@ -556,15 +560,25 @@ const userController = {
 
   deactivateAccount: async (req: Request, res: Response): Promise<void> => {
     const { email, reason }: { email: string; reason: string } = req.body;
+
     try {
-      const result = (await pool.query("DELETE FROM users WHERE email = $1", [
-        email,
-      ])) as DbQueryResultProps;
+      const result = (await pool.query(
+        "SELECT id FROM users WHERE email = $1",
+        [email]
+      )) as DbQueryResultProps;
 
       if (result.rowCount === 0) {
         res.status(404).json({ message: "User not found" });
         return;
       }
+
+      let user = result.rows[0];
+
+      await storageService.deleteFolder(user.id);
+
+      (await pool.query("DELETE FROM users WHERE id = $1", [
+        user.id,
+      ])) as DbQueryResultProps;
 
       (await pool.query(
         "INSERT INTO user_deactivation_reasons (reason) VALUES ($1)",

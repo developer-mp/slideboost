@@ -5,7 +5,6 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "../../utils/common/handleToast";
-import { validateForm } from "../../utils/common/validateForm";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import {
@@ -13,6 +12,8 @@ import {
   handleSuccessMessage,
 } from "../../utils/common/handleActionMessage";
 import { sendContactForm } from "../../store/actions/userAction";
+import { validateEmail } from "../../utils/user/validateEmail";
+import { validateName } from "../../utils/user/validateName";
 
 const Contact = () => {
   const [formData, setFormData] = useState<FormDataProps>({
@@ -36,13 +37,11 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { isNameRequired, isEmailRequired, isMessageRequired } = validateForm(
-      formData.name,
-      formData.email,
-      formData.message
-    );
+    const isValidName = validateName(formData.name);
+    const { isEmailRequired, isFormatInvalid } = validateEmail(formData.email);
+    const isValidMessage = validateName(formData.message);
 
-    if (isNameRequired) {
+    if (!isValidName) {
       showErrorToast("Name is required");
       return;
     }
@@ -52,7 +51,12 @@ const Contact = () => {
       return;
     }
 
-    if (isMessageRequired) {
+    if (isFormatInvalid) {
+      showErrorToast("Invalid email format");
+      return;
+    }
+
+    if (!isValidMessage) {
       showErrorToast("Message is required");
       return;
     }
@@ -61,6 +65,11 @@ const Contact = () => {
       const resultAction = await dispatch(
         sendContactForm({ formData })
       ).unwrap();
+      setFormData({
+        name: "",
+        email: "",
+        message: "",
+      });
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
     } catch (error) {

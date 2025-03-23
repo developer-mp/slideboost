@@ -12,6 +12,7 @@ The architecture and design of the SlideBoost application incorporate a robust a
 - **Database**: Utilizes PostgreSQL for a powerful, open-source relational database that supports complex queries, transactions, and data integrity, ensuring efficient and reliable storage for application data.
 - **Cloudflare**: Utilizes Cloudflare as a proxy service to secure and optimize data retrieval from the encrypted cloud bucket (Backblaze). Cloudflare ensures the integrity, security, and fast delivery of content via its global Content Delivery Network (CDN), while also providing DDoS protection, caching, and rate-limiting.
 - **Payment Processing**: Integrated with Stripe for secure, flexible transaction handling, subscription management, and payment failure handling. It supports multiple payment methods and currencies for a seamless user experience.
+- **AI Integration**: Integrated with OpenAI API for data manipulation, allowing the use of AI-powered tools for various tasks like data processing and content generation.
 
 ### Installation
 

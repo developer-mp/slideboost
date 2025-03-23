@@ -125,6 +125,31 @@ const storageService = {
       return;
     }
   },
+
+  async deleteFolder(userId: string): Promise<void> {
+    try {
+      const authData = await this.authorizeStorage();
+      if (!authData) return;
+
+      const result = await b2.listFileNames({
+        bucketId: config.STORAGE_BUCKET_ID,
+        startFileName: "",
+        maxFileCount: 1000,
+        delimiter: "",
+        prefix: `${userId}`,
+      });
+
+      for (const file of result.data.files) {
+        await b2.deleteFileVersion({
+          fileName: file.fileName,
+          fileId: file.fileId,
+        });
+      }
+    } catch (error) {
+      handleError.serviceError(error, "deleting the folder from the storage");
+      return;
+    }
+  },
 };
 
 export default storageService;

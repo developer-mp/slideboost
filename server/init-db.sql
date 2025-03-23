@@ -68,7 +68,7 @@ CREATE TABLE template_categories (
 
 CREATE TABLE user_deactivation_reasons (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  reason VARCHAR(100) UNIQUE NOT NULL
+  reason VARCHAR(100) NOT NULL
 );
 
 INSERT INTO deactivation_reasons (reason)

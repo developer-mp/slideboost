@@ -19,7 +19,7 @@ const Verification: React.FC = () => {
   const [showRequestCodeModal, setShowRequestCodeModal] =
     useState<boolean>(false);
   const userEmail = useSelector((state: RootState) => state.user.userEmail);
-  const isReset = useSelector((state: RootState) => state.user.isReset);
+  const { isReset, isRegister } = useSelector((state: RootState) => state.user);
 
   const [code, setCode] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
@@ -39,7 +39,7 @@ const Verification: React.FC = () => {
       ).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
-      if (isReset) {
+      if (isReset && !isRegister) {
         navigateToResetPassword();
       } else {
         dispatch(setIsRegister(false));

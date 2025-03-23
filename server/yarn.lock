@@ -2893,7 +2893,7 @@ serve-static@1.16.2:
     pg "^8.13.0"
     pptx-automizer "^0.6.6"
     pug "^3.0.3"
-    server "file:C:/Users/User/AppData/Local/Yarn/Cache/v6/npm-server-1.0.0-0710d984-5f63-480c-91d8-75eb32e089fa-1742618668072/node_modules/server"
+    server "file:C:/Users/User/AppData/Local/Yarn/Cache/v6/npm-server-1.0.0-881d0704-2b02-43f2-83a9-a643fd9626a4-1742696821493/node_modules/server"
     stripe "^17.6.0"
     tesseract.js "^5.1.1"
     youtube-dl-exec "^3.0.10"

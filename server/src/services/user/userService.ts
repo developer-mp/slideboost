@@ -1,3 +1,4 @@
+import path from "path";
 import nodemailer from "nodemailer";
 import pug from "pug";
 import { convert } from "html-to-text";
@@ -33,9 +34,8 @@ const userService = {
     message: string | undefined
   ): Promise<void> {
     try {
-      const imageBase64String = convertImgToBase64(
-        "./public/images/logo_text.png"
-      );
+      const imagePath = config.IMG_FOLDER + "/logo_text.png";
+      const imageBase64String = convertImgToBase64(imagePath);
       const imageBase64 = "data:image/png;base64," + imageBase64String;
 
       const html = pug.renderFile(`./src/templates/${template}.pug`, {
