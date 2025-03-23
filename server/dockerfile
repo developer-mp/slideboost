@@ -24,6 +24,7 @@ COPY package.json yarn.lock ./
 RUN yarn install
 
 COPY . .
+COPY public /app/dist/public
 # COPY ../audioToText.py /app/dist/src/services/transcript/audioToText.py
 # COPY src/services/transcript/audioToText.py /app/dist/src/services/transcript/audioToText.py
 
