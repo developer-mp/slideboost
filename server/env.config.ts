@@ -14,7 +14,6 @@ const SERVER_PORT = getEnvVar("SERVER_PORT");
 const JWT_SECRET = getEnvVar("JWT_SECRET");
 const JWT_REFRESH_SECRET = getEnvVar("JWT_REFRESH_SECRET");
 const EMAIL = getEnvVar("EMAIL");
-const IMG_FOLDER = getEnvVar("IMG_FOLDER");
 const SMTP_HOST = getEnvVar("SMTP_HOST");
 const SMTP_PORT = parseInt(getEnvVar("SMTP_PORT"), 10);
 const SMTP_USER = getEnvVar("SMTP_USER");
@@ -60,7 +59,6 @@ export const config = {
   JWT_SECRET,
   JWT_REFRESH_SECRET,
   EMAIL,
-  IMG_FOLDER,
   SMTP_HOST,
   SMTP_PORT,
   SMTP_USER,

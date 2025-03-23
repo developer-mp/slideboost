@@ -34,8 +34,8 @@ const userService = {
     message: string | undefined
   ): Promise<void> {
     try {
-      const imagePath = config.IMG_FOLDER + "/logo_text.png";
-      const imageBase64String = convertImgToBase64(imagePath);
+      const imgPath = path.join(__dirname, "../../../public/logo_text.png");
+      const imageBase64String = convertImgToBase64(imgPath);
       const imageBase64 = "data:image/png;base64," + imageBase64String;
 
       const html = pug.renderFile(`./src/templates/${template}.pug`, {

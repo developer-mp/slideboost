@@ -13,7 +13,7 @@ const Footer = () => {
       <Container className="tw-flex tw-justify-between tw-items-center">
         <div className="tw-flex tw-space-x-4">
           <a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/company/slideboostsaas/"
             className="text-light"
             target="_blank"
             rel="noopener noreferrer"
@@ -21,7 +21,7 @@ const Footer = () => {
             <FaLinkedinIn size={20} />
           </a>
           <a
-            href="https://facebook.com"
+            href="https://www.facebook.com/profile.php?id=61574695015652"
             className="text-light"
             target="_blank"
             rel="noopener noreferrer"
@@ -37,7 +37,7 @@ const Footer = () => {
             <FaInstagram size={20} />
           </a>
           <a
-            href="https://twitter.com"
+            href="https://x.com/SlideBoostSaaS"
             className="text-light"
             target="_blank"
             rel="noopener noreferrer"
@@ -45,7 +45,7 @@ const Footer = () => {
             <FaTwitter size={20} />
           </a>
           <a
-            href="https://youtube.com"
+            href="https://www.youtube.com/@SlideBoostSaaS"
             className="text-light"
             target="_blank"
             rel="noopener noreferrer"
