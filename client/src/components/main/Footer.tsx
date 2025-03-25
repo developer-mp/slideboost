@@ -29,7 +29,7 @@ const Footer = () => {
             <FaFacebookF size={20} />
           </a>
           <a
-            href="https://instagram.com"
+            href="https://www.instagram.com/slideboostsaas"
             className="text-light"
             target="_blank"
             rel="noopener noreferrer"
