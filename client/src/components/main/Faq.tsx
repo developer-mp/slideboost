@@ -4,16 +4,14 @@ import { AppDispatch, RootState } from "../../store/store";
 import { handleErrorMessage } from "../../utils/common/handleActionMessage";
 import { showErrorToast } from "../../utils/common/handleToast";
 import { getFaq } from "../../store/actions/dataAction";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 const Faq: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { faq, isFaqFetched } = useSelector(
-    (state: RootState) => state.dataStorage
-  );
+  const { faq } = useSelector((state: RootState) => state.dataStorage);
 
-  const handleFaq = async () => {
+  const handleFaq = useCallback(async () => {
     try {
       await dispatch(getFaq()).unwrap();
     } catch (error) {
@@ -21,13 +19,11 @@ const Faq: React.FC = () => {
       showErrorToast(errorMessage);
       console.error("Error occurred while fetching the FAQ: ", error);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
-    if (!isFaqFetched) {
-      handleFaq();
-    }
-  });
+    handleFaq();
+  }, [handleFaq]);
 
   return (
     <Container

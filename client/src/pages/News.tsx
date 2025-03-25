@@ -5,16 +5,14 @@ import { AppDispatch, RootState } from "../store/store";
 import { handleErrorMessage } from "../utils/common/handleActionMessage";
 import { showErrorToast } from "../utils/common/handleToast";
 import { getNews } from "../store/actions/dataAction";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 const News: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { news, isNewsFetched } = useSelector(
-    (state: RootState) => state.dataStorage
-  );
+  const { news } = useSelector((state: RootState) => state.dataStorage);
 
-  const handleNews = async () => {
+  const handleNews = useCallback(async () => {
     try {
       await dispatch(getNews()).unwrap();
     } catch (error) {
@@ -22,13 +20,11 @@ const News: React.FC = () => {
       showErrorToast(errorMessage);
       console.error("Error occurred while fetching the news: ", error);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
-    if (!isNewsFetched) {
-      handleNews();
-    }
-  });
+    handleNews();
+  }, [handleNews, dispatch]);
 
   return (
     <Container className="tw-text-center tw-mt-12 tw-mb-12">
