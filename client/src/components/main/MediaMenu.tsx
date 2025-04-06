@@ -33,6 +33,7 @@ import useFetchFileData from "../../utils/storage/useFetchFileData";
 
 const MediaMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   const fileUploaderRef = useRef<FileUploaderRef>(null);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -68,9 +69,18 @@ const MediaMenu: React.FC = () => {
     fetchData();
   }, [userId, fetchData]);
 
+  const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
   const handleUpload = async (files: FileWithMetadata[]) => {
+    setIsUploading(true);
     try {
       for (const { file, category } of files) {
+        if (file.size > MAX_FILE_SIZE) {
+          showWarningToast(
+            `The file "${file.name}" exceeds the 50MB limit. Currently, the MVP version does not support larger uploads`
+          );
+          continue;
+        }
         const resultAction = await dispatch(
           uploadFile({ file: [{ file, category }], userId })
         ).unwrap();
@@ -85,6 +95,8 @@ const MediaMenu: React.FC = () => {
         "Error occurred while uploading the file to the storage: ",
         error
       );
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -217,6 +229,14 @@ const MediaMenu: React.FC = () => {
           })}
         </div>
       </CustomModal>
+      {isUploading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner">
+            <div className="spinner-border text-light" role="status"></div>
+            <span className="loading-text">Uploading...</span>
+          </div>
+        </div>
+      )}
     </Container>
   );
 };

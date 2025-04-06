@@ -162,13 +162,15 @@ const userService = {
 
   async deactivateAccount(
     email: string,
-    reason: string
+    reason: string,
+    details: string
   ): Promise<MessageResponse> {
     const endpoint = `${config.USER_ROUTER}${config.DEACTIVATION_ENDPOINT}`;
     try {
       const response = await apiService.postCall(endpoint, {
         email,
         reason,
+        details,
       });
       return response.data;
     } catch (error: unknown) {
@@ -202,6 +204,23 @@ const userService = {
       return response.data;
     } catch (error: unknown) {
       handleError.axiosError(error, "sending the contact form");
+      throw error;
+    }
+  },
+
+  async sendSurvey(
+    userId: string,
+    surveyData: { [key: string]: string | boolean | null }
+  ): Promise<SendEmailResponse> {
+    const endpoint = `${config.USER_ROUTER}${config.SURVEY_ENDPOINT}`;
+    try {
+      const response = await apiService.postCall(endpoint, {
+        userId,
+        surveyData,
+      });
+      return response.data;
+    } catch (error: unknown) {
+      handleError.axiosError(error, "sending the survey");
       throw error;
     }
   },

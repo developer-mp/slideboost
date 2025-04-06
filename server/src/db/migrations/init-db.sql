@@ -10,7 +10,8 @@ CREATE TABLE users (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   verification_code VARCHAR(6) NULL,
   is_verified BOOLEAN DEFAULT FALSE,
-  code_expires_at TIMESTAMP WITH TIME ZONE
+  code_expires_at TIMESTAMP WITH TIME ZONE,
+  survey_sent BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE files (
@@ -30,11 +31,11 @@ CREATE TABLE files (
 );
 
 CREATE TABLE credits (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    balance NUMERIC(10, 2) DEFAULT 10,
-    transaction_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    user_id UUID NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  balance NUMERIC(10, 2) DEFAULT 10,
+  transaction_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  user_id UUID NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE deactivation_reasons (
@@ -66,9 +67,24 @@ CREATE TABLE template_categories (
   category_name VARCHAR(20) UNIQUE NOT NULL
 );
 
-CREATE TABLE user_deactivation_reasons (
+CREATE TABLE user_deactivation (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  reason VARCHAR(100) NOT NULL
+  reason VARCHAR(100) NOT NULL,
+  details VARCHAR(255) NOT NULL,
+  deleted_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE survey (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  satisfaction VARCHAR(17) NULL,
+  would_pay BOOLEAN NULL,
+  like_most VARCHAR(255) NULL,
+  like_least VARCHAR(255) NULL,
+  feature_requests VARCHAR(255) NULL,
+  ease_of_use VARCHAR(14) NULL,
+  recommendation VARCHAR(11) NULL,
+  comments VARCHAR(255) NULL,
+  submited_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO deactivation_reasons (reason)

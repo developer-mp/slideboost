@@ -242,3 +242,20 @@ export interface CreditsModalProps {
 export interface CheckoutResponse {
   url: string;
 }
+
+export interface SurveyDataProps {
+  satisfaction: string;
+  wouldPay: boolean | null;
+  likeMost: string;
+  likeLeast: string;
+  featureRequests: string;
+  easeOfUse: string;
+  recommendation: string;
+  comments: string;
+}
+
+export interface SurveyModalProps {
+  showModal: boolean;
+  closeModal: () => void;
+  onSubmit: (surveyData: SurveyDataProps) => void;
+}

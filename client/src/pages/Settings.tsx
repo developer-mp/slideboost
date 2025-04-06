@@ -41,6 +41,8 @@ const Settings: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [selectedReason, setSelectedReason] = useState<string>("");
+  const [selectedReasonDetails, setSelectedReasonDetails] =
+    useState<string>("");
 
   const { deactivationReasons, isReasonsFetched } = useSelector(
     (state: RootState) => state.dataStorage
@@ -140,16 +142,17 @@ const Settings: React.FC = () => {
     }
   };
 
-  const handleDeactivateAccount = async (reason: string) => {
+  const handleDeactivateAccount = async (reason: string, details: string) => {
     try {
       const resultAction = await dispatch(
-        deactivateAccount({ email: userEmail, reason })
+        deactivateAccount({ email: userEmail, reason, details })
       ).unwrap();
       dispatch(logoutUser());
       navigateToHome();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
       setSelectedReason("");
+      setSelectedReasonDetails("");
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
@@ -234,17 +237,17 @@ const Settings: React.FC = () => {
                     <hr className="tw-border-t" />
                   </div>
                   <Form.Group
-                    controlId="formBasicConfirmPassword"
+                    controlId="formBasicCDeactivationReason"
                     className="tw-mb-6 tw-mt-8"
                   >
                     <Row>
                       <Col md={3} className="d-flex align-items-center">
                         <Form.Label className="fw-bold tw-text-gray-500 tw-text-sm">
-                          Select a reason
+                          Select Reason
                         </Form.Label>
                       </Col>
                       <Col md={9} className="d-flex align-items-center">
-                        <Dropdown className="tw-w-60">
+                        <Dropdown className="tw-w-full">
                           <Dropdown.Toggle
                             id="dropdown-basic"
                             className="tw-w-full tw-h-9 dropdown-toggle-menu"
@@ -265,10 +268,39 @@ const Settings: React.FC = () => {
                       </Col>
                     </Row>
                   </Form.Group>
+                  {selectedReason && (
+                    <Form.Group
+                      controlId="formBasicCDeactivationDetails"
+                      className="tw-mb-6"
+                    >
+                      <Row>
+                        <Col md={3} className="d-flex align-items-center">
+                          <Form.Label className="fw-bold tw-text-gray-500 tw-text-sm">
+                            Additional Details
+                          </Form.Label>
+                        </Col>
+                        <Col md={9} className="d-flex align-items-center">
+                          <Form.Control
+                            type="text"
+                            value={selectedReasonDetails}
+                            onChange={(e) =>
+                              setSelectedReasonDetails(e.target.value)
+                            }
+                            className="input-field w-full"
+                          />
+                        </Col>
+                      </Row>
+                    </Form.Group>
+                  )}
                   <Button
                     variant="secondary"
-                    disabled={!selectedReason}
-                    onClick={() => handleDeactivateAccount(selectedReason)}
+                    disabled={!selectedReason || !selectedReasonDetails}
+                    onClick={() =>
+                      handleDeactivateAccount(
+                        selectedReason,
+                        selectedReasonDetails
+                      )
+                    }
                   >
                     Deactivate Account
                   </Button>

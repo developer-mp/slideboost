@@ -47,6 +47,7 @@ export const loginUser = createAsyncThunk<
     name: string;
     email: string;
     createdAt: string;
+    surveySent: boolean;
     message: string;
   },
   { email: string; password: string },
@@ -70,6 +71,7 @@ export const loginUserWithGoogle = createAsyncThunk<
     name: string;
     email: string;
     createdAt: string;
+    surveySent: boolean;
     message: string;
   },
   { idToken: string },
@@ -197,20 +199,27 @@ export const updatePassword = createAsyncThunk<
 
 export const deactivateAccount = createAsyncThunk<
   { message: string },
-  { email: string; reason: string },
+  { email: string; reason: string; details: string },
   { rejectValue: { message: string } }
->("user/deactivateAccount", async ({ email, reason }, { rejectWithValue }) => {
-  try {
-    const { message } = await userService.deactivateAccount(email, reason);
-    return { message };
-  } catch (error) {
-    return handleError.actionError(
-      error,
-      rejectWithValue,
-      "deactivating the account"
-    );
+>(
+  "user/deactivateAccount",
+  async ({ email, reason, details }, { rejectWithValue }) => {
+    try {
+      const { message } = await userService.deactivateAccount(
+        email,
+        reason,
+        details
+      );
+      return { message };
+    } catch (error) {
+      return handleError.actionError(
+        error,
+        rejectWithValue,
+        "deactivating the account"
+      );
+    }
   }
-});
+);
 
 export const getCreditBalance = createAsyncThunk<
   { creditBalance: number },
@@ -242,6 +251,23 @@ export const sendContactForm = createAsyncThunk<
       error,
       rejectWithValue,
       "sending the contact form"
+    );
+  }
+});
+
+export const sendSurvey = createAsyncThunk<
+  { message: string },
+  { userId: string; surveyData: { [key: string]: string | boolean | null } },
+  { rejectValue: { message: string } }
+>("user/sendSurvey", async ({ userId, surveyData }, { rejectWithValue }) => {
+  try {
+    const { message } = await userService.sendSurvey(userId, surveyData);
+    return { message };
+  } catch (error) {
+    return handleError.actionError(
+      error,
+      rejectWithValue,
+      "sending the survey"
     );
   }
 });

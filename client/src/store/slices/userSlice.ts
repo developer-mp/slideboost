@@ -19,6 +19,7 @@ interface UserState {
   userName: string;
   creditBalance: number;
   createdAt: string;
+  surveySent: boolean;
   isRegister: boolean;
   isReset: boolean;
   status: "idle" | "loading" | "success" | "fail";
@@ -33,6 +34,7 @@ const initialState: UserState = {
   userName: "",
   creditBalance: 0,
   createdAt: "",
+  surveySent: false,
   isRegister: false,
   isReset: false,
   status: "idle",
@@ -49,6 +51,9 @@ const userSlice = createSlice({
     },
     setIsReset(state, action: PayloadAction<boolean>) {
       state.isReset = action.payload;
+    },
+    setSurveySent: (state, action: PayloadAction<boolean>) => {
+      state.surveySent = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -94,6 +99,7 @@ const userSlice = createSlice({
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
         state.createdAt = action.payload.createdAt;
+        state.surveySent = action.payload.surveySent;
         state.message = action.payload.message;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -111,6 +117,7 @@ const userSlice = createSlice({
         state.userEmail = action.payload.email;
         state.userName = action.payload.name;
         state.createdAt = action.payload.createdAt;
+        state.surveySent = action.payload.surveySent;
         state.message = action.payload.message;
       })
       .addCase(loginUserWithGoogle.rejected, (state, action) => {
@@ -199,5 +206,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setIsRegister, setIsReset } = userSlice.actions;
+export const { setIsRegister, setIsReset, setSurveySent } = userSlice.actions;
 export default userSlice.reducer;

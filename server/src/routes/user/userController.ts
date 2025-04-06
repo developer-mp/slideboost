@@ -157,7 +157,7 @@ const userController = {
 
     try {
       const result = (await pool.query(
-        "SELECT id, name, email, password, created_at FROM users WHERE email = $1",
+        "SELECT id, name, email, password, created_at, survey_sent FROM users WHERE email = $1",
         [email]
       )) as DbQueryResultProps;
 
@@ -201,6 +201,7 @@ const userController = {
           name: user.name,
           email: user.email,
           createdAt: user.created_at,
+          surveySent: user.survey_sent,
           message: "Logged in successfully",
         });
       } else {
@@ -239,7 +240,7 @@ const userController = {
 
       if (user) {
         result = (await pool.query(
-          "UPDATE users SET google_id = $1 WHERE email = $2 RETURNING id, name, email, created_at",
+          "UPDATE users SET google_id = $1 WHERE email = $2 RETURNING id, name, email, created_at, survey_sent",
           [googleId, payload["email"]]
         )) as DbQueryResultProps;
 
@@ -265,6 +266,23 @@ const userController = {
           ])) as DbQueryResultProps;
         } else {
           creditResult = existingCredits;
+        }
+
+        try {
+          userService.sendEmail(
+            config.EMAIL,
+            user.email,
+            user.name,
+            undefined,
+            undefined,
+            undefined,
+            "greetingEmail",
+            "Welcome to SlideBoost",
+            undefined
+          );
+        } catch (error: unknown) {
+          handleError.controllerError(res, error, "sending the greeting email");
+          return;
         }
       }
 
@@ -298,6 +316,7 @@ const userController = {
         name: user.name,
         email: user.email,
         createdAt: user.created_at,
+        surveySent: user.survey_sent,
         message: "Logged in successfully",
       });
     } catch (error: unknown) {
@@ -559,7 +578,11 @@ const userController = {
   },
 
   deactivateAccount: async (req: Request, res: Response): Promise<void> => {
-    const { email, reason }: { email: string; reason: string } = req.body;
+    const {
+      email,
+      reason,
+      details,
+    }: { email: string; reason: string; details: String } = req.body;
 
     try {
       const result = (await pool.query(
@@ -581,8 +604,8 @@ const userController = {
       ])) as DbQueryResultProps;
 
       (await pool.query(
-        "INSERT INTO user_deactivation_reasons (reason) VALUES ($1)",
-        [reason]
+        "INSERT INTO user_deactivation (reason, details) VALUES ($1, $2)",
+        [reason, details]
       )) as DbQueryResultProps;
       res.status(200).json({ message: "Account deactivated successfully" });
     } catch (error: unknown) {
@@ -607,6 +630,38 @@ const userController = {
       });
     } catch (error: unknown) {
       handleError.controllerError(res, error, "retrieving the credit balance");
+      return;
+    }
+  },
+
+  sendSurvey: async (req: Request, res: Response): Promise<void> => {
+    const userId = req.body.userId as string;
+    const surveyData = req.body.surveyData;
+
+    try {
+      await pool.query(
+        "INSERT INTO survey (satisfaction, would_pay, like_most, like_least, feature_requests, ease_of_use, recommendation, comments) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+        [
+          surveyData.satisfaction,
+          surveyData.wouldPay,
+          surveyData.likeMost,
+          surveyData.likeLeast,
+          surveyData.featureRequests,
+          surveyData.easeOfUse,
+          surveyData.recommendation,
+          surveyData.comments,
+        ]
+      );
+
+      await pool.query("UPDATE users SET survey_sent = true WHERE id = $1", [
+        userId,
+      ]);
+
+      res.status(201).json({
+        message: "Survey submitted successfully",
+      });
+    } catch (error: unknown) {
+      handleError.controllerError(res, error, "submitting the survey");
       return;
     }
   },

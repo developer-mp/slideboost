@@ -4,8 +4,8 @@ import pug from "pug";
 import { convert } from "html-to-text";
 import { config } from "../../../env.config";
 import handleError from "../../utils/common/handleError";
-import { convertImgToBase64 } from "../../utils/conversion/convertImgToBase64";
-// import { logoText } from "./logoText";
+// import { convertImgToBase64 } from "../../utils/conversion/convertImgToBase64";
+import { logoText } from "./logoText";
 
 const smtp = {
   host: config.SMTP_HOST,
@@ -35,9 +35,9 @@ const userService = {
     message: string | undefined
   ): Promise<void> {
     try {
-      const imgPath = path.join(__dirname, "../../../public/logo_text.png");
-      const imageBase64String = convertImgToBase64(imgPath);
-      // const imageBase64String = logoText;
+      // const imgPath = path.join(__dirname, "../../../public/logo_text.png");
+      // const imageBase64String = convertImgToBase64(imgPath);
+      const imageBase64String = logoText;
       const imageBase64 = "data:image/png;base64," + imageBase64String;
 
       const html = pug.renderFile(`./src/templates/${template}.pug`, {

@@ -5,7 +5,11 @@ import { Button, Container, Form } from "react-bootstrap";
 import CustomModal from "../shared/CustomModal";
 import TemplatesDisplay from "../widgets/TemplatesDisplay";
 import MediaFilesDisplay from "../widgets/MediaFilesDisplay";
-import { DashboardProps, FileDetailProps } from "../../interfaces/interfaces";
+import {
+  DashboardProps,
+  FileDetailProps,
+  SurveyDataProps,
+} from "../../interfaces/interfaces";
 import {
   showErrorToast,
   showSuccessToast,
@@ -21,11 +25,13 @@ import CreditsModal from "../widgets/CreditsModal";
 import { createCheckout } from "../../store/actions/paymentAction";
 import { config } from "../../../env.config";
 import useCredits from "../../utils/payment/useCredits";
-import { getCreditBalance } from "../../store/actions/userAction";
+import { getCreditBalance, sendSurvey } from "../../store/actions/userAction";
+import { setSurveySent } from "../../store/slices/userSlice";
+import SurveyModal from "../widgets/SurveyModal";
 
 const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
-  const userId = useSelector((state: RootState) => state.user.userId);
-  const initialCredits = 10;
+  const { userId, surveySent } = useSelector((state: RootState) => state.user);
+  let initialCredits = 10;
   const pricePerCredit = Number(config.PRICE_PER_CREDIT);
 
   const {
@@ -46,11 +52,12 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const [showTemplateModal, setShowTemplateModal] = useState<boolean>(false);
   const [selectedTemplate, setSelectedTemplate] =
     useState<FileDetailProps | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [presentationTitle, setPresentationTitle] = useState<string>("");
 
   const [creditCost, setCreditCost] = useState<number>(0);
   const [showTokenModal, setShowTokenModal] = useState<boolean>(false);
+  const [showSurveyModal, setShowSurveyModal] = useState<boolean>(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -94,23 +101,23 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   };
 
   const handleCreate = async () => {
-    setLoading(true);
+    setIsLoading(true);
 
     if (!presentationTitle.trim()) {
       showErrorToast("Title is required");
-      setLoading(false);
+      setIsLoading(false);
       return;
     }
 
     if (selectedMediaFiles.length === 0) {
       showErrorToast("Please select media files");
-      setLoading(false);
+      setIsLoading(false);
       return;
     }
 
     if (!selectedTemplate) {
       showErrorToast("Please select a template");
-      setLoading(false);
+      setIsLoading(false);
       return;
     }
 
@@ -136,19 +143,20 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
         const tokenLimitMessage = `Your presentation exceedes token limit of ${tokenLimit}`;
         showErrorToast(tokenLimitMessage);
       }
+      initialCredits = Math.max(10, creditCost - creditBalance);
       setShowTokenModal(true);
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error("Error occurred while calculating the tokens: ", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   const handleProceed = async () => {
     setShowTokenModal(false);
-    setLoading(true);
+    setIsLoading(true);
     try {
       const filesArr = buildFilesArr();
 
@@ -170,13 +178,17 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
       await dispatch(getFileMetadata({ userId })).unwrap();
       await dispatch(getCreditBalance({ userId })).unwrap();
       showSuccessToast(successMessage);
-      setSelectedItem("projects");
+      if (!surveySent) {
+        setShowSurveyModal(true);
+      } else {
+        setSelectedItem("projects");
+      }
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error("Error occurred while creating the presentation: ", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -190,6 +202,32 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
 
   const handleConfirm = () => {
     handleConfirmPurchase(onCheckout);
+  };
+
+  const handleSurvey = async (surveyData: SurveyDataProps) => {
+    const surveyDataObj = {
+      satisfaction: surveyData.satisfaction,
+      wouldPay: surveyData.wouldPay,
+      likeMost: surveyData.likeMost,
+      likeLeast: surveyData.likeLeast,
+      featureRequests: surveyData.featureRequests,
+      easeOfUse: surveyData.easeOfUse,
+      recommendation: surveyData.recommendation,
+      comments: surveyData.comments,
+    };
+    try {
+      const resultAction = await dispatch(
+        sendSurvey({ userId, surveyData: surveyDataObj })
+      ).unwrap();
+      const successMessage = handleSuccessMessage(resultAction);
+      showSuccessToast(successMessage);
+      dispatch(setSurveySent(true));
+      setSelectedItem("projects");
+    } catch (error) {
+      const errorMessage = handleErrorMessage(error);
+      showErrorToast(errorMessage);
+      console.error("Error occurred while submitting the survey: ", error);
+    }
   };
 
   return (
@@ -290,7 +328,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
             <Button
               className="button button-primary-auto tw-my-4"
               onClick={handleCreate}
-              disabled={loading}
+              disabled={isLoading}
             >
               Create
             </Button>
@@ -301,7 +339,9 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
                 title="Credit Shortage"
                 actionLabel="Purchase"
                 onAction={handlePurchase}
-                children="You don't have enough credits. Please purchase more credits"
+                children={`You don't have enough credits. Please purchase ${
+                  creditCost - creditBalance
+                } credits to complete the presentation.`}
               />
             ) : (
               <CustomModal
@@ -313,7 +353,6 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
                 children={`Your presentation will cost ${creditCost} credits. Do you wish to proceed?`}
               />
             )}
-
             <CreditsModal
               showModal={showCreditsModal}
               closeModal={closeCreditsModal}
@@ -322,10 +361,19 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
               setCredits={setCredits}
               amount={amount}
             />
+            {!surveySent && (
+              <SurveyModal
+                showModal={showSurveyModal}
+                closeModal={() => setShowSurveyModal(false)}
+                onSubmit={(surveyData) => {
+                  handleSurvey(surveyData);
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
-      {loading && (
+      {isLoading && (
         <div className="loading-overlay">
           <div className="loading-spinner">
             <div className="spinner-border text-light" role="status"></div>

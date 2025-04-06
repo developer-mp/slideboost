@@ -16,5 +16,6 @@ userRouter.post("/email", userController.sendEmail);
 userRouter.post("/contact", userController.sendContactForm);
 userRouter.post("/deactivation", userController.deactivateAccount);
 userRouter.get("/balance", userController.getCreditBalance);
+userRouter.post("/survey", userController.sendSurvey);
 
 export default userRouter;
