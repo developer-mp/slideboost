@@ -73,8 +73,10 @@ const Features: React.FC = () => {
               integration of customer insights.
             </p>
             <p>
-              Translate, customize for industries, and instantly share via
-              email, chat, or social media to boost engagement and loyalty.
+              Support live events, meetings, and webinars to create real-time,
+              impactful presentations. Translate, tailor for specific
+              industries, and instantly share via email, chat, or social media
+              to drive engagement and build loyalty.
             </p>
           </div>
           {!isAuthenticated ? (

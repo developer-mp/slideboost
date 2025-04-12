@@ -41,13 +41,14 @@ const Home: React.FC = () => {
           </h3>
           <div className="tw-text-gray-700 tw-text-xl tw-mb-4 lg:tw-w-11/12">
             <p>
-              Transform your media into powerful, engaging presentations that
-              captivate audiences and communicate your message effectively.
+              Transform your media or live events into powerful, engaging
+              presentations that captivate audiences and communicate your
+              message effectively.
             </p>
             <p>
-              Just upload your media, and SlideBoost takes care of the rest,
-              creating polished and professional presentations that make a
-              strong impact.
+              Just upload your media or capture live discussions, and SlideBoost
+              takes care of the rest, creating polished and professional
+              presentations that make a strong impact.
             </p>
           </div>
           {!isAuthenticated ? (

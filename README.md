@@ -1,6 +1,6 @@
 ### SlideBoost
 
-SlideBoost is a micro SaaS app that revolutionizes how users create PowerPoint presentations. Unlike traditional tools, our platform allows users to seamlessly integrate and customize content from a variety of sources, including video, text, images, and audio, providing a dynamic and engaging presentation creation experience.
+SlideBoost is a SaaS app that revolutionizes how users create PowerPoint presentations. Unlike traditional tools, our platform allows users to seamlessly integrate and customize content from a variety of sources, including video, text, images, audio, and live events, meetings, and webinars, providing a dynamic and engaging presentation creation experience.
 
 ### Architecture & Design
 

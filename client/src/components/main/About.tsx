@@ -49,7 +49,7 @@ const About: React.FC = () => {
           <div className="tw-text-gray-700 tw-text-xl lg:tw-ml-12 tw-mb-4 lg:tw-w-11/12">
             <p>
               We empower creators, educators, and businesses to transform their
-              media into engaging presentations that captivate audiences.
+              media into engaging presentations that leave a lasting impression.
             </p>
             <p>
               Effortlessly convert, edit, and manage media using customizable

@@ -16,7 +16,7 @@ const Pricing: React.FC = () => {
           <div className="tw-text-gray-700 tw-text-xl tw-text-pretty tw-mb-8">
             Get started by purchasing credits to unlock the power of creating
             presentations effortlessly. By default, all registered users receive
-            100 credits. Each credit equals 1,000 tokens, which you can use to
+            10 credits. Each credit equals 200 tokens, which you can use to
             create your presentations. You can top up your balance at any time
             to ensure smooth and uninterrupted creation. Before proceeding,
             you'll receive an estimate of how many credits your presentation
