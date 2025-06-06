@@ -1,0 +1,93 @@
+{
+    "name": "slideboost-video-finder",
+    "version": "1.0.0",
+    "description": "Desktop app to find and monitor the latest video files",
+    "main": "main.js",
+    "private": true,
+    "author": "Your Name",
+    "license": "MIT",
+    "scripts": {
+        "start": "electron .",
+        "stop": "node -e \"process.kill(process.ppid, 'SIGTERM')\" || echo 'Electron process stopped'",
+        "stop-force": "node -e \"process.kill(process.ppid, 'SIGKILL')\" || echo 'Electron process force stopped'",
+        "stop-win": "taskkill /F /IM electron.exe /T || echo 'Electron processes terminated'",
+        "stop-unix": "pkill -f electron || echo 'Electron processes terminated'",
+        "dev": "NODE_ENV=development electron .",
+        "build": "echo 'No build step needed for pure Electron app'",
+        "dist": "electron-builder",
+        "dist-all": "electron-builder -mwl",
+        "pack": "electron-builder --dir",
+        "clean": "rimraf dist",
+        "test": "echo 'No tests specified'"
+    },
+    "dependencies": {
+        "chokidar": "^3.5.3",
+        "electron": "^36.3.2",
+        "form-data": "^4.0.0",
+        "fs-extra": "^11.1.1",
+        "node-fetch": "^2.6.12",
+        "ws": "^8.18.2"
+    },
+    "devDependencies": {
+        "electron-builder": "^24.6.4",
+        "rimraf": "^5.0.5"
+    },
+    "build": {
+        "appId": "com.slideboost.videofinder",
+        "productName": "SlideBoost Video Finder",
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "main.js",
+            "preload.js",
+            "index.html",
+            "video-finder.js",
+            "video-watcher.js",
+            "package.json"
+        ],
+        "mac": {
+            "category": "public.app-category.utilities",
+            "target": {
+                "target": "dmg",
+                "arch": [
+                    "x64",
+                    "arm64"
+                ]
+            }
+        },
+        "win": {
+            "target": {
+                "target": "nsis",
+                "arch": [
+                    "x64",
+                    "ia32"
+                ]
+            }
+        },
+        "linux": {
+            "target": {
+                "target": "AppImage",
+                "arch": [
+                    "x64"
+                ]
+            }
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true
+        }
+    },
+    "keywords": [
+        "electron",
+        "video",
+        "finder",
+        "monitor",
+        "desktop",
+        "file-watcher"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "your-repo-url"
+    }
+}

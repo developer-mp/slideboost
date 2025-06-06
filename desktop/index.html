@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SlideBoost Video Finder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #282c34;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .app {
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 2rem;
+            font-size: calc(10px + 1vmin);
+        }
+
+        h1 {
+            margin-bottom: 2rem;
+            color: #61dafb;
+            font-size: 2.5rem;
+        }
+
+        .watcher-controls {
+            background-color: #1e2128;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .watcher-controls h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: #61dafb;
+            font-size: 1.5rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            justify-content: center;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background-color: #ff4d4d;
+            transition: background-color 0.3s ease;
+        }
+
+        .status-dot.active {
+            background-color: #4caf50;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .control-buttons button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4a5568;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 0.9rem;
+            min-width: 120px;
+        }
+
+        .control-buttons button:hover:not(:disabled) {
+            background-color: #61dafb;
+            color: #282c34;
+        }
+
+        .control-buttons button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .auto-refresh-info {
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: #61dafb;
+            font-style: italic;
+        }
+
+        .folder-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .folder-controls input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #4a5568;
+            border-radius: 4px;
+            background-color: #2d3748;
+            color: white;
+            min-width: 250px;
+        }
+
+        .folder-controls button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4a5568;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            min-width: 100px;
+        }
+
+        .folder-controls button:hover {
+            background-color: #61dafb;
+            color: #282c34;
+        }
+
+        .status-message {
+            margin-top: 1rem;
+            padding: 8px 12px;
+            background-color: rgba(97, 218, 251, 0.1);
+            border-left: 3px solid #61dafb;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .video-info {
+            background-color: #1e2128;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .video-info h2 {
+            margin-top: 0;
+            color: #61dafb;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .video-info p {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+            text-align: left;
+            word-break: break-all;
+        }
+
+        .video-info strong {
+            color: #61dafb;
+        }
+
+        .refresh-button {
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .refresh-button:hover {
+            background-color: #61dafb;
+            color: #282c34;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .watcher-controls, .video-info {
+                width: 95%;
+                padding: 1rem;
+            }
+            
+            .folder-controls {
+                flex-direction: column;
+            }
+            
+            .folder-controls input {
+                min-width: auto;
+            }
+            
+            .control-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <h1>SlideBoost Video Finder</h1>
+        
+        <div class="watcher-controls">
+            <h3>Video Watcher Controls</h3>
+            <div class="status-indicator">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Watcher Status: Inactive</span>
+            </div>
+            
+            <div class="control-buttons">
+                <button id="startWatcherBtn">Start Watcher</button>
+                <button id="stopWatcherBtn" disabled>Stop Watcher</button>
+                <button id="refreshVideoBtn">Refresh Latest Video</button>
+            </div>
+            
+            <div class="auto-refresh-info">
+                <p>Auto-refresh is active when watcher is running</p>
+            </div>
+            
+            <div class="folder-controls">
+                <input 
+                    type="text" 
+                    placeholder="Enter custom folder path" 
+                    id="customFolderInput"
+                />
+                <button id="addFolderBtn">Add Folder</button>
+            </div>
+            
+            <div class="status-message" id="statusMessage">Ready to start watching for videos...</div>
+        </div>
+
+        <div class="video-info" id="videoInfo" style="display: none;">
+            <h2>Latest Video Found</h2>
+            <p><strong>Name:</strong> <span id="videoName">-</span></p>
+            <p><strong>Path:</strong> <span id="videoPath">-</span></p>
+            <p><strong>Size:</strong> <span id="videoSize">-</span></p>
+            <p><strong>Last Modified:</strong> <span id="videoModified">-</span></p>
+        </div>
+    </div>
+
+    <script>
+        let watcherActive = false;
+        let latestVideo = null;
+
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const startWatcherBtn = document.getElementById('startWatcherBtn');
+        const stopWatcherBtn = document.getElementById('stopWatcherBtn');
+        const refreshVideoBtn = document.getElementById('refreshVideoBtn');
+        const customFolderInput = document.getElementById('customFolderInput');
+        const addFolderBtn = document.getElementById('addFolderBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const videoInfo = document.getElementById('videoInfo');
+        const videoName = document.getElementById('videoName');
+        const videoPath = document.getElementById('videoPath');
+        const videoSize = document.getElementById('videoSize');
+        const videoModified = document.getElementById('videoModified');
+
+        function updateStatus(message) {
+            statusMessage.textContent = message;
+            console.log('Status:', message);
+        }
+
+        function updateWatcherStatus(active) {
+            watcherActive = active;
+            statusDot.className = `status-dot ${active ? 'active' : ''}`;
+            statusText.textContent = `Watcher Status: ${active ? 'Active' : 'Inactive'}`;
+            startWatcherBtn.disabled = active;
+            stopWatcherBtn.disabled = !active;
+        }
+
+        function updateVideoDisplay(videoData) {
+            if (videoData) {
+                latestVideo = videoData;
+                videoInfo.style.display = 'block';
+                videoName.textContent = videoData.name || 'Unknown';
+                videoPath.textContent = videoData.path || 'Unknown';
+                
+                const sizeInMB = videoData.size ? (videoData.size / (1024 * 1024)).toFixed(2) : '0';
+                videoSize.textContent = `${sizeInMB} MB`;
+                
+                const modifiedDate = videoData.mtime ? new Date(videoData.mtime).toLocaleString() : 'Unknown';
+                videoModified.textContent = modifiedDate;
+            } else {
+                videoInfo.style.display = 'none';
+            }
+        }
+
+        function formatError(error) {
+            return error && error.message ? error.message : 'Unknown error occurred';
+        }
+
+        // Electron IPC functions
+        async function startWatcher(customFolderPath = null) {
+            try {
+                updateStatus('Starting watcher...');
+                const folders = customFolderPath ? [customFolderPath] : null;
+                const result = await window.electronAPI.startWatcher(folders);
+                
+                updateWatcherStatus(result);
+                
+                if (result) {
+                    updateStatus(`Watcher started${customFolderPath ? ` for ${customFolderPath}` : ''}`);
+                } else {
+                    updateStatus('Failed to start watcher. No valid folders found.');
+                }
+                
+                return result;
+            } catch (error) {
+                console.error('Error starting watcher:', error);
+                updateStatus(`Error starting watcher: ${formatError(error)}`);
+                return false;
+            }
+        }
+
+        async function stopWatcher() {
+            try {
+                updateStatus('Stopping watcher...');
+                const result = await window.electronAPI.stopWatcher();
+                
+                updateWatcherStatus(false);
+                updateStatus('Watcher stopped');
+                
+                return result;
+            } catch (error) {
+                console.error('Error stopping watcher:', error);
+                updateStatus(`Error stopping watcher: ${formatError(error)}`);
+                return false;
+            }
+        }
+
+        async function addFolder() {
+            const folderPath = customFolderInput.value.trim();
+            
+            if (!folderPath) {
+                updateStatus('Please enter a folder path');
+                return;
+            }
+            
+            try {
+                updateStatus('Adding folder...');
+                const result = await window.electronAPI.addWatchFolder(folderPath);
+                
+                if (result) {
+                    updateStatus(`Added folder: ${folderPath}`);
+                    customFolderInput.value = '';
+                } else {
+                    updateStatus(`Failed to add folder: ${folderPath}`);
+                }
+                
+                return result;
+            } catch (error) {
+                console.error('Error adding folder:', error);
+                updateStatus(`Error adding folder: ${formatError(error)}`);
+                return false;
+            }
+        }
+
+        async function refreshLatestVideo() {
+            try {
+                updateStatus('Refreshing latest video...');
+                const videoData = await window.electronAPI.findLatestVideo();
+                
+                if (videoData) {
+                    updateVideoDisplay(videoData);
+                    updateStatus('Latest video refreshed');
+                } else {
+                    updateStatus('No video found');
+                    updateVideoDisplay(null);
+                }
+                
+                return videoData;
+            } catch (error) {
+                console.error('Error refreshing video:', error);
+                updateStatus(`Error refreshing video: ${formatError(error)}`);
+                return null;
+            }
+        }
+
+        startWatcherBtn.addEventListener('click', () => startWatcher());
+        stopWatcherBtn.addEventListener('click', stopWatcher);
+        refreshVideoBtn.addEventListener('click', refreshLatestVideo);
+        addFolderBtn.addEventListener('click', addFolder);
+
+        customFolderInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                addFolder();
+            }
+        });
+
+        async function initializeApp() {
+            console.log('Initializing SlideBoost Video Finder...');
+            
+            if (!window.electronAPI) {
+                updateStatus('Error: Not running in Electron environment');
+                console.error('electronAPI not available');
+                return;
+            }
+
+            try {
+                window.electronAPI.onLatestVideo((videoData) => {
+                    console.log('Received latest video data:', videoData);
+                    if (videoData) {
+                        updateVideoDisplay(videoData);
+                        updateStatus(`New video detected: ${videoData.name}`);
+                    }
+                });
+
+                updateStatus('Starting automatic watcher...');
+                await startWatcher();
+
+                await refreshLatestVideo();
+                
+            } catch (error) {
+                console.error('Error during initialization:', error);
+                updateStatus(`Initialization error: ${formatError(error)}`);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        window.addEventListener('beforeunload', async () => {
+            if (watcherActive) {
+                try {
+                    await stopWatcher();
+                } catch (error) {
+                    console.error('Error during cleanup:', error);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
