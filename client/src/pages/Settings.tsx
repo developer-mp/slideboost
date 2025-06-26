@@ -27,6 +27,9 @@ import {
   handleSuccessMessage,
 } from "../utils/common/handleActionMessage";
 import { getDeactivationReasons } from "../store/actions/dataAction";
+import webSocketService from "../services/websocket/websocketService";
+import { ConnectionStatus } from "../interfaces/types";
+import { getStatusIcon } from "../utils/common/getStatusIcon";
 
 const Settings: React.FC = () => {
   const userEmail = useSelector((state: RootState) => state.user.userEmail);
@@ -43,10 +46,37 @@ const Settings: React.FC = () => {
   const [selectedReason, setSelectedReason] = useState<string>("");
   const [selectedReasonDetails, setSelectedReasonDetails] =
     useState<string>("");
+  const [connectionStatus, setConnectionStatus] =
+    useState<ConnectionStatus>("disconnected");
+
+  const [isWebSocketEnabled, setIsWebSocketEnabled] = useState<boolean>(false);
 
   const { deactivationReasons, isReasonsFetched } = useSelector(
     (state: RootState) => state.dataStorage
   );
+
+  const handleWebSocketToggle = async (checked: boolean) => {
+    if (checked) {
+      setConnectionStatus("connecting");
+
+      try {
+        await webSocketService.connect();
+        setIsWebSocketEnabled(true);
+        setConnectionStatus("connected");
+        showSuccessToast("Web socket connected successfully");
+      } catch (error: unknown) {
+        setIsWebSocketEnabled(false);
+        setConnectionStatus("error");
+        const errorMessage = handleErrorMessage(error);
+        showErrorToast(errorMessage);
+        console.error("Error occurred while connecting web socket: ", error);
+      }
+    } else {
+      webSocketService.disconnect();
+      setIsWebSocketEnabled(false);
+      setConnectionStatus("disconnected");
+    }
+  };
 
   const handleDeactivationReasons = async () => {
     try {
@@ -304,6 +334,37 @@ const Settings: React.FC = () => {
                   >
                     Deactivate Account
                   </Button>
+                  <div>
+                    <h3 className="tw-text-base tw-font-bold tw-text-gray-500 tw-text-left tw-mt-8">
+                      Platform Integration
+                    </h3>
+                    <hr className="tw-border-t" />
+                  </div>
+                  <Form.Group
+                    controlId="formPlatformIntegration"
+                    className="tw-mb-6 tw-mt-8 custom-toggle"
+                  >
+                    <Row className="align-items-center">
+                      <Col
+                        md={12}
+                        className="d-flex justify-content-between align-items-center"
+                      >
+                        <Form.Label className="fw-bold tw-text-gray-500 tw-text-sm mb-0 d-flex align-items-center gap-2">
+                          Zoom {getStatusIcon(connectionStatus)}
+                        </Form.Label>
+                        <Form.Check
+                          type="switch"
+                          id="websocket-switch"
+                          checked={isWebSocketEnabled}
+                          onChange={(e) =>
+                            handleWebSocketToggle(e.target.checked)
+                          }
+                          disabled={connectionStatus === "connecting"}
+                          className="tw-scale-125 "
+                        />
+                      </Col>
+                    </Row>
+                  </Form.Group>
                 </Tab>
                 <Tab eventKey="security" title="Security">
                   <div>
