@@ -86,7 +86,7 @@ const Features: React.FC = () => {
               className="button button-tertiary-pad tw-mb-4"
               onClick={openLoginModal}
             >
-              Get Started
+              Begin Now
             </button>
           ) : (
             <button

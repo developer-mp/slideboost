@@ -307,12 +307,6 @@ const Settings: React.FC = () => {
                   >
                     Deactivate Account
                   </Button>
-                  <div>
-                    <h3 className="tw-text-base tw-font-bold tw-text-gray-500 tw-text-left tw-mt-8">
-                      Platform Integration
-                    </h3>
-                    <hr className="tw-border-t" />
-                  </div>
                 </Tab>
                 <Tab eventKey="security" title="Security">
                   <div>
