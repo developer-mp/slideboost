@@ -8,7 +8,7 @@ import { MdPersonOutline, MdOutlineCreditScore } from "react-icons/md";
 import { config } from "../../env.config";
 import CreditsModal from "../components/widgets/CreditsModal";
 import useCredits from "../utils/payment/useCredits";
-import { handleErrorMessage } from "../utils/common/handleActionMessage";
+import { handleErrorMessage } from "../utils/common/handleMessage";
 import { showErrorToast } from "../utils/common/handleToast";
 import {
   useCreateCheckoutMutation,

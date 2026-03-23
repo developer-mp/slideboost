@@ -12,7 +12,7 @@ const MediaFilesDisplay: React.FC<MediaFileDisplayProps> = ({
 }) => {
   const handleFileSelection = (file: FileDetailProps) => {
     const isSelected = selectedMediaFiles.some(
-      (f) => f.file_id === file.file_id
+      (f) => f.file_id === file.file_id,
     );
     const newSelectedFiles = isSelected
       ? selectedMediaFiles.filter((f) => f.file_id !== file.file_id)
@@ -31,9 +31,9 @@ const MediaFilesDisplay: React.FC<MediaFileDisplayProps> = ({
           <div className="tw-flex tw-items-center">
             <input
               type="checkbox"
-              className="tw-mr-2 tw-w-4 tw-h-4 tw-accent-[#5b4bad]"
+              className="tw-mr-2 tw-w-4 tw-h-4 tw-accent-[#1F7BBF]"
               checked={selectedMediaFiles.some(
-                (f) => f.file_id === file.file_id
+                (f) => f.file_id === file.file_id,
               )}
               onChange={() => handleFileSelection(file)}
             />

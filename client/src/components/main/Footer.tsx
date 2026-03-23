@@ -1,4 +1,5 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
+import { Link as RouterLink } from "react-router-dom";
 import {
   FaFacebookF,
   FaTwitter,
@@ -64,14 +65,14 @@ const Footer = () => {
           className="tw-flex tw-justify-center"
         >
           <Nav className="ml-auto tw-items-center tw-gap-1">
-            <Nav.Link className="footer-link" href="/news">
-              News
+            <Nav.Link as={RouterLink} className="footer-link" to="/news">
+              Updates
             </Nav.Link>
-            <Nav.Link className="footer-link" href="/conditions">
-              Terms & Conditions
+            <Nav.Link as={RouterLink} className="footer-link" to="/conditions">
+              Terms
             </Nav.Link>
-            <Nav.Link className="footer-link" href="/privacy">
-              Privacy Notice
+            <Nav.Link as={RouterLink} className="footer-link" to="/privacy">
+              Privacy
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

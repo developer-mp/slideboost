@@ -373,7 +373,7 @@ export const appApi = createApi({
     }),
     uploadPowerPointTemplate: builder.mutation<Blob, FormData>({
       query: (formData) => ({
-        url: `${config.API_BASE_URL}${config.UPLOAD_ENDPOINT}`,
+        url: `${config.PPT_ROUTER}${config.UPLOAD_ENDPOINT}`,
         method: "POST",
         data: formData,
         responseType: "blob",

@@ -17,7 +17,7 @@ import {
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../../utils/common/handleActionMessage";
+} from "../../utils/common/handleMessage";
 import FileTable from "../shared/FileTable";
 import { getFileSize } from "../../utils/ppt/getFileSize";
 import { truncateText } from "../../utils/common/truncateText";

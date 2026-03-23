@@ -18,7 +18,7 @@ import { getFileIcon } from "../../utils/ppt/getFileIcon";
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../../utils/common/handleActionMessage";
+} from "../../utils/common/handleMessage";
 import CreditsModal from "../widgets/CreditsModal";
 import { config } from "../../../env.config";
 import useCredits from "../../utils/payment/useCredits";

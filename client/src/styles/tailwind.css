@@ -53,6 +53,19 @@
   background-color: rgba(43, 144, 217, 0.12);
 }
 
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.nav-link:focus-visible,
+.dropdown-item:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 0.22rem rgba(43, 144, 217, 0.22) !important;
+}
+
 .button {
   width: 100%;
   color: #ffffff;
@@ -364,41 +377,41 @@
 }
 
 .custom-checkbox .form-check-input:checked {
-  background-color: #5b4bad;
-  border-color: #5b4bad;
+  background-color: var(--brand-600);
+  border-color: var(--brand-600);
 }
 
 .custom-checkbox .form-check-input {
   background-color: #fff;
-  border-color: #5b4bad;
+  border-color: var(--brand-600);
 }
 
 .custom-toggle .form-check-input {
   background-color: #fff;
-  border-color: #5b4bad;
+  border-color: var(--brand-600);
 }
 
 .custom-toggle .form-check-input:focus {
-  border-color: #5b4bad;
-  outline-color: #5b4bad !important;
-  box-shadow: 0 0 0 0.25rem rgba(91, 75, 173, 0.5) !important;
+  border-color: var(--brand-600);
+  outline-color: var(--brand-600) !important;
+  box-shadow: 0 0 0 0.25rem rgba(31, 123, 191, 0.32) !important;
 }
 
 .custom-toggle .form-check-input::before {
   background-color: #fff;
-  border-color: #5b4bad;
+  border-color: var(--brand-600);
   transition:
     background-color 0.3s,
     border-color 0.3s;
 }
 
 .custom-toggle .form-check-input:checked {
-  background-color: #5b4bad;
-  border-color: #5b4bad;
+  background-color: var(--brand-600);
+  border-color: var(--brand-600);
 }
 
 .custom-toggle .form-check-input:checked::before {
-  background-color: #5b4bad;
+  background-color: var(--brand-600);
 }
 
 .loading-overlay {

@@ -14,7 +14,7 @@ import PasswordInput from "../components/widgets/PasswordInput";
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../utils/common/handleActionMessage";
+} from "../utils/common/handleMessage";
 import { setIsRegister } from "../store/slices/userSlice";
 import { useNavigation } from "../utils/user/useNavigation";
 import { useRegisterUserMutation } from "../store/api/appApi";

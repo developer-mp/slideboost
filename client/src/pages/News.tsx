@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import NewsItem from "../components/elements/NewsItem";
 import { Col, Container, Row } from "react-bootstrap";
 import { RootState } from "../store/store";
-import { handleErrorMessage } from "../utils/common/handleActionMessage";
+import { handleErrorMessage } from "../utils/common/handleMessage";
 import { showErrorToast } from "../utils/common/handleToast";
 import { useCallback, useEffect } from "react";
 import { useLazyGetNewsQuery } from "../store/api/appApi";

@@ -11,7 +11,7 @@ const Pricing: React.FC = () => {
       <div className="tw-max-w-full tw-mx-auto tw-text-center section-shell">
         <Row className="align-items-center">
           <h3 className="section-title tw-text-3xl md:tw-text-4xl tw-text-center tw-mb-8">
-            PURCHASE CREDITS TO BUILD YOUR PRESENTATION
+            Credits for Every Presentation
           </h3>
           <div className="section-copy tw-text-lg md:tw-text-xl tw-text-pretty tw-mb-8 tw-max-w-5xl tw-mx-auto">
             Get started by purchasing credits to unlock the power of creating

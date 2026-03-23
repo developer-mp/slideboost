@@ -12,9 +12,3 @@ export type MenuItem = "dashboard" | "media" | "templates" | "projects";
 export type SupportedFileType = {
   [key: string]: string[];
 };
-
-export type ConnectionStatus =
-  | "disconnected"
-  | "connecting"
-  | "connected"
-  | "error";

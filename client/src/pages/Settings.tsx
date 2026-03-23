@@ -21,7 +21,7 @@ import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../utils/common/handleActionMessage";
+} from "../utils/common/handleMessage";
 import {
   useDeactivateAccountMutation,
   useLazyGetDeactivationReasonsQuery,

@@ -13,7 +13,7 @@ import {
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../../utils/common/handleActionMessage";
+} from "../../utils/common/handleMessage";
 import { replaceExtension } from "../../utils/storage/replaceExtension";
 import { config } from "../../../env.config";
 import { removeExtension } from "./../../utils/storage/removeExtension";

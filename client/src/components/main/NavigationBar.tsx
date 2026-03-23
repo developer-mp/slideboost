@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Button, Container, Dropdown, Nav, Navbar } from "react-bootstrap";
+import { Link as RouterLink } from "react-router-dom";
 import { useNavigation } from "../../utils/user/useNavigation";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { HashLink as Link } from "react-router-hash-link";
+import { HashLink } from "react-router-hash-link";
 import { getFirstChar } from "../../utils/user/getFirstChar";
 import { adjustScrollForNavbar } from "../../utils/common/adjustScrollForNavbar";
 import LoginModal from "../widgets/LoginModal";
@@ -12,7 +13,7 @@ import logo_text from "../../assets/main/logo_text.png";
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../../utils/common/handleActionMessage";
+} from "../../utils/common/handleMessage";
 import {
   showErrorToast,
   showSuccessToast,
@@ -69,7 +70,7 @@ const NavigationBar: React.FC = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto tw-items-center tw-gap-1">
             <Nav.Link
-              as={Link}
+              as={HashLink}
               smooth
               to="/#home"
               scroll={(el: HTMLElement) => adjustScrollForNavbar(el)}
@@ -77,7 +78,7 @@ const NavigationBar: React.FC = () => {
               Home
             </Nav.Link>
             <Nav.Link
-              as={Link}
+              as={HashLink}
               smooth
               to="/#about"
               scroll={(el: HTMLElement) => adjustScrollForNavbar(el)}
@@ -85,7 +86,7 @@ const NavigationBar: React.FC = () => {
               About
             </Nav.Link>
             <Nav.Link
-              as={Link}
+              as={HashLink}
               smooth
               to="/#features"
               scroll={(el: HTMLElement) => adjustScrollForNavbar(el)}
@@ -93,7 +94,7 @@ const NavigationBar: React.FC = () => {
               Features
             </Nav.Link>
             <Nav.Link
-              as={Link}
+              as={HashLink}
               smooth
               to="/#pricing"
               scroll={(el: HTMLElement) => adjustScrollForNavbar(el)}
@@ -101,7 +102,7 @@ const NavigationBar: React.FC = () => {
               Pricing
             </Nav.Link>
             <Nav.Link
-              as={Link}
+              as={HashLink}
               smooth
               to="/#faq"
               scroll={(el: HTMLElement) => adjustScrollForNavbar(el)}
@@ -109,7 +110,7 @@ const NavigationBar: React.FC = () => {
               FAQ
             </Nav.Link>
             <Nav.Link
-              as={Link}
+              as={HashLink}
               smooth
               to="/#contact"
               scroll={(el: HTMLElement) => adjustScrollForNavbar(el)}
@@ -119,7 +120,7 @@ const NavigationBar: React.FC = () => {
           </Nav>
           {isAuthenticated ? (
             <Nav className="ms-auto tw-items-center tw-gap-3">
-              <Nav.Link className="tw-mr-2" href="/workspace">
+              <Nav.Link as={RouterLink} className="tw-mr-2" to="/workspace">
                 Workspace
               </Nav.Link>
               <Dropdown>
@@ -129,8 +130,12 @@ const NavigationBar: React.FC = () => {
                   </div>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item href="profile">Profile</Dropdown.Item>
-                  <Dropdown.Item href="settings">Settings</Dropdown.Item>
+                  <Dropdown.Item as={RouterLink} to="/profile">
+                    Profile
+                  </Dropdown.Item>
+                  <Dropdown.Item as={RouterLink} to="/settings">
+                    Settings
+                  </Dropdown.Item>
                   <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -141,7 +146,7 @@ const NavigationBar: React.FC = () => {
                 className="button button-login tw-px-6"
                 onClick={openLoginModal}
               >
-                Login
+                Sign In
               </Button>
             </Nav>
           )}

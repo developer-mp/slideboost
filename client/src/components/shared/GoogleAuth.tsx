@@ -6,7 +6,7 @@ import {
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../../utils/common/handleActionMessage";
+} from "../../utils/common/handleMessage";
 import {
   showErrorToast,
   showSuccessToast,

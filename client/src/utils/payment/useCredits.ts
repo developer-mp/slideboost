@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { handleErrorMessage } from "../common/handleActionMessage";
+import { handleErrorMessage } from "../common/handleMessage";
 import { showErrorToast, showSuccessToast } from "../common/handleToast";
 import { CheckoutResponse } from "../../interfaces/interfaces";
 import { useVerifyPaymentMutation } from "../../store/api/appApi";

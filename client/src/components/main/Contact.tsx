@@ -10,7 +10,7 @@ import { AppDispatch } from "../../store/store";
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../../utils/common/handleActionMessage";
+} from "../../utils/common/handleMessage";
 import { validateEmail } from "../../utils/user/validateEmail";
 import { validateName } from "../../utils/user/validateName";
 import { useSendContactFormMutation } from "../../store/api/appApi";
@@ -86,7 +86,7 @@ const Contact = () => {
       }}
     >
       <h3 className="section-title tw-text-3xl md:tw-text-4xl tw-text-center tw-mb-8">
-        FEEL FREE TO REACH OUT
+        Reach Out Anytime
       </h3>
       <Form
         className="tw-w-full tw-max-w-md tw-mx-auto section-shell"
@@ -127,7 +127,7 @@ const Contact = () => {
           />
         </Form.Group>
         <Button className="button button-primary tw-w-full" type="submit">
-          Send
+          Send Message
         </Button>
       </Form>
     </Container>

@@ -7,7 +7,7 @@ import { getFileSize } from "../../utils/ppt/getFileSize";
 import { FileListDisplayProps } from "../../interfaces/interfaces";
 import { FiTrash2 } from "react-icons/fi";
 import CustomDropdown from "../shared/CustomDropdown";
-import { handleErrorMessage } from "../../utils/common/handleActionMessage";
+import { handleErrorMessage } from "../../utils/common/handleMessage";
 import { showErrorToast } from "../../utils/common/handleToast";
 import { useLazyGetTemplateCategoriesQuery } from "../../store/api/appApi";
 

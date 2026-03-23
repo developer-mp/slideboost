@@ -37,7 +37,7 @@ const Home: React.FC = () => {
       <Row className="tw-w-full section-shell tw-items-center tw-gap-y-6 lg:tw-gap-y-0">
         <Col xs={12} md={12} lg={6} className="tw-text-center lg:tw-text-left">
           <h3 className="section-title tw-text-3xl md:tw-text-4xl tw-mb-4 lg:tw-mb-8">
-            BOOST YOUR SLIDES
+            Turn Content Into Slides
           </h3>
           <div className="section-copy tw-text-lg md:tw-text-xl tw-mb-4 lg:tw-w-11/12">
             <p>
@@ -56,14 +56,14 @@ const Home: React.FC = () => {
               className="button button-tertiary-pad tw-mb-4"
               onClick={openLoginModal}
             >
-              Try for free
+              Start Free
             </button>
           ) : (
             <button
               className="button button-tertiary-pad tw-mb-4"
               onClick={navigateToWorkspace}
             >
-              Go to workspace
+              Open Workspace
             </button>
           )}
           <LoginModal
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
         <Col xs={12} md={12} lg={6}>
           <img
             src={home_img}
-            alt="image"
+            alt="SlideBoost workspace preview with generated presentation"
             className="tw-w-full tw-h-auto tw-rounded-3xl tw-mt-4 lg:tw-mb-0 tw-shadow-xl"
           />
         </Col>

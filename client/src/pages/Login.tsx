@@ -14,7 +14,7 @@ import CustomModal from "../components/shared/CustomModal";
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../utils/common/handleActionMessage";
+} from "../utils/common/handleMessage";
 import {
   useLoginUserMutation,
   useSendEmailMutation,

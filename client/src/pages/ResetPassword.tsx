@@ -9,7 +9,7 @@ import PasswordInput from "../components/widgets/PasswordInput";
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../utils/common/handleActionMessage";
+} from "../utils/common/handleMessage";
 import { setIsReset } from "../store/slices/userSlice";
 import { useUpdatePasswordMutation } from "../store/api/appApi";
 

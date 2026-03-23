@@ -3,7 +3,7 @@ import { ProtectedRouteProps } from "../../interfaces/interfaces";
 import { useNavigation } from "../../utils/user/useNavigation";
 import { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
-import { handleErrorMessage } from "../../utils/common/handleActionMessage";
+import { handleErrorMessage } from "../../utils/common/handleMessage";
 import { showErrorToast } from "../../utils/common/handleToast";
 import {
   useLazyVerifyTokenQuery,

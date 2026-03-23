@@ -18,7 +18,9 @@ const Features: React.FC = () => {
     setModalShow(true);
   };
 
-  const isAuthenticated = useSelector((state: RootState) => state.user);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.user.isAuthenticated,
+  );
 
   const navigateToGoogleLogin = () => {
     setModalGoogleShow(true);
@@ -49,7 +51,7 @@ const Features: React.FC = () => {
       <Row className="w-100 section-shell tw-gap-y-6 lg:tw-gap-y-0">
         <Col className="tw-text-center">
           <h3 className="section-title tw-text-3xl md:tw-text-4xl tw-mb-4 lg:tw-mb-8 tw-mt-2">
-            CUSTOMIZABLE TEMPLATES
+            Customizable Templates
           </h3>
           <div className="section-copy tw-text-lg md:tw-text-xl tw-text-pretty tw-mb-8 tw-max-w-4xl tw-mx-auto">
             Personalize templates to match your brand, style, and content needs.
@@ -61,7 +63,7 @@ const Features: React.FC = () => {
         <TemplateCarousel templates={templatesfileMetadata} />
         <Col xs={12} md={12} lg={6} className="tw-text-center lg:tw-text-left">
           <h3 className="section-title tw-text-3xl md:tw-text-4xl tw-mt-8 lg:tw-mt-24 tw-mb-4 lg:tw-mb-8">
-            TAILORED SOLUTIONS
+            Tailored Solutions
           </h3>
           <div className="section-copy tw-text-lg md:tw-text-xl tw-mb-4 lg:tw-w-11/12">
             <p>
@@ -84,7 +86,7 @@ const Features: React.FC = () => {
               className="button button-tertiary-pad tw-mb-4"
               onClick={openLoginModal}
             >
-              Start right away
+              Get Started
             </button>
           ) : (
             <button
@@ -104,7 +106,7 @@ const Features: React.FC = () => {
         <Col xs={12} md={12} lg={6}>
           <img
             src={features_img}
-            alt="image"
+            alt="SlideBoost template customization preview"
             className="tw-w-screen tw-h-auto tw-rounded-3xl tw-shadow-xl tw-mt-4 lg:tw-mt-20 lg:tw-mb-0"
           />
         </Col>

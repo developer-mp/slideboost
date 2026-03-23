@@ -9,7 +9,7 @@ import VerificationCodeInput from "../components/shared/VerificationCodeInput";
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../utils/common/handleActionMessage";
+} from "../utils/common/handleMessage";
 import { setIsRegister } from "../store/slices/userSlice";
 import CustomModal from "../components/shared/CustomModal";
 import { useNavigation } from "../utils/user/useNavigation";

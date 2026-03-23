@@ -7,7 +7,7 @@ import { getFileSize } from "../../utils/ppt/getFileSize";
 import {
   handleErrorMessage,
   handleSuccessMessage,
-} from "../../utils/common/handleActionMessage";
+} from "../../utils/common/handleMessage";
 import {
   showErrorToast,
   showSuccessToast,
