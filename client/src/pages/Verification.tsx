@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { sendEmail, verifyEmail } from "../store/actions/userAction";
 import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 import VerificationCodeInput from "../components/shared/VerificationCodeInput";
 import {
@@ -14,6 +13,10 @@ import {
 import { setIsRegister } from "../store/slices/userSlice";
 import CustomModal from "../components/shared/CustomModal";
 import { useNavigation } from "../utils/user/useNavigation";
+import {
+  useSendEmailMutation,
+  useVerifyEmailMutation,
+} from "../store/api/appApi";
 
 const Verification: React.FC = () => {
   const [showRequestCodeModal, setShowRequestCodeModal] =
@@ -23,20 +26,20 @@ const Verification: React.FC = () => {
 
   const [code, setCode] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
+  const [verifyEmail] = useVerifyEmailMutation();
+  const [sendEmail] = useSendEmailMutation();
 
   const { navigateToLogin, navigateToResetPassword } = useNavigation();
 
   const handleVerifyEmail = async (
     e: React.MouseEvent<HTMLButtonElement>,
     email: string,
-    code: string
+    code: string,
   ) => {
     e.preventDefault();
 
     try {
-      const resultAction = await dispatch(
-        verifyEmail({ email, code })
-      ).unwrap();
+      const resultAction = await verifyEmail({ email, code }).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
       if (isReset && !isRegister) {
@@ -56,13 +59,11 @@ const Verification: React.FC = () => {
   };
 
   const handleRequestNewCode = async () => {
-    await dispatch(
-      sendEmail({
-        email: userEmail,
-        template: "verificationEmail",
-        subject: "Account Verification",
-      })
-    );
+    await sendEmail({
+      email: userEmail,
+      template: "verificationEmail",
+      subject: "Account Verification",
+    });
     setShowRequestCodeModal(false);
     setCode("");
   };

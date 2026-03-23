@@ -1,25 +1,25 @@
 import { Accordion, Card, Col, Container, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import { handleErrorMessage } from "../../utils/common/handleActionMessage";
 import { showErrorToast } from "../../utils/common/handleToast";
-import { getFaq } from "../../store/actions/dataAction";
 import { useCallback, useEffect } from "react";
+import { useLazyGetFaqQuery } from "../../store/api/appApi";
 
 const Faq: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const [getFaq] = useLazyGetFaqQuery();
 
   const { faq } = useSelector((state: RootState) => state.dataStorage);
 
   const handleFaq = useCallback(async () => {
     try {
-      await dispatch(getFaq()).unwrap();
+      await getFaq(undefined, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error("Error occurred while fetching the FAQ: ", error);
     }
-  }, [dispatch]);
+  }, [getFaq]);
 
   useEffect(() => {
     handleFaq();

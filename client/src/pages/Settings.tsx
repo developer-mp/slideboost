@@ -12,11 +12,7 @@ import {
   Tab,
   Tabs,
 } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store/store";
 import { useNavigation } from "../utils/user/useNavigation";
-import { deactivateAccount, logoutUser } from "../store/actions/userAction";
-import { updateUserName, updatePassword } from "../store/actions/userAction";
 import { formatEmail } from "../utils/user/formatEmail";
 import { validateName } from "../utils/user/validateName";
 import { validatePassword } from "../utils/user/validatePassword";
@@ -26,17 +22,27 @@ import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../utils/common/handleActionMessage";
-import { getDeactivationReasons } from "../store/actions/dataAction";
 import webSocketService from "../services/websocket/websocketService";
 import { ConnectionStatus } from "../interfaces/types";
 import { getStatusIcon } from "../utils/common/getStatusIcon";
+import {
+  useDeactivateAccountMutation,
+  useLazyGetDeactivationReasonsQuery,
+  useLogoutUserMutation,
+  useUpdatePasswordMutation,
+  useUpdateUserNameMutation,
+} from "../store/api/appApi";
 
 const Settings: React.FC = () => {
   const userEmail = useSelector((state: RootState) => state.user.userEmail);
   const userAppName = useSelector((state: RootState) => state.user.userName);
 
-  const dispatch = useDispatch<AppDispatch>();
   const { navigateToHome } = useNavigation();
+  const [getDeactivationReasons] = useLazyGetDeactivationReasonsQuery();
+  const [updateUserName] = useUpdateUserNameMutation();
+  const [updatePassword] = useUpdatePasswordMutation();
+  const [deactivateAccount] = useDeactivateAccountMutation();
+  const [logoutUser] = useLogoutUserMutation();
   const formattedEmail = formatEmail(userEmail);
 
   const [activeKey, setActiveKey] = useState<string>("account");
@@ -52,7 +58,7 @@ const Settings: React.FC = () => {
   const [isWebSocketEnabled, setIsWebSocketEnabled] = useState<boolean>(false);
 
   const { deactivationReasons, isReasonsFetched } = useSelector(
-    (state: RootState) => state.dataStorage
+    (state: RootState) => state.dataStorage,
   );
 
   const handleWebSocketToggle = async (checked: boolean) => {
@@ -80,13 +86,13 @@ const Settings: React.FC = () => {
 
   const handleDeactivationReasons = async () => {
     try {
-      await dispatch(getDeactivationReasons()).unwrap();
+      await getDeactivationReasons(undefined, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error(
         "Error occurred while fetching the deactivation reasons: ",
-        error
+        error,
       );
     }
   };
@@ -107,7 +113,7 @@ const Settings: React.FC = () => {
   const handleUpdateUserName = async (
     e: React.MouseEvent<HTMLButtonElement>,
     name: string,
-    email: string
+    email: string,
   ) => {
     e.preventDefault();
 
@@ -119,9 +125,7 @@ const Settings: React.FC = () => {
     }
 
     try {
-      const resultAction = await dispatch(
-        updateUserName({ name, email })
-      ).unwrap();
+      const resultAction = await updateUserName({ name, email }).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
     } catch (error) {
@@ -134,13 +138,13 @@ const Settings: React.FC = () => {
   const handleUpdatePassword = async (
     e: React.MouseEvent<HTMLButtonElement>,
     password: string,
-    email: string
+    email: string,
   ) => {
     e.preventDefault();
 
     const { isPasswordRequired, isNotPattern, isNotMatch } = validatePassword(
       password,
-      confirmPassword
+      confirmPassword,
     );
 
     if (isPasswordRequired) {
@@ -148,7 +152,7 @@ const Settings: React.FC = () => {
     }
     if (isNotPattern) {
       showErrorToast(
-        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character"
+        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character",
       );
     }
     if (isNotMatch) {
@@ -157,9 +161,7 @@ const Settings: React.FC = () => {
 
     if (!isPasswordRequired && !isNotPattern && !isNotMatch) {
       try {
-        const resultAction = await dispatch(
-          updatePassword({ password, email })
-        ).unwrap();
+        const resultAction = await updatePassword({ password, email }).unwrap();
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
         setPassword("");
@@ -174,10 +176,12 @@ const Settings: React.FC = () => {
 
   const handleDeactivateAccount = async (reason: string, details: string) => {
     try {
-      const resultAction = await dispatch(
-        deactivateAccount({ email: userEmail, reason, details })
-      ).unwrap();
-      dispatch(logoutUser());
+      const resultAction = await deactivateAccount({
+        email: userEmail,
+        reason,
+        details,
+      }).unwrap();
+      await logoutUser().unwrap();
       navigateToHome();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
@@ -188,7 +192,7 @@ const Settings: React.FC = () => {
       showErrorToast(errorMessage);
       console.error(
         "Error occurred while deactivating the user account: ",
-        error
+        error,
       );
     }
   };
@@ -328,7 +332,7 @@ const Settings: React.FC = () => {
                     onClick={() =>
                       handleDeactivateAccount(
                         selectedReason,
-                        selectedReasonDetails
+                        selectedReasonDetails,
                       )
                     }
                   >

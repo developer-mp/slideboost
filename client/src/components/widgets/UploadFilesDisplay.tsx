@@ -1,15 +1,15 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import { getFileIcon } from "../../utils/ppt/getFileIcon";
 import { truncateText } from "../../utils/common/truncateText";
 import { getFileSize } from "../../utils/ppt/getFileSize";
 import { FileListDisplayProps } from "../../interfaces/interfaces";
 import { FiTrash2 } from "react-icons/fi";
 import CustomDropdown from "../shared/CustomDropdown";
-import { getTemplateCategories } from "../../store/actions/dataAction";
 import { handleErrorMessage } from "../../utils/common/handleActionMessage";
 import { showErrorToast } from "../../utils/common/handleToast";
+import { useLazyGetTemplateCategoriesQuery } from "../../store/api/appApi";
 
 const UploadFilesDisplay: React.FC<FileListDisplayProps> = ({
   files,
@@ -17,20 +17,20 @@ const UploadFilesDisplay: React.FC<FileListDisplayProps> = ({
   setFiles,
   onCategoryChange,
 }) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const [getTemplateCategories] = useLazyGetTemplateCategoriesQuery();
   const { templateCategories, isCategoriesFetched } = useSelector(
-    (state: RootState) => state.dataStorage
+    (state: RootState) => state.dataStorage,
   );
 
   const handleTemplateCategories = async () => {
     try {
-      await dispatch(getTemplateCategories()).unwrap();
+      await getTemplateCategories(undefined, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error(
         "Error occurred while fetching the template categories: ",
-        error
+        error,
       );
     }
   };

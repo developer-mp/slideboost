@@ -1,21 +1,23 @@
 import { useCallback, useEffect } from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 import { getFirstChar } from "../utils/user/getFirstChar";
 import { formatDate } from "./../utils/common/formatDate";
 import { MdPersonOutline, MdOutlineCreditScore } from "react-icons/md";
-import { createCheckout } from "../store/actions/paymentAction";
 import { config } from "../../env.config";
 import CreditsModal from "../components/widgets/CreditsModal";
 import useCredits from "../utils/payment/useCredits";
-import { getCreditBalance } from "../store/actions/userAction";
 import { handleErrorMessage } from "../utils/common/handleActionMessage";
 import { showErrorToast } from "../utils/common/handleToast";
+import {
+  useCreateCheckoutMutation,
+  useLazyGetCreditBalanceQuery,
+} from "../store/api/appApi";
 
 const Profile: React.FC = () => {
   const { userName, userId, createdAt, creditBalance } = useSelector(
-    (state: RootState) => state.user
+    (state: RootState) => state.user,
   );
 
   const initialCredits = 10;
@@ -30,14 +32,15 @@ const Profile: React.FC = () => {
     handleConfirmPurchase,
     closeCreditsModal,
   } = useCredits(initialCredits, pricePerCredit, userId);
-  const dispatch = useDispatch<AppDispatch>();
+  const [createCheckout] = useCreateCheckoutMutation();
+  const [getCreditBalance] = useLazyGetCreditBalanceQuery();
 
   const formattedCreatedAt = formatDate(createdAt, "MMM d, yyyy");
 
   const firstInitial = getFirstChar(userName);
 
   const onCheckout = async (amount: number, userId: string) => {
-    return await dispatch(createCheckout({ amount, userId })).unwrap();
+    return await createCheckout({ amount, userId }).unwrap();
   };
 
   const handleConfirm = () => {
@@ -46,16 +49,16 @@ const Profile: React.FC = () => {
 
   const handleCreditBalance = useCallback(async () => {
     try {
-      await dispatch(getCreditBalance({ userId })).unwrap();
+      await getCreditBalance({ userId }, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error(
         "Error occurred while retrieving the credit balance: ",
-        error
+        error,
       );
     }
-  }, [dispatch, userId]);
+  }, [getCreditBalance, userId]);
 
   useEffect(() => {
     handleCreditBalance();

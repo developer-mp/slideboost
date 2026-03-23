@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import axios from "axios";
+import { useUploadPowerPointTemplateMutation } from "../../store/api/appApi";
 
 const PowerPointUploader: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [slideText, setSlideText] = useState<string>("");
+  const [uploadPowerPointTemplate] = useUploadPowerPointTemplateMutation();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -28,14 +29,8 @@ const PowerPointUploader: React.FC = () => {
     formData.append("text", slideText);
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/upload",
-        formData,
-        {
-          responseType: "blob",
-        }
-      );
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const response = await uploadPowerPointTemplate(formData).unwrap();
+      const url = window.URL.createObjectURL(response);
       const a = document.createElement("a");
       a.href = url;
       a.download = "presentation.pptx";

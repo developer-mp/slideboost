@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Button, Container, Dropdown, Nav, Navbar } from "react-bootstrap";
 import { useNavigation } from "../../utils/user/useNavigation";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import { HashLink as Link } from "react-router-hash-link";
 import { getFirstChar } from "../../utils/user/getFirstChar";
 import { adjustScrollForNavbar } from "../../utils/common/adjustScrollForNavbar";
-import { logoutUser } from "../../store/actions/userAction";
 import LoginModal from "../widgets/LoginModal";
 import GoogleLoginModal from "../widgets/GoogleLoginModal";
 import logo_text from "../../assets/main/logo_text.png";
@@ -18,6 +17,7 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "../../utils/common/handleToast";
+import { useLogoutUserMutation } from "../../store/api/appApi";
 
 const NavigationBar: React.FC = () => {
   const [modalShow, setModalShow] = useState<boolean>(false);
@@ -38,11 +38,11 @@ const NavigationBar: React.FC = () => {
 
   const { navigateToLogin } = useNavigation();
 
-  const dispatch = useDispatch<AppDispatch>();
   const { navigateToHome } = useNavigation();
+  const [logoutUser] = useLogoutUserMutation();
 
   const isAuthenticated = useSelector(
-    (state: RootState) => state.user.isAuthenticated
+    (state: RootState) => state.user.isAuthenticated,
   );
 
   const userName = useSelector((state: RootState) => state.user.userName);
@@ -50,7 +50,7 @@ const NavigationBar: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      const resultAction = await dispatch(logoutUser()).unwrap();
+      const resultAction = await logoutUser().unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
       navigateToHome();

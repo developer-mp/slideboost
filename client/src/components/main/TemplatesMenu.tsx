@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import { Button, Col, Container, Dropdown, Row } from "react-bootstrap";
 import CustomModal from "../shared/CustomModal";
 import FileUploader from "../shared/FileUploader";
@@ -11,23 +11,23 @@ import {
   showSuccessToast,
 } from "../../utils/common/handleToast";
 import {
-  deleteFile,
-  downloadFile,
-  getFileMetadata,
-  uploadFile,
-} from "../../store/actions/storageAction";
-import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../../utils/common/handleActionMessage";
 import { replaceExtension } from "../../utils/storage/replaceExtension";
 import { config } from "../../../env.config";
 import { removeExtension } from "./../../utils/storage/removeExtension";
-import { getTemplateCategories } from "../../store/actions/dataAction";
 import { downloadFileBlob } from "../../utils/storage/downloadFileBlob";
 import { FiDownload, FiTrash2 } from "react-icons/fi";
 import { SupportedFileType } from "../../interfaces/types";
 import useFetchFileData from "../../utils/storage/useFetchFileData";
+import {
+  useDeleteFileMutation,
+  useLazyDownloadFileQuery,
+  useLazyGetFileMetadataQuery,
+  useLazyGetTemplateCategoriesQuery,
+  useUploadFileMutation,
+} from "../../store/api/appApi";
 
 const TemplatesMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -35,22 +35,26 @@ const TemplatesMenu: React.FC = () => {
     useState<string>("All Categories");
   const fileUploaderRef = useRef<FileUploaderRef>(null);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const [getTemplateCategories] = useLazyGetTemplateCategoriesQuery();
+  const [uploadFile] = useUploadFileMutation();
+  const [getFileMetadata] = useLazyGetFileMetadataQuery();
+  const [deleteFile] = useDeleteFileMutation();
+  const [downloadFile] = useLazyDownloadFileQuery();
   const userId = useSelector((state: RootState) => state.user.userId);
 
   const { templateCategories, isCategoriesFetched } = useSelector(
-    (state: RootState) => state.dataStorage
+    (state: RootState) => state.dataStorage,
   );
 
   const handleTemplateCategories = async () => {
     try {
-      await dispatch(getTemplateCategories()).unwrap();
+      await getTemplateCategories(undefined, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error(
         "Error occurred while fetching the template categories: ",
-        error
+        error,
       );
     }
   };
@@ -72,11 +76,11 @@ const TemplatesMenu: React.FC = () => {
   const { fileMetadata } = useSelector((state: RootState) => state.fileStorage);
 
   const templatesfileMetadata = fileMetadata.filter(
-    (file) => file.folder === "templates"
+    (file) => file.folder === "templates",
   );
 
   const { supportedFiles } = useSelector(
-    (state: RootState) => state.dataStorage
+    (state: RootState) => state.dataStorage,
   );
 
   const supportedTemplatesExtensions = supportedFiles
@@ -102,44 +106,43 @@ const TemplatesMenu: React.FC = () => {
   const handleUpload = async (files: FileWithMetadata[]) => {
     try {
       for (const { file, category } of files) {
-        const resultAction = await dispatch(
-          uploadFile({ file: [{ file, category }], userId })
-        ).unwrap();
+        const resultAction = await uploadFile({
+          file: [{ file, category }],
+          userId,
+        }).unwrap();
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
       }
-      await dispatch(getFileMetadata({ userId })).unwrap();
+      await getFileMetadata({ userId }, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error(
         "Error occurred while uploading the file to the storage: ",
-        error
+        error,
       );
     }
   };
 
   const removeFile = async (fileId: string, fileName: string) => {
     try {
-      const resultAction = await dispatch(
-        deleteFile({ fileId, fileName })
-      ).unwrap();
+      const resultAction = await deleteFile({ fileId, fileName }).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
-      await dispatch(getFileMetadata({ userId })).unwrap();
+      await getFileMetadata({ userId }, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error(
         "Error occurred while deleting the template from the storage: ",
-        error
+        error,
       );
     }
   };
 
   const downloadTemplate = async (fileId: string, fileName: string) => {
     try {
-      const resultAction = await dispatch(downloadFile({ fileId })).unwrap();
+      const resultAction = await downloadFile({ fileId }, true).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
 
       const { data } = resultAction;
@@ -149,7 +152,7 @@ const TemplatesMenu: React.FC = () => {
       downloadFileBlob(
         fileData,
         fileType,
-        extractedFileName || "downloaded-file"
+        extractedFileName || "downloaded-file",
       );
       showSuccessToast(successMessage);
     } catch (error) {
@@ -195,7 +198,7 @@ const TemplatesMenu: React.FC = () => {
               .filter((template) =>
                 selectedCategory === "All Categories"
                   ? true
-                  : template.template_category === selectedCategory
+                  : template.template_category === selectedCategory,
               )
               .map((template) => (
                 <Col xs={12} md={4} key={template.file_id} className="tw-mb-6">
@@ -204,7 +207,7 @@ const TemplatesMenu: React.FC = () => {
                       src={
                         template.file_path
                           ? `${config.DNS_ENDPOINT}/${replaceExtension(
-                              template.file_path
+                              template.file_path,
                             )}`
                           : ""
                       }
@@ -225,7 +228,7 @@ const TemplatesMenu: React.FC = () => {
                           onClick={() =>
                             downloadTemplate(
                               template.file_id!,
-                              template.file_path!
+                              template.file_path!,
                             )
                           }
                           className="tw-text-[#4CAF50] hover:tw-text-[#388E3C] tw-text-xl"
@@ -262,7 +265,7 @@ const TemplatesMenu: React.FC = () => {
             return;
           }
           const hasNullCategory = filesToUpload.some(
-            (file) => file.category === null
+            (file) => file.category === null,
           );
 
           if (hasNullCategory) {

@@ -1,14 +1,9 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import FileTable from "../shared/FileTable";
 import { FileDetailProps } from "../../interfaces/interfaces";
 import { getFileSize } from "../../utils/ppt/getFileSize";
-import {
-  deleteFile,
-  getFileMetadata,
-  downloadFile,
-} from "../../store/actions/storageAction";
 import {
   handleErrorMessage,
   handleSuccessMessage,
@@ -18,15 +13,22 @@ import {
   showSuccessToast,
 } from "../../utils/common/handleToast";
 import { downloadFileBlob } from "../../utils/storage/downloadFileBlob";
+import {
+  useDeleteFileMutation,
+  useLazyDownloadFileQuery,
+  useLazyGetFileMetadataQuery,
+} from "../../store/api/appApi";
 
 const Projects: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const [deleteFile] = useDeleteFileMutation();
+  const [downloadFile] = useLazyDownloadFileQuery();
+  const [getFileMetadata] = useLazyGetFileMetadataQuery();
   const userId = useSelector((state: RootState) => state.user.userId);
 
   const { fileMetadata } = useSelector((state: RootState) => state.fileStorage);
 
   const projectsFileMetadata = fileMetadata.filter(
-    (file) => file.folder === "projects"
+    (file) => file.folder === "projects",
   );
 
   const columns = [
@@ -50,25 +52,23 @@ const Projects: React.FC = () => {
 
   const removeFile = async (fileId: string, fileName: string) => {
     try {
-      const resultAction = await dispatch(
-        deleteFile({ fileId, fileName })
-      ).unwrap();
+      const resultAction = await deleteFile({ fileId, fileName }).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
-      await dispatch(getFileMetadata({ userId })).unwrap();
+      await getFileMetadata({ userId }, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error(
         "Error occurred while deleting the project from the storage: ",
-        error
+        error,
       );
     }
   };
 
   const downloadProject = async (fileId: string, fileName: string) => {
     try {
-      const resultAction = await dispatch(downloadFile({ fileId })).unwrap();
+      const resultAction = await downloadFile({ fileId }, true).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
 
       const { data } = resultAction;
@@ -78,7 +78,7 @@ const Projects: React.FC = () => {
       downloadFileBlob(
         fileData,
         fileType,
-        extractedFileName || "downloaded-file"
+        extractedFileName || "downloaded-file",
       );
       showSuccessToast(successMessage);
     } catch (error) {

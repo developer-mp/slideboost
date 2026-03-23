@@ -6,30 +6,31 @@ import { useNavigation } from "../utils/user/useNavigation";
 import { validatePassword } from "../utils/user/validatePassword";
 import { showErrorToast, showSuccessToast } from "../utils/common/handleToast";
 import PasswordInput from "../components/widgets/PasswordInput";
-import { updatePassword } from "../store/actions/userAction";
 import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../utils/common/handleActionMessage";
 import { setIsReset } from "../store/slices/userSlice";
+import { useUpdatePasswordMutation } from "../store/api/appApi";
 
 const ResetPassword: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const { navigateToLogin } = useNavigation();
   const dispatch = useDispatch<AppDispatch>();
+  const [updatePassword] = useUpdatePasswordMutation();
 
   const email = useSelector((state: RootState) => state.user.userEmail);
 
   const handleResetPassword = async (
     e: React.MouseEvent<HTMLButtonElement>,
-    password: string
+    password: string,
   ) => {
     e.preventDefault();
 
     const { isPasswordRequired, isNotPattern, isNotMatch } = validatePassword(
       password,
-      confirmPassword
+      confirmPassword,
     );
 
     if (isPasswordRequired) {
@@ -38,7 +39,7 @@ const ResetPassword: React.FC = () => {
     }
     if (isNotPattern) {
       showErrorToast(
-        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character"
+        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character",
       );
       return;
     }
@@ -49,9 +50,7 @@ const ResetPassword: React.FC = () => {
 
     if (!isPasswordRequired && !isNotPattern && !isNotMatch) {
       try {
-        const resultAction = await dispatch(
-          updatePassword({ email, password })
-        ).unwrap();
+        const resultAction = await updatePassword({ email, password }).unwrap();
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
         dispatch(setIsReset(false));

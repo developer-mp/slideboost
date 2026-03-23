@@ -3,7 +3,6 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { setIsReset } from "../store/slices/userSlice";
-import { loginUser } from "../store/actions/userAction";
 import { useNavigation } from "../utils/user/useNavigation";
 import {
   showErrorToast,
@@ -12,11 +11,14 @@ import {
 } from "../utils/common/handleToast";
 import { validateEmail } from "../utils/user/validateEmail";
 import CustomModal from "../components/shared/CustomModal";
-import { sendEmail } from "../store/actions/userAction";
 import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../utils/common/handleActionMessage";
+import {
+  useLoginUserMutation,
+  useSendEmailMutation,
+} from "../store/api/appApi";
 
 const Login: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -26,9 +28,11 @@ const Login: React.FC = () => {
   const { navigateToWorkspace, navigateToCreateAccount, navigateToVerify } =
     useNavigation();
   const dispatch = useDispatch<AppDispatch>();
+  const [loginUser] = useLoginUserMutation();
+  const [sendEmail] = useSendEmailMutation();
 
   const handleLoginUser = async (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
 
@@ -44,9 +48,7 @@ const Login: React.FC = () => {
     }
 
     try {
-      const resultAction = await dispatch(
-        loginUser({ email, password })
-      ).unwrap();
+      const resultAction = await loginUser({ email, password }).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
       navigateToWorkspace();
@@ -71,13 +73,11 @@ const Login: React.FC = () => {
 
     if (!isEmailRequired && !isFormatInvalid) {
       try {
-        const resultAction = await dispatch(
-          sendEmail({
-            email,
-            template: "forgotPasswordEmail",
-            subject: "Reset Password",
-          })
-        ).unwrap();
+        const resultAction = await sendEmail({
+          email,
+          template: "forgotPasswordEmail",
+          subject: "Reset Password",
+        }).unwrap();
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
         navigateToVerify();

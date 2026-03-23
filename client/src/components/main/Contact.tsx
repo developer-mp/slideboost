@@ -11,9 +11,9 @@ import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../../utils/common/handleActionMessage";
-import { sendContactForm } from "../../store/actions/userAction";
 import { validateEmail } from "../../utils/user/validateEmail";
 import { validateName } from "../../utils/user/validateName";
+import { useSendContactFormMutation } from "../../store/api/appApi";
 
 const Contact = () => {
   const [formData, setFormData] = useState<FormDataProps>({
@@ -23,9 +23,10 @@ const Contact = () => {
   });
 
   const dispatch = useDispatch<AppDispatch>();
+  const [sendContactForm] = useSendContactFormMutation();
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -62,9 +63,7 @@ const Contact = () => {
     }
 
     try {
-      const resultAction = await dispatch(
-        sendContactForm({ formData })
-      ).unwrap();
+      const resultAction = await sendContactForm({ formData }).unwrap();
       setFormData({
         name: "",
         email: "",

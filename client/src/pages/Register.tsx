@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { registerUser } from "../store/actions/userAction";
 import { validateName } from "../utils/user/validateName";
 import { validatePassword } from "../utils/user/validatePassword";
 import { validateEmail } from "../utils/user/validateEmail";
@@ -18,6 +17,7 @@ import {
 } from "../utils/common/handleActionMessage";
 import { setIsRegister } from "../store/slices/userSlice";
 import { useNavigation } from "../utils/user/useNavigation";
+import { useRegisterUserMutation } from "../store/api/appApi";
 
 const Register: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -26,6 +26,7 @@ const Register: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [checked, setChecked] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
+  const [registerUser] = useRegisterUserMutation();
 
   const { navigateToLogin, navigateToVerify } = useNavigation();
 
@@ -37,7 +38,7 @@ const Register: React.FC = () => {
     e: React.MouseEvent<HTMLButtonElement>,
     name: string,
     email: string,
-    password: string
+    password: string,
   ) => {
     e.preventDefault();
 
@@ -61,7 +62,7 @@ const Register: React.FC = () => {
 
     const { isPasswordRequired, isNotPattern, isNotMatch } = validatePassword(
       password,
-      confirmPassword
+      confirmPassword,
     );
 
     if (isPasswordRequired) {
@@ -70,7 +71,7 @@ const Register: React.FC = () => {
     }
     if (isNotPattern) {
       showWarningToast(
-        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character"
+        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character",
       );
       return;
     }
@@ -81,7 +82,7 @@ const Register: React.FC = () => {
 
     if (!checked) {
       showWarningToast(
-        "You must agree to the Terms & Conditions and Privacy Notice"
+        "You must agree to the Terms & Conditions and Privacy Notice",
       );
       return;
     }
@@ -95,9 +96,11 @@ const Register: React.FC = () => {
       !isNotMatch
     ) {
       try {
-        const resultAction = await dispatch(
-          registerUser({ name, email, password })
-        ).unwrap();
+        const resultAction = await registerUser({
+          name,
+          email,
+          password,
+        }).unwrap();
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
         dispatch(setIsRegister(true));

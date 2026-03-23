@@ -1,30 +1,30 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import NewsItem from "../components/elements/NewsItem";
 import { Col, Container, Row } from "react-bootstrap";
-import { AppDispatch, RootState } from "../store/store";
+import { RootState } from "../store/store";
 import { handleErrorMessage } from "../utils/common/handleActionMessage";
 import { showErrorToast } from "../utils/common/handleToast";
-import { getNews } from "../store/actions/dataAction";
 import { useCallback, useEffect } from "react";
+import { useLazyGetNewsQuery } from "../store/api/appApi";
 
 const News: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const [getNews] = useLazyGetNewsQuery();
 
   const { news } = useSelector((state: RootState) => state.dataStorage);
 
   const handleNews = useCallback(async () => {
     try {
-      await dispatch(getNews()).unwrap();
+      await getNews(undefined, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error("Error occurred while fetching the news: ", error);
     }
-  }, [dispatch]);
+  }, [getNews]);
 
   useEffect(() => {
     handleNews();
-  }, [handleNews, dispatch]);
+  }, [handleNews]);
 
   return (
     <Container className="tw-text-center tw-mt-12 tw-mb-12">

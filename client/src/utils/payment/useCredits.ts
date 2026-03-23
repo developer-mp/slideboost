@@ -2,21 +2,18 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { handleErrorMessage } from "../common/handleActionMessage";
 import { showErrorToast, showSuccessToast } from "../common/handleToast";
 import { CheckoutResponse } from "../../interfaces/interfaces";
-import { verifyPayment } from "../../store/actions/paymentAction";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store/store";
+import { useVerifyPaymentMutation } from "../../store/api/appApi";
 
 const useCredits = (
   initialCredits: number,
   pricePerCredit: number,
-  userId: string
+  userId: string,
 ) => {
   const [credits, setCredits] = useState<number>(10);
   const [amount, setAmount] = useState<number>(0);
   const [showCreditsModal, setShowCreditsModal] = useState<boolean>(false);
   const paymentVerifiedRef = useRef<boolean>(false);
-
-  const dispatch = useDispatch<AppDispatch>();
+  const [verifyPayment] = useVerifyPaymentMutation();
 
   const updateAmount = useCallback(() => {
     const newAmount = Math.max(credits * pricePerCredit, 0);
@@ -32,7 +29,7 @@ const useCredits = (
   };
 
   const handleConfirmPurchase = async (
-    onCheckout: (amount: number, userId: string) => Promise<CheckoutResponse>
+    onCheckout: (amount: number, userId: string) => Promise<CheckoutResponse>,
   ) => {
     try {
       const resultAction = await onCheckout(amount, userId);
@@ -46,7 +43,7 @@ const useCredits = (
       showErrorToast(errorMessage);
       console.error(
         "Error occurred while creating the checkout session: ",
-        error
+        error,
       );
     }
 
@@ -64,9 +61,11 @@ const useCredits = (
       paymentVerifiedRef.current = true;
 
       try {
-        const resultAction = await dispatch(
-          verifyPayment({ sessionId, credits, userId })
-        ).unwrap();
+        const resultAction = await verifyPayment({
+          sessionId,
+          credits,
+          userId,
+        }).unwrap();
 
         if (resultAction.paid === true) {
           showSuccessToast("Payment Successful. Credits have been added");
@@ -81,16 +80,16 @@ const useCredits = (
         showErrorToast(errorMessage);
         console.error(
           "Error occurred while verifying the payment status: ",
-          error
+          error,
         );
       }
     },
-    [dispatch]
+    [verifyPayment],
   );
 
   useEffect(() => {
     const sessionId = new URLSearchParams(window.location.search).get(
-      "session_id"
+      "session_id",
     );
 
     if (sessionId && !paymentVerifiedRef.current) {

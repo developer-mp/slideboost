@@ -6,13 +6,7 @@ import {
   News,
   TemplateCategory,
 } from "../../interfaces/interfaces";
-import {
-  getTemplateCategories,
-  getDeactivationReasons,
-  getSupportedFiles,
-  getFaq,
-  getNews,
-} from "../actions/dataAction";
+import { appApi } from "../api/appApi";
 
 interface DataState {
   templateCategories: TemplateCategory[];
@@ -46,82 +40,106 @@ const dataSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getTemplateCategories.pending, (state) => {
+      .addMatcher(
+        appApi.endpoints.getTemplateCategories.matchPending,
+        (state) => {
+          state.status = "loading";
+          state.message = null;
+          state.error = null;
+        },
+      )
+      .addMatcher(
+        appApi.endpoints.getTemplateCategories.matchFulfilled,
+        (state, action) => {
+          state.status = "success";
+          state.templateCategories = action.payload.data;
+          state.isCategoriesFetched = true;
+          state.message = action.payload.message;
+        },
+      )
+      .addMatcher(
+        appApi.endpoints.getTemplateCategories.matchRejected,
+        (state, action) => {
+          state.status = "fail";
+          state.message = null;
+          state.error = (action.error as { message?: string })?.message || null;
+        },
+      )
+      .addMatcher(
+        appApi.endpoints.getDeactivationReasons.matchPending,
+        (state) => {
+          state.status = "loading";
+          state.message = null;
+          state.error = null;
+        },
+      )
+      .addMatcher(
+        appApi.endpoints.getDeactivationReasons.matchFulfilled,
+        (state, action) => {
+          state.status = "success";
+          state.deactivationReasons = action.payload.data;
+          state.isReasonsFetched = true;
+          state.message = action.payload.message;
+        },
+      )
+      .addMatcher(
+        appApi.endpoints.getDeactivationReasons.matchRejected,
+        (state, action) => {
+          state.status = "fail";
+          state.message = null;
+          state.error = (action.error as { message?: string })?.message || null;
+        },
+      )
+      .addMatcher(appApi.endpoints.getSupportedFiles.matchPending, (state) => {
         state.status = "loading";
         state.message = null;
         state.error = null;
       })
-      .addCase(getTemplateCategories.fulfilled, (state, action) => {
-        state.status = "success";
-        state.templateCategories = action.payload.data;
-        state.isCategoriesFetched = true;
-        state.message = action.payload.message;
-      })
-      .addCase(getTemplateCategories.rejected, (state, action) => {
-        state.status = "fail";
-        state.message = null;
-        state.error = action.error.message || null;
-      })
-      .addCase(getDeactivationReasons.pending, (state) => {
+      .addMatcher(
+        appApi.endpoints.getSupportedFiles.matchFulfilled,
+        (state, action) => {
+          state.status = "success";
+          state.supportedFiles = action.payload.data;
+          state.message = action.payload.message;
+        },
+      )
+      .addMatcher(
+        appApi.endpoints.getSupportedFiles.matchRejected,
+        (state, action) => {
+          state.status = "fail";
+          state.message = null;
+          state.error = (action.error as { message?: string })?.message || null;
+        },
+      )
+      .addMatcher(appApi.endpoints.getFaq.matchPending, (state) => {
         state.status = "loading";
         state.message = null;
         state.error = null;
       })
-      .addCase(getDeactivationReasons.fulfilled, (state, action) => {
-        state.status = "success";
-        state.deactivationReasons = action.payload.data;
-        state.isReasonsFetched = true;
-        state.message = action.payload.message;
-      })
-      .addCase(getDeactivationReasons.rejected, (state, action) => {
-        state.status = "fail";
-        state.message = null;
-        state.error = action.error.message || null;
-      })
-      .addCase(getSupportedFiles.pending, (state) => {
-        state.status = "loading";
-        state.message = null;
-        state.error = null;
-      })
-      .addCase(getSupportedFiles.fulfilled, (state, action) => {
-        state.status = "success";
-        state.supportedFiles = action.payload.data;
-        state.message = action.payload.message;
-      })
-      .addCase(getSupportedFiles.rejected, (state, action) => {
-        state.status = "fail";
-        state.message = null;
-        state.error = action.error.message || null;
-      })
-      .addCase(getFaq.pending, (state) => {
-        state.status = "loading";
-        state.message = null;
-        state.error = null;
-      })
-      .addCase(getFaq.fulfilled, (state, action) => {
+      .addMatcher(appApi.endpoints.getFaq.matchFulfilled, (state, action) => {
         state.status = "success";
         state.faq = action.payload.data;
         state.message = action.payload.message;
       })
-      .addCase(getFaq.rejected, (state, action) => {
+      .addMatcher(appApi.endpoints.getFaq.matchRejected, (state, action) => {
         state.status = "fail";
         state.message = null;
-        state.error = action.error.message || null;
+        state.error = (action.error as { message?: string })?.message || null;
       })
-      .addCase(getNews.pending, (state) => {
+      .addMatcher(appApi.endpoints.getNews.matchPending, (state) => {
         state.status = "loading";
         state.message = null;
         state.error = null;
       })
-      .addCase(getNews.fulfilled, (state, action) => {
+      .addMatcher(appApi.endpoints.getNews.matchFulfilled, (state, action) => {
         state.status = "success";
         state.news = action.payload.data;
         state.message = action.payload.message;
       })
-      .addCase(getNews.rejected, (state, action) => {
+      .addMatcher(appApi.endpoints.getNews.matchRejected, (state, action) => {
         state.status = "fail";
         state.message = null;
-        state.error = action.error.message || null;
+        state.error = (action.error as { message?: string })?.message || null;
       });
   },
 });

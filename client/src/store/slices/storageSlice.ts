@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getFileMetadata } from "../actions/storageAction";
 import { FileDetailProps } from "../../interfaces/interfaces";
+import { appApi } from "../api/appApi";
 
 interface UserState {
   fileMetadata: FileDetailProps[];
@@ -22,21 +22,27 @@ const storageSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getFileMetadata.pending, (state) => {
+      .addMatcher(appApi.endpoints.getFileMetadata.matchPending, (state) => {
         state.status = "loading";
         state.message = null;
         state.error = null;
       })
-      .addCase(getFileMetadata.fulfilled, (state, action) => {
-        state.status = "success";
-        state.fileMetadata = action.payload.data;
-        state.message = action.payload.message;
-      })
-      .addCase(getFileMetadata.rejected, (state, action) => {
-        state.status = "fail";
-        state.message = null;
-        state.error = action.error.message || null;
-      });
+      .addMatcher(
+        appApi.endpoints.getFileMetadata.matchFulfilled,
+        (state, action) => {
+          state.status = "success";
+          state.fileMetadata = action.payload.data;
+          state.message = action.payload.message;
+        },
+      )
+      .addMatcher(
+        appApi.endpoints.getFileMetadata.matchRejected,
+        (state, action) => {
+          state.status = "fail";
+          state.message = null;
+          state.error = (action.error as { message?: string })?.message || null;
+        },
+      );
   },
 });
 

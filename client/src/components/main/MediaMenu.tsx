@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import CustomModal from "../shared/CustomModal";
 import FileUploader from "../shared/FileUploader";
@@ -18,35 +18,38 @@ import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../../utils/common/handleActionMessage";
-import {
-  deleteFile,
-  downloadFile,
-  getFileMetadata,
-  uploadFile,
-} from "../../store/actions/storageAction";
 import FileTable from "../shared/FileTable";
 import { getFileSize } from "../../utils/ppt/getFileSize";
 import { truncateText } from "../../utils/common/truncateText";
 import { downloadFileBlob } from "../../utils/storage/downloadFileBlob";
 import { SupportedFileType } from "../../interfaces/types";
 import useFetchFileData from "../../utils/storage/useFetchFileData";
+import {
+  useDeleteFileMutation,
+  useLazyDownloadFileQuery,
+  useLazyGetFileMetadataQuery,
+  useUploadFileMutation,
+} from "../../store/api/appApi";
 
 const MediaMenu: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const fileUploaderRef = useRef<FileUploaderRef>(null);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const [uploadFile] = useUploadFileMutation();
+  const [deleteFile] = useDeleteFileMutation();
+  const [downloadFile] = useLazyDownloadFileQuery();
+  const [getFileMetadata] = useLazyGetFileMetadataQuery();
   const userId = useSelector((state: RootState) => state.user.userId);
 
   const { fileMetadata } = useSelector((state: RootState) => state.fileStorage);
 
   const mediafileMetadata = fileMetadata.filter(
-    (file) => file.folder === "media"
+    (file) => file.folder === "media",
   );
 
   const { supportedFiles } = useSelector(
-    (state: RootState) => state.dataStorage
+    (state: RootState) => state.dataStorage,
   );
 
   const supportedMediaExtensions = supportedFiles
@@ -77,23 +80,24 @@ const MediaMenu: React.FC = () => {
       for (const { file, category } of files) {
         if (file.size > MAX_FILE_SIZE) {
           showWarningToast(
-            `The file "${file.name}" exceeds the 50MB limit. Currently, the MVP version does not support larger uploads`
+            `The file "${file.name}" exceeds the 50MB limit. Currently, the MVP version does not support larger uploads`,
           );
           continue;
         }
-        const resultAction = await dispatch(
-          uploadFile({ file: [{ file, category }], userId })
-        ).unwrap();
+        const resultAction = await uploadFile({
+          file: [{ file, category }],
+          userId,
+        }).unwrap();
         const successMessage = handleSuccessMessage(resultAction);
         showSuccessToast(successMessage);
       }
-      await dispatch(getFileMetadata({ userId })).unwrap();
+      await getFileMetadata({ userId }, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error(
         "Error occurred while uploading the file to the storage: ",
-        error
+        error,
       );
     } finally {
       setIsUploading(false);
@@ -126,25 +130,23 @@ const MediaMenu: React.FC = () => {
 
   const removeFile = async (fileId: string, fileName: string) => {
     try {
-      const resultAction = await dispatch(
-        deleteFile({ fileId, fileName })
-      ).unwrap();
+      const resultAction = await deleteFile({ fileId, fileName }).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
-      await dispatch(getFileMetadata({ userId })).unwrap();
+      await getFileMetadata({ userId }, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error(
         "Error occurred while deleting the media file from the storage: ",
-        error
+        error,
       );
     }
   };
 
   const downloadMediaFile = async (fileId: string, fileName: string) => {
     try {
-      const resultAction = await dispatch(downloadFile({ fileId })).unwrap();
+      const resultAction = await downloadFile({ fileId }, true).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
 
       const { data } = resultAction;
@@ -154,7 +156,7 @@ const MediaMenu: React.FC = () => {
       downloadFileBlob(
         fileData,
         fileType,
-        extractedFileName || "downloaded-file"
+        extractedFileName || "downloaded-file",
       );
       showSuccessToast(successMessage);
     } catch (error) {

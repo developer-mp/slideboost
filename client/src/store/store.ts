@@ -4,16 +4,19 @@ import storage from "redux-persist/lib/storage";
 import userReducer from "./slices/userSlice";
 import storageReducer from "./slices/storageSlice";
 import dataReducer from "./slices/dataSlice";
+import { appApi } from "./api/appApi";
 
 const rootReducer = combineReducers({
   user: userReducer,
   fileStorage: storageReducer,
   dataStorage: dataReducer,
+  [appApi.reducerPath]: appApi.reducer,
 });
 
 const persistConfig = {
   key: "root",
   storage,
+  blacklist: [appApi.reducerPath],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -32,10 +35,10 @@ const store = configureStore({
           "persist/REGISTER",
         ],
         ignoredActionPaths: ["meta.arg", "payload.timestamp"],
-        ignoredPaths: ["persist"],
+        ignoredPaths: ["persist", appApi.reducerPath],
         warningThreshold: 100,
       },
-    }),
+    }).concat(appApi.middleware),
 });
 
 export const persistor = persistStore(store);

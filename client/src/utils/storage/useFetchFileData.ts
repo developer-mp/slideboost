@@ -1,36 +1,37 @@
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { getSupportedFiles } from "../../store/actions/dataAction";
-import { AppDispatch } from "../../store/store";
 import { handleErrorMessage } from "../common/handleActionMessage";
 import { showErrorToast } from "../common/handleToast";
-import { getFileMetadata } from "../../store/actions/storageAction";
+import {
+  useLazyGetFileMetadataQuery,
+  useLazyGetSupportedFilesQuery,
+} from "../../store/api/appApi";
 
 const useFetchFileData = (userId: string) => {
-  const dispatch = useDispatch<AppDispatch>();
+  const [getSupportedFiles] = useLazyGetSupportedFilesQuery();
+  const [getFileMetadata] = useLazyGetFileMetadataQuery();
 
   const handleSupportedFiles = useCallback(async () => {
     try {
-      await dispatch(getSupportedFiles()).unwrap();
+      await getSupportedFiles(undefined, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error(
         "Error occurred while fetching the supported files: ",
-        error
+        error,
       );
     }
-  }, [dispatch]);
+  }, [getSupportedFiles]);
 
   const handleFileMetadata = useCallback(async () => {
     try {
-      await dispatch(getFileMetadata({ userId })).unwrap();
+      await getFileMetadata({ userId }, true).unwrap();
     } catch (error) {
       const errorMessage = handleErrorMessage(error);
       showErrorToast(errorMessage);
       console.error("Error occurred while fetching the file metadata: ", error);
     }
-  }, [dispatch, userId]);
+  }, [getFileMetadata, userId]);
 
   const fetchData = useCallback(() => {
     if (userId) {

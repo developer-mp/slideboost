@@ -15,19 +15,23 @@ import {
   showSuccessToast,
 } from "../../utils/common/handleToast";
 import { getFileIcon } from "../../utils/ppt/getFileIcon";
-import { getFileMetadata } from "../../store/actions/storageAction";
-import { calculateTokens, generatePpt } from "../../store/actions/pptAction";
 import {
   handleErrorMessage,
   handleSuccessMessage,
 } from "../../utils/common/handleActionMessage";
 import CreditsModal from "../widgets/CreditsModal";
-import { createCheckout } from "../../store/actions/paymentAction";
 import { config } from "../../../env.config";
 import useCredits from "../../utils/payment/useCredits";
-import { getCreditBalance, sendSurvey } from "../../store/actions/userAction";
 import { setSurveySent } from "../../store/slices/userSlice";
 import SurveyModal from "../widgets/SurveyModal";
+import {
+  useCreateCheckoutMutation,
+  useLazyCalculateTokensQuery,
+  useLazyGeneratePptQuery,
+  useLazyGetCreditBalanceQuery,
+  useLazyGetFileMetadataQuery,
+  useSendSurveyMutation,
+} from "../../store/api/appApi";
 
 const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const { userId, surveySent } = useSelector((state: RootState) => state.user);
@@ -60,21 +64,27 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   const [showSurveyModal, setShowSurveyModal] = useState<boolean>(false);
 
   const dispatch = useDispatch<AppDispatch>();
+  const [calculateTokens] = useLazyCalculateTokensQuery();
+  const [generatePpt] = useLazyGeneratePptQuery();
+  const [getFileMetadata] = useLazyGetFileMetadataQuery();
+  const [getCreditBalance] = useLazyGetCreditBalanceQuery();
+  const [createCheckout] = useCreateCheckoutMutation();
+  const [sendSurvey] = useSendSurveyMutation();
 
   const creditBalance = useSelector(
-    (state: RootState) => state.user.creditBalance
+    (state: RootState) => state.user.creditBalance,
   );
 
   const fileMetadata = useSelector(
-    (state: RootState) => state.fileStorage.fileMetadata
+    (state: RootState) => state.fileStorage.fileMetadata,
   );
 
   const mediafileMetadata = fileMetadata.filter(
-    (file) => file.folder === "media"
+    (file) => file.folder === "media",
   );
 
   const templatesfileMetadata = fileMetadata.filter(
-    (file) => file.folder === "templates"
+    (file) => file.folder === "templates",
   );
 
   const confirmMediaSelection = () => {
@@ -96,7 +106,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
         return null;
       })
       .filter(
-        (file): file is { file_id: string; file_type: string } => file !== null
+        (file): file is { file_id: string; file_type: string } => file !== null,
       );
   };
 
@@ -127,11 +137,12 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
       const filesArr = buildFilesArr();
 
       if (filesArr) {
-        resultAction = await dispatch(
-          calculateTokens({
+        resultAction = await calculateTokens(
+          {
             userId: userId,
             files: filesArr,
-          })
+          },
+          true,
         ).unwrap();
       }
       const tokenCount = resultAction?.tokenCount ?? 0;
@@ -164,19 +175,20 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
 
       const templateId = selectedTemplate?.file_id;
       if (filesArr && templateId) {
-        resultAction = await dispatch(
-          generatePpt({
+        resultAction = await generatePpt(
+          {
             userId: userId,
             files: filesArr,
             templateId: templateId,
             title: presentationTitle,
             credits: creditCost,
-          })
+          },
+          true,
         ).unwrap();
       }
       const successMessage = handleSuccessMessage(resultAction);
-      await dispatch(getFileMetadata({ userId })).unwrap();
-      await dispatch(getCreditBalance({ userId })).unwrap();
+      await getFileMetadata({ userId }, true).unwrap();
+      await getCreditBalance({ userId }, true).unwrap();
       showSuccessToast(successMessage);
       if (!surveySent) {
         setShowSurveyModal(true);
@@ -197,7 +209,7 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
   };
 
   const onCheckout = async (amount: number, userId: string) => {
-    return await dispatch(createCheckout({ amount, userId })).unwrap();
+    return await createCheckout({ amount, userId }).unwrap();
   };
 
   const handleConfirm = () => {
@@ -216,9 +228,10 @@ const Dashboard: React.FC<DashboardProps> = ({ setSelectedItem }) => {
       comments: surveyData.comments,
     };
     try {
-      const resultAction = await dispatch(
-        sendSurvey({ userId, surveyData: surveyDataObj })
-      ).unwrap();
+      const resultAction = await sendSurvey({
+        userId,
+        surveyData: surveyDataObj,
+      }).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
       dispatch(setSurveySent(true));

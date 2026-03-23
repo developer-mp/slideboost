@@ -3,9 +3,6 @@ import {
   GoogleLogin,
   CredentialResponse,
 } from "@react-oauth/google";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store/store";
-import { loginUserWithGoogle } from "../../store/actions/userAction";
 import {
   handleErrorMessage,
   handleSuccessMessage,
@@ -17,10 +14,11 @@ import {
 import { useNavigation } from "../../utils/user/useNavigation";
 import { config } from "../../../env.config";
 import { GoogleAuthProps } from "../../interfaces/interfaces";
+import { useLoginUserWithGoogleMutation } from "../../store/api/appApi";
 
 const GoogleAuth: React.FC<GoogleAuthProps> = ({ onLoginStart }) => {
-  const dispatch = useDispatch<AppDispatch>();
   const { navigateToWorkspace } = useNavigation();
+  const [loginUserWithGoogle] = useLoginUserWithGoogleMutation();
 
   const handleGoogleLogin = async (credentialResponse: CredentialResponse) => {
     const { credential } = credentialResponse;
@@ -33,9 +31,9 @@ const GoogleAuth: React.FC<GoogleAuthProps> = ({ onLoginStart }) => {
     try {
       onLoginStart();
 
-      const resultAction = await dispatch(
-        loginUserWithGoogle({ idToken: credential })
-      ).unwrap();
+      const resultAction = await loginUserWithGoogle({
+        idToken: credential,
+      }).unwrap();
       const successMessage = handleSuccessMessage(resultAction);
       showSuccessToast(successMessage);
       navigateToWorkspace();

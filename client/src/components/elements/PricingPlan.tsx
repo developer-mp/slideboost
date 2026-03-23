@@ -1,11 +1,11 @@
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { PricingPlanProps } from "../../interfaces/interfaces";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../store/store";
-import { createCheckout } from "../../store/actions/paymentAction";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import { config } from "../../../env.config";
 import CreditsModal from "../widgets/CreditsModal";
 import useCredits from "../../utils/payment/useCredits";
+import { useCreateCheckoutMutation } from "../../store/api/appApi";
 
 const PricingPlan: React.FC<PricingPlanProps> = ({
   title,
@@ -27,10 +27,10 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
     closeCreditsModal,
   } = useCredits(initialCredits, pricePerCredit, userId);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const [createCheckout] = useCreateCheckoutMutation();
 
   const onCheckout = async (amount: number, userId: string) => {
-    return await dispatch(createCheckout({ amount, userId })).unwrap();
+    return await createCheckout({ amount, userId }).unwrap();
   };
 
   const handleConfirm = () => {
