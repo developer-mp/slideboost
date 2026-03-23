@@ -1,3 +1,7 @@
+declare const process: {
+  env: Record<string, string | undefined>;
+};
+
 const getEnvVar = (name: string): string => {
   const value = process.env[name];
   if (!value) {
@@ -35,7 +39,7 @@ const DNS_ENDPOINT = getEnvVar("DNS_ENDPOINT");
 const DATA_ROUTER = getEnvVar("DATA_ROUTER");
 const TEMPLATES_ENDPOINT = getEnvVar("TEMPLATES_ENDPOINT");
 const DEACTIVATION_REASONS_ENDPOINT = getEnvVar(
-  "DEACTIVATION_REASONS_ENDPOINT"
+  "DEACTIVATION_REASONS_ENDPOINT",
 );
 const SUPPORTED_FILES_ENDPOINT = getEnvVar("SUPPORTED_FILES_ENDPOINT");
 const FAQ_ENDPOINT = getEnvVar("FAQ_ENDPOINT");

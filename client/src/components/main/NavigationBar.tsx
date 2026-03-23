@@ -8,7 +8,7 @@ import { getFirstChar } from "../../utils/user/getFirstChar";
 import { adjustScrollForNavbar } from "../../utils/common/adjustScrollForNavbar";
 import LoginModal from "../widgets/LoginModal";
 import GoogleLoginModal from "../widgets/GoogleLoginModal";
-import logo_text from "../../assets/main/logo_text.png";
+import logo_text from "../../assets/images/logo_text.png";
 import {
   handleErrorMessage,
   handleSuccessMessage,
