@@ -9,12 +9,17 @@ import {
 
 const Footer = () => {
   return (
-    <Navbar variant="dark" expand="lg" sticky="bottom">
-      <Container className="tw-flex tw-justify-between tw-items-center">
-        <div className="tw-flex tw-space-x-4">
+    <Navbar
+      variant="dark"
+      expand="lg"
+      sticky="bottom"
+      className="modern-footer tw-py-2"
+    >
+      <Container className="tw-flex tw-justify-between tw-items-center tw-gap-4">
+        <div className="tw-flex tw-space-x-4 tw-items-center">
           <a
             href="https://www.linkedin.com/company/slideboostsaas/"
-            className="text-light"
+            className="text-light tw-opacity-90 hover:tw-opacity-100"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -22,7 +27,7 @@ const Footer = () => {
           </a>
           <a
             href="https://www.facebook.com/profile.php?id=61574695015652"
-            className="text-light"
+            className="text-light tw-opacity-90 hover:tw-opacity-100"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -30,7 +35,7 @@ const Footer = () => {
           </a>
           <a
             href="https://www.instagram.com/slideboostsaas"
-            className="text-light"
+            className="text-light tw-opacity-90 hover:tw-opacity-100"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -38,7 +43,7 @@ const Footer = () => {
           </a>
           <a
             href="https://x.com/SlideBoostSaaS"
-            className="text-light"
+            className="text-light tw-opacity-90 hover:tw-opacity-100"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -46,7 +51,7 @@ const Footer = () => {
           </a>
           <a
             href="https://www.youtube.com/@SlideBoostSaaS"
-            className="text-light"
+            className="text-light tw-opacity-90 hover:tw-opacity-100"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -58,7 +63,7 @@ const Footer = () => {
           id="basic-navbar-nav"
           className="tw-flex tw-justify-center"
         >
-          <Nav className="ml-auto">
+          <Nav className="ml-auto tw-items-center tw-gap-1">
             <Nav.Link className="footer-link" href="/news">
               News
             </Nav.Link>
@@ -70,7 +75,7 @@ const Footer = () => {
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
-        <Navbar.Text className="text-light tw-text-[0.9em]">
+        <Navbar.Text className="text-light tw-text-[0.9em] tw-opacity-80">
           © {new Date().getFullYear()} SlideBoost
         </Navbar.Text>
       </Container>

@@ -8,12 +8,12 @@ const Pricing: React.FC = () => {
       className="tw-flex tw-items-center tw-justify-center tw-mt-16 lg:tw-mt-36"
       style={{ minHeight: "calc(100vh - var(--navbar-height))" }}
     >
-      <div className="tw-max-w-full tw-mx-auto tw-text-center">
+      <div className="tw-max-w-full tw-mx-auto tw-text-center section-shell">
         <Row className="align-items-center">
-          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-3xl md:tw-text-4xl tw-text-center tw-mb-8">
+          <h3 className="section-title tw-text-3xl md:tw-text-4xl tw-text-center tw-mb-8">
             PURCHASE CREDITS TO BUILD YOUR PRESENTATION
           </h3>
-          <div className="tw-text-gray-700 tw-text-xl tw-text-pretty tw-mb-8">
+          <div className="section-copy tw-text-lg md:tw-text-xl tw-text-pretty tw-mb-8 tw-max-w-5xl tw-mx-auto">
             Get started by purchasing credits to unlock the power of creating
             presentations effortlessly. By default, all registered users receive
             10 credits. Each credit equals 200 tokens, which you can use to

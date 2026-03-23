@@ -41,17 +41,21 @@ const PricingPlan: React.FC<PricingPlanProps> = ({
     <Container>
       <Row>
         <Col className="tw-justify-items-center">
-          <Card className="tw-w-80 tw-shadow-md card-hover tw-cursor-pointer">
+          <Card className="tw-w-80 glass-panel tw-border-0 card-hover tw-cursor-pointer tw-overflow-hidden">
             <Card.Body>
               <div
-                className="tw-text-white tw-p-2 tw-rounded-md tw-mb-2"
+                className="tw-text-white tw-p-2 tw-rounded-xl tw-mb-3"
                 style={{ backgroundColor: titleColor }}
               >
-                <Card.Title>{title}</Card.Title>
+                <Card.Title className="tw-font-bold tw-mb-0">
+                  {title}
+                </Card.Title>
               </div>
-              <Card.Title>{price}</Card.Title>
-              <Card.Text>{description}</Card.Text>
-              <ul className="tw-list-disc tw-text-sm tw-text-gray-700 tw-text-left tw-min-h-32">
+              <Card.Title className="tw-text-2xl tw-font-extrabold tw-text-[#0f2338] tw-mb-2">
+                {price}
+              </Card.Title>
+              <Card.Text className="tw-text-[#35506a]">{description}</Card.Text>
+              <ul className="tw-list-disc tw-text-sm tw-text-[#35506a] tw-text-left tw-min-h-32">
                 {features.map((feature, index) => (
                   <li key={index}>{feature}</li>
                 ))}

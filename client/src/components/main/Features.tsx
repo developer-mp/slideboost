@@ -32,7 +32,7 @@ const Features: React.FC = () => {
   const { fileMetadata } = useSelector((state: RootState) => state.fileStorage);
 
   const templatesfileMetadata = fileMetadata.filter(
-    (file) => file.folder === "templates"
+    (file) => file.folder === "templates",
   );
 
   const fetchTemplates = useFetchFileData("system");
@@ -46,12 +46,12 @@ const Features: React.FC = () => {
       className="tw-flex tw-items-center tw-justify-center tw-mt-16 lg:tw-mt-0"
       style={{ minHeight: "calc(100vh - var(--navbar-height))" }}
     >
-      <Row className="w-100">
+      <Row className="w-100 section-shell tw-gap-y-6 lg:tw-gap-y-0">
         <Col className="tw-text-center">
-          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-3xl md:tw-text-4xl tw-mb-4 lg:tw-mb-8 tw-mt-4">
+          <h3 className="section-title tw-text-3xl md:tw-text-4xl tw-mb-4 lg:tw-mb-8 tw-mt-2">
             CUSTOMIZABLE TEMPLATES
           </h3>
-          <div className="tw-text-gray-700 tw-text-xl tw-text-pretty tw-mb-8">
+          <div className="section-copy tw-text-lg md:tw-text-xl tw-text-pretty tw-mb-8 tw-max-w-4xl tw-mx-auto">
             Personalize templates to match your brand, style, and content needs.
             Whether you're creating professional presentations or engaging
             visuals, our templates provide the flexibility to bring your vision
@@ -60,10 +60,10 @@ const Features: React.FC = () => {
         </Col>
         <TemplateCarousel templates={templatesfileMetadata} />
         <Col xs={12} md={12} lg={6} className="tw-text-center lg:tw-text-left">
-          <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-3xl md:tw-text-4xl tw-mt-8 lg:tw-mt-40 tw-mb-4 lg:tw-mb-8 ">
+          <h3 className="section-title tw-text-3xl md:tw-text-4xl tw-mt-8 lg:tw-mt-24 tw-mb-4 lg:tw-mb-8">
             TAILORED SOLUTIONS
           </h3>
-          <div className="tw-text-gray-700 tw-text-xl tw-mb-4 lg:tw-w-11/12">
+          <div className="section-copy tw-text-lg md:tw-text-xl tw-mb-4 lg:tw-w-11/12">
             <p>
               Unlike traditional tools, our platform lets you customize content
               from video, text, images, and audio.
@@ -105,7 +105,7 @@ const Features: React.FC = () => {
           <img
             src={features_img}
             alt="image"
-            className="tw-w-screen tw-h-auto tw-rounded-lg tw-mt-4 lg:tw-mt-40 lg:tw-mb-0"
+            className="tw-w-screen tw-h-auto tw-rounded-3xl tw-shadow-xl tw-mt-4 lg:tw-mt-20 lg:tw-mb-0"
           />
         </Col>
       </Row>

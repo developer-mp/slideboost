@@ -8,7 +8,7 @@ import { getFirstChar } from "../../utils/user/getFirstChar";
 import { adjustScrollForNavbar } from "../../utils/common/adjustScrollForNavbar";
 import LoginModal from "../widgets/LoginModal";
 import GoogleLoginModal from "../widgets/GoogleLoginModal";
-import logo_text from "../../assets/images/logo_text.png";
+import logo_text from "../../assets/main/logo_text.png";
 import {
   handleErrorMessage,
   handleSuccessMessage,
@@ -62,12 +62,12 @@ const NavigationBar: React.FC = () => {
   };
 
   return (
-    <Navbar expand="lg" className="bg-light sticky-top">
-      <Container className="tw-mt-4">
+    <Navbar expand="lg" className="sticky-top modern-navbar">
+      <Container className="tw-py-3">
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <img src={logo_text} alt="logo" className="tw-w-40 tw-mr-8" />
+        <img src={logo_text} alt="logo" className="tw-w-44 tw-mr-6" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="me-auto tw-items-center tw-gap-1">
             <Nav.Link
               as={Link}
               smooth
@@ -118,13 +118,13 @@ const NavigationBar: React.FC = () => {
             </Nav.Link>
           </Nav>
           {isAuthenticated ? (
-            <Nav className="ms-auto">
-              <Nav.Link className="tw-mr-12" href="/workspace">
+            <Nav className="ms-auto tw-items-center tw-gap-3">
+              <Nav.Link className="tw-mr-2" href="/workspace">
                 Workspace
               </Nav.Link>
               <Dropdown>
                 <Dropdown.Toggle variant="link" id="dropdown-basic">
-                  <div className="tw-w-8 tw-h-8 tw-rounded-full tw-bg-[#26A1B0] tw-flex tw-items-center tw-justify-center tw-text-white tw-text-sm tw-font-bold tw-mx-auto tw-uppercase">
+                  <div className="tw-w-9 tw-h-9 tw-rounded-full tw-bg-[#1F7BBF] tw-flex tw-items-center tw-justify-center tw-text-white tw-text-sm tw-font-bold tw-mx-auto tw-uppercase tw-shadow-md">
                     {firstInitial}
                   </div>
                 </Dropdown.Toggle>
@@ -137,7 +137,10 @@ const NavigationBar: React.FC = () => {
             </Nav>
           ) : (
             <Nav className="ms-auto">
-              <Button className="button button-login" onClick={openLoginModal}>
+              <Button
+                className="button button-login tw-px-6"
+                onClick={openLoginModal}
+              >
                 Login
               </Button>
             </Nav>

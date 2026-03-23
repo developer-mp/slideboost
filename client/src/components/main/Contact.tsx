@@ -85,17 +85,15 @@ const Contact = () => {
         minHeight: "calc(100vh - var(--navbar-height) - var(--footer-height))",
       }}
     >
-      <h3 className="tw-text-custom-color-blue tw-font-bold tw-text-3xl md:tw-text-4xl tw-text-center tw-mb-8">
+      <h3 className="section-title tw-text-3xl md:tw-text-4xl tw-text-center tw-mb-8">
         FEEL FREE TO REACH OUT
       </h3>
       <Form
-        className="tw-w-full tw-max-w-md tw-mx-auto"
+        className="tw-w-full tw-max-w-md tw-mx-auto section-shell"
         onSubmit={handleSubmit}
       >
         <Form.Group className="tw-mb-3">
-          <Form.Label className="tw-text-custom-color-blue tw-font-bold tw-text-sm">
-            Name:
-          </Form.Label>
+          <Form.Label className="section-title tw-text-sm">Name:</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter your name"
@@ -106,9 +104,7 @@ const Contact = () => {
           />
         </Form.Group>
         <Form.Group className="tw-mb-3">
-          <Form.Label className="tw-text-custom-color-blue tw-font-bold tw-text-sm">
-            Email:
-          </Form.Label>
+          <Form.Label className="section-title tw-text-sm">Email:</Form.Label>
           <Form.Control
             type="email"
             placeholder="Enter your email"
@@ -119,9 +115,7 @@ const Contact = () => {
           />
         </Form.Group>
         <Form.Group className="tw-mb-3">
-          <Form.Label className="tw-text-custom-color-blue tw-font-bold tw-text-sm">
-            Message:
-          </Form.Label>
+          <Form.Label className="section-title tw-text-sm">Message:</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}

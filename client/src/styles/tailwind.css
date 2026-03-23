@@ -2,43 +2,97 @@
 @tailwind components;
 @tailwind utilities;
 
+.section-shell {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(233, 240, 248, 0.74)
+  );
+  border: 1px solid var(--stroke);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  animation: section-rise 0.7s ease both;
+}
+
+.section-title {
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--ink-900);
+  text-wrap: balance;
+}
+
+.section-copy {
+  color: var(--ink-700);
+  line-height: 1.75;
+}
+
+.glass-panel {
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+}
+
 .dropdown-toggle::after {
   display: none !important;
 }
 
 .nav-link {
-  color: #132332 !important;
-  font-size: 1.1em !important;
+  color: var(--ink-700) !important;
+  font-size: 1em !important;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem !important;
+  transition: all 0.25s ease;
 }
 
 .nav-link:hover {
-  color: #15426c !important;
-  font-weight: 700;
+  color: var(--ink-900) !important;
+  background-color: rgba(43, 144, 217, 0.12);
 }
 
 .button {
   width: 100%;
   color: #ffffff;
   font-weight: 700 !important;
+  letter-spacing: 0.02em;
   border: none !important;
-  padding: 0.5em !important;
-  border-radius: 0.5rem !important;
+  padding: 0.65em 1.25em !important;
+  border-radius: 999px !important;
   cursor: pointer;
-  transition: background-color 0.3s ease !important;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease !important;
+  box-shadow: 0 10px 20px rgba(31, 123, 191, 0.24);
+}
+
+.button:hover {
+  transform: translateY(-1px);
 }
 
 .button-primary {
-  background-color: #5b4bad !important;
+  background: linear-gradient(
+    120deg,
+    var(--brand-600),
+    var(--brand-500)
+  ) !important;
 }
 
 .button-primary-auto {
   width: auto;
-  background-color: #5b4bad !important;
+  background: linear-gradient(
+    120deg,
+    var(--brand-600),
+    var(--brand-500)
+  ) !important;
 }
 
 .button-primary:hover,
 .button-primary-auto:hover {
-  background-color: #4e4196 !important;
+  background: linear-gradient(120deg, #1a6aa6, #2a83c7) !important;
 }
 
 .button-secondary {
@@ -57,21 +111,21 @@
 
 .button-tertiary {
   background-color: #ffffff !important;
-  color: #0ecfde !important;
-  border: 1px solid #0ecfde !important;
+  color: var(--brand-600) !important;
+  border: 1px solid rgba(31, 123, 191, 0.45) !important;
   width: auto;
 }
 
 .button-tertiary-auto {
   background-color: #ffffff !important;
-  color: #0ecfde !important;
-  border: 1px solid #0ecfde !important;
+  color: var(--brand-600) !important;
+  border: 1px solid rgba(31, 123, 191, 0.45) !important;
 }
 
 .button-tertiary-pad {
   background-color: #ffffff !important;
-  color: #0ecfde !important;
-  border: 1px solid #0ecfde !important;
+  color: var(--brand-600) !important;
+  border: 1px solid rgba(31, 123, 191, 0.45) !important;
   width: auto;
   padding: 1em !important;
 }
@@ -79,30 +133,35 @@
 .button-tertiary:hover,
 .button-tertiary-auto:hover,
 .button-tertiary-pad:hover {
-  background-color: #0ecfde !important;
+  background-color: var(--brand-600) !important;
   color: #ffffff !important;
 }
 
 .button-login {
-  background-color: #ef6c00 !important;
+  background: linear-gradient(120deg, #ff9650, #f56f47) !important;
 }
 
 .button-login:hover {
-  background-color: #e65217 !important;
+  background: linear-gradient(120deg, #f1863b, #e95c3f) !important;
 }
 
 .navbar-dark {
-  background-color: #383c57;
+  background-color: #12253a;
 }
 
 .footer-link {
-  color: white !important;
+  color: rgba(255, 255, 255, 0.88) !important;
   font-size: 0.9em !important;
+  border-radius: 0.5rem;
+  padding: 0.25rem 0.6rem !important;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .footer-link:hover {
-  color: #0ecfde !important;
-  font-weight: 700;
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.18);
 }
 
 .img-hover:hover {
@@ -112,11 +171,14 @@
 }
 
 .card-hover {
-  transition: transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .card-hover:hover {
-  transform: scale(1.1);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
 }
 
 .login-choice {
@@ -236,7 +298,9 @@
 }
 
 .input-field {
-  border-color: #d1d4d9 !important;
+  border-color: #c6d5e5 !important;
+  border-radius: 0.9rem !important;
+  padding: 0.7rem 0.85rem !important;
 }
 
 .input-title {
@@ -246,8 +310,8 @@
 
 .input-field:focus,
 .input-title:focus {
-  border-color: #d1d4d9 !important;
-  box-shadow: 5px 5px 10px #ccc !important;
+  border-color: #7eb1da !important;
+  box-shadow: 0 0 0 0.22rem rgba(43, 144, 217, 0.22) !important;
 }
 
 .active-tab .nav-link.active {
@@ -255,9 +319,42 @@
 }
 
 .accordion {
-  --bs-accordion-active-bg: #d1d4d9 !important;
-  --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem #ccc !important;
-  --bs-accordion-active-color: black !important;
+  --bs-accordion-active-bg: #e8f2fb !important;
+  --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(43, 144, 217, 0.22) !important;
+  --bs-accordion-active-color: var(--ink-900) !important;
+  --bs-accordion-border-color: var(--stroke) !important;
+  --bs-accordion-btn-color: var(--ink-900) !important;
+}
+
+.accordion .accordion-item {
+  border-radius: 14px !important;
+  overflow: hidden;
+}
+
+.accordion .accordion-button {
+  font-weight: 700;
+}
+
+.modern-navbar {
+  background: rgba(255, 255, 255, 0.86) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(210, 222, 235, 0.9);
+}
+
+.modern-footer {
+  background: linear-gradient(125deg, #113357, #0a2238);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes section-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .custom-modal-width .modal-dialog {
@@ -290,7 +387,9 @@
 .custom-toggle .form-check-input::before {
   background-color: #fff;
   border-color: #5b4bad;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
 }
 
 .custom-toggle .form-check-input:checked {
